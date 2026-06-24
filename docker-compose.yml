@@ -1,0 +1,222 @@
+version: '3.9'
+
+networks:
+  pdds-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:
+  minio_data:
+
+services:
+  # ─── Databases ───────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: pdds-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pdds
+      POSTGRES_USER: pdds_user
+      POSTGRES_PASSWORD: pdds_secret
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/gateway/db/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - pdds-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U pdds_user -d pdds']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo:
+    image: mongo:7
+    container_name: pdds-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: pdds_user
+      MONGO_INITDB_ROOT_PASSWORD: pdds_secret
+      MONGO_INITDB_DATABASE: pdds
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - pdds-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: pdds-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - pdds-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Object Storage (local S3 replacement) ───────────────
+  minio:
+    image: minio/minio:latest
+    container_name: pdds-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: pdds_minio
+      MINIO_ROOT_PASSWORD: pdds_minio_secret
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio_data:/data
+    networks:
+      - pdds-network
+
+  # ─── API Gateway ─────────────────────────────────────────
+  gateway:
+    build:
+      context: ./services/gateway
+      dockerfile: Dockerfile
+    container_name: pdds-gateway
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://pdds_user:pdds_secret@postgres:5432/pdds
+      REDIS_URL: redis://redis:6379
+      DETECTION_SERVICE_URL: http://detection:8001
+      CHAT_SERVICE_URL: http://chat:8002
+      EDUCATION_SERVICE_URL: http://education:3002
+      HISTORY_SERVICE_URL: http://history:3003
+      JWT_SECRET: change_me_in_production
+      JWT_EXPIRES_IN: 7d
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - pdds-network
+
+  # ─── Detection Service (ML) ───────────────────────────────
+  detection:
+    build:
+      context: ./services/detection
+      dockerfile: Dockerfile
+    container_name: pdds-detection
+    restart: unless-stopped
+    ports:
+      - '8001:8001'
+    environment:
+      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
+      REDIS_URL: redis://redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: pdds_minio
+      MINIO_SECRET_KEY: pdds_minio_secret
+      MODEL_PATH: /app/ml/models/efficientnet_b4_plant.pt
+      CONFIDENCE_THRESHOLD: 0.60
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./ml/models:/app/ml/models
+    networks:
+      - pdds-network
+
+  # ─── Chat Service (RAG) ───────────────────────────────────
+  chat:
+    build:
+      context: ./services/chat
+      dockerfile: Dockerfile
+    container_name: pdds-chat
+    restart: unless-stopped
+    ports:
+      - '8002:8002'
+    environment:
+      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
+      REDIS_URL: redis://redis:6379
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      PINECONE_API_KEY: ${PINECONE_API_KEY}
+      PINECONE_INDEX: pdds-knowledge-base
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - pdds-network
+
+  # ─── Education Service ────────────────────────────────────
+  education:
+    build:
+      context: ./services/education
+      dockerfile: Dockerfile
+    container_name: pdds-education
+    restart: unless-stopped
+    ports:
+      - '3002:3002'
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - pdds-network
+
+  # ─── History Service ──────────────────────────────────────
+  history:
+    build:
+      context: ./services/history
+      dockerfile: Dockerfile
+    container_name: pdds-history
+    restart: unless-stopped
+    ports:
+      - '3003:3003'
+    environment:
+      NODE_ENV: development
+      PORT: 3003
+      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - pdds-network
+
+  # ─── Web Frontend ─────────────────────────────────────────
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: pdds-web
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+    depends_on:
+      - gateway
+    networks:
+      - pdds-network
