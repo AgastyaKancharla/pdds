@@ -2,18 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @layer base {
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { @apply bg-forest-950 text-parchment; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-forest-950 text-parchment;
+  }
+  .font-display { font-family: 'Playfair Display', Georgia, serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
 }
 
 @layer components {
   .btn-primary {
     @apply bg-chlorophyll-500 hover:bg-chlorophyll-600 text-forest-950 font-semibold
-           px-6 py-3 rounded-xl transition-all duration-200 
+           px-6 py-3 rounded-xl transition-all duration-200
            hover:shadow-lg hover:shadow-chlorophyll-500/25 active:scale-95;
   }
   .btn-secondary {
