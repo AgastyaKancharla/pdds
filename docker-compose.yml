@@ -1,54 +1,33 @@
-version: '3.9'
+version: "3.9"
 
 networks:
   pdds-network:
     driver: bridge
 
 volumes:
-  postgres_data:
   mongo_data:
   redis_data:
-  minio_data:
+  chroma_data:
+  ollama_data:
 
 services:
-  # ─── Databases ───────────────────────────────────────────
-  postgres:
-    image: postgres:16-alpine
-    container_name: pdds-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: pdds
-      POSTGRES_USER: pdds_user
-      POSTGRES_PASSWORD: pdds_secret
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./services/gateway/db/migrations:/docker-entrypoint-initdb.d
-    networks:
-      - pdds-network
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U pdds_user -d pdds']
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
-  mongo:
+  # ── Databases ─────────────────────────────────────────────────
+  mongodb:
     image: mongo:7
-    container_name: pdds-mongo
+    container_name: pdds-mongodb
     restart: unless-stopped
+    networks: [pdds-network]
     environment:
       MONGO_INITDB_ROOT_USERNAME: pdds_user
-      MONGO_INITDB_ROOT_PASSWORD: pdds_secret
+      MONGO_INITDB_ROOT_PASSWORD: change_me
       MONGO_INITDB_DATABASE: pdds
-    ports:
-      - '27017:27017'
     volumes:
       - mongo_data:/data/db
-    networks:
-      - pdds-network
+      - ./infra/docker/mongo/init.js:/docker-entrypoint-initdb.d/init.js
+    ports: ["27017:27017"]
     healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      test: ["CMD","mongosh","--eval","db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,166 +36,98 @@ services:
     image: redis:7-alpine
     container_name: pdds-redis
     restart: unless-stopped
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis_data:/data
-    networks:
-      - pdds-network
+    networks: [pdds-network]
+    command: redis-server --requirepass change_me
+    volumes: [redis_data:/data]
+    ports: ["6379:6379"]
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: ["CMD","redis-cli","ping"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # ─── Object Storage (local S3 replacement) ───────────────
-  minio:
-    image: minio/minio:latest
-    container_name: pdds-minio
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: pdds-chromadb
     restart: unless-stopped
-    command: server /data --console-address ":9001"
+    networks: [pdds-network]
+    volumes: [chroma_data:/chroma/chroma]
+    ports: ["8001:8000"]
     environment:
-      MINIO_ROOT_USER: pdds_minio
-      MINIO_ROOT_PASSWORD: pdds_minio_secret
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - minio_data:/data
-    networks:
-      - pdds-network
+      ANONYMIZED_TELEMETRY: "false"
+      ALLOW_RESET: "true"
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # ─── API Gateway ─────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: pdds-ollama
+    restart: unless-stopped
+    networks: [pdds-network]
+    volumes: [ollama_data:/root/.ollama]
+    ports: ["11434:11434"]
+
+  # ── Services ──────────────────────────────────────────────────
   gateway:
     build:
-      context: ./services/gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/docker/gateway/Dockerfile
     container_name: pdds-gateway
     restart: unless-stopped
-    ports:
-      - '3001:3001'
-    environment:
-      NODE_ENV: development
-      PORT: 3001
-      DATABASE_URL: postgresql://pdds_user:pdds_secret@postgres:5432/pdds
-      REDIS_URL: redis://redis:6379
-      DETECTION_SERVICE_URL: http://detection:8001
-      CHAT_SERVICE_URL: http://chat:8002
-      EDUCATION_SERVICE_URL: http://education:3002
-      HISTORY_SERVICE_URL: http://history:3003
-      JWT_SECRET: change_me_in_production
-      JWT_EXPIRES_IN: 7d
+    networks: [pdds-network]
+    env_file: .env
+    ports: ["3000:3000"]
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - pdds-network
+      redis: {condition: service_healthy}
 
-  # ─── Detection Service (ML) ───────────────────────────────
   detection:
     build:
-      context: ./services/detection
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/docker/detection/Dockerfile
     container_name: pdds-detection
     restart: unless-stopped
-    ports:
-      - '8001:8001'
-    environment:
-      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
-      REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: minio:9000
-      MINIO_ACCESS_KEY: pdds_minio
-      MINIO_SECRET_KEY: pdds_minio_secret
-      MODEL_PATH: /app/ml/models/efficientnet_b4_plant.pt
-      CONFIDENCE_THRESHOLD: 0.60
+    networks: [pdds-network]
+    env_file: .env
+    ports: ["8000:8000"]
+    volumes: ["./ml/models:/app/models:ro"]
     depends_on:
-      mongo:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    volumes:
-      - ./ml/models:/app/ml/models
-    networks:
-      - pdds-network
+      mongodb: {condition: service_healthy}
 
-  # ─── Chat Service (RAG) ───────────────────────────────────
   chat:
     build:
-      context: ./services/chat
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/docker/chat/Dockerfile
     container_name: pdds-chat
     restart: unless-stopped
-    ports:
-      - '8002:8002'
-    environment:
-      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
-      REDIS_URL: redis://redis:6379
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      PINECONE_API_KEY: ${PINECONE_API_KEY}
-      PINECONE_INDEX: pdds-knowledge-base
+    networks: [pdds-network]
+    env_file: .env
+    ports: ["8002:8002"]
     depends_on:
-      mongo:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - pdds-network
+      chromadb: {condition: service_healthy}
 
-  # ─── Education Service ────────────────────────────────────
   education:
     build:
-      context: ./services/education
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/docker/education/Dockerfile
     container_name: pdds-education
     restart: unless-stopped
-    ports:
-      - '3002:3002'
-    environment:
-      NODE_ENV: development
-      PORT: 3002
-      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
-      REDIS_URL: redis://redis:6379
+    networks: [pdds-network]
+    env_file: .env
+    ports: ["3002:3002"]
     depends_on:
-      mongo:
-        condition: service_healthy
-    networks:
-      - pdds-network
+      mongodb: {condition: service_healthy}
 
-  # ─── History Service ──────────────────────────────────────
   history:
     build:
-      context: ./services/history
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: infra/docker/history/Dockerfile
     container_name: pdds-history
     restart: unless-stopped
-    ports:
-      - '3003:3003'
-    environment:
-      NODE_ENV: development
-      PORT: 3003
-      MONGO_URL: mongodb://pdds_user:pdds_secret@mongo:27017/pdds?authSource=admin
-      REDIS_URL: redis://redis:6379
+    networks: [pdds-network]
+    env_file: .env
+    ports: ["3003:3003"]
     depends_on:
-      mongo:
-        condition: service_healthy
-    networks:
-      - pdds-network
-
-  # ─── Web Frontend ─────────────────────────────────────────
-  web:
-    build:
-      context: ./apps/web
-      dockerfile: Dockerfile
-    container_name: pdds-web
-    restart: unless-stopped
-    ports:
-      - '3000:3000'
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
-    depends_on:
-      - gateway
-    networks:
-      - pdds-network
+      mongodb: {condition: service_healthy}
