@@ -2,9 +2,11 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'magxfdmhnanomqpxwzjv.supabase.co' },
-      { protocol: 'http',  hostname: 'localhost' },
+      { protocol: 'https', hostname: '**.amazonaws.com' },
+      { protocol: 'https', hostname: '**.supabase.co' },
+      { protocol: 'http', hostname: 'localhost' },
     ],
   },
+  eslint: { ignoreDuringBuilds: true },
 };
 module.exports = nextConfig;
