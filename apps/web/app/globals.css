@@ -3,39 +3,70 @@
 @tailwind utilities;
 
 @layer base {
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    @apply bg-forest-950 text-parchment;
+  * {
+    box-sizing: border-box;
   }
-  .font-display { font-family: 'Playfair Display', Georgia, serif; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0A1A0F;
+    color: #F5F0E8;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-chlorophyll-500 hover:bg-chlorophyll-600 text-forest-950 font-semibold
+    @apply bg-green-500 hover:bg-green-600 font-semibold
            px-6 py-3 rounded-xl transition-all duration-200
-           hover:shadow-lg hover:shadow-chlorophyll-500/25 active:scale-95;
+           hover:shadow-lg active:scale-95;
+    color: #0A1A0F;
   }
   .btn-secondary {
-    @apply border border-forest-700 hover:border-chlorophyll-500 text-parchment
-           px-6 py-3 rounded-xl transition-all duration-200 hover:bg-forest-800;
+    @apply border font-medium
+           px-6 py-3 rounded-xl transition-all duration-200;
+    border-color: #2A5232;
+    color: #F5F0E8;
+  }
+  .btn-secondary:hover {
+    border-color: #2ECC71;
+    background-color: #1C3A22;
   }
   .card {
-    @apply bg-forest-800 border border-forest-700 rounded-2xl p-6;
+    @apply rounded-2xl p-6;
+    background-color: #1C3A22;
+    border: 1px solid #2A5232;
   }
   .severity-mild {
-    @apply bg-amber-500/20 text-amber-400 border border-amber-500/30;
+    background-color: rgba(232, 184, 75, 0.2);
+    color: #F0C040;
+    border: 1px solid rgba(232, 184, 75, 0.3);
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
   }
   .severity-moderate {
-    @apply bg-orange-500/20 text-orange-400 border border-orange-500/30;
+    background-color: rgba(234, 88, 12, 0.2);
+    color: #fb923c;
+    border: 1px solid rgba(234, 88, 12, 0.3);
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
   }
   .severity-critical {
-    @apply bg-red-500/20 text-red-400 border border-red-500/30;
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
   }
   .severity-healthy {
-    @apply bg-chlorophyll-500/20 text-chlorophyll-400 border border-chlorophyll-500/30;
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #5EE87A;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
   }
 }

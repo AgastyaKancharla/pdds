@@ -29,20 +29,32 @@ export default function LoginPage() {
     }
   };
 
+  const inputStyle = {
+    width: '100%',
+    backgroundColor: '#0F2415',
+    border: '1px solid #2A5232',
+    borderRadius: '12px',
+    padding: '12px 16px',
+    color: '#F5F0E8',
+    outline: 'none',
+  };
+
   return (
-    <div className="min-h-screen bg-forest-950 flex items-center justify-center px-6">
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ backgroundColor: '#0A1A0F' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl text-chlorophyll-500 font-bold">🌿 PDDS</Link>
-          <p className="text-mint-300/50 mt-2">Plant Disease Detection System</p>
+          <Link href="/" className="font-display text-3xl font-bold" style={{ color: '#2ECC71' }}>🌿 PDDS</Link>
+          <p className="mt-2" style={{ color: 'rgba(168,230,207,0.5)' }}>Plant Disease Detection System</p>
         </div>
 
         <div className="card">
-          <div className="flex rounded-xl overflow-hidden bg-forest-900 p-1 mb-8">
+          <div className="flex rounded-xl overflow-hidden p-1 mb-8" style={{ backgroundColor: '#0F2415' }}>
             {(['login', 'register'] as const).map((m) => (
               <button key={m} onClick={() => setMode(m)}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-semibold capitalize transition-all
-                  ${mode === m ? 'bg-chlorophyll-500 text-forest-950' : 'text-mint-300/50 hover:text-parchment'}`}>
+                className="flex-1 py-2.5 rounded-lg text-sm font-semibold capitalize transition-all"
+                style={mode === m
+                  ? { backgroundColor: '#2ECC71', color: '#0A1A0F' }
+                  : { color: 'rgba(168,230,207,0.5)' }}>
                 {m === 'login' ? 'Sign In' : 'Register'}
               </button>
             ))}
@@ -52,22 +64,20 @@ export default function LoginPage() {
             {mode === 'register' && (
               <input placeholder="Full name" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full bg-forest-900 border border-forest-700 rounded-xl px-4 py-3 text-parchment
-                           placeholder-mint-300/30 focus:outline-none focus:border-chlorophyll-500/50" />
+                style={inputStyle} />
             )}
             <input type="email" placeholder="Email address" value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full bg-forest-900 border border-forest-700 rounded-xl px-4 py-3 text-parchment
-                         placeholder-mint-300/30 focus:outline-none focus:border-chlorophyll-500/50" />
+              style={inputStyle} />
             <input type="password" placeholder="Password" value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               onKeyDown={(e) => e.key === 'Enter' && handle()}
-              className="w-full bg-forest-900 border border-forest-700 rounded-xl px-4 py-3 text-parchment
-                         placeholder-mint-300/30 focus:outline-none focus:border-chlorophyll-500/50" />
+              style={inputStyle} />
           </div>
 
           <button onClick={handle} disabled={loading}
-            className="btn-primary w-full mt-6 flex items-center justify-center gap-2 disabled:opacity-50">
+            className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
+            style={{ opacity: loading ? 0.5 : 1 }}>
             {loading ? <Loader2 className="animate-spin" size={18} /> : null}
             {mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
