@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,h2,h3 { font-family: 'DM Serif Display', Georgia, serif; }
+  body      { font-family: 'Inter', system-ui, sans-serif; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-leaf text-white px-6 py-3 rounded-xl font-semibold
+           hover:bg-leaf-dark transition-all duration-200
+           active:scale-95 shadow-md hover:shadow-lg;
+  }
+  .btn-secondary {
+    @apply border-2 border-forest text-forest px-6 py-3 rounded-xl font-semibold
+           hover:bg-forest hover:text-white transition-all duration-200 active:scale-95;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-mist-dark p-6;
+  }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(0);    opacity: 1; }
+  100% { transform: translateY(200px); opacity: 0; }
+}
+.scan-line { animation: scan-line 1.5s ease-in-out infinite; }
