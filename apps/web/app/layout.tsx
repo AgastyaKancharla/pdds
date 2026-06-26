@@ -4,7 +4,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'PDDS — Plant Disease Detection System',
-  description: 'AI-powered plant disease detection and treatment recommendations',
+  description: 'AI-powered plant disease detection and treatment recommendations.',
   keywords: ['plant disease', 'agriculture', 'AI', 'crop health', 'farming'],
 };
 
@@ -19,12 +19,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="bg-forest-950 text-parchment font-body antialiased">
+      <body className="bg-forest-950 text-parchment font-body antialiased min-h-screen">
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
-            style: { background: '#1C3A22', color: '#F5F0E8', border: '1px solid #2ECC71' },
+            style: {
+              background: '#1C3A22',
+              color: '#F5F0E8',
+              border: '1px solid #2ECC71',
+            },
           }}
         />
       </body>
