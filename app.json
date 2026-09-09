@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "herefornature",
+    "slug": "herefornature",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "HereForNature uses the camera to scan your crops for diseases.",
+        "NSPhotoLibraryUsageDescription": "HereForNature needs access to your photos so you can pick a crop image from your gallery."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.agastyak.herefornature"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "HereForNature uses the camera to scan your crops for diseases."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "HereForNature needs access to your photos so you can pick a crop image from your gallery."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "3ecafa1a-0189-4625-9d9a-cbc811a9564a"
+      }
+    }
+  }
+}
