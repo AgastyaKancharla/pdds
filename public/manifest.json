@@ -1,0 +1,17 @@
+{
+  "name": "HereForNature - AI Crop Doctor",
+  "short_name": "HereForNature",
+  "description": "AI-powered crop disease diagnosis for Andhra Pradesh farmers. Powered by AgastyaOne.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f2615",
+  "theme_color": "#2D6A4F",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/assets/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["agriculture", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}
