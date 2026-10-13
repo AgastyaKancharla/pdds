@@ -1,4 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+  useMatch,
+} from 'react-router-dom';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ensureAnonymousSession } from './lib/auth';
 import { HomeScreen } from './screens/HomeScreen';
@@ -8,12 +17,22 @@ import { HistoryScreen } from './screens/HistoryScreen';
 import { SAMPLE_CROP_IMAGE } from './lib/mockData';
 import './App.css';
 
-type Screen = 'home' | 'scan' | 'result' | 'history';
+/**
+ * A scan result is carried in router location state rather than in the URL. It holds the
+ * farmer's own photo (a base64 data URI) and, for a live scan, an AI hypothesis — neither
+ * belongs in a shareable link, and a URL could not hold them anyway. The practical
+ * consequence is that /result is not deep-linkable: opening it cold (a bookmark, a reload
+ * after the tab was discarded, a pasted link) has nothing to show, and is redirected home
+ * rather than rendering an empty or misleading result screen.
+ */
+interface ResultRouteState {
+  scanResult?: ScanResultData;
+}
 
-function MainApp() {
+function AppFrame() {
   const { t } = useLanguage();
-  const [screen, setScreen] = useState<Screen>('home');
-  const [scanResult, setScanResult] = useState<ScanResultData | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     ensureAnonymousSession().catch((err) => {
@@ -21,17 +40,13 @@ function MainApp() {
     });
   }, []);
 
-  const handleStartScan = () => {
-    setScreen('scan');
-  };
-
-  const handleScanComplete = (data: ScanResultData) => {
-    setScanResult(data);
-    setScreen('result');
-  };
+  const goHome = () => navigate('/');
+  const goScan = () => navigate('/scan');
+  const showResult = (data: ScanResultData) =>
+    navigate('/result', { state: { scanResult: data } satisfies ResultRouteState });
 
   const handleSelectSample = () => {
-    setScanResult({
+    showResult({
       imageUri: SAMPLE_CROP_IMAGE,
       detected: true,
       cropId: 'crop-rice',
@@ -40,19 +55,21 @@ function MainApp() {
       cropNameTe: 'వరి',
       isDemoSample: true,
     });
-    setScreen('result');
   };
 
-  const handleSelectHistoryScan = (data: ScanResultData) => {
-    setScanResult(data);
-    setScreen('result');
-  };
+  // Nav highlighting is derived from the URL, so it stays correct when the farmer uses the
+  // device's own back/forward gestures instead of the in-app buttons.
+  const onHome = !!useMatch('/');
+  const onScan = !!useMatch('/scan');
+  const onHistory = !!useMatch('/history');
+
+  const scanResult = (location.state as ResultRouteState | null)?.scanResult;
 
   return (
     <div className="app-shell">
       {/* Top Header */}
       <header className="app-header">
-        <div className="brand-wrap" onClick={() => setScreen('home')}>
+        <div className="brand-wrap" onClick={goHome}>
           <img src="/assets/icon.png" alt="Logo" className="brand-icon" />
           <span className="brand-name">{t('appName')}</span>
         </div>
@@ -60,54 +77,55 @@ function MainApp() {
 
       {/* Main Screen Body */}
       <main className="app-main">
-        {screen === 'home' && <HomeScreen onStartScan={handleStartScan} />}
+        <Routes>
+          <Route path="/" element={<HomeScreen onStartScan={goScan} />} />
 
-        {screen === 'scan' && (
-          <ScanScreen
-            onScanComplete={handleScanComplete}
-            onBack={() => setScreen('home')}
-          />
-        )}
+          <Route path="/scan" element={<ScanScreen onScanComplete={showResult} onBack={goHome} />} />
 
-        {screen === 'result' && scanResult && (
-          <ResultScreen
-            scanData={scanResult}
-            onScanAnother={() => setScreen('scan')}
-            onHome={() => setScreen('home')}
-            onSelectSample={handleSelectSample}
+          <Route
+            path="/result"
+            element={
+              scanResult ? (
+                <ResultScreen
+                  scanData={scanResult}
+                  onScanAnother={goScan}
+                  onHome={goHome}
+                  onSelectSample={handleSelectSample}
+                />
+              ) : (
+                // No result in hand (cold load, reload, or pasted link) — send the farmer home
+                // rather than showing a blank or stale-looking result screen.
+                <Navigate to="/" replace />
+              )
+            }
           />
-        )}
 
-        {screen === 'history' && (
-          <HistoryScreen
-            onSelectScan={handleSelectHistoryScan}
-            onStartScan={handleStartScan}
+          <Route
+            path="/history"
+            element={<HistoryScreen onSelectScan={showResult} onStartScan={goScan} />}
           />
-        )}
+
+          {/* Unknown URL: go home instead of rendering nothing. */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       {/* Bottom Navigation Bar */}
       <nav className="app-nav">
-        <button
-          type="button"
-          className={`nav-item ${screen === 'home' ? 'active' : ''}`}
-          onClick={() => setScreen('home')}>
+        <button type="button" className={`nav-item ${onHome ? 'active' : ''}`} onClick={goHome}>
           <span className="nav-icon">🏠</span>
           <span className="nav-label">{t('home')}</span>
         </button>
 
-        <button
-          type="button"
-          className={`nav-item ${screen === 'scan' ? 'active' : ''}`}
-          onClick={() => setScreen('scan')}>
+        <button type="button" className={`nav-item ${onScan ? 'active' : ''}`} onClick={goScan}>
           <span className="nav-icon">📷</span>
           <span className="nav-label">{t('scanNow')}</span>
         </button>
 
         <button
           type="button"
-          className={`nav-item ${screen === 'history' ? 'active' : ''}`}
-          onClick={() => setScreen('history')}>
+          className={`nav-item ${onHistory ? 'active' : ''}`}
+          onClick={() => navigate('/history')}>
           <span className="nav-icon">📜</span>
           <span className="nav-label">{t('history')}</span>
         </button>
@@ -119,7 +137,9 @@ function MainApp() {
 export default function App() {
   return (
     <LanguageProvider>
-      <MainApp />
+      <BrowserRouter>
+        <AppFrame />
+      </BrowserRouter>
     </LanguageProvider>
   );
 }
