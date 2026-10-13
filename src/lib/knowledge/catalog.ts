@@ -23,7 +23,15 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Cereal / Staple',
       apMajorDistricts: ['East Godavari', 'West Godavari', 'Krishna', 'Guntur', 'Nellore'],
       growingSeasons: ['Kharif (Sarva)', 'Rabi (Dalva)'],
-      commonDiseaseIds: ['disease-rice-blast'],
+      commonDiseaseIds: [
+        'disease-rice-blast',
+        'disease-rice-blb',
+        'disease-rice-sheathblight',
+        'disease-rice-brownspot',
+        'disease-rice-stemborer',
+        'disease-rice-gallmidge',
+        'disease-rice-zincdeficiency',
+      ],
     },
     'crop-chilli': {
       id: 'crop-chilli',
@@ -122,6 +130,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       cropId: 'crop-rice',
       name_en: 'Rice Blast',
       name_te: 'అగ్గి తెగులు',
+      conditionCategory: 'disease',
       pathogenOrVector_en: 'Fungus: Magnaporthe oryzae (Pyricularia oryzae)',
       pathogenOrVector_te: 'శిలీంద్రం: మాగ్నాపోర్తే ఒరైజే (పైరికులారియా ఒరైజే)',
       urgencyLevel: 'High',
@@ -201,21 +210,57 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Bio-fungicide Pseudomonas fluorescens and Neem Seed Kernel Extract (NSKE) sprays during early morning or late afternoon hours are commonly used organic practices against rice blast, but a specific dose is suppressed — Phase 5.4 evidence verification could not confirm an exact figure against a primary reference accessible from this tool. Chemical fungicide classes are also commonly marketed for rice blast — Tricyclazole 75% WP (typically discussed for use once leaf lesions exceed 2-5% of canopy area) and Isoprothiolane 40% EC (discussed as a rotational option for neck blast at boot leaf stage) — but their exact doses are likewise suppressed: secondary sources gave conflicting Tricyclazole figures (roughly 120-450 g product per acre/hectare depending on source) and no verifiable dose at all for Isoprothiolane, with no primary CIBRC label accessible from this tool to confirm either. Consult local RBK for current guidance before using any organic or chemical option.',
+            'Bio-fungicide Pseudomonas fluorescens and Neem Seed Kernel Extract (NSKE) sprays during early morning or late afternoon hours are commonly used organic practices against rice blast, but a specific dose is suppressed — evidence verification could not confirm an exact figure for either against a primary reference accessible from this tool.',
           instruction_te:
-            'ఉదయం లేదా సాయంత్రం వేళల్లో సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా వేప గింజల కషాయం (NSKE) పిచికారీ సాధారణ పద్ధతి, కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — ఈ సాధనం ద్వారా అధికారిక మూలాన్ని పరిశీలించలేకపోయాము. అగ్గి తెగులు కోసం సాధారణంగా అమ్మబడే రసాయన శిలీంద్రనాశిని వర్గాలలో ట్రైసైక్లాజోల్ 75% WP (ఆకులపై 2-5% మచ్చలు గమనించినప్పుడు వాడేది) మరియు ఐసోప్రోథియోలేన్ 40% EC (వెన్ను విరుపు నివారణకు ప్రత్యామ్నాయం) ఉన్నాయి; రెండింటి ఖచ్చితమైన మోతాదులు అలాగే నిలిపివేయబడ్డాయి — వివిధ మూలాల్లో ట్రైసైక్లాజోల్‌కు విభిన్న మోతాదులు కనిపించాయి, ఐసోప్రోథియోలేన్‌కు ఏ ధృవీకరించిన మోతాదూ కనుగొనలేకపోయాము, అధికారిక CIBRC లేబుల్‌ను కూడా పరిశీలించలేకపోయాము. ఏదైనా సేంద్రీయ లేదా రసాయన ఎంపిక వాడే ముందు ప్రస్తుత సిఫార్సు కోసం RBK ని సంప్రదించండి.',
-          activeIngredient_en:
-            'Pseudomonas fluorescens / Azadirachtin (organic, dose suppressed); Tricyclazole 75% WP / Isoprothiolane 40% EC (chemical fungicide classes, doses suppressed — no primary CIBRC label accessible)',
-          activeIngredient_te:
-            'సూడోమోనాస్ ఫ్లోరోసెన్స్ / అజాడిరక్టిన్ (సేంద్రీయ, మోతాదు నిలిపివేయబడింది); ట్రైసైక్లాజోల్ 75% WP / ఐసోప్రోథియోలేన్ 40% EC (రసాయన వర్గాలు, మోతాదులు నిలిపివేయబడ్డాయి)',
+            'ఉదయం లేదా సాయంత్రం వేళల్లో సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా వేప గింజల కషాయం (NSKE) పిచికారీ సాధారణ సేంద్రియ పద్ధతి, కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — ఈ సాధనం ద్వారా ఈ రెండింటికీ అధికారిక మూలాన్ని పరిశీలించలేకపోయాము.',
+          activeIngredient_en: 'Pseudomonas fluorescens / Azadirachtin (organic, dose suppressed)',
+          activeIngredient_te: 'సూడోమోనాస్ ఫ్లోరోసెన్స్ / అజాడిరక్టిన్ (సేంద్రియ, మోతాదు నిలిపివేయబడింది)',
           safetyCaution_en:
-            'Eco-friendly biocontrol; avoid mixing with synthetic chemical bactericides. If a chemical fungicide dose is later confirmed: wear protective gloves and mask during spray preparation, do not spray against wind, and wash hands and spray equipment thoroughly afterward. Follow the pre-harvest interval (PHI) stated on the approved product container label; verify with local RBK.',
+            'Eco-friendly biocontrol; avoid mixing with synthetic chemical bactericides, which can kill the biological agent.',
           safetyCaution_te:
-            'పర్యావరణ హితమైన బయో ఏజెంట్; రసాయన మందులతో కలపవద్దు. రసాయన శిలీంద్రనాశిని మోతాదు ధృవీకరించిన తర్వాత వాడితే: మందు కలిపేటప్పుడు మాస్క్, చేతి తొడుగులు ధరించండి, గాలికి ఎదురుగా పిచికారీ చేయవద్దు, పని ముగిసిన తర్వాత చేతులను, పరికరాలను శుభ్రం చేసుకోండి. ఉత్పత్తి డబ్బా లేబుల్‌పై పేర్కొన్న కోత ముందస్తు నిరీక్షణ వ్యవధిని (PHI) పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
+            'పర్యావరణ హితమైన జీవ నియంత్రణ; రసాయన బ్యాక్టీరియా నాశక మందులతో కలపవద్దు, అవి జీవ కారకాన్ని చంపేస్తాయి.',
           regulatoryNotice_en:
-            'Statutory Warning: Read product label before use. Rotate chemical classes to prevent fungal resistance development once a product is confirmed. Actionable chemical doses are suppressed pending primary CIBRC label verification (Phase 5.4 — direct access to ppqs.gov.in was blocked in the verifying environment; this is a tooling limitation, not a finding that either dose is wrong). Verify dosage with Village Agriculture Assistant / Rythu Bharosa Kendra (RBK).',
+            'Biopesticides are regulated under the Insecticides Act, 1968 and require proper dosing. Confirm the rate with your Village Agriculture Assistant / Rythu Bharosa Kendra (RBK).',
           regulatoryNotice_te:
-            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు లేబుల్ చదవండి. ఉత్పత్తి ధృవీకరించిన తర్వాత శిలీంద్రాలకు రోగనిరోధకత రాకుండా మందుల వర్గాలను మారుస్తూ వాడండి. CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు రసాయన మోతాదులు నిలిపివేయబడ్డాయి. రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ అధికారితో మోతాదును ధృవీకరించుకోండి.',
+            'జీవ పురుగు మందులు కూడా కీటక నాశక చట్టం, 1968 పరిధిలోనే ఉంటాయి, సరైన మోతాదు అవసరం. మోతాదును గ్రామ వ్యవసాయ సహాయకుడు / రైతు భరోసా కేంద్రం (RBK) వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          id: 't-rice-blast-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Tricyclazole 75% WP is registered for rice blast at 300-400 g of formulation per hectare in 500 litres of water, with a 30-day waiting period before harvest. It is typically used once leaf lesions exceed 2-5% of canopy area.',
+          instruction_te:
+            'వరిలో అగ్గి తెగులుకు ట్రైసైక్లాజోల్ 75% WP హెక్టారుకు 300-400 గ్రా. మందును 500 లీటర్ల నీటిలో కలిపి పిచికారీ చేయడానికి నమోదై ఉంది; కోతకు ముందు నిరీక్షణ వ్యవధి 30 రోజులు. సాధారణంగా ఆకులపై మచ్చలు 2-5% దాటినప్పుడు వాడతారు.',
+          activeIngredient_en: 'Tricyclazole 75% WP (225-300 g a.i./ha)',
+          activeIngredient_te: 'ట్రైసైక్లాజోల్ 75% WP (హెక్టారుకు 225-300 గ్రా. క్రియాశీల పదార్థం)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards. Observe the full 30-day pre-harvest interval.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి. కోతకు ముందు 30 రోజుల నిరీక్షణ వ్యవధిని పూర్తిగా పాటించండి.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / blast entry. This figure replaces an earlier suppressed range: secondary sources had given conflicting figures of roughly 120-450 g per acre or hectare, and the primary registry resolves it at 300-400 g formulation per hectare. Verify against your own container label before mixing.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / అగ్గి తెగులు వరుస నుండి ధృవీకరించబడింది. ఇది గతంలో నిలిపివేసిన మోతాదు స్థానంలో వచ్చింది: ఇతర మూలాలు ఎకరాకు లేదా హెక్టారుకు సుమారు 120-450 గ్రా. అని విభిన్నంగా చెప్పాయి, అధికారిక పట్టిక దీన్ని హెక్టారుకు 300-400 గ్రా. అని తేల్చింది. కలపడానికి ముందు మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకోండి.',
+        },
+        {
+          id: 't-rice-blast-chem-2',
+          stepNumber: 3,
+          category: 'chemical',
+          instruction_en:
+            'Isoprothiolane 40% EC is registered for rice blast at 750 ml of formulation per hectare in 500-1000 litres of water, and is commonly used as a rotational option for neck blast at the boot leaf stage. Its waiting period is 60 days.',
+          instruction_te:
+            'వరిలో అగ్గి తెగులుకు ఐసోప్రోథియోలేన్ 40% EC హెక్టారుకు 750 మి.లీ. మందును 500-1000 లీటర్ల నీటిలో కలిపి పిచికారీ చేయడానికి నమోదై ఉంది; చిరుపొట్ట దశలో వెన్ను విరుపుకు ప్రత్యామ్నాయంగా మార్చి వాడటం సాధారణం. దీని నిరీక్షణ వ్యవధి 60 రోజులు.',
+          activeIngredient_en: 'Isoprothiolane 40% EC (300 g a.i./ha)',
+          activeIngredient_te: 'ఐసోప్రోథియోలేన్ 40% EC (హెక్టారుకు 300 గ్రా. క్రియాశీల పదార్థం)',
+          safetyCaution_en:
+            'The 60-day waiting period is long — this product is unsuitable if harvest is less than two months away. Choose Tricyclazole or consult your RBK in that case.',
+          safetyCaution_te:
+            '60 రోజుల నిరీక్షణ వ్యవధి చాలా ఎక్కువ — కోతకు రెండు నెలల కంటే తక్కువ సమయం ఉంటే ఈ మందు పనికిరాదు. అలాంటప్పుడు ట్రైసైక్లాజోల్ ఎంచుకోండి లేదా RBK ను సంప్రదించండి.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / blast entry. Rotate chemical classes between sprays to prevent fungal resistance developing.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / అగ్గి తెగులు వరుస నుండి ధృవీకరించబడింది. శిలీంద్రాలకు నిరోధక శక్తి రాకుండా వేర్వేరు రకాల మందులను మార్చి వాడండి.',
         },
         {
           id: 't-rice-blast-prev-1',
@@ -233,10 +278,77 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'If leaf blast expands rapidly to more than 10% of field hills, or if lesions appear at the panicle neck junction (neck blast) at boot leaf stage, immediately alert the Village Agriculture Assistant (VAA) at your Rythu Bharosa Kendra (RBK).',
       escalationThreshold_te:
         'పొలంలో 10% కంటే ఎక్కువ దుబ్బులకు తెగులు వ్యాపించినా లేదా వెన్ను మెడ వద్ద నల్లటి మచ్చలు కనిపిస్తే, వెంటనే మీ గ్రామ రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి.',
-      chemicalTabDetail_en:
-        'Chemical fungicide classes commonly marketed for rice blast include Tricyclazole 75% WP (discussed for use once leaf lesions exceed 2-5% of canopy area) and Isoprothiolane 40% EC (discussed as a rotational option for neck blast at boot leaf stage). A specific dose for either is suppressed: secondary sources gave conflicting Tricyclazole figures (roughly 120-450 g product per acre/hectare depending on source) and no verifiable dose at all for Isoprothiolane, with no primary CIBRC label accessible from this tool to confirm either. See the Organic tab for the full safety caution and regulatory guidance that applies to any eventual chemical use, and consult your local RBK before spraying anything.',
-      chemicalTabDetail_te:
-        'అగ్గి తెగులు కోసం సాధారణంగా అమ్మబడే రసాయన శిలీంద్రనాశిని వర్గాలలో ట్రైసైక్లాజోల్ 75% WP (ఆకులపై 2-5% మచ్చలు గమనించినప్పుడు వాడేది) మరియు ఐసోప్రోథియోలేన్ 40% EC (వెన్ను విరుపు నివారణకు ప్రత్యామ్నాయం) ఉన్నాయి. రెండింటి ఖచ్చితమైన మోతాదులు నిలిపివేయబడ్డాయి — వివిధ మూలాల్లో ట్రైసైక్లాజోల్‌కు విభిన్న మోతాదులు కనిపించాయి, ఐసోప్రోథియోలేన్‌కు ఏ ధృవీకరించిన మోతాదూ కనుగొనలేకపోయాము, అధికారిక CIBRC లేబుల్‌ను కూడా పరిశీలించలేకపోయాము. పూర్తి భద్రతా జాగ్రత్తలు మరియు నియంత్రణ మార్గదర్శకాల కోసం ఆర్గానిక్ టాబ్ చూడండి; పిచికారీకి ముందు స్థానిక RBK ని సంప్రదించండి.',
+      captureGuidance: {
+        instruction_en:
+          'Photograph an affected leaf held flat against a plain background, close enough that the pointed ends and the pale centre of individual lesions are sharp. If panicles have emerged, also photograph the neck where each panicle joins the stem.',
+        instruction_te:
+          'దెబ్బతిన్న ఆకును సాదా నేపథ్యంపై చదునుగా పట్టుకుని, మచ్చల సూదిగా ఉన్న కొనలు, లోపలి పాలిపోయిన భాగం స్పష్టంగా కనిపించేంత దగ్గరగా ఫోటో తీయండి. వెన్నులు వచ్చి ఉంటే, వెన్ను కాండానికి కలిసే మెడ భాగాన్ని కూడా ఫోటో తీయండి.',
+        rationale_en:
+          'Lesion shape is what separates Blast from Brown Spot, and neck blast is far more damaging than leaf blast — but the neck is not visible in a photograph of the canopy.',
+        rationale_te:
+          'మచ్చ ఆకారమే అగ్గి తెగులును గోధుమ రంగు మచ్చల తెగులు నుండి వేరు చేస్తుంది; వెన్ను విరుపు ఆకు మచ్చల కంటే చాలా ఎక్కువ నష్టం కలిగిస్తుంది — కానీ పై నుండి తీసిన ఫోటోలో మెడ కనిపించదు.',
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-blast-q-shape',
+          question_en:
+            'Are the lesions spindle or diamond shaped with pointed ends and a pale ash-grey centre, rather than round with a uniform brown colour?',
+          question_te:
+            'మచ్చలు ఒకే గోధుమ రంగుతో గుండ్రంగా కాకుండా, రెండు కొనలు సూదిగా ఉండే కంటి ఆకారంలో, మధ్యలో పాలిపోయిన బూడిద రంగుతో ఉన్నాయా?',
+          ifYes_en: 'Pointed lesions with grey centres are characteristic of Blast.',
+          ifYes_te: 'సూదిగా ఉన్న కొనలు, బూడిద రంగు మధ్య భాగం అగ్గి తెగులు ప్రత్యేక లక్షణం.',
+          ifNo_en: 'Round, evenly brown spots point to Brown Spot, which signals a soil fertility problem instead.',
+          ifNo_te:
+            'గుండ్రని, ఒకే గోధుమ రంగు మచ్చలు గోధుమ రంగు మచ్చల తెగులును సూచిస్తాయి; అది నేల సార సమస్యకు సంకేతం.',
+          pointsTowardIds: ['disease-rice-blast'],
+          pointsAwayIds: ['disease-rice-brownspot'],
+        },
+        {
+          id: 'rice-blast-q-neck',
+          question_en:
+            'If panicles have emerged and some are white and empty: is there a blackened, shrivelled band at the neck of the panicle?',
+          question_te:
+            'వెన్నులు వచ్చి కొన్ని తెల్లగా, ఖాళీగా ఉంటే: వెన్ను మెడ దగ్గర నల్లబడి ముడుచుకున్న పట్టీ ఉందా?',
+          ifYes_en: 'A blackened neck is neck blast — the most damaging form, and it needs urgent attention.',
+          ifYes_te:
+            'మెడ నల్లబడితే అది వెన్ను విరుపు — అత్యంత నష్టదాయకమైన రూపం, వెంటనే దృష్టి పెట్టాలి.',
+          ifNo_en:
+            'A clean neck with a bore hole in the stem means stem borer instead, which needs an insecticide, not a fungicide.',
+          ifNo_te:
+            'మెడ శుభ్రంగా ఉండి కాండంలో రంధ్రం ఉంటే అది కాండం తొలుచు పురుగు; దానికి శిలీంద్రనాశకం కాదు, పురుగు మందు కావాలి.',
+          pointsTowardIds: ['disease-rice-blast'],
+          pointsAwayIds: ['disease-rice-stemborer'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Lesions on under 2% of canopy area, confined to leaves, with no neck involvement.',
+          threshold_te: 'పందిరి విస్తీర్ణంలో 2% లోపు మచ్చలు, ఆకులకే పరిమితం, మెడకు సోకలేదు.',
+          action_en:
+            'Below the usual spray threshold. Stop further nitrogen, keep a shallow water level, and re-inspect in three to four days.',
+          action_te:
+            'సాధారణ పిచికారీ స్థాయి కంటే తక్కువ. నత్రజని వేయడం ఆపి, పలుచని నీటి మట్టాన్ని ఉంచి, మూడు నాలుగు రోజుల తరువాత మళ్లీ పరిశీలించండి.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: 'Lesions on 2-10% of canopy area and increasing day on day.',
+          threshold_te: 'పందిరి విస్తీర్ణంలో 2-10% మచ్చలు, రోజురోజుకు పెరుగుతున్నాయి.',
+          action_en:
+            'This is the usual threshold at which a registered fungicide spray is justified. Choose the product by how near harvest is, since the two options differ by 30 days of waiting period.',
+          action_te:
+            'నమోదైన శిలీంద్రనాశకం పిచికారీ సమంజసం అయ్యే సాధారణ స్థాయి ఇదే. రెండు ఎంపికల నిరీక్షణ వ్యవధిలో 30 రోజుల తేడా ఉంది కాబట్టి కోత ఎంత దగ్గరలో ఉందో చూసి మందును ఎంచుకోండి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Over 10% of hills affected, or any blackening at the panicle neck.',
+          threshold_te: '10% పైగా దుబ్బులు దెబ్బతినడం, లేదా వెన్ను మెడ దగ్గర ఎక్కడైనా నల్లబడటం.',
+          action_en:
+            'Alert your RBK the same day. Neck blast directly destroys grain filling and the window for useful action is short.',
+          action_te:
+            'అదే రోజు RBK కు తెలియజేయండి. వెన్ను విరుపు గింజ నిండటాన్ని నేరుగా నాశనం చేస్తుంది, ఉపయోగకరమైన చర్యకు సమయం చాలా తక్కువ.',
+        },
+      ],
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
@@ -251,14 +363,1528 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           url: 'https://icar-nrri.gov.in',
         },
         {
-          title: 'Major Uses of Pesticides (Fungicides) — Approved Rice Blast Formulations (Tricyclazole & Isoprothiolane)',
+          title: 'Major Uses of Pesticides (Fungicides) — Registered under the Insecticides Act, 1968, as on 31.03.2024',
           organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
-          reviewDate: '2026-03-31',
-          url: 'https://ppqs.gov.in',
+          reviewDate: '2026-10-13',
+          url: 'https://ppqs.gov.in/sites/default/files/fungicides_31.03.2024.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries, target "Blast" — Tricyclazole 75% WP (225-300 g a.i./ha, 300-400 g formulation/ha, 500 L dilution, 30-day waiting period) and Isoprothiolane 40% EC (300 g a.i./ha, 750 ml formulation/ha, 500-1000 L dilution, 60-day waiting period).',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-blb': {
+      id: 'disease-rice-blb',
+      cropId: 'crop-rice',
+      name_en: 'Bacterial Leaf Blight',
+      name_te: 'ఎండాకు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Bacterium: Xanthomonas oryzae pv. oryzae',
+      pathogenOrVector_te: 'బ్యాక్టీరియా: జాంథోమోనాస్ ఒరైజే పి.వి. ఒరైజే',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Water-soaked pale stripes begin at the leaf tip or along one margin and extend downwards.',
+        'Stripes turn straw-yellow then greyish-white, with a wavy or rippled edge rather than a sharp border.',
+        'Leaves dry from the margin inwards and roll up; whole leaves may die back.',
+        'In severe early infection (kresek), young transplanted seedlings wilt and die outright.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు కొన నుండి లేదా ఒక అంచు నుండి నీటిలో నానినట్లు పాలిపోయిన చారలు మొదలై కిందికి వ్యాపిస్తాయి.',
+        'చారలు గడ్డి పసుపు రంగులోకి, తరువాత బూడిద తెలుపు రంగులోకి మారి, అంచులు అలల వలె వంకరగా ఉంటాయి.',
+        'ఆకులు అంచుల నుండి లోపలికి ఎండి ముడుచుకుంటాయి; ఆకు మొత్తం ఎండిపోవచ్చు.',
+        'నాటిన కొత్తలో తీవ్రంగా సోకితే (క్రెసెక్) లేత మొక్కలు వాడి చనిపోతాయి.',
+      ],
+      affectedParts: ['Leaves', 'Leaf Sheath', 'Whole Seedling'],
+      similarConditions: [
+        {
+          id: 'rice-blb-vs-brownspot',
+          name_en: 'Brown Spot (Bipolaris oryzae / Fungal)',
+          name_te: 'గోధుమ రంగు మచ్చల తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Brown Spot produces separate oval brown spots scattered across the leaf blade. Bacterial Leaf Blight produces continuous stripes running down from the tip or margin, never isolated round spots.',
+          differentiatingFactors_te:
+            'గోధుమ రంగు మచ్చల తెగులులో ఆకు అంతటా విడివిడిగా గుండ్రని గోధుమ మచ్చలు ఉంటాయి. ఎండాకు తెగులులో ఆకు కొన లేదా అంచు నుండి పొడవైన చారలు ఉంటాయి, విడి మచ్చలు ఉండవు.',
+        },
+        {
+          id: 'rice-blb-vs-tipburn',
+          name_en: 'Salinity or Fertiliser Tip Burn (Abiotic)',
+          name_te: 'చౌడు లేదా ఎరువుల వల్ల కొన మాడిపోవడం',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Abiotic tip burn affects nearly every leaf in a patch uniformly and has a straight, sharply defined edge. Bacterial blight spreads leaf by leaf with an irregular wavy margin, and a cut lesion releases bacterial ooze.',
+          differentiatingFactors_te:
+            'చౌడు లేదా ఎరువుల వల్ల వచ్చే మాడు ఒక ప్రాంతంలోని అన్ని ఆకులపై ఒకేలా, నేరుగా ఉంటుంది. ఎండాకు తెగులు ఆకు నుండి ఆకుకు వ్యాపిస్తూ వంకర అంచుతో ఉంటుంది, కోసిన మచ్చ నుండి బ్యాక్టీరియా చీము కారుతుంది.',
+        },
+        {
+          id: 'rice-blb-vs-sheathblight',
+          name_en: 'Sheath Blight (Rhizoctonia solani / Fungal)',
+          name_te: 'పాము పొడ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Sheath Blight starts on the leaf sheath near the water line as oval greenish-grey blotches with a brown border, then climbs. Bacterial blight starts on the leaf blade at the tip or margin and moves down.',
+          differentiatingFactors_te:
+            'పాము పొడ తెగులు నీటి మట్టం దగ్గర ఆకు తొడుగుపై గోధుమ అంచుతో బూడిద-పచ్చ మచ్చలుగా మొదలై పైకి ఎక్కుతుంది. ఎండాకు తెగులు ఆకు కొన లేదా అంచున మొదలై కిందికి వస్తుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Heavy rain, strong wind and storms that wound leaves and splash bacteria between plants.',
+        'Continuously flooded fields with standing water above 5 cm, and flood water moving between plots.',
+        'Excessive nitrogen top-dressing, which produces soft, dense, highly susceptible foliage.',
+        'Clipping of seedling leaf tips at transplanting, which creates direct entry wounds.',
+      ],
+      environmentalRiskFactors_te: [
+        'భారీ వర్షాలు, గాలి దుమారాల వల్ల ఆకులు గాయపడి బ్యాక్టీరియా ఒక మొక్క నుండి మరొక మొక్కకు వ్యాపిస్తుంది.',
+        'ఎప్పుడూ 5 సెం.మీ. పైన నీరు నిల్వ ఉండటం, పొలాల మధ్య నీరు ప్రవహించడం.',
+        'నత్రజని ఎరువులు మోతాదుకు మించి వేయడం వల్ల ఆకులు మెత్తబడి తెగులు సులభంగా సోకుతుంది.',
+        'నాటేటప్పుడు నారు కొనలు కత్తిరించడం వల్ల గాయాల ద్వారా బ్యాక్టీరియా లోపలికి చేరుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Sow tolerant varieties where bacterial blight is a recurring problem in your village, and use certified disease-free seed rather than saved grain from an affected field.',
+          practice_te:
+            'మీ గ్రామంలో ఎండాకు తెగులు ప్రతి ఏటా వస్తుంటే తట్టుకునే రకాలను ఎంచుకోండి; తెగులు సోకిన పొలం నుండి తీసిన విత్తనం కాకుండా ధృవీకరించిన ఆరోగ్యకరమైన విత్తనం వాడండి.',
+          targetTiming: 'Before sowing / nursery stage',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Do not clip seedling leaf tips while transplanting. Every cut is an open door for the bacterium.',
+          practice_te:
+            'నాటేటప్పుడు నారు ఆకుల కొనలు కత్తిరించవద్దు. ప్రతి కోత బ్యాక్టీరియా లోపలికి చేరే దారి అవుతుంది.',
+          targetTiming: 'At transplanting',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Drain the field and keep it at shallow moisture for a few days once symptoms appear, instead of holding deep standing water that carries bacteria across the plot.',
+          practice_te:
+            'లక్షణాలు కనిపించిన వెంటనే పొలంలోని నీటిని తీసివేసి కొన్ని రోజులు తేమ మాత్రమే ఉంచండి; నీరు నిల్వ ఉంటే బ్యాక్టీరియా పొలమంతా వ్యాపిస్తుంది.',
+          targetTiming: 'At first appearance of stripes',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'Stop or delay further nitrogen top-dressing while the disease is active, and split the remaining nitrogen into smaller later doses.',
+          practice_te:
+            'తెగులు ఉధృతంగా ఉన్నప్పుడు నత్రజని ఎరువులు వేయడం ఆపండి; మిగిలిన మోతాదును తరువాత చిన్న చిన్న భాగాలుగా వేయండి.',
+          targetTiming: 'During active infection',
+        },
+        {
+          stepNumber: 5,
+          practice_en:
+            'Plough in or remove infected stubble and bunds weeds after harvest, as the bacterium survives on crop residue and grassy weed hosts between seasons.',
+          practice_te:
+            'కోత తరువాత తెగులు సోకిన మోళ్లను, గట్ల మీది గడ్డిని తీసివేయండి లేదా దున్నేయండి; బ్యాక్టీరియా వీటిపై బతికి మరుసటి పంటకు సోకుతుంది.',
+          targetTiming: 'Post-harvest',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-blb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Drain standing water and withhold further nitrogen as the first response. For bacterial blight these two cultural steps act faster than any spray, because the bacterium spreads through water movement and thrives on soft nitrogen-rich foliage.',
+          instruction_te:
+            'మొదటి చర్యగా పొలంలోని నీటిని తీసివేసి, నత్రజని ఎరువులు ఆపండి. ఎండాకు తెగులులో ఈ రెండు పద్ధతులు ఏ పిచికారీ కంటే వేగంగా పనిచేస్తాయి, ఎందుకంటే బ్యాక్టీరియా నీటి ద్వారా వ్యాపిస్తుంది మరియు నత్రజని ఎక్కువైన మెత్తని ఆకులపై వృద్ధి చెందుతుంది.',
+          safetyCaution_en:
+            'Do not let drained water run directly into a neighbouring healthy paddy plot — it carries the bacterium.',
+          safetyCaution_te:
+            'తీసిన నీరు పక్కనున్న ఆరోగ్యకరమైన పొలంలోకి నేరుగా పారనివ్వవద్దు — ఆ నీటిలో బ్యాక్టీరియా ఉంటుంది.',
+        },
+        {
+          id: 'rice-blb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Copper Sulphate Pentahydrate 6% SC is registered for bacterial leaf blight in rice at 1000 ml of formulation per hectare in 500 litres of water. The registered waiting period before harvest is 21 days.',
+          instruction_te:
+            'వరిలో ఎండాకు తెగులుకు కాపర్ సల్ఫేట్ పెంటాహైడ్రేట్ 6% SC హెక్టారుకు 1000 మి.లీ. మందును 500 లీటర్ల నీటిలో కలిపి పిచికారీ చేయడానికి నమోదై ఉంది. కోతకు ముందు నిరీక్షణ వ్యవధి 21 రోజులు.',
+          activeIngredient_en: 'Copper Sulphate Pentahydrate 6% SC (60 g a.i./ha)',
+          activeIngredient_te: 'కాపర్ సల్ఫేట్ పెంటాహైడ్రేట్ 6% SC (హెక్టారుకు 60 గ్రా. క్రియాశీల పదార్థం)',
+          safetyCaution_en:
+            'Wear gloves and a mask while mixing. Observe the full 21-day pre-harvest interval. Copper can scorch foliage if sprayed in peak afternoon heat — spray in the early morning or late afternoon.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి. కోతకు ముందు 21 రోజుల నిరీక్షణ వ్యవధిని తప్పక పాటించండి. మధ్యాహ్నం ఎండలో పిచికారీ చేస్తే రాగి మందు ఆకులను మాడ్చవచ్చు — ఉదయం లేదా సాయంత్రం మాత్రమే పిచికారీ చేయండి.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / bacterial leaf blight entry. Verify the figure on your own product container label before mixing, and confirm with your Rythu Bharosa Kendra (RBK).',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / ఎండాకు తెగులు వరుస నుండి ధృవీకరించబడింది. కలపడానికి ముందు మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకోండి, రైతు భరోసా కేంద్రం (RBK) వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          id: 'rice-blb-chem-2',
+          stepNumber: 3,
+          category: 'chemical',
+          instruction_en:
+            'Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP (commonly called streptocycline) is registered for rice bacterial leaf blight as a 100-150 ppm spray at the early root stage, with a second spray before grain set if the disease continues. It is also registered as a 40 ppm seed soak for 12 hours and a 40-100 ppm seedling dip.',
+          instruction_te:
+            'స్ట్రెప్టోమైసిన్ సల్ఫేట్ 90% + టెట్రాసైక్లిన్ హైడ్రోక్లోరైడ్ 10% SP (సాధారణంగా స్ట్రెప్టోసైక్లిన్) వరిలో ఎండాకు తెగులుకు నమోదై ఉంది: వేరు దశలో 100-150 ppm పిచికారీ, తెగులు కొనసాగితే గింజ కట్టే ముందు రెండవ పిచికారీ. విత్తనాన్ని 40 ppm ద్రావణంలో 12 గంటలు నానబెట్టడం, నారును 40-100 ppm లో ముంచడం కూడా నమోదై ఉంది.',
+          activeIngredient_en: 'Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP',
+          activeIngredient_te: 'స్ట్రెప్టోమైసిన్ సల్ఫేట్ 90% + టెట్రాసైక్లిన్ హైడ్రోక్లోరైడ్ 10% SP',
+          safetyCaution_en:
+            'The registry gives this product in ppm concentration, not as a per-hectare quantity, so the amount you need depends on your spray volume — ask your RBK or Village Agriculture Assistant to work out the quantity for your tank rather than guessing. No pre-harvest waiting period is stated in the registry entry, so follow the waiting period printed on your product label.',
+          safetyCaution_te:
+            'ఈ మందును నమోదు పట్టికలో హెక్టారుకు కాకుండా ppm గాఢతలో ఇచ్చారు, కాబట్టి మీకు కావలసిన మొత్తం మీ పిచికారీ నీటి పరిమాణంపై ఆధారపడి ఉంటుంది — ఊహించకుండా మీ ట్యాంకుకు ఎంత కావాలో RBK లేదా గ్రామ వ్యవసాయ సహాయకుని అడిగి లెక్కించుకోండి. నమోదు పట్టికలో కోత ముందస్తు నిరీక్షణ వ్యవధి ఇవ్వలేదు, కాబట్టి మీ మందు లేబుల్‌పై ఉన్న వ్యవధిని పాటించండి.',
+          regulatoryNotice_en:
+            'Concentrations confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / bacterial leaf blight entry. Antibiotic sprays should be used sparingly and never as a routine calendar spray, to limit resistance development.',
+          regulatoryNotice_te:
+            'ఈ గాఢతలు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / ఎండాకు తెగులు వరుస నుండి ధృవీకరించబడ్డాయి. నిరోధక శక్తి పెరగకుండా ఉండాలంటే యాంటీబయాటిక్ పిచికారీలను చాలా తక్కువగా, ఎప్పుడూ అలవాటుగా కాకుండా వాడాలి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Photograph a leaf showing the full stripe from the tip downwards, holding it flat against a plain background. Then cut one fresh lesion across with a clean blade, hold the cut end in a little clear water for a minute, and photograph any milky thread seeping out.',
+        instruction_te:
+          'కొన నుండి కిందికి ఉన్న చార పూర్తిగా కనిపించేలా ఒక ఆకును సాదా నేపథ్యంపై చదునుగా పట్టుకుని ఫోటో తీయండి. తరువాత శుభ్రమైన బ్లేడుతో ఒక తాజా మచ్చను అడ్డంగా కోసి, కోసిన కొనను కొద్దిగా స్వచ్ఛమైన నీటిలో ఒక నిమిషం ఉంచి, బయటకు వచ్చే పాల వంటి దారాన్ని ఫోటో తీయండి.',
+        rationale_en:
+          'The milky bacterial ooze from a cut lesion is the one field sign that separates bacterial blight from every fungal leaf disease. A photograph of the stripe alone cannot settle it.',
+        rationale_te:
+          'కోసిన మచ్చ నుండి కారే పాల వంటి బ్యాక్టీరియా చీము — ఇదే ఎండాకు తెగులును మిగతా అన్ని శిలీంద్ర ఆకు తెగుళ్ల నుండి వేరు చేసే ఏకైక గుర్తు. చార ఫోటో మాత్రమే దీన్ని నిర్ధారించలేదు.',
+        requiredForConfidence: true,
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-blb-q-ooze',
+          question_en:
+            'Cut a fresh lesion and dip the cut end in clear water. Does a milky or cloudy thread seep out within a minute?',
+          question_te:
+            'ఒక తాజా మచ్చను కోసి, కోసిన కొనను స్వచ్ఛమైన నీటిలో ముంచండి. ఒక నిమిషంలో పాల వంటి లేదా మబ్బుగా ఉన్న దారం బయటకు వస్తుందా?',
+          ifYes_en: 'Bacterial ooze confirms a bacterial disease — Bacterial Leaf Blight is very likely.',
+          ifYes_te: 'బ్యాక్టీరియా చీము కారితే ఇది బ్యాక్టీరియా తెగులు — ఎండాకు తెగులు అయ్యే అవకాశం చాలా ఎక్కువ.',
+          ifNo_en: 'No ooze points away from bacterial blight and towards a fungal leaf disease such as Brown Spot.',
+          ifNo_te: 'చీము కారకపోతే ఇది ఎండాకు తెగులు కాకపోవచ్చు; గోధుమ రంగు మచ్చల వంటి శిలీంద్ర తెగులు అయ్యే అవకాశం ఉంది.',
+          pointsTowardIds: ['disease-rice-blb'],
+          pointsAwayIds: ['disease-rice-brownspot', 'disease-rice-blast'],
+        },
+        {
+          id: 'rice-blb-q-margin',
+          question_en: 'Do the dried areas begin at the leaf tip or along the margin, rather than as separate spots in the middle of the leaf?',
+          question_te: 'ఎండిన భాగాలు ఆకు మధ్యలో విడి మచ్చలుగా కాకుండా, ఆకు కొన లేదా అంచు నుండి మొదలవుతున్నాయా?',
+          ifYes_en: 'Tip and margin spread is the typical bacterial blight pattern.',
+          ifYes_te: 'కొన, అంచుల నుండి వ్యాపించడం ఎండాకు తెగులు లక్షణం.',
+          ifNo_en: 'Scattered separate spots suggest Brown Spot or Blast instead.',
+          ifNo_te: 'చెల్లాచెదురుగా విడి మచ్చలు ఉంటే గోధుమ రంగు మచ్చల తెగులు లేదా అగ్గి తెగులు కావచ్చు.',
+          pointsTowardIds: ['disease-rice-blb'],
+          pointsAwayIds: ['disease-rice-brownspot'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Stripes on under 5% of leaf area, confined to a few plants at the field edge.',
+          threshold_te: 'ఆకు విస్తీర్ణంలో 5% లోపు చారలు, పొలం అంచున కొన్ని మొక్కలకు మాత్రమే.',
+          action_en:
+            'Drain the water and stop nitrogen. Do not spray yet — mark the patch and re-inspect in three days.',
+          action_te:
+            'నీటిని తీసివేసి నత్రజని ఆపండి. ఇంకా పిచికారీ చేయవద్దు — ఆ ప్రాంతాన్ని గుర్తుపెట్టి మూడు రోజుల తరువాత మళ్లీ పరిశీలించండి.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: 'Stripes on 5-25% of leaf area and spreading to new plants across several days.',
+          threshold_te: 'ఆకు విస్తీర్ణంలో 5-25% చారలు, కొన్ని రోజులుగా కొత్త మొక్కలకు వ్యాపిస్తున్నాయి.',
+          action_en:
+            'Cultural steps plus a registered copper spray is justified at this level. Confirm the product and dose with your RBK first.',
+          action_te:
+            'ఈ స్థాయిలో సాగు పద్ధతులతో పాటు నమోదైన రాగి మందు పిచికారీ సమంజసం. ముందుగా మందు, మోతాదును RBK వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Over 25% of leaf area affected, or seedlings wilting and dying (kresek) soon after transplanting.',
+          threshold_te: '25% పైగా ఆకు విస్తీర్ణం దెబ్బతినడం, లేదా నాటిన వెంటనే నారు వాడి చనిపోవడం (క్రెసెక్).',
+          action_en:
+            'Report to your RBK or Agriculture Officer the same day. At this stage yield loss is already occurring and the field needs direct inspection, not only a spray decision.',
+          action_te:
+            'అదే రోజు RBK లేదా వ్యవసాయ అధికారికి తెలియజేయండి. ఈ దశలో దిగుబడి నష్టం అప్పటికే మొదలైంది; పిచికారీ నిర్ణయం మాత్రమే కాకుండా పొలాన్ని ప్రత్యక్షంగా పరిశీలించాల్సిన అవసరం ఉంది.',
+        },
+      ],
+      escalationThreshold_en:
+        'Contact your Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer immediately if seedlings are wilting within two weeks of transplanting (kresek), if more than a quarter of the leaf area is affected, or if stripes keep spreading after draining the field and stopping nitrogen. Bacterial blight has no curative chemical — once it is widespread, management decisions need a physical field inspection.',
+      escalationThreshold_te:
+        'నాటిన రెండు వారాలలోపు నారు వాడిపోతుంటే (క్రెసెక్), ఆకు విస్తీర్ణంలో నాలుగో వంతు కంటే ఎక్కువ దెబ్బతింటే, లేదా నీరు తీసి నత్రజని ఆపిన తరువాత కూడా చారలు వ్యాపిస్తూనే ఉంటే వెంటనే రైతు భరోసా కేంద్రం (RBK) లేదా వ్యవసాయ విస్తరణ అధికారిని సంప్రదించండి. ఎండాకు తెగులును నయం చేసే రసాయన మందు లేదు — విస్తరించిన తరువాత నిర్ణయాలకు ప్రత్యక్ష పొల పరిశీలన అవసరం.',
+      claimEvidence: [
+        {
+          claimId: 'rice-blb-copper-dose',
+          fieldRef: "treatments['rice-blb-chem-1'].instruction_en — 1000 ml/ha in 500 L water, 21-day PHI",
+          verificationStatus: 'verified',
+          sourceIndexes: [1],
+          locator:
+            'CIBRC Major Uses of Pesticides (Fungicides), rice crop section — Copper Sulphate Pentahydrate 6% SC row, target "Bacterial leaf blight": 60 g a.i./ha, 1000 ml formulation/ha, 500 L dilution, waiting period 21 days.',
+          limitation_en:
+            'The dose is confirmed against the CIBRC registry, which the registry itself states is compiled for guidance and not for legal purposes. Your specific product container label remains the binding instruction.',
+          limitation_te:
+            'ఈ మోతాదు CIBRC నమోదు పట్టిక నుండి ధృవీకరించబడింది; ఆ పట్టిక మార్గదర్శకత్వం కోసమే, చట్టపరమైన అవసరాలకు కాదని అందులోనే పేర్కొన్నారు. మీ మందు డబ్బా లేబుల్‌పై ఉన్న సూచనలే కట్టుబడి ఉండవలసినవి.',
+        },
+        {
+          claimId: 'rice-blb-streptocycline-ppm',
+          fieldRef: "treatments['rice-blb-chem-2'].instruction_en — 40 ppm soak, 40-100 ppm dip, 100-150 ppm spray",
+          verificationStatus: 'verified',
+          sourceIndexes: [1],
+          locator:
+            'CIBRC Major Uses of Pesticides (Fungicides), rice crop section — Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP row, target "Bacterial leaf blight": seed soak 40 ppm for 12 hours, seedling dip 40-100 ppm, spray 100-150 ppm at early root stage with a second spray before grain set.',
+          limitation_en:
+            'The registry gives no per-hectare quantity and no waiting period for this product, so the amount for your tank and the interval before harvest cannot be derived from it. Both must come from your product label and local extension advice.',
+          limitation_te:
+            'ఈ మందుకు నమోదు పట్టికలో హెక్టారుకు మోతాదు గానీ, నిరీక్షణ వ్యవధి గానీ ఇవ్వలేదు. కాబట్టి మీ ట్యాంకుకు కావలసిన మొత్తం, కోతకు ముందు వ్యవధి రెండూ మీ మందు లేబుల్ నుండి, స్థానిక వ్యవసాయ సలహా నుండి తీసుకోవాలి.',
+        },
+      ],
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+        {
+          title: 'Major Uses of Pesticides (Fungicides) — Registered under the Insecticides Act, 1968, as on 31.03.2024',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://ppqs.gov.in/sites/default/files/fungicides_31.03.2024.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries — Copper Sulphate Pentahydrate 6% SC and Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP rows, target "Bacterial leaf blight".',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-brownspot': {
+      id: 'disease-rice-brownspot',
+      cropId: 'crop-rice',
+      name_en: 'Brown Spot',
+      name_te: 'గోధుమ రంగు మచ్చల తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Bipolaris oryzae (syn. Helminthosporium oryzae)',
+      pathogenOrVector_te: 'శిలీంద్రం: బైపోలారిస్ ఒరైజే (హెల్మింథోస్పోరియం ఒరైజే)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Many small, separate, circular to oval brown spots scattered evenly over the leaf blade.',
+        'Mature spots have a dark brown margin and a grey or pale tan centre, roughly the size and shape of a sesame seed.',
+        'Spots appear first and most heavily on the older, lower leaves.',
+        'On the grain, dark brown or black blotches on the husk cause discoloured, poorly filled rice.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు అంతటా సమానంగా చెల్లాచెదురుగా చిన్న చిన్న, విడివిడి, గుండ్రని లేదా అండాకార గోధుమ మచ్చలు.',
+        'ముదిరిన మచ్చలకు ముదురు గోధుమ అంచు, లోపల బూడిద లేదా లేత గోధుమ రంగు ఉంటుంది; నువ్వు గింజ పరిమాణం, ఆకారంలో ఉంటాయి.',
+        'మచ్చలు ముందుగా, ఎక్కువగా కింది ముదురు ఆకులపై కనిపిస్తాయి.',
+        'గింజపై ముదురు గోధుమ లేదా నల్ల మచ్చలు ఏర్పడి గింజ రంగు మారి సరిగా నిండదు.',
+      ],
+      affectedParts: ['Leaves', 'Leaf Sheath', 'Grain / Husk', 'Seedlings'],
+      similarConditions: [
+        {
+          id: 'rice-brownspot-vs-blast',
+          name_en: 'Rice Blast (Magnaporthe oryzae / Fungal)',
+          name_te: 'అగ్గి తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Blast lesions are spindle or diamond shaped with pointed ends and an ash-grey centre. Brown Spot lesions stay round or oval with blunt edges and a uniform brown colour. Blast concentrates on young upper leaves; Brown Spot on older lower leaves.',
+          differentiatingFactors_te:
+            'అగ్గి తెగులు మచ్చలు రెండు కొనలు సూదిగా ఉండే కంటి ఆకారంలో, మధ్యలో బూడిద రంగుతో ఉంటాయి. గోధుమ రంగు మచ్చలు గుండ్రంగా లేదా అండాకారంగా, మొద్దు అంచులతో ఒకే గోధుమ రంగులో ఉంటాయి. అగ్గి తెగులు పై లేత ఆకులపై, గోధుమ మచ్చల తెగులు కింది ముదురు ఆకులపై ఎక్కువ.',
+        },
+        {
+          id: 'rice-brownspot-vs-nutrient',
+          name_en: 'Potassium or Nitrogen Deficiency (Nutrient)',
+          name_te: 'పొటాష్ లేదా నత్రజని లోపం',
+          isPathological: false,
+          differentiatingFactors_en:
+            'A pure nutrient deficiency yellows or browns the leaf evenly from the tip and margins without discrete spots. Brown Spot makes defined individual spots — but the two very often occur together, because poor soil fertility is what makes the crop susceptible in the first place.',
+          differentiatingFactors_te:
+            'కేవలం పోషక లోపమైతే ఆకు కొన, అంచుల నుండి సమానంగా పసుపు లేదా గోధుమ రంగులోకి మారుతుంది, విడి మచ్చలు ఉండవు. గోధుమ మచ్చల తెగులులో స్పష్టమైన విడి మచ్చలు ఉంటాయి — అయితే ఈ రెండూ కలిసి ఉండటం చాలా సాధారణం, ఎందుకంటే నేల సారం తక్కువ ఉండటమే పంట ఈ తెగులుకు లొంగడానికి మూల కారణం.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Poor or unamended soil fertility — especially low nitrogen, potassium and silicon. This is the single strongest predisposing factor.',
+        'Unirrigated or drought-stressed rainfed fields where the crop suffers moisture stress.',
+        'Sandy, saline or degraded soils with low water-holding capacity.',
+        'Prolonged leaf wetness of eight hours or more with warm temperatures.',
+        'Seed carried over from an affected crop, since the fungus survives on and in the seed.',
+      ],
+      environmentalRiskFactors_te: [
+        'నేల సారం తక్కువగా ఉండటం — ముఖ్యంగా నత్రజని, పొటాష్, సిలికాన్ లోపం. ఇదే ఈ తెగులుకు ప్రధాన కారణం.',
+        'నీటి వసతి లేని, కరువు ఒత్తిడికి గురయ్యే వర్షాధార పొలాలు.',
+        'ఇసుక నేలలు, చౌడు నేలలు, నీటిని నిలుపుకోలేని నిస్సారమైన నేలలు.',
+        'వెచ్చని వాతావరణంలో ఎనిమిది గంటలు లేదా అంతకు మించి ఆకులు తడిగా ఉండటం.',
+        'తెగులు సోకిన పంట నుండి తీసిన విత్తనం వాడటం; శిలీంద్రం విత్తనంపై, లోపల బతికి ఉంటుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Treat Brown Spot primarily as a soil fertility signal. Get a soil test and correct the nitrogen and potassium shortfall — a fungicide alone will suppress the spots but the crop will stay weak and the problem will return.',
+          practice_te:
+            'గోధుమ రంగు మచ్చల తెగులును ముఖ్యంగా నేల సార లోపానికి సంకేతంగా చూడండి. భూసార పరీక్ష చేయించి నత్రజని, పొటాష్ లోపాన్ని సరిదిద్దండి — కేవలం శిలీంద్రనాశకం వాడితే మచ్చలు తగ్గుతాయి కానీ పంట బలహీనంగానే ఉండి సమస్య మళ్లీ వస్తుంది.',
+          targetTiming: 'Before sowing, and at top-dressing',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Use healthy certified seed instead of grain saved from a spotted crop, since the fungus is carried on and inside the seed.',
+          practice_te:
+            'మచ్చలు వచ్చిన పంట నుండి తీసిన గింజకు బదులు ఆరోగ్యకరమైన ధృవీకరించిన విత్తనం వాడండి; శిలీంద్రం విత్తనంపై, లోపల ఉంటుంది.',
+          targetTiming: 'Before sowing',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Maintain steady soil moisture and avoid letting a rainfed field swing between waterlogging and drought stress.',
+          practice_te:
+            'నేలలో తేమను ఒకేలా ఉంచండి; వర్షాధార పొలం నీరు నిల్వ ఉండటం, ఎండిపోవడం మధ్య మారకుండా చూసుకోండి.',
+          targetTiming: 'Throughout the season',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'Where soil tests show silicon deficiency, incorporating rice straw or husk ash strengthens leaf tissue and measurably reduces Brown Spot pressure.',
+          practice_te:
+            'భూసార పరీక్షలో సిలికాన్ లోపం ఉంటే వరి గడ్డి లేదా ఊక బూడిదను నేలలో కలపడం వల్ల ఆకు గట్టిపడి తెగులు ఉధృతి గణనీయంగా తగ్గుతుంది.',
+          targetTiming: 'Land preparation',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-brownspot-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Correct the underlying nutrition first. Apply the nitrogen and potassium shortfall indicated by your soil test, and use well-decomposed farmyard manure or compost to rebuild soil health in degraded or sandy fields.',
+          instruction_te:
+            'ముందుగా పోషక లోపాన్ని సరిచేయండి. భూసార పరీక్షలో తేలిన నత్రజని, పొటాష్ లోపాన్ని భర్తీ చేయండి; నిస్సారమైన లేదా ఇసుక నేలల్లో బాగా చివికిన పశువుల ఎరువు లేదా కంపోస్టు వాడి నేల ఆరోగ్యాన్ని మెరుగుపరచండి.',
+          safetyCaution_en:
+            'Have the quantity worked out from an actual soil test result by your RBK — over-applying nitrogen invites Blast and Bacterial Leaf Blight instead.',
+          safetyCaution_te:
+            'వాస్తవ భూసార పరీక్ష ఫలితం ఆధారంగా మోతాదును RBK వద్ద లెక్కించుకోండి — నత్రజని మోతాదు మించితే అగ్గి తెగులు, ఎండాకు తెగులు వచ్చే ప్రమాదం ఉంది.',
+        },
+        {
+          id: 'rice-brownspot-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Carbendazim 25% + Mancozeb 50% WS is registered for brown spot in rice as a seed treatment: 30-35 g of formulation, applied as a slurry at roughly 0.1 litre of water per kilogram of seed.',
+          instruction_te:
+            'వరిలో గోధుమ రంగు మచ్చల తెగులుకు కార్బెండాజిమ్ 25% + మాంకోజెబ్ 50% WS విత్తన శుద్ధికి నమోదై ఉంది: 30-35 గ్రా. మందును కిలో విత్తనానికి సుమారు 0.1 లీటరు నీటితో ముద్దగా కలిపి పట్టించాలి.',
+          activeIngredient_en: 'Carbendazim 25% + Mancozeb 50% WS (seed treatment)',
+          activeIngredient_te: 'కార్బెండాజిమ్ 25% + మాంకోజెబ్ 50% WS (విత్తన శుద్ధి)',
+          safetyCaution_en:
+            'Treated seed is poisonous and must never be eaten or fed to animals. Mix in the open wearing gloves and a mask, and keep treated seed in clearly marked bags away from food grain. The registry states no waiting period for this seed-treatment entry.',
+          safetyCaution_te:
+            'శుద్ధి చేసిన విత్తనం విషపూరితం — తినడానికి గానీ, పశువులకు గానీ ఎట్టి పరిస్థితుల్లో వాడవద్దు. ఆరుబయట చేతి తొడుగులు, మాస్క్ ధరించి కలపండి; శుద్ధి చేసిన విత్తనాన్ని స్పష్టంగా గుర్తు పెట్టిన సంచుల్లో, ఆహార ధాన్యానికి దూరంగా ఉంచండి. ఈ విత్తన శుద్ధికి నమోదు పట్టికలో నిరీక్షణ వ్యవధి ఇవ్వలేదు.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice entry listing brown spot, blast and sheath blight. Verify against your product container label and confirm with your RBK.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి వరుస (గోధుమ మచ్చ, అగ్గి తెగులు, పాము పొడ తెగులు) నుండి ధృవీకరించబడింది. మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకుని RBK వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          id: 'rice-brownspot-chem-2',
+          stepNumber: 3,
+          category: 'chemical',
+          instruction_en:
+            'For a standing crop with spreading spots, Hexaconazole 4% + Zineb 68% WP is registered covering brown spot, sheath blight, blast and grain discolouration at 1000-1250 g of formulation per hectare in 500 litres of water, with a 34-day waiting period before harvest.',
+          instruction_te:
+            'పొలంలో మచ్చలు వ్యాపిస్తుంటే హెక్సాకొనజోల్ 4% + జినెబ్ 68% WP నమోదై ఉంది (గోధుమ మచ్చ, పాము పొడ తెగులు, అగ్గి తెగులు, గింజ రంగు మారడం): హెక్టారుకు 1000-1250 గ్రా. మందును 500 లీటర్ల నీటిలో కలిపి పిచికారీ చేయాలి; కోతకు ముందు 34 రోజుల నిరీక్షణ వ్యవధి.',
+          activeIngredient_en: 'Hexaconazole 4% + Zineb 68% WP (720-900 g a.i./ha)',
+          activeIngredient_te: 'హెక్సాకొనజోల్ 4% + జినెబ్ 68% WP (హెక్టారుకు 720-900 గ్రా. క్రియాశీల పదార్థం)',
+          safetyCaution_en:
+            'Wear gloves and a mask while mixing and spraying, and do not spray against the wind. Observe the full 34-day pre-harvest interval. Spraying without also correcting soil fertility will not stop the problem returning.',
+          safetyCaution_te:
+            'కలిపేటప్పుడు, పిచికారీ చేసేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు. కోతకు ముందు 34 రోజుల నిరీక్షణ వ్యవధిని పూర్తిగా పాటించండి. నేల సారాన్ని సరిదిద్దకుండా కేవలం పిచికారీ చేస్తే సమస్య మళ్లీ వస్తుంది.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice crop section. Verify against your own product container label before mixing and confirm with your RBK. Rotate fungicide classes across sprays to limit resistance.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి విభాగం నుండి ధృవీకరించబడింది. కలపడానికి ముందు మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకుని RBK వద్ద నిర్ధారించుకోండి. నిరోధక శక్తి పెరగకుండా వేర్వేరు రకాల శిలీంద్రనాశకాలను మార్చి మార్చి వాడండి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Photograph an older lower leaf held flat, close enough that the shape of individual spots is clear. If you can, photograph the whole plant too, and note whether the field is rainfed or has had little fertiliser.',
+        instruction_te:
+          'కింది ముదురు ఆకును చదునుగా పట్టుకుని, విడి మచ్చల ఆకారం స్పష్టంగా కనిపించేంత దగ్గరగా ఫోటో తీయండి. వీలైతే మొక్క మొత్తాన్ని కూడా ఫోటో తీసి, పొలం వర్షాధారమా లేదా ఎరువులు తక్కువగా వేశారా అనేది గుర్తుంచుకోండి.',
+        rationale_en:
+          'Spot shape is what separates Brown Spot from Blast, and it is only visible in a close, sharp photograph of an older leaf.',
+        rationale_te:
+          'మచ్చ ఆకారమే గోధుమ రంగు మచ్చల తెగులును అగ్గి తెగులు నుండి వేరు చేస్తుంది; అది ముదురు ఆకు దగ్గరగా, స్పష్టంగా తీసిన ఫోటోలో మాత్రమే కనిపిస్తుంది.',
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-brownspot-q-shape',
+          question_en: 'Are the spots round or oval with blunt edges, rather than pointed at both ends like a grain of rice?',
+          question_te: 'మచ్చలు రెండు కొనలు సూదిగా ఉన్న వరి గింజ ఆకారంలో కాకుండా, మొద్దు అంచులతో గుండ్రంగా లేదా అండాకారంగా ఉన్నాయా?',
+          ifYes_en: 'Round blunt spots point to Brown Spot.',
+          ifYes_te: 'గుండ్రని మొద్దు మచ్చలు గోధుమ రంగు మచ్చల తెగులును సూచిస్తాయి.',
+          ifNo_en: 'Pointed spindle-shaped lesions with grey centres point to Blast instead.',
+          ifNo_te: 'కొనలు సూదిగా, మధ్యలో బూడిద రంగుతో ఉంటే అది అగ్గి తెగులు కావచ్చు.',
+          pointsTowardIds: ['disease-rice-brownspot'],
+          pointsAwayIds: ['disease-rice-blast'],
+        },
+        {
+          id: 'rice-brownspot-q-fertility',
+          question_en: 'Is this field rainfed, sandy, saline, or one where little fertiliser has been applied this season?',
+          question_te: 'ఈ పొలం వర్షాధారమా, ఇసుక నేలా, చౌడు నేలా, లేదా ఈ సీజన్‌లో ఎరువులు తక్కువగా వేసిన పొలమా?',
+          ifYes_en:
+            'Low fertility strongly supports Brown Spot, and tells you the real fix is soil nutrition, not just a spray.',
+          ifYes_te:
+            'నేల సారం తక్కువగా ఉండటం గోధుమ రంగు మచ్చల తెగులును బలంగా సూచిస్తుంది; అసలు పరిష్కారం పిచికారీ కాదు, నేల పోషకాలే అని దీని అర్థం.',
+          ifNo_en: 'A well-fertilised, well-watered field with spots makes Blast or another leaf disease more likely.',
+          ifNo_te: 'ఎరువులు, నీరు బాగా అందిన పొలంలో మచ్చలు ఉంటే అగ్గి తెగులు లేదా మరొక ఆకు తెగులు అయ్యే అవకాశం ఎక్కువ.',
+          pointsTowardIds: ['disease-rice-brownspot'],
+        },
+        {
+          id: 'rice-brownspot-q-position',
+          question_en: 'Are the spots worst on the older lower leaves rather than the young upper leaves?',
+          question_te: 'మచ్చలు పై లేత ఆకులపై కాకుండా, కింది ముదురు ఆకులపై ఎక్కువగా ఉన్నాయా?',
+          ifYes_en: 'Lower-leaf concentration fits Brown Spot and nutrient stress.',
+          ifYes_te: 'కింది ఆకులపై ఎక్కువగా ఉండటం గోధుమ రంగు మచ్చల తెగులుకు, పోషక లోపానికి సరిపోతుంది.',
+          ifNo_en: 'Damage concentrated on young upper leaves fits Blast.',
+          ifNo_te: 'పై లేత ఆకులపై ఎక్కువ నష్టం ఉంటే అది అగ్గి తెగులుకు సరిపోతుంది.',
+          pointsTowardIds: ['disease-rice-brownspot'],
+          pointsAwayIds: ['disease-rice-blast'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Scattered spots on under 5% of leaf area, mainly on the lowest leaves.',
+          threshold_te: 'ఆకు విస్తీర్ణంలో 5% లోపు చెల్లాచెదురు మచ్చలు, ముఖ్యంగా అట్టడుగు ఆకులపై.',
+          action_en:
+            'No spray needed. Correct soil nutrition and keep moisture steady — at this level a fungicide is not an economic use of money.',
+          action_te:
+            'పిచికారీ అవసరం లేదు. నేల పోషకాలను సరిదిద్ది తేమను ఒకేలా ఉంచండి — ఈ స్థాయిలో శిలీంద్రనాశకం వాడటం ఖర్చుకు తగిన ప్రయోజనం ఇవ్వదు.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: 'Spots on 5-20% of leaf area, now also on middle leaves.',
+          threshold_te: 'ఆకు విస్తీర్ణంలో 5-20% మచ్చలు, మధ్య ఆకులకు కూడా వ్యాపించాయి.',
+          action_en:
+            'Correct nutrition and consider one registered fungicide spray, particularly if the crop is near flowering when grain discolouration risk rises.',
+          action_te:
+            'పోషకాలను సరిదిద్దండి, నమోదైన శిలీంద్రనాశకంతో ఒక పిచికారీని పరిశీలించండి — ముఖ్యంగా పంట పూత దశకు దగ్గరగా ఉంటే, అప్పుడు గింజ రంగు మారే ప్రమాదం పెరుగుతుంది.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Over 20% of leaf area affected, or dark blotches already appearing on the grain husk.',
+          threshold_te: '20% పైగా ఆకు విస్తీర్ణం దెబ్బతినడం, లేదా గింజ పొట్టుపై ముదురు మచ్చలు కనిపించడం.',
+          action_en:
+            'Consult your RBK. Grain discolouration directly reduces the price you get, and the field likely has a fertility problem that needs a soil test, not just another spray.',
+          action_te:
+            'RBK ను సంప్రదించండి. గింజ రంగు మారితే మీకు వచ్చే ధర నేరుగా తగ్గుతుంది; ఈ పొలంలో భూసార పరీక్ష అవసరమైన సార లోపం ఉండే అవకాశం ఎక్కువ, మరో పిచికారీ సరిపోదు.',
+        },
+      ],
+      escalationThreshold_en:
+        'Consult your Rythu Bharosa Kendra (RBK) if spots cover more than a fifth of the leaf area, if dark blotches appear on the grain husk, or if the problem recurs season after season in the same field. Recurring Brown Spot is a soil fertility problem that a soil test should settle, and historically severe outbreaks of this disease have followed widespread soil nutrient exhaustion rather than any failure of spraying.',
+      escalationThreshold_te:
+        'మచ్చలు ఆకు విస్తీర్ణంలో ఐదో వంతు కంటే ఎక్కువ ఆక్రమిస్తే, గింజ పొట్టుపై ముదురు మచ్చలు కనిపిస్తే, లేదా అదే పొలంలో ప్రతి సీజన్‌లో ఈ సమస్య పునరావృతమైతే రైతు భరోసా కేంద్రాన్ని (RBK) సంప్రదించండి. పదే పదే వచ్చే గోధుమ రంగు మచ్చల తెగులు నేల సార సమస్య; దీన్ని భూసార పరీక్ష ద్వారా తేల్చుకోవాలి. గతంలో ఈ తెగులు తీవ్రంగా వ్యాపించిన సందర్భాలు పిచికారీ వైఫల్యం వల్ల కాక, విస్తృతమైన నేల పోషక క్షీణత వల్లే జరిగాయి.',
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+        {
+          title: 'Major Uses of Pesticides (Fungicides) — Registered under the Insecticides Act, 1968, as on 31.03.2024',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://ppqs.gov.in/sites/default/files/fungicides_31.03.2024.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries — Carbendazim 25% + Mancozeb 50% WS row (target "Brown spot, blast, sheath blight", 30-35 g formulation, 0.1 L slurry) and Hexaconazole 4% + Zineb 68% WP row (target "Sheath blight, brown spot, blast, grain discoloration", 1000-1250 g/ha in 500 L, 34-day waiting period).',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-sheathblight': {
+      id: 'disease-rice-sheathblight',
+      cropId: 'crop-rice',
+      name_en: 'Sheath Blight',
+      name_te: 'పాము పొడ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Rhizoctonia solani (Thanatephorus cucumeris)',
+      pathogenOrVector_te: 'శిలీంద్రం: రైజోక్టోనియా సొలాని',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Oval, greenish-grey water-soaked blotches on the leaf sheath, starting near the water line.',
+        'Lesions dry to a straw-white centre ringed by an irregular purple-brown border, giving a snakeskin pattern.',
+        'Lesions climb upward from sheath to sheath and onto the leaf blades as the crop closes canopy.',
+        'White cottony fungal threads and small brown-black seed-like sclerotia on the sheath surface in humid weather.',
+        'Badly affected tillers lodge, and panicles fill poorly or not at all.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు తొడుగుపై నీటి మట్టం దగ్గర నుండి మొదలయ్యే అండాకార, బూడిద-పచ్చ రంగు నానిన మచ్చలు.',
+        'మచ్చల మధ్య భాగం ఎండి గడ్డి తెలుపు రంగులోకి మారి, చుట్టూ ఊదా-గోధుమ వంకర అంచు ఏర్పడి పాము పొడ వలె కనిపిస్తుంది.',
+        'పంట దట్టంగా పెరిగే కొద్దీ మచ్చలు ఒక తొడుగు నుండి మరొక తొడుగుకు, ఆకులపైకి ఎక్కుతాయి.',
+        'తేమ వాతావరణంలో తొడుగుపై తెల్లని దూది వంటి శిలీంద్ర తంతువులు, చిన్న గోధుమ-నలుపు గింజల వంటి స్క్లెరోషియా కనిపిస్తాయి.',
+        'తీవ్రంగా సోకిన పిలకలు పడిపోతాయి, వెన్నులు సరిగా నిండవు.',
+      ],
+      affectedParts: ['Leaf Sheath', 'Leaves', 'Tillers', 'Panicle'],
+      similarConditions: [
+        {
+          id: 'rice-sheathblight-vs-sheathrot',
+          name_en: 'Sheath Rot (Sarocladium oryzae / Fungal)',
+          name_te: 'తొడుగు కుళ్ళు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Sheath Rot attacks the uppermost flag leaf sheath at booting and traps the panicle inside, often with a powdery white growth. Sheath Blight starts low near the water line and climbs upward, with snakeskin-patterned lesions.',
+          differentiatingFactors_te:
+            'తొడుగు కుళ్ళు తెగులు చిరుపొట్ట దశలో పై కంకి ఆకు తొడుగును ఆశించి వెన్ను బయటకు రాకుండా చేస్తుంది, తరచూ తెల్లని పొడి వంటి పెరుగుదల ఉంటుంది. పాము పొడ తెగులు నీటి మట్టం దగ్గర మొదలై పైకి ఎక్కుతుంది, మచ్చలు పాము పొడ వలె ఉంటాయి.',
+        },
+        {
+          id: 'rice-sheathblight-vs-stemborer',
+          name_en: 'Stem Borer Damage (Scirpophaga incertulas / Pest)',
+          name_te: 'కాండం తొలుచు పురుగు నష్టం',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Stem borer kills the central shoot cleanly and leaves a bore hole with frass; the dead heart pulls out easily. Sheath Blight leaves surface lesions on the sheath with no bore hole, and the tiller stays attached.',
+          differentiatingFactors_te:
+            'కాండం తొలుచు పురుగు మధ్య మొవ్వును పూర్తిగా చంపి, రంధ్రం, రెట్టలు వదులుతుంది; ఎండిన మొవ్వు సులభంగా ఊడి వస్తుంది. పాము పొడ తెగులులో తొడుగుపై పైపైన మచ్చలు ఉంటాయి, రంధ్రం ఉండదు, పిలక ఊడి రాదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Dense planting and a closed canopy that traps humidity around the base of the crop.',
+        'High nitrogen fertilisation producing heavy, lush tillering.',
+        'Continuous standing water with relative humidity above 90% and warm temperatures of 28-32°C.',
+        'Sclerotia surviving in soil and floating on irrigation water from a previously infected field.',
+      ],
+      environmentalRiskFactors_te: [
+        'మొక్కల మధ్య దూరం తక్కువగా ఉండి పంట దట్టంగా పెరగడం వల్ల మొదళ్ల దగ్గర తేమ నిలిచిపోవడం.',
+        'నత్రజని ఎరువులు ఎక్కువగా వేయడం వల్ల పిలకలు దట్టంగా, మెత్తగా పెరగడం.',
+        'నీరు ఎప్పుడూ నిల్వ ఉండటం, గాలిలో తేమ 90% పైన, ఉష్ణోగ్రత 28-32°C ఉండటం.',
+        'గతంలో తెగులు సోకిన పొలం నుండి స్క్లెరోషియా నేలలో బతికి ఉండటం, నీటిపై తేలి రావడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Avoid over-dense planting. Keep the recommended spacing and leave periodic alleys so air can move through the canopy and dry the base of the crop.',
+          practice_te:
+            'మొక్కలను మరీ దట్టంగా నాటవద్దు. సిఫారసు చేసిన దూరం పాటించి, మధ్య మధ్య బాటలు వదలండి; అప్పుడు గాలి ప్రసరించి పంట మొదళ్లు ఆరుతాయి.',
+          targetTiming: 'At transplanting',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Split nitrogen into several smaller doses rather than one heavy application, and do not exceed the recommended total.',
+          practice_te:
+            'నత్రజనిని ఒకేసారి ఎక్కువగా కాకుండా పలు చిన్న మోతాదులుగా వేయండి; సిఫారసు చేసిన మొత్తాన్ని మించవద్దు.',
+          targetTiming: 'Top-dressing stages',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Skim off and destroy the floating sclerotia and crop debris during land preparation, since they are the main carry-over source between seasons.',
+          practice_te:
+            'దమ్ము చేసేటప్పుడు నీటిపై తేలే స్క్లెరోషియా, పంట వ్యర్థాలను తీసి నాశనం చేయండి; మరుసటి పంటకు తెగులు చేరేది వీటి ద్వారానే.',
+          targetTiming: 'Land preparation',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'Alternate wetting and drying instead of permanent deep flooding lowers humidity at the plant base and slows the fungus climbing.',
+          practice_te:
+            'ఎప్పుడూ లోతుగా నీరు నిల్వ ఉంచకుండా, తడి-ఆరు పద్ధతిలో నీటిని యాజమాన్యం చేస్తే మొదళ్ల దగ్గర తేమ తగ్గి శిలీంద్రం పైకి ఎక్కడం నెమ్మదిస్తుంది.',
+          targetTiming: 'Tillering to booting',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-sheathblight-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Open the canopy by draining the field for a few days and, where practical, removing a row to create an alley. Reducing humidity at the base of the crop slows the fungus climbing from sheath to sheath, which is how this disease causes damage.',
+          instruction_te:
+            'కొన్ని రోజులు పొలంలోని నీటిని తీసివేసి, వీలైతే ఒక వరుసను తీసి బాట ఏర్పాటు చేసి పంటలోకి గాలి ప్రసరించేలా చేయండి. మొదళ్ల దగ్గర తేమ తగ్గితే శిలీంద్రం ఒక తొడుగు నుండి మరొక తొడుగుకు ఎక్కడం నెమ్మదిస్తుంది; ఈ తెగులు నష్టం కలిగించేది అలా ఎక్కడం ద్వారానే.',
+          safetyCaution_en:
+            'Do not drain so hard that the crop suffers moisture stress at flowering — alternate wetting and drying, not complete drying out.',
+          safetyCaution_te:
+            'పూత దశలో పంటకు నీటి ఎద్దడి కలిగేంతగా నీటిని తీసివేయవద్దు — పూర్తిగా ఎండబెట్టకుండా తడి-ఆరు పద్ధతిని పాటించండి.',
+        },
+        {
+          id: 'rice-sheathblight-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Validamycin 3% L is registered for rice sheath blight at 2000 g of formulation per hectare in 750 litres of water. Its waiting period is 14 days, the shortest among the registered options, which matters if the crop is close to harvest.',
+          instruction_te:
+            'వరిలో పాము పొడ తెగులుకు వాలిడామైసిన్ 3% L హెక్టారుకు 2000 గ్రా. మందును 750 లీటర్ల నీటిలో కలిపి పిచికారీ చేయడానికి నమోదై ఉంది. దీని నిరీక్షణ వ్యవధి 14 రోజులు — నమోదైన మందులలో అతి తక్కువ; కోత దగ్గరపడినప్పుడు ఇది ముఖ్యం.',
+          activeIngredient_en: 'Validamycin 3% L (60 g a.i./ha)',
+          activeIngredient_te: 'వాలిడామైసిన్ 3% L (హెక్టారుకు 60 గ్రా. క్రియాశీల పదార్థం)',
+          safetyCaution_en:
+            'Direct the spray at the lower sheath region where the lesions actually are, not just over the top of the canopy. Wear gloves and a mask. Observe the 14-day pre-harvest interval.',
+          safetyCaution_te:
+            'పిచికారీని పంట పైభాగంపై మాత్రమే కాకుండా, మచ్చలు ఉన్న కింది తొడుగు భాగంపై పడేలా చేయండి. చేతి తొడుగులు, మాస్క్ ధరించండి. కోతకు ముందు 14 రోజుల నిరీక్షణ వ్యవధిని పాటించండి.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / sheath blight entry. The registry notes no residues on grain or straw when applied 14 days before harvest. Verify against your own product container label before mixing and confirm with your RBK.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / పాము పొడ తెగులు వరుస నుండి ధృవీకరించబడింది. కోతకు 14 రోజుల ముందు వాడితే గింజపై, గడ్డిపై అవశేషాలు ఉండవని పట్టికలో పేర్కొన్నారు. కలపడానికి ముందు మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకుని RBK వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          id: 'rice-sheathblight-chem-2',
+          stepNumber: 3,
+          category: 'chemical',
+          instruction_en:
+            'Alternative registered options for rotation are Hexaconazole 5% EC at 1000 ml per hectare in 500 litres of water (40-day waiting period), and Propiconazole 25% EC at 500 g per hectare in 750 litres (30-day waiting period).',
+          instruction_te:
+            'మార్చి వాడటానికి నమోదైన ప్రత్యామ్నాయాలు: హెక్సాకొనజోల్ 5% EC హెక్టారుకు 1000 మి.లీ. 500 లీటర్ల నీటిలో (నిరీక్షణ 40 రోజులు), ప్రొపికొనజోల్ 25% EC హెక్టారుకు 500 గ్రా. 750 లీటర్ల నీటిలో (నిరీక్షణ 30 రోజులు).',
+          activeIngredient_en: 'Hexaconazole 5% EC (50 g a.i./ha) or Propiconazole 25% EC (125 g a.i./ha)',
+          activeIngredient_te: 'హెక్సాకొనజోల్ 5% EC (హెక్టారుకు 50 గ్రా.) లేదా ప్రొపికొనజోల్ 25% EC (హెక్టారుకు 125 గ్రా.)',
+          safetyCaution_en:
+            'Both have much longer waiting periods than Validamycin — 40 and 30 days. Do not choose either if harvest is closer than that. Rotate between chemical classes rather than repeating the same one.',
+          safetyCaution_te:
+            'ఈ రెండింటి నిరీక్షణ వ్యవధి వాలిడామైసిన్ కంటే చాలా ఎక్కువ — 40, 30 రోజులు. కోత అంతకంటే దగ్గరగా ఉంటే వీటిని ఎంచుకోవద్దు. ఒకే మందును పదే పదే కాకుండా వేర్వేరు రకాలను మార్చి వాడండి.',
+          regulatoryNotice_en:
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / sheath blight entries. Verify against your own container label before mixing.',
+          regulatoryNotice_te:
+            'ఈ మోతాదులు CIBRC శిలీంద్రనాశక నమోదు పట్టికలోని వరి / పాము పొడ తెగులు వరుసల నుండి ధృవీకరించబడ్డాయి. కలపడానికి ముందు మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకోండి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Part the tillers and photograph the leaf sheath at and just above the water line, not the top of the plant. Pull back one outer sheath so the lesion and its border are clearly visible, and look for small brown seed-like bodies on the surface.',
+        instruction_te:
+          'పిలకలను పక్కకు జరిపి, మొక్క పైభాగాన్ని కాకుండా నీటి మట్టం దగ్గర, దాని కొద్దిగా పైన ఉన్న ఆకు తొడుగును ఫోటో తీయండి. ఒక బయటి తొడుగును కొద్దిగా విప్పి మచ్చ, దాని అంచు స్పష్టంగా కనిపించేలా చేయండి; తొడుగుపై చిన్న గోధుమ రంగు గింజల వంటి వాటిని గమనించండి.',
+        rationale_en:
+          'Sheath Blight lives at the base of the crop. A photograph of the canopy from above will miss it entirely and may instead look like a nutrient problem.',
+        rationale_te:
+          'పాము పొడ తెగులు పంట మొదళ్ల దగ్గర ఉంటుంది. పై నుండి తీసిన ఫోటోలో అది అస్సలు కనిపించదు, పైగా పోషక లోపం వలె కనిపించవచ్చు.',
+        requiredForConfidence: true,
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-sheathblight-q-waterline',
+          question_en: 'Did the damage begin on the sheath near the water line and move upward, rather than starting on the leaves?',
+          question_te: 'నష్టం ఆకులపై కాకుండా, నీటి మట్టం దగ్గర తొడుగుపై మొదలై పైకి వ్యాపించిందా?',
+          ifYes_en: 'Upward spread from the water line is the defining Sheath Blight pattern.',
+          ifYes_te: 'నీటి మట్టం నుండి పైకి వ్యాపించడం పాము పొడ తెగులు ప్రధాన లక్షణం.',
+          ifNo_en: 'Damage beginning on the leaf blade points to Blast, Brown Spot or Bacterial Leaf Blight.',
+          ifNo_te: 'నష్టం ఆకుపై మొదలైతే అగ్గి తెగులు, గోధుమ మచ్చల తెగులు లేదా ఎండాకు తెగులు కావచ్చు.',
+          pointsTowardIds: ['disease-rice-sheathblight'],
+          pointsAwayIds: ['disease-rice-blast', 'disease-rice-blb'],
+        },
+        {
+          id: 'rice-sheathblight-q-sclerotia',
+          question_en: 'Can you see small brown or black seed-like bodies, about the size of a mustard grain, loose on the sheath surface?',
+          question_te: 'తొడుగు ఉపరితలంపై ఆవ గింజ పరిమాణంలో చిన్న గోధుమ లేదా నల్ల గింజల వంటివి వదులుగా కనిపిస్తున్నాయా?',
+          ifYes_en: 'Those are sclerotia and they effectively confirm Sheath Blight.',
+          ifYes_te: 'అవి స్క్లెరోషియా; ఇవి కనిపిస్తే పాము పొడ తెగులు దాదాపు నిర్ధారణ అయినట్లే.',
+          ifNo_en:
+            'Their absence does not rule it out — sclerotia form mainly in humid weather and in later stages.',
+          ifNo_te:
+            'అవి కనిపించకపోయినా తెగులు కాదని చెప్పలేము — స్క్లెరోషియా ఎక్కువగా తేమ వాతావరణంలో, ముదిరిన దశలో ఏర్పడతాయి.',
+          pointsTowardIds: ['disease-rice-sheathblight'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Lesions confined to the lowest sheaths, below about a quarter of the plant height.',
+          threshold_te: 'మచ్చలు అట్టడుగు తొడుగులకే పరిమితం, మొక్క ఎత్తులో సుమారు నాలుగో వంతు కంటే కింద.',
+          action_en:
+            'Drain and open the canopy. Hold off on spraying and re-inspect in four to five days.',
+          action_te:
+            'నీటిని తీసి పంటలోకి గాలి ప్రసరించేలా చేయండి. పిచికారీ ఆపి నాలుగైదు రోజుల తరువాత మళ్లీ పరిశీలించండి.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: 'Lesions have climbed to between a quarter and half the plant height, or affect more than 10-15% of tillers.',
+          threshold_te: 'మచ్చలు మొక్క ఎత్తులో నాలుగో వంతు నుండి సగం వరకు ఎక్కాయి, లేదా 10-15% పైగా పిలకలను ఆశించాయి.',
+          action_en:
+            'A registered fungicide spray is justified now, directed at the lower sheath. Choose the product by how near harvest is, since waiting periods differ a lot.',
+          action_te:
+            'ఇప్పుడు నమోదైన శిలీంద్రనాశకం పిచికారీ సమంజసం; దాన్ని కింది తొడుగుపై పడేలా చేయండి. నిరీక్షణ వ్యవధులు చాలా తేడాగా ఉంటాయి కాబట్టి కోత ఎంత దగ్గరలో ఉందో చూసి మందును ఎంచుకోండి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Lesions above half the plant height, reaching the flag leaf, or tillers already lodging.',
+          threshold_te: 'మచ్చలు మొక్క ఎత్తులో సగం పైన, కంకి ఆకు వరకు చేరడం, లేదా పిలకలు అప్పటికే పడిపోవడం.',
+          action_en:
+            'Contact your RBK the same day. Once the fungus reaches the flag leaf, grain filling is directly at risk and spray timing becomes critical.',
+          action_te:
+            'అదే రోజు RBK ను సంప్రదించండి. శిలీంద్రం కంకి ఆకుకు చేరిన తరువాత గింజ నిండటం నేరుగా దెబ్బతింటుంది, పిచికారీ సమయం చాలా కీలకం అవుతుంది.',
+        },
+      ],
+      escalationThreshold_en:
+        'Contact your Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer if lesions climb past half the plant height, reach the flag leaf, or if tillers begin to lodge. Sheath Blight at the flag leaf stage threatens grain filling directly, and the choice of fungicide then depends on how many days remain to harvest — a decision worth confirming in person.',
+      escalationThreshold_te:
+        'మచ్చలు మొక్క ఎత్తులో సగం దాటి ఎక్కితే, కంకి ఆకుకు చేరితే, లేదా పిలకలు పడిపోవడం మొదలైతే రైతు భరోసా కేంద్రం (RBK) లేదా వ్యవసాయ విస్తరణ అధికారిని సంప్రదించండి. కంకి ఆకు దశలో పాము పొడ తెగులు గింజ నిండటాన్ని నేరుగా దెబ్బతీస్తుంది; కోతకు ఎన్ని రోజులు ఉన్నాయో దాన్ని బట్టి మందు ఎంపిక మారుతుంది కాబట్టి ప్రత్యక్షంగా సంప్రదించడం మేలు.',
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+        {
+          title: 'Major Uses of Pesticides (Fungicides) — Registered under the Insecticides Act, 1968, as on 31.03.2024',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://ppqs.gov.in/sites/default/files/fungicides_31.03.2024.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries, target "Sheath blight" — Validamycin 3% L (2000 g/ha, 750 L, 14 days), Hexaconazole 5% EC (1000 ml/ha, 500 L, 40 days), Propiconazole 25% EC (500 g/ha, 750 L, 30 days).',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-stemborer': {
+      id: 'disease-rice-stemborer',
+      cropId: 'crop-rice',
+      name_en: 'Yellow Stem Borer',
+      name_te: 'కాండం తొలుచు పురుగు',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect pest: Scirpophaga incertulas (larva bores inside the stem)',
+      pathogenOrVector_te: 'పురుగు: స్కిర్పోఫాగా ఇన్సర్టులాస్ (లద్దె పురుగు కాండం లోపల తొలుస్తుంది)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Dead heart in the vegetative stage: the central shoot dries to straw colour while the surrounding leaves stay green, and it pulls out easily with a gentle tug.',
+        'White ear in the reproductive stage: the whole panicle emerges white, erect and empty, with no filled grain.',
+        'A small round bore hole near a node, often with powdery frass at the opening.',
+        'Creamy-white larvae with a dark head inside a split stem.',
+        'Flat, pale egg masses covered with light brown hairs on the upper leaf surface.',
+      ],
+      observableSymptoms_te: [
+        'ఎదుగుదల దశలో మొవ్వు చావు: చుట్టూ ఆకులు పచ్చగా ఉండగా మధ్య మొవ్వు మాత్రం ఎండి గడ్డి రంగులోకి మారుతుంది, మెల్లగా లాగితే సులభంగా ఊడి వస్తుంది.',
+        'వెన్ను దశలో తెల్ల కంకి: వెన్ను మొత్తం తెల్లగా, నిటారుగా, గింజ లేకుండా వస్తుంది.',
+        'కణుపు దగ్గర చిన్న గుండ్రని రంధ్రం, దాని నోటి దగ్గర పొడి వంటి రెట్టలు.',
+        'కాండాన్ని చీల్చి చూస్తే లోపల నల్ల తల ఉన్న లేత తెలుపు రంగు లద్దె పురుగులు.',
+        'ఆకు పైభాగంలో లేత గోధుమ రంగు వెంట్రుకలతో కప్పబడిన చదునైన గుడ్ల సముదాయం.',
+      ],
+      affectedParts: ['Stem / Tiller', 'Central Shoot', 'Panicle'],
+      similarConditions: [
+        {
+          id: 'rice-stemborer-vs-gallmidge',
+          name_en: 'Rice Gall Midge (Orseolia oryzae / Pest)',
+          name_te: 'కాండం ఈగ',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Gall midge turns the shoot into a hollow silvery tube like an onion leaf, and the plant stays alive and produces more tillers. Stem borer kills the shoot outright, leaving a dry dead heart that pulls out and a bore hole with frass.',
+          differentiatingFactors_te:
+            'కాండం ఈగ మొవ్వును ఉల్లి ఆకు వలె బోలు వెండి రంగు గొట్టంగా మారుస్తుంది, మొక్క బతికి ఉండి ఎక్కువ పిలకలు వేస్తుంది. కాండం తొలుచు పురుగు మొవ్వును పూర్తిగా చంపుతుంది; ఎండిన మొవ్వు ఊడి వస్తుంది, రంధ్రం, రెట్టలు ఉంటాయి.',
+        },
+        {
+          id: 'rice-stemborer-vs-neckblast',
+          name_en: 'Neck Blast (Magnaporthe oryzae / Fungal)',
+          name_te: 'వెన్ను విరుపు (అగ్గి తెగులు)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Both produce white empty panicles. Neck blast leaves a blackened shrivelled lesion at the neck where the panicle bends or breaks, and no bore hole. Stem borer leaves a clean bore hole with frass and no neck lesion — this distinction decides whether you need a fungicide or an insecticide.',
+          differentiatingFactors_te:
+            'రెండూ తెల్లని ఖాళీ వెన్నులను ఇస్తాయి. వెన్ను విరుపులో వెన్ను మెడ దగ్గర నల్లబడి ముడుచుకున్న మచ్చ ఉండి అక్కడ వంగి లేదా విరిగిపోతుంది, రంధ్రం ఉండదు. కాండం తొలుచు పురుగులో శుభ్రమైన రంధ్రం, రెట్టలు ఉంటాయి, మెడ దగ్గర మచ్చ ఉండదు — ఈ తేడాయే శిలీంద్రనాశకం కావాలా, పురుగు మందు కావాలా అనేది నిర్ణయిస్తుంది.',
+        },
+        {
+          id: 'rice-stemborer-vs-sheathblight',
+          name_en: 'Sheath Blight (Rhizoctonia solani / Fungal)',
+          name_te: 'పాము పొడ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Sheath Blight shows surface lesions on the sheath with no bore hole and the tiller stays firmly attached. Stem borer damage is internal, with a hole and frass, and the dead shoot lifts out.',
+          differentiatingFactors_te:
+            'పాము పొడ తెగులులో తొడుగుపై పైపైన మచ్చలు ఉంటాయి, రంధ్రం ఉండదు, పిలక గట్టిగా అతుక్కుని ఉంటుంది. కాండం తొలుచు పురుగు నష్టం లోపల ఉంటుంది — రంధ్రం, రెట్టలు ఉంటాయి, ఎండిన మొవ్వు పైకి ఊడి వస్తుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Staggered or late planting next to already-infested fields, which gives moths a continuous host.',
+        'Stubble left standing after harvest, where larvae overwinter and carry into the next crop.',
+        'High nitrogen producing soft, lush tillers that larvae penetrate easily.',
+        'Continuous rice-after-rice cropping without a break crop or fallow.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఇప్పటికే పురుగు ఉన్న పొలాల పక్కన వేర్వేరు సమయాల్లో లేదా ఆలస్యంగా నాటడం వల్ల రెక్కల పురుగులకు నిరంతరం ఆశ్రయం దొరకడం.',
+        'కోత తరువాత మోళ్లను పొలంలోనే వదిలేయడం; లద్దె పురుగులు వాటిలో బతికి మరుసటి పంటకు చేరతాయి.',
+        'నత్రజని ఎక్కువగా వేయడం వల్ల పిలకలు మెత్తగా పెరిగి పురుగు సులభంగా లోపలికి చొచ్చుకుపోవడం.',
+        'విరామం లేకుండా వరి తరువాత వరి సాగు చేయడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Plough in or remove stubble immediately after harvest, as larvae survive inside it and emerge into the next crop.',
+          practice_te:
+            'కోత అయిన వెంటనే మోళ్లను దున్నేయండి లేదా తీసివేయండి; లద్దె పురుగులు వాటి లోపల బతికి మరుసటి పంటకు వస్తాయి.',
+          targetTiming: 'Immediately post-harvest',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Plant at the same time as neighbouring fields in your area. Synchronised planting denies the moth a continuous succession of young crops to lay eggs in.',
+          practice_te:
+            'మీ ప్రాంతంలోని పక్క పొలాలతో కలిసి ఒకే సమయంలో నాటండి. అందరూ ఒకేసారి నాటితే రెక్కల పురుగుకు గుడ్లు పెట్టడానికి వరుసగా లేత పంట దొరకదు.',
+          targetTiming: 'At planting',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Walk the field weekly and clip off and destroy the hairy egg masses on the upper leaf surface before they hatch. This is the single cheapest control measure available.',
+          practice_te:
+            'వారానికొకసారి పొలంలో తిరిగి, ఆకు పైభాగంలో ఉన్న వెంట్రుకల గుడ్ల సముదాయాలను పొదగక ముందే తుంచి నాశనం చేయండి. అందుబాటులో ఉన్న అతి తక్కువ ఖర్చు నివారణ ఇదే.',
+          targetTiming: 'Weekly from tillering',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'Install pheromone traps to track moth activity, so that any spray is timed to egg-laying rather than applied on a fixed calendar.',
+          practice_te:
+            'రెక్కల పురుగుల కదలికను గమనించడానికి ఫెరమోన్ ఎరలను అమర్చండి; అప్పుడు పిచికారీని నిర్ణీత తేదీల ప్రకారం కాకుండా గుడ్లు పెట్టే సమయానికి సరిపోల్చవచ్చు.',
+          targetTiming: 'From active tillering',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-stemborer-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Azadirachtin 0.15% EC (neem seed kernel based) is registered for rice stem borer at 1500-2500 ml of formulation per hectare in 500 litres of water, with a short 5-day waiting period. Azadirachtin 0.03% EC (neem oil based) is registered at 2000 ml per hectare in 1000 litres.',
+          instruction_te:
+            'వరిలో కాండం తొలుచు పురుగుకు అజాడిరక్టిన్ 0.15% EC (వేప గింజల ఆధారిత) హెక్టారుకు 1500-2500 మి.లీ. మందును 500 లీటర్ల నీటిలో కలిపి పిచికారీ చేయడానికి నమోదై ఉంది; నిరీక్షణ వ్యవధి కేవలం 5 రోజులు. అజాడిరక్టిన్ 0.03% EC (వేప నూనె ఆధారిత) హెక్టారుకు 2000 మి.లీ. 1000 లీటర్ల నీటిలో నమోదై ఉంది.',
+          activeIngredient_en: 'Azadirachtin 0.15% EC or Azadirachtin 0.03% EC (neem based)',
+          activeIngredient_te: 'అజాడిరక్టిన్ 0.15% EC లేదా అజాడిరక్టిన్ 0.03% EC (వేప ఆధారిత)',
+          safetyCaution_en:
+            'Neem works mainly on eggs and very young larvae, so it must be applied at egg-laying — once larvae are inside the stem no spray reaches them. Spray in the evening, as sunlight breaks azadirachtin down quickly.',
+          safetyCaution_te:
+            'వేప మందు ప్రధానంగా గుడ్లపై, చాలా లేత లద్దె పురుగులపై పనిచేస్తుంది; కాబట్టి గుడ్లు పెట్టే సమయంలోనే వాడాలి — పురుగు కాండం లోపలికి వెళ్లిన తరువాత ఏ పిచికారీ దాన్ని చేరదు. ఎండకు అజాడిరక్టిన్ త్వరగా పాడవుతుంది కాబట్టి సాయంత్రం పిచికారీ చేయండి.',
+          regulatoryNotice_en:
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides & Bio-insecticides) registry, rice / stem borer entries. Biopesticides are regulated under the Insecticides Act and must not be tank-mixed with incompatible chemical fungicides.',
+          regulatoryNotice_te:
+            'ఈ మోతాదులు CIBRC పురుగు మందులు మరియు జీవ పురుగు మందుల నమోదు పట్టికలోని వరి / కాండం తొలుచు పురుగు వరుసల నుండి ధృవీకరించబడ్డాయి. జీవ పురుగు మందులు కూడా కీటక నాశక చట్టం పరిధిలోనే ఉంటాయి; వాటిని సరిపడని రసాయన శిలీంద్రనాశకాలతో కలిపి వాడకూడదు.',
+        },
+        {
+          id: 'rice-stemborer-org-2',
+          stepNumber: 2,
+          category: 'organic',
+          instruction_en:
+            'Bacillus thuringiensis var. kurstaki is registered for rice stem borer and leaf folder at 1.50 kg per hectare in 500-750 litres of water.',
+          instruction_te:
+            'బాసిల్లస్ తురింజియెన్సిస్ వెరైటీ కుర్‌స్టాకి వరిలో కాండం తొలుచు పురుగు, ఆకు ముడత పురుగుకు హెక్టారుకు 1.50 కిలోలు 500-750 లీటర్ల నీటిలో కలిపి వాడటానికి నమోదై ఉంది.',
+          activeIngredient_en: 'Bacillus thuringiensis var. kurstaki (strain Z-52)',
+          activeIngredient_te: 'బాసిల్లస్ తురింజియెన్సిస్ వెరైటీ కుర్‌స్టాకి (స్ట్రెయిన్ Z-52)',
+          safetyCaution_en:
+            'Like neem, Bt only works on larvae that eat it before boring in, so timing at hatching is everything. The registry states no waiting period for this entry; follow your product label. Do not mix with chemical fungicides, which can kill the bacterium.',
+          safetyCaution_te:
+            'వేప మందు వలెనే, Bt కూడా కాండంలోకి చొరబడక ముందు దాన్ని తిన్న లద్దె పురుగులపైనే పనిచేస్తుంది; కాబట్టి గుడ్లు పొదిగే సమయమే కీలకం. ఈ వరుసకు నమోదు పట్టికలో నిరీక్షణ వ్యవధి ఇవ్వలేదు; మీ మందు లేబుల్‌ను పాటించండి. రసాయన శిలీంద్రనాశకాలతో కలపవద్దు, అవి ఈ బ్యాక్టీరియాను చంపేస్తాయి.',
+          regulatoryNotice_en:
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Insecticides & Bio-insecticides) registry, rice / stem borer entry.',
+          regulatoryNotice_te:
+            'ఈ మోతాదు CIBRC పురుగు మందులు మరియు జీవ పురుగు మందుల నమోదు పట్టికలోని వరి / కాండం తొలుచు పురుగు వరుస నుండి ధృవీకరించబడింది.',
+        },
+        {
+          id: 'rice-stemborer-chem-1',
+          stepNumber: 3,
+          category: 'chemical',
+          instruction_en:
+            'Registered options for rice stem borer include Cartap Hydrochloride 50% SP at 1000 g per hectare in 500-1000 litres of water (21-day waiting period), Chlorantraniliprole 18.5% SC at 150 ml per hectare in 500 litres (47-day waiting period), and Flubendiamide 20% WG at 125 g per hectare in 500 litres (30-day waiting period).',
+          instruction_te:
+            'వరిలో కాండం తొలుచు పురుగుకు నమోదైన మందులు: కార్టాప్ హైడ్రోక్లోరైడ్ 50% SP హెక్టారుకు 1000 గ్రా. 500-1000 లీటర్ల నీటిలో (నిరీక్షణ 21 రోజులు), క్లోరాంట్రానిలిప్రోల్ 18.5% SC హెక్టారుకు 150 మి.లీ. 500 లీటర్ల నీటిలో (నిరీక్షణ 47 రోజులు), ఫ్లూబెండమైడ్ 20% WG హెక్టారుకు 125 గ్రా. 500 లీటర్ల నీటిలో (నిరీక్షణ 30 రోజులు).',
+          activeIngredient_en:
+            'Cartap Hydrochloride 50% SP (500 g a.i./ha), Chlorantraniliprole 18.5% SC (30 g a.i./ha), or Flubendiamide 20% WG (25 g a.i./ha)',
+          activeIngredient_te:
+            'కార్టాప్ హైడ్రోక్లోరైడ్ 50% SP (హెక్టారుకు 500 గ్రా.), క్లోరాంట్రానిలిప్రోల్ 18.5% SC (హెక్టారుకు 30 గ్రా.), లేదా ఫ్లూబెండమైడ్ 20% WG (హెక్టారుకు 25 గ్రా.)',
+          safetyCaution_en:
+            'Waiting periods differ sharply — 21, 47 and 30 days. Chlorantraniliprole at 47 days is unsuitable close to harvest. Spray only when the economic threshold is reached, not on a calendar: once larvae are inside the stem, spraying cannot reach them and only kills the natural enemies that would have helped you.',
+          safetyCaution_te:
+            'నిరీక్షణ వ్యవధులు చాలా తేడాగా ఉన్నాయి — 21, 47, 30 రోజులు. 47 రోజుల క్లోరాంట్రానిలిప్రోల్ కోత దగ్గరగా ఉన్నప్పుడు పనికిరాదు. నిర్ణీత తేదీల ప్రకారం కాకుండా, నష్ట స్థాయి దాటినప్పుడు మాత్రమే పిచికారీ చేయండి: పురుగు కాండం లోపలికి వెళ్లాక పిచికారీ దాన్ని చేరదు, పైగా మీకు సాయపడే మిత్ర పురుగులను మాత్రమే చంపుతుంది.',
+          regulatoryNotice_en:
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice / stem borer entries. Rotate between chemical groups across sprays, as stem borer develops resistance readily. Verify against your container label and confirm with your RBK.',
+          regulatoryNotice_te:
+            'ఈ మోతాదులు CIBRC పురుగు మందుల నమోదు పట్టికలోని వరి / కాండం తొలుచు పురుగు వరుసల నుండి ధృవీకరించబడ్డాయి. ఈ పురుగు త్వరగా నిరోధక శక్తిని పెంచుకుంటుంది కాబట్టి వేర్వేరు రకాల మందులను మార్చి వాడండి. మీ మందు డబ్బా లేబుల్‌పై సరిచూసుకుని RBK వద్ద నిర్ధారించుకోండి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Pull the dried central shoot gently and photograph it next to the plant, showing whether it came away cleanly. Then split one affected tiller lengthwise with a blade and photograph the inside — a larva, a tunnel or powdery frass is the confirming evidence.',
+        instruction_te:
+          'ఎండిన మధ్య మొవ్వును మెల్లగా లాగి, అది శుభ్రంగా ఊడి వచ్చిందో లేదో కనిపించేలా మొక్క పక్కన పెట్టి ఫోటో తీయండి. తరువాత ఒక దెబ్బతిన్న పిలకను బ్లేడుతో పొడవుగా చీల్చి లోపలి భాగాన్ని ఫోటో తీయండి — లద్దె పురుగు, సొరంగం లేదా పొడి రెట్టలు కనిపిస్తే అదే నిర్ధారణ.',
+        rationale_en:
+          'A dead heart or a white panicle photographed from outside looks identical to neck blast and to gall midge damage. Only the inside of the stem shows which one it is, and that decides whether an insecticide or a fungicide is the right answer.',
+        rationale_te:
+          'బయట నుండి తీసిన ఎండిన మొవ్వు లేదా తెల్ల కంకి ఫోటో వెన్ను విరుపు, కాండం ఈగ నష్టం వలెనే కనిపిస్తుంది. ఏది అనేది కాండం లోపలి భాగం మాత్రమే చూపిస్తుంది; పురుగు మందు కావాలా, శిలీంద్రనాశకం కావాలా అనేది దీనిపైనే ఆధారపడి ఉంటుంది.',
+        requiredForConfidence: true,
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-stemborer-q-pullout',
+          question_en: 'Does the dried central shoot pull out easily with a gentle tug, leaving the outer leaves green?',
+          question_te: 'ఎండిన మధ్య మొవ్వు మెల్లగా లాగితే సులభంగా ఊడి వస్తుందా, బయటి ఆకులు పచ్చగానే ఉంటాయా?',
+          ifYes_en: 'A dead heart that lifts out cleanly is classic stem borer damage.',
+          ifYes_te: 'శుభ్రంగా ఊడి వచ్చే ఎండిన మొవ్వు కాండం తొలుచు పురుగు నష్టానికి ప్రధాన గుర్తు.',
+          ifNo_en:
+            'If it resists, look again at the sheath for lesions — Sheath Blight and other rots keep the tiller firmly attached.',
+          ifNo_te:
+            'ఊడి రాకపోతే తొడుగుపై మచ్చల కోసం మళ్లీ చూడండి — పాము పొడ తెగులు, ఇతర కుళ్ళు తెగుళ్లలో పిలక గట్టిగా అతుక్కుని ఉంటుంది.',
+          pointsTowardIds: ['disease-rice-stemborer'],
+          pointsAwayIds: ['disease-rice-sheathblight'],
+        },
+        {
+          id: 'rice-stemborer-q-neck',
+          question_en:
+            'If panicles are white and empty: is there a blackened shrivelled patch at the neck where the panicle joins the stem?',
+          question_te:
+            'వెన్నులు తెల్లగా, ఖాళీగా ఉంటే: వెన్ను కాండానికి కలిసే మెడ దగ్గర నల్లబడి ముడుచుకున్న మచ్చ ఉందా?',
+          ifYes_en: 'A blackened neck means neck blast, a fungal disease — an insecticide will not help.',
+          ifYes_te:
+            'మెడ నల్లబడితే అది వెన్ను విరుపు, శిలీంద్ర తెగులు — పురుగు మందు వాడినా ప్రయోజనం ఉండదు.',
+          ifNo_en: 'A clean neck with a bore hole somewhere on the stem points to stem borer.',
+          ifNo_te: 'మెడ శుభ్రంగా ఉండి కాండంపై ఎక్కడైనా రంధ్రం ఉంటే అది కాండం తొలుచు పురుగు.',
+          pointsTowardIds: ['disease-rice-stemborer'],
+          pointsAwayIds: ['disease-rice-blast'],
+        },
+        {
+          id: 'rice-stemborer-q-threshold',
+          question_en:
+            'Count roughly 20 hills at random. Are more than one in twenty showing dead hearts, or can you find an egg mass per square metre?',
+          question_te:
+            'ఏవైనా 20 కుదుళ్లను లెక్కించండి. ఇరవైలో ఒకటి కంటే ఎక్కువ కుదుళ్లలో మొవ్వు చావు ఉందా, లేదా చదరపు మీటరుకు ఒక గుడ్ల సముదాయం కనిపిస్తుందా?',
+          ifYes_en: 'You are at or above the usual action threshold — an intervention decision is justified now.',
+          ifYes_te: 'మీరు సాధారణ చర్య స్థాయికి చేరారు లేదా దాటారు — ఇప్పుడు చర్య తీసుకునే నిర్ణయం సమంజసం.',
+          ifNo_en:
+            'Below threshold, spraying usually costs more than the damage it prevents. Keep scouting weekly and destroy egg masses by hand.',
+          ifNo_te:
+            'ఆ స్థాయి కంటే తక్కువగా ఉంటే, పిచికారీ ఖర్చు అది నివారించే నష్టం కంటే ఎక్కువ అవుతుంది. వారానికొకసారి పరిశీలిస్తూ గుడ్ల సముదాయాలను చేతితో తీసి నాశనం చేయండి.',
+          pointsTowardIds: ['disease-rice-stemborer'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Under 5% of tillers showing dead hearts, with no egg masses found on a walk through the field.',
+          threshold_te: '5% లోపు పిలకల్లో మొవ్వు చావు, పొలంలో తిరిగినప్పుడు గుడ్ల సముదాయాలు కనిపించకపోవడం.',
+          action_en:
+            'Do not spray. Clip and destroy any egg masses you find and re-scout in a week — below this level a spray costs more than it saves.',
+          action_te:
+            'పిచికారీ చేయవద్దు. కనిపించిన గుడ్ల సముదాయాలను తుంచి నాశనం చేసి వారం తరువాత మళ్లీ పరిశీలించండి — ఈ స్థాయి కంటే తక్కువగా ఉంటే పిచికారీ ఖర్చు ఆదా చేసే దాని కంటే ఎక్కువ.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: '5-10% of tillers with dead hearts, or about one egg mass per square metre.',
+          threshold_te: '5-10% పిలకల్లో మొవ్వు చావు, లేదా చదరపు మీటరుకు సుమారు ఒక గుడ్ల సముదాయం.',
+          action_en:
+            'This is the usual action threshold. A neem or Bt application timed to egg hatch is the economical first choice; keep a registered insecticide for a rising count.',
+          action_te:
+            'ఇదే సాధారణ చర్య స్థాయి. గుడ్లు పొదిగే సమయానికి వేప లేదా Bt వాడటం ఖర్చు పరంగా మొదటి ఎంపిక; సంఖ్య పెరిగితే నమోదైన పురుగు మందును వాడండి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Over 10% dead hearts, or white ears appearing at the panicle stage.',
+          threshold_te: '10% పైగా మొవ్వు చావు, లేదా వెన్ను దశలో తెల్ల కంకులు కనిపించడం.',
+          action_en:
+            'Consult your RBK. White ears mean that grain is already lost on those tillers and no spray will recover them — the decision is about protecting the rest of the crop and the next season.',
+          action_te:
+            'RBK ను సంప్రదించండి. తెల్ల కంకులు కనిపిస్తే ఆ పిలకల్లో గింజ అప్పటికే పోయినట్లే, ఏ పిచికారీ దాన్ని తిరిగి తేలేదు — ఇప్పుడు నిర్ణయం మిగిలిన పంటను, మరుసటి సీజన్‌ను కాపాడుకోవడం గురించి.',
+        },
+      ],
+      escalationThreshold_en:
+        'Contact your Rythu Bharosa Kendra (RBK) if dead hearts exceed roughly one tiller in ten, if white ears appear at panicle stage, or if damage continues after a correctly timed spray — continuing damage usually means either resistance or that the spray was applied after larvae were already inside the stem. Confirm whether white panicles are stem borer or neck blast before buying any product, because the two need completely different chemicals.',
+      escalationThreshold_te:
+        'పది పిలకల్లో ఒకటి కంటే ఎక్కువ మొవ్వు చావు ఉంటే, వెన్ను దశలో తెల్ల కంకులు కనిపిస్తే, లేదా సరైన సమయంలో పిచికారీ చేసినా నష్టం కొనసాగితే రైతు భరోసా కేంద్రాన్ని (RBK) సంప్రదించండి — నష్టం కొనసాగడం అంటే సాధారణంగా నిరోధక శక్తి పెరిగిందని, లేదా పురుగు కాండం లోపలికి వెళ్లిన తరువాత పిచికారీ చేశారని అర్థం. ఏ మందు కొనే ముందైనా తెల్ల వెన్నులు కాండం తొలుచు పురుగు వల్లనా, వెన్ను విరుపు వల్లనా అని నిర్ధారించుకోండి; ఈ రెండింటికీ పూర్తిగా వేర్వేరు మందులు కావాలి.',
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Entomology & Integrated Pest Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+        {
+          title:
+            'Major Uses of Pesticides (Insecticides, agricultural use) — Registered under the Insecticides Act, 1968, as on 30.09.2025',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://new.jau.in/storage/document/dynamic_document//residue_insecticide_30092025_20251226_783.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries, target "Stem borer" / "Yellow stem borer" — Cartap Hydrochloride 50% SP (1000 g/ha, 500-1000 L, 21 days), Chlorantraniliprole 18.50% SC (150 ml/ha, 500 L, 47 days), Flubendiamide 20% WG (125 g/ha, 500 L, 30 days). Note: retrieved from a Junagadh Agricultural University mirror of the CIBRC document, as the ppqs.gov.in copy was unreachable; document title, issuing body and "as on" date were confirmed in the retrieved file.',
+        },
+        {
+          title:
+            'Major Uses of Pesticides (Insecticides & Bio-insecticides) — Registered under the Insecticides Act, 1968, as on 31.03.2024',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://ppqs.gov.in/sites/default/files/major_uses_of_pesticides_insecticides_bio_insecticides_as_on_31.03.2024.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop bio-insecticide entries, target "Stem borer" — Azadirachtin 0.15% EC (1500-2500 ml/ha, 500 L, 5 days), Azadirachtin 0.03% EC (2000 ml/ha, 1000 L, 5 days), Bacillus thuringiensis var. kurstaki strain Z-52 (1.50 kg/ha, 500-750 L).',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-gallmidge': {
+      id: 'disease-rice-gallmidge',
+      cropId: 'crop-rice',
+      name_en: 'Rice Gall Midge',
+      name_te: 'కాండం ఈగ',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect pest: Orseolia oryzae (maggot feeds at the growing point)',
+      pathogenOrVector_te: 'పురుగు: ఆర్సియోలియా ఒరైజే (పిల్ల పురుగు మొవ్వు దగ్గర ఆశిస్తుంది)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'The affected tiller turns into a hollow, silvery-white tube resembling an onion leaf — the characteristic silver shoot or onion shoot.',
+        'The tube is pale, elongated, and produces no panicle at all.',
+        'The plant stays alive and compensates by producing extra tillers, so the hill looks bushy and crowded.',
+        'Affected tillers are shorter than healthy ones, with no bore hole and no frass anywhere on the stem.',
+      ],
+      observableSymptoms_te: [
+        'ఆశించిన పిలక ఉల్లి ఆకును పోలిన బోలు, వెండి తెలుపు గొట్టంగా మారుతుంది — ఇదే ఉల్లి కాడ లేదా వెండి కాడ లక్షణం.',
+        'ఆ గొట్టం పాలిపోయి, పొడవుగా ఉండి, అస్సలు వెన్ను ఇవ్వదు.',
+        'మొక్క బతికే ఉండి, భర్తీగా అదనపు పిలకలు వేస్తుంది; దాంతో కుదురు పొదలా దట్టంగా కనిపిస్తుంది.',
+        'ఆశించిన పిలకలు ఆరోగ్యకరమైన వాటి కంటే పొట్టిగా ఉంటాయి; కాండంపై ఎక్కడా రంధ్రం గానీ రెట్టలు గానీ ఉండవు.',
+      ],
+      affectedParts: ['Tiller', 'Growing Point'],
+      similarConditions: [
+        {
+          id: 'rice-gallmidge-vs-stemborer',
+          name_en: 'Yellow Stem Borer (Scirpophaga incertulas / Pest)',
+          name_te: 'కాండం తొలుచు పురుగు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Stem borer kills the shoot, leaving a dry brown dead heart that pulls out, plus a bore hole and frass. Gall midge leaves a living silvery hollow tube with no hole and no frass, and the plant produces more tillers rather than dying back.',
+          differentiatingFactors_te:
+            'కాండం తొలుచు పురుగు మొవ్వును చంపి, ఊడి వచ్చే ఎండిన గోధుమ రంగు మొవ్వును, రంధ్రాన్ని, రెట్టలను వదులుతుంది. కాండం ఈగ రంధ్రం, రెట్టలు లేని బతికి ఉన్న వెండి రంగు బోలు గొట్టాన్ని వదులుతుంది; మొక్క చనిపోకుండా ఎక్కువ పిలకలు వేస్తుంది.',
+        },
+        {
+          id: 'rice-gallmidge-vs-whorlmaggot',
+          name_en: 'Rice Whorl Maggot (Hydrellia spp. / Pest)',
+          name_te: 'మొవ్వు ఈగ',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Whorl maggot chews the edges of emerging leaves, leaving ragged whitish margins on otherwise normal leaves. Gall midge converts the entire shoot into a tube — the leaf blade is absent, not merely damaged.',
+          differentiatingFactors_te:
+            'మొవ్వు ఈగ బయటకు వస్తున్న ఆకుల అంచులను కొరికి, సాధారణంగా ఉన్న ఆకులపై చిరిగిన తెల్లని అంచులను వదులుతుంది. కాండం ఈగ మొవ్వు మొత్తాన్ని గొట్టంగా మారుస్తుంది — ఆకు దెబ్బతినడం కాదు, అసలు ఆకే ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Continuous cloudy, drizzly weather with high humidity during the tillering stage.',
+        'Late planting, and staggered nurseries that keep young tillers available over a long window.',
+        'Volunteer rice and grassy weeds such as wild rice on bunds, which host the midge between crops.',
+        'High nitrogen encouraging lush, continuous tillering that gives the midge fresh growing points.',
+      ],
+      environmentalRiskFactors_te: [
+        'పిలక దశలో నిరంతరం మబ్బులు, తుంపర వర్షాలు, ఎక్కువ తేమ ఉండటం.',
+        'ఆలస్యంగా నాటడం, వేర్వేరు సమయాల్లో నార్లు పోయడం వల్ల చాలా కాలం లేత పిలకలు అందుబాటులో ఉండటం.',
+        'గట్లపై అడవి వరి వంటి గడ్డి కలుపు, రాలిన గింజల నుండి మొలిచిన వరి — పంటల మధ్య కాలంలో ఈగకు ఇవి ఆశ్రయం.',
+        'నత్రజని ఎక్కువగా వేయడం వల్ల పిలకలు వరుసగా మెత్తగా రావడం; ఈగకు కొత్త మొవ్వులు దొరుకుతాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Sow early and in step with neighbouring fields. Late and staggered planting is the strongest single risk factor for gall midge.',
+          practice_te:
+            'ముందుగా, పక్క పొలాలతో కలిసి ఒకే సమయంలో నాటండి. ఆలస్యంగా, వేర్వేరు సమయాల్లో నాటడమే కాండం ఈగకు అతిపెద్ద కారణం.',
+          targetTiming: 'At planting',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Remove wild rice, volunteer rice and grassy weeds from bunds and channels, since the midge survives on them between crops.',
+          practice_te:
+            'గట్లు, కాలువల నుండి అడవి వరి, రాలిన గింజల వరి, గడ్డి కలుపును తీసివేయండి; పంటల మధ్య కాలంలో ఈగ వీటిపైనే బతుకుతుంది.',
+          targetTiming: 'Before and during the season',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Where gall midge recurs every year in your village, choose a resistant variety — resistance is the most reliable and cheapest control for this pest.',
+          practice_te:
+            'మీ గ్రామంలో ప్రతి ఏటా కాండం ఈగ వస్తుంటే తట్టుకునే రకాన్ని ఎంచుకోండి — ఈ పురుగుకు అదే అత్యంత నమ్మదగిన, తక్కువ ఖర్చు నివారణ.',
+          targetTiming: 'Variety selection, before sowing',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'Set up light traps to follow adult midge activity, and count silver shoots weekly so that any treatment decision rests on an actual count.',
+          practice_te:
+            'రెక్కల ఈగల కదలికను గమనించడానికి దీపపు ఎరలను అమర్చండి; వారానికొకసారి ఉల్లి కాడలను లెక్కించండి, అప్పుడు చర్య నిర్ణయం వాస్తవ లెక్కపై ఆధారపడి ఉంటుంది.',
+          targetTiming: 'Tillering stage',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-gallmidge-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Clear grassy weeds and volunteer rice from bunds and channels, and keep the field free of alternate hosts. For gall midge, host removal and resistant varieties do more than any spray, because the maggot sits protected inside the shoot where contact sprays cannot reach it.',
+          instruction_te:
+            'గట్లు, కాలువల నుండి గడ్డి కలుపును, రాలిన గింజల వరిని తీసివేసి, పొలంలో ప్రత్యామ్నాయ ఆశ్రయ మొక్కలు లేకుండా చూసుకోండి. కాండం ఈగ విషయంలో ఆశ్రయ మొక్కల తొలగింపు, తట్టుకునే రకాలు ఏ పిచికారీ కంటే ఎక్కువ పనిచేస్తాయి; ఎందుకంటే పిల్ల పురుగు మొవ్వు లోపల సురక్షితంగా ఉండి, తాకే మందులు దాన్ని చేరవు.',
+          safetyCaution_en:
+            'Silver shoots already formed cannot be cured — those tillers will never produce a panicle. Control effort protects the tillers still forming.',
+          safetyCaution_te:
+            'అప్పటికే ఏర్పడిన ఉల్లి కాడలను నయం చేయలేము — ఆ పిలకలు ఎప్పటికీ వెన్ను ఇవ్వవు. చేసే నివారణ ఇంకా ఏర్పడుతున్న పిలకలను కాపాడటం కోసమే.',
+        },
+        {
+          id: 'rice-gallmidge-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Registered options covering rice gall midge include Fipronil 5% SC at 1000-1500 ml per hectare in 500 litres of water (32-day waiting period), Thiamethoxam 25% WG at 100 g per hectare in 500-750 litres (14-day waiting period), and Ethofenoprox 10% EC at 500-750 ml per hectare in 500 litres (15-day waiting period).',
+          instruction_te:
+            'వరిలో కాండం ఈగకు నమోదైన మందులు: ఫిప్రోనిల్ 5% SC హెక్టారుకు 1000-1500 మి.లీ. 500 లీటర్ల నీటిలో (నిరీక్షణ 32 రోజులు), థయామెథాక్సామ్ 25% WG హెక్టారుకు 100 గ్రా. 500-750 లీటర్ల నీటిలో (నిరీక్షణ 14 రోజులు), ఎథోఫెనోప్రాక్స్ 10% EC హెక్టారుకు 500-750 మి.లీ. 500 లీటర్ల నీటిలో (నిరీక్షణ 15 రోజులు).',
+          activeIngredient_en:
+            'Fipronil 5% SC (50-75 g a.i./ha), Thiamethoxam 25% WG (25 g a.i./ha), or Ethofenoprox 10% EC (50-75 g a.i./ha)',
+          activeIngredient_te:
+            'ఫిప్రోనిల్ 5% SC (హెక్టారుకు 50-75 గ్రా.), థయామెథాక్సామ్ 25% WG (హెక్టారుకు 25 గ్రా.), లేదా ఎథోఫెనోప్రాక్స్ 10% EC (హెక్టారుకు 50-75 గ్రా.)',
+          safetyCaution_en:
+            'Treatment only protects tillers that have not yet been attacked, so it is worth applying early in tillering and pointless once silver shoots are widespread. Waiting periods differ — 32, 14 and 15 days. Wear gloves and a mask, and do not spray against the wind.',
+          safetyCaution_te:
+            'ఈ మందులు ఇంకా ఆశించబడని పిలకలను మాత్రమే కాపాడతాయి; కాబట్టి పిలక దశ ప్రారంభంలో వాడటం ఉపయోగం, ఉల్లి కాడలు విస్తరించిన తరువాత వాడటం వృథా. నిరీక్షణ వ్యవధులు వేర్వేరు — 32, 14, 15 రోజులు. చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు.',
+          regulatoryNotice_en:
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice entries listing gall midge among the target pests. Carbofuran-based granules also appear in the registry for this pest but are not surfaced here, as carbofuran is acutely toxic and its use is under regulatory review in several jurisdictions — discuss it with your RBK rather than treating it as a default.',
+          regulatoryNotice_te:
+            'ఈ మోతాదులు CIBRC పురుగు మందుల నమోదు పట్టికలోని వరి వరుసల (లక్ష్య పురుగులలో కాండం ఈగ ఉన్నవి) నుండి ధృవీకరించబడ్డాయి. ఈ పురుగుకు కార్బోఫ్యూరాన్ గుళికలు కూడా నమోదు పట్టికలో ఉన్నాయి కానీ వాటిని ఇక్కడ చూపలేదు; కార్బోఫ్యూరాన్ తీవ్ర విషపూరితమైనది, పలు దేశాల్లో దాని వాడకంపై సమీక్ష జరుగుతోంది — దాన్ని సాధారణ ఎంపికగా భావించకుండా RBK తో చర్చించండి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Photograph the silvery tube held upright beside a normal green tiller from the same hill, so the difference in shape and colour is visible. Check the stem along its whole length for a bore hole before you photograph.',
+        instruction_te:
+          'వెండి రంగు గొట్టాన్ని అదే కుదురులోని సాధారణ పచ్చ పిలక పక్కన నిటారుగా పట్టుకుని ఫోటో తీయండి; అప్పుడు ఆకారం, రంగులోని తేడా కనిపిస్తుంది. ఫోటో తీసే ముందు కాండాన్ని పొడవునా పరిశీలించి రంధ్రం ఉందో లేదో చూడండి.',
+        rationale_en:
+          'The side-by-side comparison is what makes the silver shoot recognisable, and confirming there is no bore hole is what rules out stem borer.',
+        rationale_te:
+          'పక్కపక్కన పోల్చి చూపడం వల్లనే ఉల్లి కాడను గుర్తించగలం; రంధ్రం లేదని నిర్ధారించడం వల్లనే కాండం తొలుచు పురుగు కాదని చెప్పగలం.',
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-gallmidge-q-tube',
+          question_en: 'Is the affected shoot a pale hollow tube like an onion leaf, still alive, rather than a dry brown dead shoot?',
+          question_te:
+            'ఆశించిన మొవ్వు ఎండిన గోధుమ రంగు మొవ్వులా కాకుండా, ఉల్లి ఆకు వంటి పాలిపోయిన బోలు గొట్టంలా, ఇంకా బతికి ఉందా?',
+          ifYes_en: 'A living silvery tube is the gall midge silver shoot.',
+          ifYes_te: 'బతికి ఉన్న వెండి రంగు గొట్టమే కాండం ఈగ వల్ల ఏర్పడే ఉల్లి కాడ.',
+          ifNo_en: 'A dry brown shoot that pulls out is stem borer instead.',
+          ifNo_te: 'ఎండిన గోధుమ రంగు మొవ్వు ఊడి వస్తే అది కాండం తొలుచు పురుగు.',
+          pointsTowardIds: ['disease-rice-gallmidge'],
+          pointsAwayIds: ['disease-rice-stemborer'],
+        },
+        {
+          id: 'rice-gallmidge-q-borehole',
+          question_en: 'Examining the stem along its length, is there no bore hole and no powdery frass anywhere?',
+          question_te: 'కాండాన్ని పొడవునా పరిశీలిస్తే, ఎక్కడా రంధ్రం గానీ పొడి రెట్టలు గానీ లేవా?',
+          ifYes_en: 'Absence of a bore hole fits gall midge, whose maggot enters at the growing point without tunnelling.',
+          ifYes_te:
+            'రంధ్రం లేకపోవడం కాండం ఈగకు సరిపోతుంది; దాని పిల్ల పురుగు సొరంగం తొలవకుండా మొవ్వు దగ్గర నుండే లోపలికి చేరుతుంది.',
+          ifNo_en: 'A bore hole with frass means stem borer, which needs a different insecticide and a different timing.',
+          ifNo_te:
+            'రెట్టలతో కూడిన రంధ్రం ఉంటే అది కాండం తొలుచు పురుగు; దానికి వేరే మందు, వేరే సమయం కావాలి.',
+          pointsTowardIds: ['disease-rice-gallmidge'],
+          pointsAwayIds: ['disease-rice-stemborer'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Under 5% of tillers showing silver shoots.',
+          threshold_te: '5% లోపు పిలకల్లో ఉల్లి కాడలు.',
+          action_en:
+            'No spray. The plant compensates with extra tillers at this level. Clear weed hosts and keep counting weekly.',
+          action_te:
+            'పిచికారీ అవసరం లేదు. ఈ స్థాయిలో మొక్క అదనపు పిలకలతో భర్తీ చేసుకుంటుంది. కలుపు ఆశ్రయ మొక్కలను తీసి, వారానికొకసారి లెక్కిస్తూ ఉండండి.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: '5-10% of tillers with silver shoots, during active tillering.',
+          threshold_te: 'చురుకైన పిలక దశలో 5-10% పిలకల్లో ఉల్లి కాడలు.',
+          action_en:
+            'Consider a registered treatment only if tillering is still in progress and there are tillers left to protect. Confirm the count with your RBK first.',
+          action_te:
+            'పిలక దశ ఇంకా కొనసాగుతూ, కాపాడాల్సిన పిలకలు మిగిలి ఉంటేనే నమోదైన మందును పరిశీలించండి. ముందుగా లెక్కను RBK వద్ద నిర్ధారించుకోండి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Over 10% of tillers affected, or silver shoots still appearing after tillering has finished.',
+          threshold_te: '10% పైగా పిలకలు దెబ్బతినడం, లేదా పిలక దశ ముగిసిన తరువాత కూడా ఉల్లి కాడలు కనిపించడం.',
+          action_en:
+            'Consult your RBK, and plan a resistant variety for next season. After tillering ends the plant can no longer compensate, and spraying then cannot recover the lost tillers.',
+          action_te:
+            'RBK ను సంప్రదించండి, వచ్చే సీజన్‌కు తట్టుకునే రకాన్ని ప్లాన్ చేసుకోండి. పిలక దశ ముగిశాక మొక్క భర్తీ చేసుకోలేదు; అప్పుడు పిచికారీ చేసినా పోయిన పిలకలు తిరిగి రావు.',
+        },
+      ],
+      escalationThreshold_en:
+        'Contact your Rythu Bharosa Kendra (RBK) if more than one tiller in ten shows silver shoots, or if new silver shoots keep appearing after the tillering stage has ended. Because the maggot is protected inside the shoot and already-formed silver shoots can never produce a panicle, the useful conversation with an officer is about variety choice and planting date for next season, not only about which product to spray now.',
+      escalationThreshold_te:
+        'పది పిలకల్లో ఒకటి కంటే ఎక్కువ ఉల్లి కాడలు కనిపిస్తే, లేదా పిలక దశ ముగిసిన తరువాత కూడా కొత్త ఉల్లి కాడలు వస్తుంటే రైతు భరోసా కేంద్రాన్ని (RBK) సంప్రదించండి. పిల్ల పురుగు మొవ్వు లోపల సురక్షితంగా ఉంటుంది, ఏర్పడిన ఉల్లి కాడలు ఎప్పటికీ వెన్ను ఇవ్వవు; కాబట్టి అధికారితో ఉపయోగకరమైన చర్చ ఇప్పుడు ఏ మందు కొట్టాలి అనే దాని గురించి మాత్రమే కాదు, వచ్చే సీజన్‌లో ఏ రకం వేయాలి, ఎప్పుడు నాటాలి అనే దాని గురించి.',
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Entomology & Integrated Pest Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+        {
+          title:
+            'Major Uses of Pesticides (Insecticides, agricultural use) — Registered under the Insecticides Act, 1968, as on 30.09.2025',
+          organization: 'Central Insecticides Board & Registration Committee (CIBRC), DPPQS, Govt. of India',
+          reviewDate: '2026-10-13',
+          url: 'https://new.jau.in/storage/document/dynamic_document//residue_insecticide_30092025_20251226_783.pdf',
+          specificDocumentVerified: true,
+          pageOrSection:
+            'Rice crop entries listing "Gall midge" among target pests — Fipronil 05% SC (1000-1500 ml/ha, 500 L, 32 days), Thiamethoxam 25% WG (100 g/ha, 500-750 L, 14 days), Ethofenoprox 10% EC (500-750 ml/ha, 500 L, 15 days). Note: retrieved from a Junagadh Agricultural University mirror of the CIBRC document, as the ppqs.gov.in copy was unreachable; document title, issuing body and "as on" date were confirmed in the retrieved file.',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-rice-zincdeficiency': {
+      id: 'disease-rice-zincdeficiency',
+      cropId: 'crop-rice',
+      name_en: 'Zinc Deficiency (Khaira)',
+      name_te: 'జింక్ లోపం (ఖైరా)',
+      conditionCategory: 'nutrient_deficiency',
+      pathogenOrVector_en: 'Not an infection — a soil nutrient disorder caused by low available zinc',
+      pathogenOrVector_te: 'ఇది తెగులు కాదు — నేలలో అందుబాటులో ఉన్న జింక్ తక్కువ కావడం వల్ల వచ్చే పోషక లోపం',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Appears two to four weeks after transplanting, usually in distinct patches rather than evenly across the field.',
+        'Dusty rust-brown blotches develop on the lower leaves, starting near the leaf base and midrib.',
+        'The midrib area turns pale or bleached while the leaf tip may stay greener.',
+        'Plants are stunted with shortened internodes, giving a squat appearance, and tillering is poor.',
+        'Severely affected patches show delayed maturity, so the field ripens unevenly.',
+      ],
+      observableSymptoms_te: [
+        'నాటిన రెండు నుండి నాలుగు వారాల తరువాత కనిపిస్తుంది; పొలం అంతటా సమానంగా కాకుండా సాధారణంగా మడులు మడులుగా వస్తుంది.',
+        'కింది ఆకులపై ఆకు మొదలు, ఈనె దగ్గర నుండి దుమ్ము రంగు తుప్పు మచ్చలు ఏర్పడతాయి.',
+        'మధ్య ఈనె ప్రాంతం పాలిపోయి తెల్లబడుతుంది, ఆకు కొన మాత్రం కొంత పచ్చగా ఉండవచ్చు.',
+        'మొక్కలు గిడసబారి, కణుపుల మధ్య దూరం తగ్గి పొట్టిగా కనిపిస్తాయి; పిలకలు సరిగా రావు.',
+        'తీవ్రంగా దెబ్బతిన్న మడుల్లో పంట ఆలస్యంగా పక్వానికి వస్తుంది, దాంతో పొలం ఒకేసారి పండదు.',
+      ],
+      affectedParts: ['Lower Leaves', 'Whole Plant', 'Tillers'],
+      similarConditions: [
+        {
+          id: 'rice-zinc-vs-brownspot',
+          name_en: 'Brown Spot (Bipolaris oryzae / Fungal)',
+          name_te: 'గోధుమ రంగు మచ్చల తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'This is the critical distinction. Brown Spot makes discrete oval spots each with a defined dark margin, and the plant is otherwise normal height. Zinc deficiency makes diffuse rust-coloured blotching that runs together without clear margins, concentrated near the midrib, together with obvious stunting and poor tillering. Spraying a fungicide at zinc deficiency wastes money and leaves the real cause untouched.',
+          differentiatingFactors_te:
+            'ఇదే అత్యంత కీలకమైన తేడా. గోధుమ రంగు మచ్చల తెగులులో ప్రతి మచ్చకు స్పష్టమైన ముదురు అంచు ఉండి విడివిడిగా ఉంటాయి, మొక్క ఎత్తు మామూలుగానే ఉంటుంది. జింక్ లోపంలో స్పష్టమైన అంచులు లేకుండా కలిసిపోయిన తుప్పు రంగు మరకలు ఈనె దగ్గర ఎక్కువగా ఉంటాయి, దానితో పాటు మొక్క స్పష్టంగా గిడసబారి పిలకలు తక్కువగా వస్తాయి. జింక్ లోపానికి శిలీంద్రనాశకం కొడితే డబ్బు వృథా, అసలు కారణం అలాగే ఉండిపోతుంది.',
+        },
+        {
+          id: 'rice-zinc-vs-ironmanganese',
+          name_en: 'Iron Toxicity / Bronzing (Abiotic)',
+          name_te: 'ఇనుము విషతుల్యత (కంచు రంగు)',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Iron toxicity bronzes the whole leaf evenly from the tip, typically in permanently waterlogged acidic patches. Zinc deficiency blotches start near the leaf base and midrib and come with marked stunting.',
+          differentiatingFactors_te:
+            'ఇనుము విషతుల్యతలో ఆకు కొన నుండి మొత్తం సమానంగా కంచు రంగులోకి మారుతుంది; సాధారణంగా ఎప్పుడూ నీరు నిల్వ ఉండే ఆమ్ల నేలల్లో వస్తుంది. జింక్ లోపం మరకలు ఆకు మొదలు, ఈనె దగ్గర మొదలవుతాయి, మొక్క స్పష్టంగా గిడసబారుతుంది.',
+        },
+        {
+          id: 'rice-zinc-vs-tungro',
+          name_en: 'Rice Tungro Disease (Viral)',
+          name_te: 'టుంగ్రో వైరస్ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Tungro yellows or oranges the leaves from the tip downwards with stunting, and spreads plant to plant in a widening patch following leafhopper movement. Zinc deficiency patches follow the soil — low spots, levelled cuts, high-pH areas — and do not spread outward over time.',
+          differentiatingFactors_te:
+            'టుంగ్రోలో ఆకులు కొన నుండి కిందికి పసుపు లేదా నారింజ రంగులోకి మారి మొక్క గిడసబారుతుంది; దోమ కదలికను అనుసరించి మొక్క నుండి మొక్కకు మడి విస్తరిస్తూ వ్యాపిస్తుంది. జింక్ లోపం మడులు నేలను అనుసరిస్తాయి — పల్లపు ప్రాంతాలు, చదును చేసిన చోట్లు, ఎక్కువ pH ఉన్న ప్రాంతాలు — కాలంతో పాటు విస్తరించవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Calcareous, alkaline or high-pH soils, where zinc becomes chemically unavailable to the plant even when present.',
+        'Prolonged flooding and continuously submerged conditions, which reduce zinc availability.',
+        'Land that has been levelled or cut, exposing subsoil with little organic matter.',
+        'Intensive cropping with heavy NPK use and no micronutrient replacement over several seasons.',
+        'Soils high in phosphorus, which further restricts zinc uptake.',
+      ],
+      environmentalRiskFactors_te: [
+        'సున్నం ఎక్కువ ఉన్న, క్షార, ఎక్కువ pH ఉన్న నేలలు — ఇక్కడ జింక్ నేలలో ఉన్నా మొక్కకు అందుబాటులో ఉండదు.',
+        'ఎక్కువ కాలం నీరు నిల్వ ఉండటం, నిరంతరం మునిగి ఉండటం వల్ల జింక్ లభ్యత తగ్గుతుంది.',
+        'చదును చేసిన లేదా మట్టి తీసిన పొలాలు, ఇక్కడ సేంద్రియ పదార్థం తక్కువ ఉన్న లోపలి మట్టి బయటపడుతుంది.',
+        'పలు సీజన్లుగా NPK ఎరువులు ఎక్కువగా వాడుతూ సూక్ష్మ పోషకాలను తిరిగి వేయకపోవడం.',
+        'భాస్వరం ఎక్కువ ఉన్న నేలలు — ఇవి జింక్ గ్రహణను మరింత అడ్డుకుంటాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Get a soil test before the season and ask specifically for available zinc, not only NPK. Zinc deficiency is predictable from a soil test and far cheaper to prevent than to correct mid-season.',
+          practice_te:
+            'సీజన్‌కు ముందు భూసార పరీక్ష చేయించి, NPK మాత్రమే కాకుండా అందుబాటులో ఉన్న జింక్ గురించి ప్రత్యేకంగా అడగండి. భూసార పరీక్ష ద్వారా జింక్ లోపాన్ని ముందే ఊహించవచ్చు; సీజన్ మధ్యలో సరిదిద్దడం కంటే ముందే నివారించడం చాలా చౌక.',
+          targetTiming: 'Before the season',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Apply well-decomposed farmyard manure or compost regularly. Organic matter keeps zinc in a form the plant can take up, especially in high-pH soils.',
+          practice_te:
+            'బాగా చివికిన పశువుల ఎరువు లేదా కంపోస్టును క్రమం తప్పకుండా వేయండి. సేంద్రియ పదార్థం జింక్‌ను మొక్క గ్రహించగల రూపంలో ఉంచుతుంది, ముఖ్యంగా ఎక్కువ pH ఉన్న నేలల్లో.',
+          targetTiming: 'Land preparation',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Avoid continuous deep submergence. Alternate wetting and drying improves zinc availability as well as root health.',
+          practice_te:
+            'ఎప్పుడూ లోతుగా నీరు నిల్వ ఉంచవద్దు. తడి-ఆరు పద్ధతి జింక్ లభ్యతను, వేర్ల ఆరోగ్యాన్ని రెండింటినీ మెరుగుపరుస్తుంది.',
+          targetTiming: 'Throughout the season',
+        },
+        {
+          stepNumber: 4,
+          practice_en:
+            'In fields with a known history of khaira, dip seedling roots in a zinc oxide suspension before transplanting — ask your RBK for the preparation used locally.',
+          practice_te:
+            'గతంలో ఖైరా వచ్చిన పొలాల్లో నాటే ముందు నారు వేర్లను జింక్ ఆక్సైడ్ ద్రావణంలో ముంచండి — స్థానికంగా వాడే తయారీ విధానాన్ని మీ RBK ను అడగండి.',
+          targetTiming: 'At transplanting',
+        },
+      ],
+      treatments: [
+        {
+          id: 'rice-zinc-corr-1',
+          stepNumber: 1,
+          category: 'preventive',
+          instruction_en:
+            'This is a nutrient disorder, so the correction is zinc, not a pesticide. Zinc sulphate is the standard correction, applied either to the soil at land preparation or as a foliar spray on a standing crop. A specific quantity is deliberately not stated here — see the caution below.',
+          instruction_te:
+            'ఇది పోషక లోపం, కాబట్టి దీనికి పరిష్కారం జింక్, పురుగు మందు కాదు. సాధారణంగా జింక్ సల్ఫేట్ వాడతారు — దమ్ము సమయంలో నేలకు వేయడం ద్వారా, లేదా పొలంలో ఉన్న పంటపై పిచికారీ ద్వారా. ఇక్కడ నిర్దిష్ట మోతాదును ఉద్దేశపూర్వకంగా ఇవ్వలేదు — కింది హెచ్చరిక చూడండి.',
+          safetyCaution_en:
+            'No quantity is given here because the correct zinc rate depends on your soil test reading, soil pH and whether you are applying to soil or foliage, and it varies widely between fields. Zinc sulphate is a fertiliser, not a pesticide, so it does not appear in the CIBRC registry that this app verifies doses against. Ask your Rythu Bharosa Kendra (RBK) or Village Agriculture Assistant for the rate matched to your soil test.',
+          safetyCaution_te:
+            'ఇక్కడ మోతాదు ఇవ్వలేదు; ఎందుకంటే సరైన జింక్ మోతాదు మీ భూసార పరీక్ష ఫలితం, నేల pH, నేలకు వేస్తున్నారా ఆకులపై పిచికారీ చేస్తున్నారా అనే దానిపై ఆధారపడి ఉంటుంది, పొలం నుండి పొలానికి చాలా మారుతుంది. జింక్ సల్ఫేట్ ఎరువు, పురుగు మందు కాదు; కాబట్టి ఈ యాప్ మోతాదులను ధృవీకరించే CIBRC నమోదు పట్టికలో ఇది ఉండదు. మీ భూసార పరీక్షకు సరిపోయే మోతాదు కోసం రైతు భరోసా కేంద్రం (RBK) లేదా గ్రామ వ్యవసాయ సహాయకుని అడగండి.',
+          regulatoryNotice_en:
+            'Do not apply any fungicide or insecticide for this condition. Zinc deficiency is not caused by a pest or pathogen, so a spray cannot correct it — it only adds cost and can scorch already-stressed foliage.',
+          regulatoryNotice_te:
+            'ఈ సమస్యకు ఎటువంటి శిలీంద్రనాశకం లేదా పురుగు మందు వాడవద్దు. జింక్ లోపానికి కారణం పురుగు లేదా తెగులు కాదు, కాబట్టి పిచికారీ దీన్ని సరిదిద్దలేదు — ఖర్చు మాత్రమే పెరుగుతుంది, అప్పటికే ఒత్తిడిలో ఉన్న ఆకులు మాడిపోవచ్చు.',
+        },
+        {
+          id: 'rice-zinc-corr-2',
+          stepNumber: 2,
+          category: 'preventive',
+          instruction_en:
+            'Alongside the zinc correction, drain the affected patches for a few days. Draining raises zinc availability in waterlogged soil and often produces visible recovery in the newer leaves within one to two weeks.',
+          instruction_te:
+            'జింక్ వేయడంతో పాటు, దెబ్బతిన్న మడుల్లో కొన్ని రోజులు నీటిని తీసివేయండి. నీరు నిల్వ ఉన్న నేలలో నీటిని తీస్తే జింక్ లభ్యత పెరుగుతుంది; తరచూ ఒకటి రెండు వారాల్లో కొత్త ఆకుల్లో మార్పు కనిపిస్తుంది.',
+          safetyCaution_en:
+            'Recovery shows in newly emerging leaves. Already-blotched older leaves will not turn green again, so judge whether the correction worked by looking at new growth, not old leaves.',
+          safetyCaution_te:
+            'కోలుకోవడం కొత్తగా వస్తున్న ఆకుల్లో కనిపిస్తుంది. అప్పటికే మరకలు పడిన ముదురు ఆకులు మళ్లీ పచ్చగా మారవు; కాబట్టి సరిదిద్దడం పనిచేసిందా లేదా అనేది ముదురు ఆకులను కాకుండా కొత్త పెరుగుదలను చూసి నిర్ణయించండి.',
+        },
+      ],
+      captureGuidance: {
+        instruction_en:
+          'Step back and photograph the whole patch alongside a healthy area of the same field, so the stunting and the patchy pattern are visible. Then photograph one lower leaf close up, showing the blotching near the midrib and base.',
+        instruction_te:
+          'కొంత వెనక్కి వెళ్లి, అదే పొలంలోని ఆరోగ్యకరమైన ప్రాంతంతో పాటు దెబ్బతిన్న మడిని ఫోటో తీయండి; అప్పుడు మొక్కలు గిడసబారడం, మడులుగా ఉండటం కనిపిస్తాయి. తరువాత ఒక కింది ఆకును దగ్గరగా ఫోటో తీసి, ఈనె, ఆకు మొదలు దగ్గర ఉన్న మరకలను చూపండి.',
+        rationale_en:
+          'A close-up leaf photo alone looks very like Brown Spot. The patchy distribution and the stunting next to healthy plants are what identify this as a soil problem rather than a disease.',
+        rationale_te:
+          'కేవలం దగ్గరగా తీసిన ఆకు ఫోటో గోధుమ రంగు మచ్చల తెగులు వలెనే కనిపిస్తుంది. మడులుగా ఉండటం, ఆరోగ్యకరమైన మొక్కల పక్కన గిడసబారి ఉండటం — ఇవే దీన్ని తెగులు కాదు, నేల సమస్య అని చూపుతాయి.',
+        requiredForConfidence: true,
+      },
+      fieldFollowUps: [
+        {
+          id: 'rice-zinc-q-patchy',
+          question_en:
+            'Is the problem confined to patches — low spots, levelled areas, or one part of the field — with clearly healthy plants nearby?',
+          question_te:
+            'సమస్య కొన్ని మడులకే పరిమితమైందా — పల్లపు ప్రాంతాలు, చదును చేసిన చోట్లు, లేదా పొలంలో ఒక భాగం — పక్కనే స్పష్టంగా ఆరోగ్యకరమైన మొక్కలు ఉన్నాయా?',
+          ifYes_en: 'A patchy pattern tied to soil position strongly indicates a nutrient or soil problem, not a disease.',
+          ifYes_te:
+            'నేల స్థితిని అనుసరించి మడులుగా ఉండటం తెగులు కాదని, పోషక లేదా నేల సమస్య అని బలంగా సూచిస్తుంది.',
+          ifNo_en:
+            'Damage spread evenly or expanding plant to plant points to a disease or an insect-transmitted virus instead.',
+          ifNo_te:
+            'నష్టం అంతటా సమానంగా ఉంటే, లేదా మొక్క నుండి మొక్కకు విస్తరిస్తుంటే అది తెగులు లేదా పురుగు ద్వారా వ్యాపించే వైరస్ కావచ్చు.',
+          pointsTowardIds: ['disease-rice-zincdeficiency'],
+          pointsAwayIds: ['disease-rice-brownspot'],
+        },
+        {
+          id: 'rice-zinc-q-stunting',
+          question_en: 'Are the affected plants clearly shorter, with fewer tillers, than healthy plants in the same field?',
+          question_te:
+            'దెబ్బతిన్న మొక్కలు అదే పొలంలోని ఆరోగ్యకరమైన మొక్కల కంటే స్పష్టంగా పొట్టిగా, తక్కువ పిలకలతో ఉన్నాయా?',
+          ifYes_en: 'Stunting with poor tillering fits zinc deficiency. Brown Spot does not shorten the plant.',
+          ifYes_te:
+            'గిడసబారడం, పిలకలు తక్కువగా రావడం జింక్ లోపానికి సరిపోతుంది. గోధుమ రంగు మచ్చల తెగులు మొక్క ఎత్తును తగ్గించదు.',
+          ifNo_en: 'Normal height with spotted leaves points to Brown Spot or another foliar disease.',
+          ifNo_te:
+            'మొక్క ఎత్తు మామూలుగా ఉండి ఆకులపై మచ్చలు ఉంటే అది గోధుమ రంగు మచ్చల తెగులు లేదా మరొక ఆకు తెగులు.',
+          pointsTowardIds: ['disease-rice-zincdeficiency'],
+          pointsAwayIds: ['disease-rice-brownspot'],
+        },
+        {
+          id: 'rice-zinc-q-timing',
+          question_en: 'Did this appear within about two to four weeks of transplanting?',
+          question_te: 'ఇది నాటిన సుమారు రెండు నుండి నాలుగు వారాల లోపే కనిపించిందా?',
+          ifYes_en: 'That timing is characteristic of khaira zinc deficiency.',
+          ifYes_te: 'ఆ సమయం ఖైరా జింక్ లోపానికి ప్రత్యేక లక్షణం.',
+          ifNo_en: 'Appearance much later in the season makes a foliar disease more likely.',
+          ifNo_te: 'సీజన్‌లో చాలా ఆలస్యంగా కనిపిస్తే అది ఆకు తెగులు అయ్యే అవకాశం ఎక్కువ.',
+          pointsTowardIds: ['disease-rice-zincdeficiency'],
+        },
+      ],
+      severityBands: [
+        {
+          level: 'mild',
+          threshold_en: 'Faint blotching on a few lower leaves in small patches, with no noticeable stunting.',
+          threshold_te: 'చిన్న మడుల్లో కొన్ని కింది ఆకులపై మసక మరకలు, మొక్క ఎత్తులో గమనించదగిన తేడా లేదు.',
+          action_en:
+            'Drain the patch and plan a soil test. A foliar zinc correction may be enough; no pesticide of any kind is appropriate.',
+          action_te:
+            'ఆ మడిలో నీటిని తీసి భూసార పరీక్షకు ప్లాన్ చేసుకోండి. ఆకులపై జింక్ పిచికారీ సరిపోవచ్చు; ఎటువంటి పురుగు మందూ అవసరం లేదు.',
+        },
+        {
+          level: 'moderate',
+          threshold_en: 'Clear rust-brown blotching with visible stunting across distinct patches of the field.',
+          threshold_te: 'పొలంలో స్పష్టమైన మడుల్లో తుప్పు రంగు మరకలు, మొక్కలు గిడసబారడం కనిపించడం.',
+          action_en:
+            'Apply the zinc correction at the rate your RBK gives for your soil test, and drain. Expect recovery to show in new leaves within one to two weeks.',
+          action_te:
+            'మీ భూసార పరీక్షకు RBK సూచించిన మోతాదులో జింక్ వేసి, నీటిని తీసివేయండి. ఒకటి రెండు వారాల్లో కొత్త ఆకుల్లో మార్పు కనిపించాలి.',
+        },
+        {
+          level: 'severe',
+          threshold_en: 'Large patches badly stunted with very poor tillering, and maturity visibly delayed against the rest of the field.',
+          threshold_te:
+            'పెద్ద మడులు తీవ్రంగా గిడసబారి పిలకలు చాలా తక్కువగా ఉండటం, మిగతా పొలంతో పోలిస్తే పక్వత స్పష్టంగా ఆలస్యం కావడం.',
+          action_en:
+            'Consult your RBK promptly. At this level yield is already affected, and the field needs a soil test to plan correction for next season as well as a rescue application now.',
+          action_te:
+            'వెంటనే RBK ను సంప్రదించండి. ఈ స్థాయిలో దిగుబడి అప్పటికే దెబ్బతింది; ఇప్పుడు అత్యవసర చర్యతో పాటు, వచ్చే సీజన్‌కు ప్రణాళిక కోసం భూసార పరీక్ష అవసరం.',
+        },
+      ],
+      escalationThreshold_en:
+        'Consult your Rythu Bharosa Kendra (RBK) or Village Agriculture Assistant for the zinc rate matched to your soil test, and promptly if patches are badly stunted or maturity is clearly delayed. Importantly, if someone advises a fungicide for these symptoms, ask them to rule out zinc deficiency first — khaira is routinely mistaken for Brown Spot, and a fungicide spent on it is money lost with the crop still declining.',
+      escalationThreshold_te:
+        'మీ భూసార పరీక్షకు సరిపోయే జింక్ మోతాదు కోసం రైతు భరోసా కేంద్రం (RBK) లేదా గ్రామ వ్యవసాయ సహాయకుని సంప్రదించండి; మడులు తీవ్రంగా గిడసబారినా, పక్వత స్పష్టంగా ఆలస్యమైనా వెంటనే సంప్రదించండి. ముఖ్యంగా, ఈ లక్షణాలకు ఎవరైనా శిలీంద్రనాశకం సూచిస్తే, ముందుగా జింక్ లోపం కాదని నిర్ధారించమని అడగండి — ఖైరాను గోధుమ రంగు మచ్చల తెగులుగా పొరబడటం సర్వసాధారణం; దానికి ఖర్చు చేసిన శిలీంద్రనాశకం వృథా అవుతుంది, పంట మాత్రం క్షీణిస్తూనే ఉంటుంది.',
+      claimEvidence: [
+        {
+          claimId: 'rice-zinc-no-dose',
+          fieldRef: "treatments['rice-zinc-corr-1'] — zinc sulphate application rate, deliberately omitted",
+          verificationStatus: 'unsupported',
+          locator: undefined,
+          limitation_en:
+            'No application rate is stated for zinc sulphate. Zinc sulphate is a fertiliser rather than a pesticide, so it is outside the scope of the CIBRC registries this catalog verifies doses against, and no primary ANGRAU or ICAR document giving a rate was accessible from this tool. A rate must come from your own soil test via your RBK.',
+          limitation_te:
+            'జింక్ సల్ఫేట్‌కు మోతాదు ఇవ్వలేదు. జింక్ సల్ఫేట్ ఎరువు, పురుగు మందు కాదు; కాబట్టి ఈ జాబితా మోతాదులను ధృవీకరించే CIBRC నమోదు పట్టికల పరిధిలోకి ఇది రాదు, మోతాదు ఇచ్చే ANGRAU లేదా ICAR ప్రాథమిక పత్రం ఈ సాధనం ద్వారా అందుబాటులో లేదు. మోతాదు మీ భూసార పరీక్ష ఆధారంగా RBK నుండి తీసుకోవాలి.',
+        },
+      ],
+      sources: [
+        {
+          title: 'Vyavasaya Panchangam — Rice Soil Fertility & Micronutrient Management',
+          organization: 'Acharya N.G. Ranga Agricultural University (ANGRAU), Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
         },
       ],
       evidenceStatus: 'unverified',
-      lastUpdated: '2026-10-12',
+      lastUpdated: '2026-10-13',
     },
 
     'disease-chilli-leaf-curl': {

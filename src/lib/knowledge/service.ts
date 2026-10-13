@@ -7,10 +7,12 @@ import { AGRICULTURAL_KNOWLEDGE_CATALOG } from './catalog';
 import type {
   AgriculturalKnowledgeCatalog,
   ClaimEvidenceNote,
+  ConditionCategory,
   CropKnowledgeEntry,
   DiseaseKnowledgeEntry,
   KnowledgeSource,
   LookalikeCondition,
+  SeverityBand,
   TreatmentCategory,
 } from './types';
 
@@ -225,5 +227,100 @@ export function getClaimEvidenceNote(
 ): ClaimEvidenceNote | undefined {
   if (!disease?.claimEvidence) return undefined;
   return disease.claimEvidence.find((note) => note.claimId === claimId);
+}
+
+/**
+ * Resolves an entry's condition category, defaulting to 'disease' when unset so that entries
+ * written before non-pathogenic conditions were catalogued keep their existing meaning.
+ * Centralised here so the default can never drift between the UI, the AI validator and tests.
+ */
+export function getConditionCategory(
+  disease: Pick<DiseaseKnowledgeEntry, 'conditionCategory'> | null | undefined
+): ConditionCategory {
+  return disease?.conditionCategory ?? 'disease';
+}
+
+/**
+ * True when a condition is NOT caused by a pest or pathogen — a nutrient deficiency, a
+ * physiological disorder, or abiotic stress.
+ *
+ * This is a SAFETY predicate, not a cosmetic one. Spraying a pesticide or fungicide at one of
+ * these conditions cannot work: the cause is nutrition, soil chemistry or weather, so the spray
+ * costs the farmer money, risks phytotoxic leaf burn, and leaves the real cause untreated while
+ * the crop keeps declining. Callers use this to suppress pesticide guidance entirely rather than
+ * relying on an entry merely happening to have no chemical treatments listed.
+ */
+export function isNonPathogenicCondition(
+  disease: Pick<DiseaseKnowledgeEntry, 'conditionCategory'> | null | undefined
+): boolean {
+  const category = getConditionCategory(disease);
+  return (
+    category === 'nutrient_deficiency' ||
+    category === 'physiological_disorder' ||
+    category === 'abiotic_stress'
+  );
+}
+
+/**
+ * Whether pesticide/fungicide guidance may be shown for this condition at all.
+ *
+ * Deliberately phrased as an allow-check rather than a block-check: a brand-new condition
+ * category added later defaults to non-pathogenic handling only if explicitly listed in
+ * `isNonPathogenicCondition`, so the conservative path is the one that needs no extra thought
+ * at the call site. Returns false for a missing entry — an unknown condition never gets
+ * chemical guidance, matching `getTreatmentsForCategory`'s existing guarantee 3.
+ */
+export function allowsChemicalPestControl(
+  disease: Pick<DiseaseKnowledgeEntry, 'conditionCategory'> | null | undefined
+): boolean {
+  if (!disease) return false;
+  return !isNonPathogenicCondition(disease);
+}
+
+/**
+ * Returns every catalogued condition for a crop, ordered most urgent first and then
+ * alphabetically within an urgency level so the ordering is stable across renders.
+ *
+ * Added for the multi-condition expansion: crops now carry several conditions, and the UI needs
+ * a deterministic, clinically-sensible order rather than object-key insertion order.
+ */
+export function getConditionsForCrop(cropId?: string | null): DiseaseKnowledgeEntry[] {
+  if (!cropId) return [];
+  const urgencyRank: Record<DiseaseKnowledgeEntry['urgencyLevel'], number> = {
+    High: 0,
+    Medium: 1,
+    Low: 2,
+  };
+  return Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)
+    .filter((entry) => entry.cropId === cropId)
+    .sort((a, b) => {
+      const rank = urgencyRank[a.urgencyLevel] - urgencyRank[b.urgencyLevel];
+      if (rank !== 0) return rank;
+      return a.name_en.localeCompare(b.name_en);
+    });
+}
+
+/**
+ * Severity band for a condition at a given level, or undefined when that condition defines no
+ * bands (correct for all-or-nothing conditions such as a systemic virus).
+ */
+export function getSeverityBand(
+  disease: Pick<DiseaseKnowledgeEntry, 'severityBands'> | null | undefined,
+  level: SeverityBand['level']
+): SeverityBand | undefined {
+  if (!disease?.severityBands) return undefined;
+  return disease.severityBands.find((band) => band.level === level);
+}
+
+/**
+ * True when this condition cannot be confidently diagnosed from a standard canopy or leaf photo
+ * and genuinely needs a specific capture (a split cane, an exposed root collar, a leaf underside).
+ * The UI uses this to cap how settled a diagnosis is allowed to look, so an image that physically
+ * cannot contain the deciding evidence never reads as a confirmed answer.
+ */
+export function requiresSpecialCapture(
+  disease: Pick<DiseaseKnowledgeEntry, 'captureGuidance'> | null | undefined
+): boolean {
+  return !!disease?.captureGuidance?.requiredForConfidence;
 }
 

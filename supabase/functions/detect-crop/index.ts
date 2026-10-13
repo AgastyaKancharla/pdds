@@ -112,7 +112,13 @@ Rules:
 
 6. If diseased or pest-damaged, map to EXACT catalog IDs where supported:
    Catalog:
-   - crop-rice: disease-rice-blast (Rice Blast)
+   - crop-rice: disease-rice-blast (Rice Blast — spindle/diamond lesions, pointed ends, ash-grey centre; or blackened panicle neck)
+   - crop-rice: disease-rice-blb (Bacterial Leaf Blight — continuous water-soaked stripes from leaf TIP or MARGIN running downward, wavy edge, straw-yellow then greyish-white; NOT discrete spots)
+   - crop-rice: disease-rice-sheathblight (Sheath Blight — oval blotches on the leaf SHEATH near the water line, straw-white centre with purple-brown wavy snakeskin border, climbing upward)
+   - crop-rice: disease-rice-brownspot (Brown Spot — many small SEPARATE round/oval brown spots with blunt edges scattered on the blade, worst on older LOWER leaves)
+   - crop-rice: disease-rice-stemborer (Yellow Stem Borer — dead heart that pulls out easily, or white empty panicles, WITH a bore hole and powdery frass)
+   - crop-rice: disease-rice-gallmidge (Rice Gall Midge — shoot converted into a hollow silvery tube like an onion leaf, plant still alive, NO bore hole and NO frass)
+   - crop-rice: disease-rice-zincdeficiency (Zinc Deficiency / khaira — diffuse rust-brown blotching near midrib and leaf base, in PATCHES, with clear stunting and poor tillering; this is a nutrient disorder, not an infection)
    - crop-chilli: disease-chilli-leaf-curl (Chilli Leaf Curl Virus)
    - crop-cotton: disease-cotton-bollworm (Pink Bollworm)
    - crop-groundnut: disease-groundnut-tikka (Tikka Leaf Spot)
@@ -122,6 +128,22 @@ Rules:
    - crop-mango: disease-mango-anthracnose (Anthracnose)
    - crop-banana: disease-banana-panamawilt (Panama Wilt)
    - crop-turmeric: disease-turmeric-rhizomerot (Rhizome Rot)
+
+   RICE DIFFERENTIAL DISCIPLINE — several rice conditions look alike in a photograph. Do not
+   guess between them on a weak image. Apply these rules:
+   - Lesion SHAPE separates Blast from Brown Spot: pointed spindle with grey centre = Blast;
+     round/oval blunt and uniformly brown = Brown Spot. If shape is not resolvable in the
+     image, return "uncertain" rather than picking one.
+   - Continuous stripes from the tip/margin = Bacterial Leaf Blight, never Brown Spot.
+   - Damage on the SHEATH near the water line = Sheath Blight, not a leaf disease.
+   - Dead heart or white panicle: a visible bore hole with frass = Stem Borer; a blackened
+     shrivelled neck with no hole = Blast (neck blast). If neither is visible, return
+     "uncertain" — these two need opposite treatments (insecticide vs fungicide) and a wrong
+     call wastes the farmer's money.
+   - A living silvery hollow tube with no bore hole = Gall Midge, not Stem Borer.
+   - Patchy stunting with diffuse rust blotching near the midrib = Zinc Deficiency, NOT Brown
+     Spot. This distinction matters: a fungicide cannot fix a zinc deficiency. When the image
+     shows patchiness and stunting alongside healthy plants, prefer disease-rice-zincdeficiency.
 
    If recognized crop and disease match one above:
    {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}

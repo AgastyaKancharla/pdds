@@ -11,6 +11,9 @@ import {
   isSourceDocumentVerified,
   hasChemicalTabDetail,
   getClaimEvidenceNote,
+  getConditionsForCrop,
+  isNonPathogenicCondition,
+  allowsChemicalPestControl,
 } from '../lib/knowledge';
 import {
   cacheRemoteCrop,
@@ -39,6 +42,20 @@ const URGENCY_STYLE: Record<UrgencyColor, { bg: string; fg: string; label: strin
 };
 
 const TABS: TreatmentType[] = ['organic', 'chemical', 'preventive'];
+
+/**
+ * Picks which condition to show when the farmer taps a crop chip.
+ *
+ * Crops can now carry several conditions, so "the first one in the list" is no longer a
+ * defensible default — it would silently hide the rest. `getConditionsForCrop` returns them
+ * most-urgent-first, so the head of that list is the one most worth surfacing. Falls back to
+ * the legacy mock lookup for any crop not yet represented in the curated catalog.
+ */
+function getDefaultConditionIdForCrop(cropId: string): string | undefined {
+  const curated = getConditionsForCrop(cropId);
+  if (curated.length > 0) return curated[0].id;
+  return MOCK_DISEASES.find((d) => d.crop_id === cropId)?.id;
+}
 
 const CROP_ICONS: Record<string, string> = {
   'crop-rice': '🌾',
@@ -184,6 +201,23 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const cropKnowledge = useMemo(
     () => (selectedCropId ? getCropKnowledge(selectedCropId) : undefined),
     [selectedCropId]
+  );
+
+  /** All catalogued conditions for the active crop, most urgent first. Drives the condition switcher. */
+  const conditionsForSelectedCrop = useMemo(
+    () => getConditionsForCrop(crop?.id || selectedCropId),
+    [crop?.id, selectedCropId]
+  );
+
+  /**
+   * Whether pesticide guidance may be shown at all for the active condition. For a nutrient
+   * deficiency or an abiotic disorder this is false, and the Chemical tab shows an explicit
+   * "no pesticide applies" message instead of an empty-category notice — an empty tab would
+   * read as "we have no data", when the truth is that spraying is the wrong action entirely.
+   */
+  const chemicalControlApplies = useMemo(
+    () => (diseaseKnowledge ? allowsChemicalPestControl(diseaseKnowledge) : true),
+    [diseaseKnowledge]
   );
 
   const treatmentsByTab = useMemo(
@@ -486,9 +520,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     type="button"
                     className="crop-switch-chip"
                     onClick={() => {
-                      const matchedDis = MOCK_DISEASES.find((d) => d.crop_id === c.id);
                       setSelectedCropId(c.id);
-                      setSelectedDiseaseId(matchedDis?.id);
+                      setSelectedDiseaseId(getDefaultConditionIdForCrop(c.id));
                       setSaveStatus('idle');
                     }}>
                     {(CROP_ICONS[c.id] || '🌱') + ' '}
@@ -735,9 +768,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   type="button"
                   className={`crop-switch-chip ${isActive ? 'active' : ''}`}
                   onClick={() => {
-                    const matchedDis = MOCK_DISEASES.find((d) => d.crop_id === c.id);
                     setSelectedCropId(c.id);
-                    setSelectedDiseaseId(matchedDis?.id);
+                    setSelectedDiseaseId(getDefaultConditionIdForCrop(c.id));
                     setSaveStatus('idle');
                   }}>
                   {(CROP_ICONS[c.id] || '🌱') + ' '}
@@ -747,6 +779,52 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             })}
           </div>
         </div>
+
+        {/*
+          Condition switcher — only rendered for crops that actually have more than one
+          catalogued condition, so single-condition crops are unchanged. Without this, a crop
+          with several conditions would silently show only whichever one happened to be first.
+        */}
+        {conditionsForSelectedCrop.length > 1 && (
+          <div className="crop-switch-section">
+            <span className="crop-switch-hint">{t('selectConditionHint')}</span>
+            <div className="crop-switch-chips">
+              {conditionsForSelectedCrop.map((entry) => {
+                const isActive = entry.id === (disease?.id || selectedDiseaseId);
+                const isNonPathogenic = isNonPathogenicCondition(entry);
+                return (
+                  <button
+                    key={entry.id}
+                    type="button"
+                    className={`crop-switch-chip ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedDiseaseId(entry.id);
+                      setSaveStatus('idle');
+                    }}>
+                    <span
+                      className="condition-urgency-dot"
+                      style={{
+                        display: 'inline-block',
+                        width: '7px',
+                        height: '7px',
+                        borderRadius: '50%',
+                        marginRight: '6px',
+                        verticalAlign: 'middle',
+                        backgroundColor: URGENCY_STYLE[entry.urgencyColor].fg,
+                      }}
+                    />
+                    {language === 'en' ? entry.name_en : entry.name_te}
+                    {isNonPathogenic && (
+                      <span style={{ fontSize: '10px', opacity: 0.75, marginLeft: '4px' }}>
+                        ({t('nonPathogenicChipTag')})
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Symptoms */}
         <div className="card">
@@ -816,6 +894,120 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 {t('differentialUnderReview')}
               </p>
             )}
+          </div>
+        )}
+
+        {/*
+          Crop-specific capture guidance. Rendered above the field questions because re-taking
+          the photograph correctly is the cheapest way to improve a weak diagnosis, and for some
+          conditions the deciding evidence simply is not in a canopy shot.
+        */}
+        {diseaseKnowledge?.captureGuidance && (
+          <div className="card" style={{ borderLeft: '4px solid #00897B' }}>
+            <h4 className="card-title">📷 {t('captureGuidanceTitle')}</h4>
+            <p className="card-body" style={{ fontSize: '13px', lineHeight: 1.55 }}>
+              {language === 'en'
+                ? diseaseKnowledge.captureGuidance.instruction_en
+                : diseaseKnowledge.captureGuidance.instruction_te}
+            </p>
+            {(language === 'en'
+              ? diseaseKnowledge.captureGuidance.rationale_en
+              : diseaseKnowledge.captureGuidance.rationale_te) && (
+              <p
+                className="card-body"
+                style={{ fontSize: '12px', color: '#00695C', marginTop: '6px', lineHeight: 1.5 }}>
+                <strong>{t('captureGuidanceWhy')}</strong>{' '}
+                {language === 'en'
+                  ? diseaseKnowledge.captureGuidance.rationale_en
+                  : diseaseKnowledge.captureGuidance.rationale_te}
+              </p>
+            )}
+            {diseaseKnowledge.captureGuidance.requiredForConfidence && (
+              <p
+                style={{
+                  marginTop: '8px',
+                  padding: '8px 10px',
+                  background: '#FFF8E1',
+                  border: '1px solid #FFE082',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  color: '#E65100',
+                  lineHeight: 1.5,
+                }}>
+                ⚠️ {t('captureRequiredNotice')}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/*
+          Field follow-up questions. Read-only for now: the farmer checks them in the field and
+          interprets the answer themselves. A later pass makes these interactive so the answers
+          feed back into ranking, which is why pointsToward/pointsAway IDs are already in the data.
+        */}
+        {diseaseKnowledge?.fieldFollowUps && diseaseKnowledge.fieldFollowUps.length > 0 && (
+          <div className="card" style={{ borderLeft: '4px solid #6A1B9A' }}>
+            <h4 className="card-title">❓ {t('fieldFollowUpsTitle')}</h4>
+            <p className="card-body" style={{ fontSize: '12px', marginBottom: '10px', color: '#4A148C' }}>
+              {t('fieldFollowUpsIntro')}
+            </p>
+            {diseaseKnowledge.fieldFollowUps.map((q, idx) => (
+              <div
+                key={q.id}
+                style={{
+                  marginBottom: idx === diseaseKnowledge.fieldFollowUps!.length - 1 ? 0 : '12px',
+                  paddingBottom: idx === diseaseKnowledge.fieldFollowUps!.length - 1 ? 0 : '12px',
+                  borderBottom:
+                    idx === diseaseKnowledge.fieldFollowUps!.length - 1 ? 'none' : '1px dashed #E1BEE7',
+                }}>
+                <p style={{ fontSize: '13px', fontWeight: 600, color: '#2C3E50', margin: '0 0 5px' }}>
+                  {language === 'en' ? q.question_en : q.question_te}
+                </p>
+                <p style={{ fontSize: '12px', color: '#2E7D32', margin: '0 0 3px', lineHeight: 1.45 }}>
+                  <strong>{t('followUpIfYes')}</strong> {language === 'en' ? q.ifYes_en : q.ifYes_te}
+                </p>
+                <p style={{ fontSize: '12px', color: '#B71C1C', margin: 0, lineHeight: 1.45 }}>
+                  <strong>{t('followUpIfNo')}</strong> {language === 'en' ? q.ifNo_en : q.ifNo_te}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/*
+          Severity bands. The action text carries the economic judgement — at mild levels the
+          honest advice is often that spraying costs more than the damage it prevents.
+        */}
+        {diseaseKnowledge?.severityBands && diseaseKnowledge.severityBands.length > 0 && (
+          <div className="card" style={{ borderLeft: '4px solid #EF6C00' }}>
+            <h4 className="card-title">📊 {t('severityTitle')}</h4>
+            {diseaseKnowledge.severityBands.map((band) => {
+              const bandStyle = {
+                mild: { bg: '#E8F5E9', fg: '#2E7D32', label: t('severityMild') },
+                moderate: { bg: '#FFF8E1', fg: '#EF6C00', label: t('severityModerate') },
+                severe: { bg: '#FDECEA', fg: '#C62828', label: t('severitySevere') },
+              }[band.level];
+              return (
+                <div
+                  key={band.level}
+                  style={{
+                    background: bandStyle.bg,
+                    borderRadius: '6px',
+                    padding: '9px 11px',
+                    marginTop: '8px',
+                  }}>
+                  <div style={{ fontSize: '12px', fontWeight: 700, color: bandStyle.fg, marginBottom: '3px' }}>
+                    {bandStyle.label}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#37474F', marginBottom: '4px', lineHeight: 1.45 }}>
+                    {language === 'en' ? band.threshold_en : band.threshold_te}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#263238', fontWeight: 500, lineHeight: 1.45 }}>
+                    → {language === 'en' ? band.action_en : band.action_te}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
 
@@ -902,7 +1094,16 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   fail-safe: whenever a cataloged disease has no 'chemical'-category treatment
                   entry, always show the suppression notice, regardless of evidenceStatus.
                 */}
-                {activeTab === 'chemical' && diseaseKnowledge
+                {/*
+                  A non-pathogenic condition (nutrient deficiency, physiological disorder,
+                  abiotic stress) gets its own message rather than the suppression notice. An
+                  empty Chemical tab reads as "we have no dose data yet", which would be
+                  actively misleading here: there is no pesticide to have data about, and a
+                  farmer who reads it as a data gap may go and buy a spray anyway.
+                */}
+                {activeTab === 'chemical' && diseaseKnowledge && !chemicalControlApplies
+                  ? t('nonPathogenicNoChemicalBody')
+                  : activeTab === 'chemical' && diseaseKnowledge
                   ? t('suppressedChemicalNotice')
                   : t('noCategoryRecommendation')}
               </p>
@@ -916,7 +1117,24 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 contradict each other; it never restates a dose, only the same suppression
                 status in more disease-specific terms.
               */}
-              {activeTab === 'chemical' && hasChemicalTabDetail(diseaseKnowledge, language) && (
+              {activeTab === 'chemical' && diseaseKnowledge && !chemicalControlApplies && (
+                <p
+                  style={{
+                    marginTop: '10px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    color: '#E65100',
+                    lineHeight: '1.5',
+                    textAlign: 'left',
+                    background: '#FFF8E1',
+                    border: '1px solid #FFE082',
+                    borderRadius: '6px',
+                    padding: '10px',
+                  }}>
+                  🚫 {t('nonPathogenicNoChemicalTitle')}
+                </p>
+              )}
+              {activeTab === 'chemical' && chemicalControlApplies && hasChemicalTabDetail(diseaseKnowledge, language) && (
                 <p
                   style={{
                     marginTop: '10px',

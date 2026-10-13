@@ -83,6 +83,89 @@ export interface LookalikeCondition {
   differentiatingFactors_te: string;
 }
 
+/**
+ * What kind of condition an entry describes. A `DiseaseKnowledgeEntry` is NOT always an
+ * infectious disease: nutrient deficiencies, physiological disorders and abiotic stress are
+ * catalogued in the same record shape so the differential-diagnosis machinery can weigh them
+ * against pathogens directly, which is the whole point of listing them.
+ *
+ * This drives SAFETY behaviour, not just a label. For any value other than 'disease' or 'pest',
+ * a pesticide or fungicide is the wrong answer by definition — spraying a zinc deficiency wastes
+ * the farmer's money and can scorch the crop. The UI must never present chemical pest-control
+ * guidance for a 'nutrient_deficiency', 'physiological_disorder' or 'abiotic_stress' entry;
+ * their `treatments[]` carry corrective agronomy (soil amendment, irrigation, nutrition) instead.
+ */
+export type ConditionCategory =
+  | 'disease'
+  | 'pest'
+  | 'nutrient_deficiency'
+  | 'physiological_disorder'
+  | 'abiotic_stress';
+
+/**
+ * Crop-specific instruction for what to actually photograph. A generic "photograph the plant"
+ * makes several conditions undiagnosable from imagery: sugarcane red rot needs a split cane,
+ * groundnut stem rot needs the collar region with topsoil cleared, tomato late blight needs the
+ * leaf underside. Attached per condition because the required anatomy differs by condition, not
+ * only by crop, and surfaced to the farmer so a low-confidence result can be retried usefully.
+ */
+export interface CaptureGuidance {
+  /** Short imperative instruction, e.g. "Photograph the underside of the affected leaf." */
+  instruction_en: string;
+  instruction_te: string;
+  /** Why this specific view is required — what evidence it reveals that a canopy shot cannot. */
+  rationale_en?: string;
+  rationale_te?: string;
+  /**
+   * True when the condition genuinely cannot be confirmed from a standard canopy/leaf photo at all
+   * (e.g. internal cane discolouration, root galls, larvae inside a boll). Used to cap displayed
+   * confidence and to push the farmer toward the correct capture or toward expert escalation,
+   * rather than letting a canopy-only image imply a settled diagnosis.
+   */
+  requiredForConfidence?: boolean;
+}
+
+/**
+ * One field-checkable question whose answer separates this condition from a specific lookalike.
+ * These exist because single-image classification genuinely cannot resolve certain pairs — thrips
+ * vs. broad mites on chilli differ mainly by the DIRECTION of leaf curl, which a farmer can state
+ * in one word and a photo often cannot settle.
+ *
+ * Stored as data now and rendered as a read-only checklist; the interactive version that feeds
+ * answers back into the diagnosis is a later change. `pointsToward`/`pointsAway` are condition
+ * IDs so the eventual interactive version can re-rank without the text being re-parsed.
+ */
+export interface FieldFollowUpQuestion {
+  id: string;
+  question_en: string;
+  question_te: string;
+  /** What a "yes" supports — human-readable, paired with `pointsTowardIds` for machine use. */
+  ifYes_en: string;
+  ifYes_te: string;
+  ifNo_en: string;
+  ifNo_te: string;
+  /** Condition IDs a "yes" makes more likely. */
+  pointsTowardIds?: string[];
+  /** Condition IDs a "yes" makes less likely. */
+  pointsAwayIds?: string[];
+}
+
+/**
+ * A severity band with the visual threshold that defines it and what the farmer should do at that
+ * level. Thresholds are deliberately expressed as something countable or estimable in the field
+ * (percentage of leaf area, tillers per square metre) rather than as a vague "mild/severe", because
+ * the economic decision — is spraying even worth the cost — depends on the actual level.
+ */
+export interface SeverityBand {
+  level: 'mild' | 'moderate' | 'severe';
+  /** Observable threshold, e.g. "Under 10% of leaf area shows lesions". */
+  threshold_en: string;
+  threshold_te: string;
+  /** What to do at this level, including whether intervention is economically justified. */
+  action_en: string;
+  action_te: string;
+}
+
 export interface PreventionStep {
   stepNumber: number;
   practice_en: string;
@@ -109,6 +192,14 @@ export interface DiseaseKnowledgeEntry {
   cropId: string; // References CropKnowledgeEntry.id
   name_en: string;
   name_te: string;
+  /**
+   * What kind of condition this is. Omitted means 'disease' for backward compatibility with
+   * entries written before non-pathogenic conditions were catalogued. Read it through
+   * `getConditionCategory()` in service.ts rather than directly, so the default stays in one place.
+   *
+   * SAFETY: anything other than 'disease'/'pest' must never be offered pesticide guidance.
+   */
+  conditionCategory?: ConditionCategory;
   pathogenOrVector_en: string;
   pathogenOrVector_te: string;
   urgencyLevel: 'High' | 'Medium' | 'Low';
@@ -142,6 +233,21 @@ export interface DiseaseKnowledgeEntry {
    * entry needs a claim-specific note beyond the disease-wide status and sources.
    */
   claimEvidence?: ClaimEvidenceNote[];
+  /**
+   * What the farmer should photograph for this specific condition. Omit when a standard
+   * leaf/canopy photo genuinely suffices.
+   */
+  captureGuidance?: CaptureGuidance;
+  /**
+   * Field-checkable questions that separate this condition from its lookalikes. Omit when the
+   * `similarConditions` differentiating text is already settled by the image alone.
+   */
+  fieldFollowUps?: FieldFollowUpQuestion[];
+  /**
+   * Severity bands with observable thresholds and the matching action. Omit where no meaningful
+   * visual threshold exists (e.g. a systemic virus, which is all-or-nothing per plant).
+   */
+  severityBands?: SeverityBand[];
   sources: KnowledgeSource[];
   evidenceStatus: EvidenceStatus;
   lastUpdated: string;

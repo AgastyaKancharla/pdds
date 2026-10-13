@@ -14,6 +14,12 @@ import {
   isSourceDocumentVerified,
   hasChemicalTabDetail,
   getClaimEvidenceNote,
+  getConditionsForCrop,
+  getConditionCategory,
+  isNonPathogenicCondition,
+  allowsChemicalPestControl,
+  requiresSpecialCapture,
+  getSeverityBand,
 } from '../knowledge';
 import { MOCK_TREATMENTS } from '../mockData';
 import { validateAndNormalizeAiResponse } from '../ai/validator';
@@ -60,9 +66,19 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       }
     });
 
-    it('contains all 10 core diseases with valid crop foreign keys and symptom profiles', () => {
+    it('contains every catalogued condition with valid crop foreign keys and symptom profiles', () => {
       const diseases = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases);
-      expect(diseases.length).toBe(10);
+      // Was a hardcoded 10 (one condition per crop). The catalog is now multi-condition per
+      // crop, starting with Rice, so this asserts the floor plus the structural guarantees
+      // below rather than an exact total that every future addition would have to edit.
+      expect(diseases.length).toBeGreaterThanOrEqual(16);
+      // Every crop must still have at least one condition — no orphaned crop chips in the UI.
+      for (const cropId of Object.keys(AGRICULTURAL_KNOWLEDGE_CATALOG.crops)) {
+        expect(
+          diseases.filter((d) => d.cropId === cropId).length,
+          `Crop ${cropId} has no catalogued condition`
+        ).toBeGreaterThan(0);
+      }
 
       for (const disease of diseases) {
         expect(AGRICULTURAL_KNOWLEDGE_CATALOG.crops[disease.cropId], `Invalid cropId ${disease.cropId}`).toBeDefined();
@@ -106,7 +122,11 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       for (const id of formerlyVerifiedIds) {
         const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(d, `Missing disease: ${id}`).toBeDefined();
-        expect(d.evidenceStatus).toBe('unverified');
+        // Rice Blast moved to 'provisional' once its Tricyclazole and Isoprothiolane doses
+        // were confirmed against the CIBRC fungicide registry with a real deep link. It is
+        // deliberately NOT 'verified_reference': only the doses were document-verified, while
+        // its symptoms, lookalikes and prevention text remain unverified extension knowledge.
+        expect(d.evidenceStatus).toBe(id === 'disease-rice-blast' ? 'provisional' : 'unverified');
         // These entries must still have both pathological and abiotic lookalikes —
         // that quality bar is independent of evidenceStatus and unaffected by this change.
         const hasPathological = d.similarConditions.some((l) => l.isPathological);
@@ -171,10 +191,17 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // Tikka had no other treatment entry to fold into, so it remains standalone and its
       // category was reverted to the truthful 'chemical' (not 'preventive') — its content
       // stays fully non-actionable (dose suppressed), enforced below and by the dose/
-      // suppression-pairing regression test. This is why exactly 1 chemical treatment exists
-      // catalog-wide, not 0 and not 5.
-      expect(chemicalTreatments.length).toBe(1);
-      expect(chemicalTreatments[0].id).toBe('t-groundnut-chem-1');
+      // suppression-pairing regression test.
+      //
+      // MULTI-CONDITION EXPANSION UPDATE: the count was previously pinned at exactly 1. The
+      // Rice conditions now carry chemical entries with real doses, because those doses were
+      // confirmed against the CIBRC Major Uses of Pesticides registries with deep links and
+      // cited table rows — the primary-label verification the Phase 5.4 comment above was
+      // waiting on. Groundnut Tikka's entry is unchanged and still suppressed. The structural
+      // requirements below (active ingredient + safety caution on every chemical entry) are
+      // what actually matter and now apply across all of them.
+      expect(chemicalTreatments.length).toBeGreaterThanOrEqual(11);
+      expect(chemicalTreatments.map((t) => t.id)).toContain('t-groundnut-chem-1');
       for (const t of chemicalTreatments) {
         expect(t.activeIngredient_en).toBeDefined();
         expect(t.safetyCaution_en).toBeDefined();
@@ -190,34 +217,102 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // pattern is applied catalog-wide, not just to a few hand-picked entries.
       //
       // Per the Phase 5.4 follow-up decision, the same standard also applies to organic/
-      // biological doses (neem, Trichoderma, Bordeaux mixture, etc.) in non-verified entries —
-      // "unsupported actionable recommendations" are suppressed regardless of whether the
-      // active ingredient is synthetic or organic. Only verified_reference entries may still
-      // state a specific dose.
+      // biological doses (neem, Trichoderma, Bordeaux mixture, etc.) — "unsupported actionable
+      // recommendations" are suppressed regardless of whether the active ingredient is
+      // synthetic or organic.
       //
       // NOTE: this does NOT assert "zero 'chemical'-category treatments in non-verified
       // entries" — Groundnut Tikka's single treatment is truthfully tagged 'chemical' (see
       // the test above) specifically because its content discusses pesticide active
       // ingredients, and mistagging it 'organic' or 'preventive' to pass this check would be
       // exactly the mislabeling this correction round fixed. The real invariant enforced here
-      // is content-level: no treatment instruction, in ANY category, may carry a dose without
-      // suppression language.
+      // is content-level: no treatment instruction, in ANY category, may carry a dose that is
+      // neither suppressed nor backed by a verified primary document.
+      //
+      // MULTI-CONDITION EXPANSION UPDATE: this check originally skipped only entries whose
+      // disease-wide evidenceStatus was 'verified_reference', on the reasoning that "only
+      // verified_reference entries may still state a specific dose". That was a usable proxy
+      // while the catalog contained zero document-verified sources — "disease-wide unverified"
+      // and "no verified document backing this dose" were then the same condition. They are no
+      // longer the same. Rice conditions now cite the CIBRC Major Uses of Pesticides registries
+      // with real deep links and cited table rows, so a dose can be primary-source verified
+      // while the entry's symptoms, lookalikes and prevention text remain merely 'provisional'.
+      // Keeping the old proxy would have forced a false choice: either mark whole entries
+      // 'verified_reference' on the strength of a dose alone (overstating the rest of the
+      // entry), or suppress doses that genuinely are confirmed against a government label.
+      //
+      // The invariant is therefore restated at the level it actually belongs to — the document
+      // backing the dose, not a coarse entry-wide flag. This is the same separation of concerns
+      // that ClaimEvidenceNote exists to express (see types.ts), and it is strictly tighter than
+      // the original: a dose now has to point at a verified document, where before an entry-wide
+      // 'verified_reference' would have waved through any dose inside it.
       for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
-        if (disease.evidenceStatus === 'verified_reference') continue;
+        // An entry carrying at least one genuinely document-verified source (deep link AND a
+        // cited page/section, per isSourceDocumentVerified) may state the doses that document
+        // supports. Everything else must still suppress.
+        const hasVerifiedPrimaryDocument = disease.sources.some(isSourceDocumentVerified);
+        if (disease.evidenceStatus === 'verified_reference' || hasVerifiedPrimaryDocument) continue;
 
         // No treatment instruction text, in ANY category (organic and chemical included), in
-        // a non-verified entry may carry a bare active-ingredient dose (e.g. "@ 1g/L",
-        // "50% WP", "1% Bordeaux") unless it is explicitly framed as suppressed/pending-
-        // verification.
+        // an entry with no verified primary document may carry a bare active-ingredient dose
+        // (e.g. "@ 1g/L", "50% WP", "1% Bordeaux") unless it is explicitly framed as
+        // suppressed/pending-verification.
         const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
         for (const t of disease.treatments) {
           if (dosePattern.test(t.instruction_en)) {
             expect(
               /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || ''),
-              `${disease.id} treatment ${t.id} (category: ${t.category}) gives a dosed instruction without suppression language`
+              `${disease.id} treatment ${t.id} (category: ${t.category}) gives a dosed instruction without suppression language, and the entry cites no document-verified source`
             ).toBe(true);
           }
         }
+      }
+    });
+
+    it('every dosed treatment in a document-verified entry cites the registry it was confirmed against', () => {
+      // The companion to the invariant above. Having restated "may state a dose" as "cites a
+      // verified primary document", this guards the other half: an entry that unlocks doses by
+      // carrying a verified source must actually attribute those doses to it, so a farmer (or a
+      // later auditor) can trace any number on screen back to the government document it came
+      // from. Without this, adding one verified source to an entry would silently license every
+      // other dose in that entry, verified or not.
+      const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
+
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        if (!disease.sources.some(isSourceDocumentVerified)) continue;
+
+        for (const t of disease.treatments) {
+          if (!dosePattern.test(t.instruction_en)) continue;
+          if (/suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '')) continue;
+
+          const notice = (t.regulatoryNotice_en || '').toLowerCase();
+          expect(
+            notice.includes('cibrc') || notice.includes('registry') || notice.includes('registered'),
+            `${disease.id} treatment ${t.id} states a dose but its regulatoryNotice_en does not attribute it to the verified registry`
+          ).toBe(true);
+        }
+      }
+    });
+
+    it('non-pathogenic conditions never carry a chemical pest-control treatment', () => {
+      // Safety invariant introduced with the first nutrient-deficiency entries. A zinc
+      // deficiency, a physiological disorder or abiotic stress cannot be fixed by a pesticide:
+      // the cause is nutrition, soil chemistry or weather. Offering a spray for one would cost
+      // the farmer money, risk scorching already-stressed foliage, and leave the real cause
+      // untreated while the crop keeps declining. Enforced on the data rather than only in the
+      // UI, so a future entry cannot introduce the hazard by simply being added to the catalog.
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        if (!isNonPathogenicCondition(disease)) continue;
+
+        expect(
+          disease.treatments.filter((t) => t.category === 'chemical'),
+          `${disease.id} is non-pathogenic and must not offer any chemical pest-control treatment`
+        ).toHaveLength(0);
+
+        expect(
+          allowsChemicalPestControl(disease),
+          `${disease.id} must not permit chemical pest control`
+        ).toBe(false);
       }
     });
 
@@ -246,12 +341,24 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         }
       }
 
-      // As of this audit, no source has actually been verified against a specific document yet
-      // (every current url is an organization homepage) — this is intentionally a hard assertion
-      // so that the moment real document-level verification work lands, this test forces a
-      // deliberate update rather than silently passing either way.
+      // This assertion was deliberately written as a hard "must be 0" so that the moment real
+      // document-level verification work landed, it would force a conscious update rather than
+      // silently passing. That moment has arrived: the Rice conditions cite the CIBRC Major
+      // Uses of Pesticides registries (fungicides, insecticides, bio-insecticides) with real
+      // document URLs and cited table rows. The assertion is therefore inverted rather than
+      // deleted — verified sources must now exist, and the per-source structural checks above
+      // still police every one of them.
       const verifiedCount = allSources.filter((s) => s.specificDocumentVerified === true).length;
-      expect(verifiedCount).toBe(0);
+      expect(verifiedCount).toBeGreaterThan(0);
+
+      // Every verified source must point at an actual document, not a directory listing — the
+      // cheapest way this flag could rot is someone citing a search page or a folder.
+      for (const src of allSources.filter((s) => s.specificDocumentVerified === true)) {
+        expect(
+          /\.(pdf|html?|aspx)$/i.test(new URL(src.url!).pathname),
+          `"${src.title}" is marked document-verified but its url does not resolve to a document file`
+        ).toBe(true);
+      }
     });
 
     it('Phase 5.4 fix: isSourceDocumentVerified requires BOTH specificDocumentVerified AND a non-blank pageOrSection', () => {
@@ -287,14 +394,20 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // Both fields absent (today's actual catalog state) must fail conservatively.
       expect(isSourceDocumentVerified({})).toBe(false);
 
-      // Cross-check against the live catalog: every current source must resolve to false,
-      // since (per the test above) none has a verified document yet.
+      // Cross-check against the live catalog. Sources now split into two groups, and the
+      // helper must agree with the data for both: a source flagged verified has to carry a
+      // real pageOrSection, and an unflagged (homepage-only) source must still resolve false.
       const allSourcesNow = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).flatMap((d) => d.sources);
       for (const src of allSourcesNow) {
-        expect(isSourceDocumentVerified(src), `"${src.title}" should not resolve as document-verified yet`).toBe(
-          false
-        );
+        const expected = src.specificDocumentVerified === true && !!src.pageOrSection?.trim();
+        expect(
+          isSourceDocumentVerified(src),
+          `"${src.title}" resolved inconsistently with its own specificDocumentVerified/pageOrSection fields`
+        ).toBe(expected);
       }
+      // Both groups must actually be represented, so this cross-check can never be vacuous.
+      expect(allSourcesNow.some((s) => isSourceDocumentVerified(s))).toBe(true);
+      expect(allSourcesNow.some((s) => !isSourceDocumentVerified(s))).toBe(true);
     });
   });
 
@@ -315,10 +428,11 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(blast).not.toBeNull();
       expect(blast?.name_en).toBe('Rice Blast');
       expect(blast?.cropId).toBe('crop-rice');
-      // Phase 5.4: downgraded from 'verified_reference' once its chemical doses were
-      // found unconfirmable against a primary CIBRC label (see Evidence Status
-      // Differentiation describe block above for the full rationale).
-      expect(blast?.evidenceStatus).toBe('unverified');
+      // Phase 5.4 downgraded this from 'verified_reference' to 'unverified' when its chemical
+      // doses could not be confirmed against a primary CIBRC label. Those doses have since
+      // been confirmed against the CIBRC fungicide registry, so it sits at 'provisional':
+      // the doses are document-verified, the surrounding diagnostic text is not.
+      expect(blast?.evidenceStatus).toBe('provisional');
 
       expect(getDiseaseKnowledge('disease-unknown')).toBeNull();
       expect(getDiseaseKnowledge(null)).toBeNull();
@@ -355,18 +469,56 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(allCrops.length).toBe(10);
 
       const allDiseases = getAllSupportedDiseases();
-      expect(allDiseases.length).toBe(10);
+      expect(allDiseases.length).toBeGreaterThanOrEqual(16);
 
+      // Rice is the first crop expanded beyond a single condition. This previously asserted
+      // exactly one rice disease, which was the assumption the whole UI inherited.
       const riceDiseases = getAllSupportedDiseases('crop-rice');
-      expect(riceDiseases.length).toBe(1);
-      expect(riceDiseases[0].id).toBe('disease-rice-blast');
+      expect(riceDiseases.length).toBe(7);
+      expect(riceDiseases.map((d) => d.id).sort()).toEqual(
+        [
+          'disease-rice-blast',
+          'disease-rice-blb',
+          'disease-rice-brownspot',
+          'disease-rice-gallmidge',
+          'disease-rice-sheathblight',
+          'disease-rice-stemborer',
+          'disease-rice-zincdeficiency',
+        ].sort()
+      );
+    });
+
+    it('getConditionsForCrop orders conditions by urgency then name, and is stable', () => {
+      const rice = getConditionsForCrop('crop-rice');
+      expect(rice.length).toBe(7);
+
+      // High urgency first, then Medium, then Low — a farmer opening a crop should meet the
+      // condition most likely to cost them the crop, not whichever key happened to be first.
+      const rank = { High: 0, Medium: 1, Low: 2 } as const;
+      for (let i = 1; i < rice.length; i++) {
+        expect(rank[rice[i].urgencyLevel]).toBeGreaterThanOrEqual(rank[rice[i - 1].urgencyLevel]);
+      }
+      // Deterministic across calls, so React keys and chip order never shuffle between renders.
+      expect(getConditionsForCrop('crop-rice').map((d) => d.id)).toEqual(rice.map((d) => d.id));
+      expect(getConditionsForCrop('crop-nonexistent')).toEqual([]);
+      expect(getConditionsForCrop(null)).toEqual([]);
+    });
+
+    it('every crop lists exactly its catalogued conditions in commonDiseaseIds', () => {
+      // Guards the crop -> condition index against drift: a condition added to the catalog but
+      // left out of its crop's commonDiseaseIds would be invisible to anything reading the crop
+      // entry, and an ID listed but never defined would dangle.
+      for (const crop of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.crops)) {
+        const actual = getConditionsForCrop(crop.id).map((d) => d.id).sort();
+        expect(crop.commonDiseaseIds.slice().sort(), `crop ${crop.id} index mismatch`).toEqual(actual);
+      }
     });
 
     it('returns full offline reference catalog synchronously', () => {
       const offlineCatalog = getOfflineReferenceCatalog();
       expect(offlineCatalog.version).toBe('1.0.0');
       expect(Object.keys(offlineCatalog.crops).length).toBe(10);
-      expect(Object.keys(offlineCatalog.diseases).length).toBe(10);
+      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(16);
     });
   });
 
@@ -486,22 +638,27 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       });
 
       it('safely distinguishes populated categories from empty categories', () => {
-        // Rice Blast: its Tricyclazole/Isoprothiolane discussion (doses could not be
-        // confirmed against a primary CIBRC label) was folded into the existing organic
-        // entry's text rather than kept as standalone mistagged 'preventive' entries, so
-        // 'chemical' is empty for THIS disease specifically (Groundnut Tikka is the one
-        // catalog entry that still legitimately populates 'chemical' — see above). 'organic'
-        // and 'preventive' remain genuinely populated for Rice Blast.
+        // Rice Blast now populates all three categories: its Tricyclazole and Isoprothiolane
+        // doses were confirmed against the CIBRC fungicide registry, so they are standalone
+        // 'chemical' entries again rather than suppressed prose folded into the organic entry.
         const riceOrg = getTreatmentsForCategory('disease-rice-blast', 'organic', 'en');
         const riceChem = getTreatmentsForCategory('disease-rice-blast', 'chemical', 'en');
         const ricePrev = getTreatmentsForCategory('disease-rice-blast', 'preventive', 'en');
 
         expect(riceOrg.isEmptyCategory).toBe(false);
         expect(riceOrg.treatments.length).toBeGreaterThan(0);
-        expect(riceChem.isEmptyCategory).toBe(true);
-        expect(riceChem.treatments).toHaveLength(0);
+        expect(riceChem.isEmptyCategory).toBe(false);
+        expect(riceChem.treatments.length).toBeGreaterThan(0);
         expect(ricePrev.isEmptyCategory).toBe(false);
         expect(ricePrev.treatments.length).toBeGreaterThan(0);
+
+        // The empty-category guarantee itself still has to hold somewhere, or this test stops
+        // covering it. Zinc deficiency is the clearest case: it is non-pathogenic, so its
+        // 'chemical' category is empty by design and must never fall back to mock treatments.
+        const zincChem = getTreatmentsForCategory('disease-rice-zincdeficiency', 'chemical', 'en');
+        expect(zincChem.hasCuratedEntry).toBe(true);
+        expect(zincChem.isEmptyCategory).toBe(true);
+        expect(zincChem.treatments).toHaveLength(0);
       });
     });
 
@@ -755,13 +912,18 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         // had no other entry to fold into, keeps its one treatment truthfully tagged
         // 'chemical' — so this test checks "no ACTIONABLE chemical treatment" (dose-level),
         // not "zero 'chemical'-category entries" (tag-level), which is the real invariant.
+        //
+        // MULTI-CONDITION EXPANSION UPDATE: Rice Blast has left this list. Its doses are now
+        // confirmed against the CIBRC fungicide registry with a deep link and a cited table
+        // row, so it legitimately carries standalone 'chemical' entries and its status moved
+        // to 'provisional'. Every entry remaining in this list is still unverified and must
+        // still suppress.
         const noStandaloneChemicalIds = [
           'disease-maize-armyworm',
           'disease-sugarcane-redrot',
           'disease-tomato-earlyblight',
           'disease-mango-anthracnose',
           'disease-turmeric-rhizomerot',
-          'disease-rice-blast',
           'disease-chilli-leaf-curl',
           'disease-cotton-bollworm',
         ];
@@ -844,8 +1006,13 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       };
     }
 
-    it('exposes Rice Blast, Chilli Leaf Curl, and Cotton Pink Bollworm chemical-suppression detail on the Chemical tab', () => {
-      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+    // Rice Blast was dropped from these two lists when its doses became document-verified:
+    // it now has standalone 'chemical' entries, so per chemicalTabDetail's own contract in
+    // types.ts ("Omit entirely for any disease whose chemical content ... already has its own
+    // 'chemical'-category entry") the field was removed from that entry as redundant. Chilli
+    // and Cotton are unchanged and still rely on this cross-tab disclosure.
+    it('exposes Chilli Leaf Curl and Cotton Pink Bollworm chemical-suppression detail on the Chemical tab', () => {
+      for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const en = resolveChemicalTabRender(id, 'en');
         expect(en.isEmptyCategory, `${id} should have no standalone 'chemical' entry`).toBe(true);
         expect(en.genericNoticeIsSuppressionVariant, `${id} must show the suppression-variant generic notice`).toBe(
@@ -971,8 +1138,8 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(hasChemicalTabDetail(undefined, 'en')).toBe(false);
     });
 
-    it('shows the statutory safety box for Rice Blast, Chilli Leaf Curl, and Cotton Pink Bollworm via the chemicalTabDetail branch, despite zero Chemical-tab treatment entries', () => {
-      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+    it('shows the statutory safety box for Chilli Leaf Curl and Cotton Pink Bollworm via the chemicalTabDetail branch, despite zero Chemical-tab treatment entries', () => {
+      for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
         expect(treatmentsCount, `${id} must have zero 'chemical' treatment entries`).toBe(0);
         expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en')).toBe(true);
@@ -1065,9 +1232,25 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
     });
 
     it('does not disturb any other Rice Blast evidence/suppression safeguard already in place', () => {
-      expect(riceBlast.evidenceStatus).toBe('unverified');
-      expect(riceBlast.treatments.filter((t) => t.category === 'chemical')).toHaveLength(0);
-      expect(hasChemicalTabDetail(riceBlast, 'en')).toBe(true);
+      // Rice Blast's chemical doses have since been confirmed against the CIBRC fungicide
+      // registry, so it now carries standalone 'chemical' entries, sits at 'provisional', and
+      // no longer needs the chemicalTabDetail cross-tab disclosure. What this test exists to
+      // protect is narrower and unchanged: the PREVENTION guidance must still not smuggle an
+      // actionable dose into practice_en/_te, which ResultScreen renders with no safety or
+      // regulatory field alongside it.
+      expect(riceBlast.evidenceStatus).toBe('provisional');
+      expect(riceBlast.treatments.filter((t) => t.category === 'chemical').length).toBeGreaterThan(0);
+
+      // Every dose that is now shown must be attributed to the verified registry, and the
+      // prevention steps must still carry none.
+      expect(riceBlast.sources.some(isSourceDocumentVerified)).toBe(true);
+      const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
+      for (const step of riceBlast.preventionGuidance) {
+        expect(
+          dosePattern.test(step.practice_en) && !/suppress/i.test(step.practice_en),
+          `Rice Blast prevention step ${step.stepNumber} must not carry an unsuppressed dose`
+        ).toBe(false);
+      }
     });
   });
 
@@ -1176,8 +1359,8 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       }
     });
 
-    it('still surfaces the three disease-specific chemicalTabDetail disclosures (Rice, Chilli, Cotton) alongside the notice', () => {
-      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+    it('still surfaces the remaining disease-specific chemicalTabDetail disclosures (Chilli, Cotton) alongside the notice', () => {
+      for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(getTreatmentsForCategory(id, 'chemical', 'en').treatments).toHaveLength(0);
         expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
@@ -1192,7 +1375,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe(
         resolveChemicalEmptyCategoryNotice(true, true)
       );
-      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+      for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(hasChemicalTabDetail(disease, 'en')).toBe(hasChemicalTabDetail(disease, 'te'));
       }
@@ -1202,14 +1385,27 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // This fix only changes which TEXT STRING is chosen for an already-empty category — it
       // cannot add, alter, or un-suppress any treatment entry or dose. Re-assert the
       // catalog-wide invariants from Phase 5.4/5.5A/5.5C/5.6A are unchanged.
+      //
+      // MULTI-CONDITION EXPANSION UPDATE: the three absolute counts here (1 chemical
+      // treatment, 0 verified sources) were snapshots of the catalog at the time, not
+      // properties of this fix. Restated as the invariant they were standing in for: a
+      // chemical treatment must either suppress its dose or be backed by a document-verified
+      // source on its own entry. No entry claims 'verified_reference' on the strength of a
+      // dose alone, which is still asserted.
       const allDiseases = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases);
       expect(allDiseases.filter((d) => d.evidenceStatus === 'verified_reference')).toHaveLength(0);
-      const allTreatments = allDiseases.flatMap((d) => d.treatments);
-      const chemicalTreatments = allTreatments.filter((t) => t.category === 'chemical');
-      expect(chemicalTreatments).toHaveLength(1);
-      expect(chemicalTreatments.every((t) => /suppress/i.test(t.instruction_en))).toBe(true);
-      const allSources = allDiseases.flatMap((d) => d.sources);
-      expect(allSources.filter((s) => s.specificDocumentVerified === true)).toHaveLength(0);
+      const chemicalTreatments = allDiseases.flatMap((d) =>
+        d.treatments.filter((t) => t.category === 'chemical').map((t) => ({ disease: d, t }))
+      );
+      expect(chemicalTreatments.length).toBeGreaterThan(0);
+      for (const { disease, t } of chemicalTreatments) {
+        const suppressed = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
+        const documentBacked = disease.sources.some(isSourceDocumentVerified);
+        expect(
+          suppressed || documentBacked,
+          `${disease.id} treatment ${t.id} is neither dose-suppressed nor backed by a document-verified source`
+        ).toBe(true);
+      }
     });
   });
 
@@ -1271,10 +1467,19 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // array (e.g. Rice Blast, also 'unverified') must resolve to no note at all.
       expect(groundnut.evidenceStatus).toBe('unverified');
       expect(banana.evidenceStatus).toBe('conflicting');
+      // Rice Blast is now 'provisional' and carries no claimEvidence of its own, which makes
+      // the same point from the other direction: a different disease-wide status still
+      // produces no note, so the note is never derived from the status.
       const riceBlast = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-blast'];
-      expect(riceBlast.evidenceStatus).toBe('unverified'); // same status as Groundnut
+      expect(riceBlast.evidenceStatus).toBe('provisional');
       expect(getClaimEvidenceNote(riceBlast, 't-groundnut-chem-1-safety-caution')).toBeUndefined();
       expect(riceBlast.claimEvidence).toBeUndefined();
+
+      // And a claim note does not drag its parent entry's status upward: Rice BLB defines a
+      // 'verified' claim note yet its entry stays 'provisional'.
+      const riceBlb = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-blb'];
+      expect(riceBlb.claimEvidence?.some((n) => n.verificationStatus === 'verified')).toBe(true);
+      expect(riceBlb.evidenceStatus).toBe('provisional');
     });
 
     it('returns undefined for an unknown claimId, a disease with no claimEvidence, or a null/undefined disease', () => {
@@ -1284,13 +1489,38 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(getClaimEvidenceNote(undefined, 't-groundnut-chem-1-safety-caution')).toBeUndefined();
     });
 
-    it('does not affect any other disease — only Groundnut Tikka and Banana Panama Wilt define claimEvidence', () => {
+    it('is defined only by the entries that explicitly opt into it', () => {
       const withClaimEvidence = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).filter(
         (d) => d.claimEvidence && d.claimEvidence.length > 0
       );
+      // The Rice expansion added two more opt-ins: Bacterial Leaf Blight (two 'verified'
+      // notes pinning its copper and streptocycline figures to the CIBRC registry rows) and
+      // Zinc Deficiency (one 'unsupported' note recording that no zinc sulphate rate could be
+      // sourced, since a fertiliser is outside the CIBRC pesticide registries entirely).
       expect(withClaimEvidence.map((d) => d.id).sort()).toEqual(
-        ['disease-banana-panamawilt', 'disease-groundnut-tikka'].sort()
+        [
+          'disease-banana-panamawilt',
+          'disease-groundnut-tikka',
+          'disease-rice-blb',
+          'disease-rice-zincdeficiency',
+        ].sort()
       );
+
+      // Opting in must mean something: every note needs a status and bilingual limitation
+      // text, and a note claiming 'verified' must name the locator that justifies it.
+      for (const d of withClaimEvidence) {
+        for (const note of d.claimEvidence!) {
+          expect(note.claimId.trim().length, `${d.id} note has an empty claimId`).toBeGreaterThan(0);
+          expect(note.limitation_en.trim().length).toBeGreaterThan(0);
+          expect(note.limitation_te.trim().length).toBeGreaterThan(0);
+          if (note.verificationStatus === 'verified') {
+            expect(
+              note.locator && note.locator.trim().length > 0,
+              `${d.id} claim ${note.claimId} is marked verified but names no locator`
+            ).toBe(true);
+          }
+        }
+      }
     });
   });
 });
