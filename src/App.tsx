@@ -5,10 +5,11 @@ import { HomeScreen } from './screens/HomeScreen';
 import { ScanScreen, type ScanResultData } from './screens/ScanScreen';
 import { ResultScreen } from './screens/ResultScreen';
 import { HistoryScreen } from './screens/HistoryScreen';
+import { LegalScreen } from './screens/LegalScreen';
 import { SAMPLE_CROP_IMAGE } from './lib/mockData';
 import './App.css';
 
-type Screen = 'home' | 'scan' | 'result' | 'history';
+type Screen = 'home' | 'scan' | 'result' | 'history' | 'legal';
 
 function MainApp() {
   const { t } = useLanguage();
@@ -60,7 +61,9 @@ function MainApp() {
 
       {/* Main Screen Body */}
       <main className="app-main">
-        {screen === 'home' && <HomeScreen onStartScan={handleStartScan} />}
+        {screen === 'home' && (
+          <HomeScreen onStartScan={handleStartScan} onOpenLegal={() => setScreen('legal')} />
+        )}
 
         {screen === 'scan' && (
           <ScanScreen
@@ -84,6 +87,8 @@ function MainApp() {
             onStartScan={handleStartScan}
           />
         )}
+
+        {screen === 'legal' && <LegalScreen onBack={() => setScreen('home')} />}
       </main>
 
       {/* Bottom Navigation Bar */}

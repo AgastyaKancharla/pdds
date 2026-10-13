@@ -3,9 +3,10 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface HomeScreenProps {
   onStartScan: () => void;
+  onOpenLegal?: () => void;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan, onOpenLegal }) => {
   const { language, setLanguage, t } = useLanguage();
 
   return (
@@ -66,6 +67,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan }) => {
           <span>{t('scanNow')}</span>
         </button>
       </div>
+
+      {onOpenLegal && (
+        <button
+          type="button"
+          onClick={onOpenLegal}
+          style={{
+            background: 'none',
+            border: 'none',
+            opacity: 0.6,
+            fontSize: 13,
+            textDecoration: 'underline',
+            marginTop: 8,
+            cursor: 'pointer',
+          }}>
+          {language === 'en' ? 'Privacy Policy & Terms' : 'గోప్యతా విధానం & నిబంధనలు'}
+        </button>
+      )}
     </div>
   );
 };

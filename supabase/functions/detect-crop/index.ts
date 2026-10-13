@@ -20,6 +20,24 @@ interface RequestPayload {
   cropHint?: string;
 }
 
+// Reads the `sub` (user id) claim out of a caller's JWT for rate-limiting purposes only.
+// Supabase's edge runtime has already verified this token's signature before this function
+// runs (verify_jwt is enabled), so we don't re-verify it here -- we only decode the payload.
+// Never use this for authorization decisions; it exists solely to key the rate-limit log.
+function extractUserIdFromJwt(token: string): string | null {
+  try {
+    const payloadSegment = token.split('.')[1];
+    if (!payloadSegment) return null;
+    const normalized = payloadSegment.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=');
+    const json = atob(padded);
+    const claims = JSON.parse(json);
+    return typeof claims.sub === 'string' ? claims.sub : null;
+  } catch {
+    return null;
+  }
+}
+
 Deno.serve(async (req: Request) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
@@ -57,6 +75,62 @@ Deno.serve(async (req: Request) => {
       }),
       { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+  }
+
+  // 2b. Rate limit: at most RATE_LIMIT_MAX requests per user per RATE_LIMIT_WINDOW_MS,
+  // so one user (or a bot with a stolen/anonymous token) cannot exhaust the shared
+  // AI quota or run up costs. Best-effort: if the rate-limit check itself fails
+  // (e.g. the log table isn't reachable), we fail OPEN rather than blocking
+  // legitimate scans on an unrelated outage.
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  const RATE_LIMIT_MAX = 6;
+  const RATE_LIMIT_WINDOW_MS = 60_000;
+
+  const userId = extractUserIdFromJwt(authHeader.slice('Bearer '.length));
+
+  if (supabaseUrl && serviceRoleKey && userId) {
+    try {
+      const since = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+      const countResponse = await fetch(
+        `${supabaseUrl}/rest/v1/rate_limit_log?user_id=eq.${encodeURIComponent(userId)}&created_at=gte.${encodeURIComponent(since)}&select=id`,
+        {
+          headers: {
+            apikey: serviceRoleKey,
+            Authorization: `Bearer ${serviceRoleKey}`,
+            Prefer: 'count=exact',
+          },
+        }
+      );
+
+      const contentRange = countResponse.headers.get('content-range'); // e.g. "0-2/3"
+      const requestCount = contentRange ? Number(contentRange.split('/')[1]) : 0;
+
+      if (requestCount >= RATE_LIMIT_MAX) {
+        return new Response(
+          JSON.stringify({
+            error: 'RateLimitExceeded',
+            message: 'Too many scans in a short time. Please wait a minute and try again.',
+            retryable: true,
+          }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Record this request. Best-effort: don't block the scan if this write fails.
+      fetch(`${supabaseUrl}/rest/v1/rate_limit_log`, {
+        method: 'POST',
+        headers: {
+          apikey: serviceRoleKey,
+          Authorization: `Bearer ${serviceRoleKey}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ user_id: userId }),
+      }).catch(() => {});
+    } catch (rateLimitErr) {
+      console.warn('[HereForNature] Rate-limit check failed open:', rateLimitErr);
+    }
   }
 
   // 3. Parse and validate request body
