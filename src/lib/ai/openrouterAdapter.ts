@@ -7,6 +7,18 @@ import { validateAndNormalizeAiResponse, createFallbackDiagnosis } from './valid
 
 export const DEFAULT_OPENROUTER_FREE_MODEL = 'dots-studio/dots-3-note-preview:free';
 
+/**
+ * SERVER-SIDE / TEST-ONLY. This class calls OpenRouter directly with a raw `apiKey`, so
+ * instantiating it anywhere an API key could be client-exposed (a React component, a
+ * browser bundle) would leak that key. The real application never does this: the live
+ * user-facing path in src/lib/detection.ts dispatches through the Supabase Edge Function
+ * gateway (supabase/functions/detect-crop), which holds the OpenRouter key server-side
+ * only. This class exists for isolated adapter-shape/validator-reuse testing (see
+ * src/lib/ai/__tests__/openrouterAdapter.test.ts) and as a template if the gateway logic
+ * is ever reimplemented as a Node/Deno server process. The guard below makes the
+ * client-exposure risk fail loudly and immediately instead of silently, in case anything
+ * ever tries to construct this from browser code.
+ */
 export interface OpenRouterAdapterConfig {
   apiKey: string;
   modelId?: string;
@@ -22,6 +34,14 @@ export class OpenRouterAdapter implements AiProviderAdapter {
   private readonly timeoutMs: number;
 
   constructor(config: OpenRouterAdapterConfig) {
+    if (typeof window !== 'undefined') {
+      throw new Error(
+        'OpenRouterAdapter must never be instantiated in a browser context — it would expose ' +
+          'the provider API key client-side. The real application dispatches through the ' +
+          'Supabase Edge Function gateway (src/lib/detection.ts) instead. This class is ' +
+          'server-side/test-only.'
+      );
+    }
     this.apiKey = config.apiKey;
     this.modelId = config.modelId || DEFAULT_OPENROUTER_FREE_MODEL;
     this.baseUrl = config.baseUrl || 'https://openrouter.ai/api/v1';

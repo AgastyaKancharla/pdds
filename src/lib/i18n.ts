@@ -127,6 +127,14 @@ export const translations = {
     en: 'Agricultural Authority References',
     te: 'వ్యవసాయ పరిశోధనా మూలాలు',
   },
+  sourceHomepageOnlyDisclosure: {
+    en: 'Links to the organization\'s website; the specific document, page, or label section has not yet been located and verified.',
+    te: 'ఈ లింక్ సంస్థ వెబ్‌సైట్‌కు మాత్రమే వెళుతుంది; నిర్దిష్ట పత్రం, పేజీ లేదా లేబుల్ భాగం ఇంకా కనుగొని ధృవీకరించలేదు.',
+  },
+  sourceSectionLabel: {
+    en: 'Section',
+    te: 'భాగం',
+  },
   evidenceStatusVerified: {
     en: 'Verified Agricultural Reference',
     te: 'ధృవీకరించబడిన వ్యవసాయ సమాచారం',
@@ -174,6 +182,10 @@ export const translations = {
   regulatoryGuidanceLabel: {
     en: 'Regulatory Guidance:',
     te: 'చట్టబద్ధమైన మార్గదర్శకం:',
+  },
+  claimEvidenceLimitationLabel: {
+    en: 'Evidence Note:',
+    te: 'ఆధారాల గమనిక:',
   },
   noCategoryRecommendation: {
     en: 'No specific recommendation is currently cataloged for this category. Refer to prevention practices or consult your local agricultural authority / Rythu Bharosa Kendra (RBK).',
@@ -246,6 +258,14 @@ export const translations = {
   savedLocallyDesc: {
     en: 'Saved locally on this device. This scan remains on this browser and is not automatically uploaded to cloud.',
     te: 'ఈ పరికరంలో మాత్రమే స్థానికంగా సేవ్ చేయబడింది. ఈ స్కాన్ ఈ బ్రౌజర్‌లో మాత్రమే ఉంటుంది మరియు క్లౌడ్‌కి ఆటోమేటిక్‌గా అప్‌లోడ్ చేయబడదు.',
+  },
+  savedCloudNoProvenance: {
+    en: '✓ Saved to Cloud (Provenance Not Recorded)',
+    te: '✓ క్లౌడ్‌కి సేవ్ చేయబడింది (మూల వివరాలు నమోదు కాలేదు)',
+  },
+  savedCloudNoProvenanceDesc: {
+    en: 'This scan was uploaded to the cloud, but the server database could not store its diagnostic provenance (AI-preliminary / demo / legacy) tag. Treat this record as unverified provenance history.',
+    te: 'ఈ స్కాన్ క్లౌడ్‌కి అప్‌లోడ్ చేయబడింది, కానీ సర్వర్ డేటాబేస్ దీని నిర్ధారణ మూల (AI-ప్రాథమిక / డెమో / పాత) ట్యాగ్‌ను నిల్వ చేయలేకపోయింది. ఈ రికార్డును అనిర్దిష్ట మూలంగా పరిగణించండి.',
   },
   saveFailed: {
     en: 'Save Failed — Retry',

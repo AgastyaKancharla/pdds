@@ -808,13 +808,17 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
     });
 
     it('maps save outcomes to the correct UI save status, button classes, and localized copy', () => {
-      // Helper simulating the ResultScreen saveStatus resolution logic
+      // Helper simulating the ResultScreen saveStatus resolution logic.
+      // Must mirror src/screens/ResultScreen.tsx handleSave/render exactly, including
+      // the cloudProvenancePersisted branch: a cloud save against a legacy schema that
+      // could not store diagnostic_tier/is_demo_sample must NEVER be reported as the
+      // same full-provenance "saved_cloud" state.
       function resolveUiState(saveResult: SaveScanResult, lang: 'en' | 'te') {
-        let saveStatus: 'saved_cloud' | 'saved_local' | 'failed';
+        let saveStatus: 'saved_cloud' | 'saved_cloud_no_provenance' | 'saved_local' | 'failed';
         if (!saveResult.success) {
           saveStatus = 'failed';
         } else if (saveResult.savedCloud) {
-          saveStatus = 'saved_cloud';
+          saveStatus = saveResult.cloudProvenancePersisted ? 'saved_cloud' : 'saved_cloud_no_provenance';
         } else {
           saveStatus = 'saved_local';
         }
@@ -822,6 +826,8 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
         const buttonClass =
           saveStatus === 'saved_cloud'
             ? 'btn-saved'
+            : saveStatus === 'saved_cloud_no_provenance'
+            ? 'btn-saved-no-provenance'
             : saveStatus === 'saved_local'
             ? 'btn-saved-local'
             : 'btn-save-failed';
@@ -829,18 +835,23 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
         const buttonText =
           saveStatus === 'saved_cloud'
             ? `✓ ${translate('saved', lang)}`
+            : saveStatus === 'saved_cloud_no_provenance'
+            ? translate('savedCloudNoProvenance', lang)
             : saveStatus === 'saved_local'
             ? `💾 ${translate('savedLocally', lang)}`
             : `⚠️ ${translate('saveFailed', lang)}`;
 
         const subtext =
-          saveStatus === 'saved_local'
+          saveStatus === 'saved_cloud_no_provenance'
+            ? `⚠️ ${translate('savedCloudNoProvenanceDesc', lang)}`
+            : saveStatus === 'saved_local'
             ? `💾 ${translate('savedLocallyDesc', lang)}`
             : saveStatus === 'failed'
             ? `⚠️ ${translate('saveFailedDesc', lang)}`
             : null;
 
-        const disabled = saveStatus === 'saved_cloud' || saveStatus === 'saved_local';
+        const disabled =
+          saveStatus === 'saved_cloud' || saveStatus === 'saved_cloud_no_provenance' || saveStatus === 'saved_local';
 
         return { saveStatus, buttonClass, buttonText, subtext, disabled };
       }
@@ -886,12 +897,13 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
         '💾 ఈ పరికరంలో మాత్రమే స్థానికంగా సేవ్ చేయబడింది. ఈ స్కాన్ ఈ బ్రౌజర్‌లో మాత్రమే ఉంటుంది మరియు క్లౌడ్‌కి ఆటోమేటిక్‌గా అప్‌లోడ్ చేయబడదు.'
       );
 
-      // 3. Successful Cloud Save (Authenticated)
+      // 3. Successful Cloud Save (Authenticated), full provenance persisted
       const cloudResult: SaveScanResult = {
         success: true,
         savedCloud: true,
         savedLocallyOnly: false,
         savedLocal: true,
+        cloudProvenancePersisted: true,
       };
       const uiCloudEn = resolveUiState(cloudResult, 'en');
       expect(uiCloudEn.saveStatus).toBe('saved_cloud');
@@ -904,17 +916,46 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       expect(uiCloudTe.buttonText).toBe('✓ సేవ్ చేయబడింది');
       expect(uiCloudTe.subtext).toBeNull();
 
-      // 4. Cloud save succeeds even if local write failed
+      // 4. Cloud save succeeds even if local write failed (still full provenance)
       const cloudOnlyResult: SaveScanResult = {
         success: true,
         savedCloud: true,
         savedLocallyOnly: false,
         savedLocal: false,
+        cloudProvenancePersisted: true,
       };
       const uiCloudOnly = resolveUiState(cloudOnlyResult, 'en');
       expect(uiCloudOnly.saveStatus).toBe('saved_cloud');
       expect(uiCloudOnly.buttonClass).toBe('btn-saved');
       expect(uiCloudOnly.subtext).toBeNull(); // No local-save confirmation displayed
+
+      // 5. Regression (Phase 5.4): cloud save succeeded against a LEGACY schema that
+      // could not store provenance columns. Must be reported distinctly, never as the
+      // same "✓ Saved" full-provenance state — see src/lib/storage.ts isMissingColumnError
+      // fallback path (cloudProvenancePersisted: false while savedCloud: true).
+      const cloudLegacyResult: SaveScanResult = {
+        success: true,
+        savedCloud: true,
+        savedLocallyOnly: false,
+        savedLocal: true,
+        cloudProvenancePersisted: false,
+      };
+      const uiCloudLegacyEn = resolveUiState(cloudLegacyResult, 'en');
+      expect(uiCloudLegacyEn.saveStatus).toBe('saved_cloud_no_provenance');
+      expect(uiCloudLegacyEn.buttonClass).toBe('btn-saved-no-provenance');
+      expect(uiCloudLegacyEn.buttonClass).not.toBe('btn-saved');
+      expect(uiCloudLegacyEn.buttonText).toBe('✓ Saved to Cloud (Provenance Not Recorded)');
+      // Non-vacuous guard: the legacy/no-provenance save must never collapse onto the
+      // literal full-provenance success string — if a future edit ever made the two
+      // branches share copy, this fails (unlike the old `.not.toContain('✓ Saved\n')`,
+      // which could never fail because buttonText never contains a literal newline).
+      expect(uiCloudLegacyEn.buttonText).not.toBe(`✓ ${translate('saved', 'en')}`);
+      expect(uiCloudLegacyEn.subtext).toContain('could not store its diagnostic provenance');
+      expect(uiCloudLegacyEn.disabled).toBe(true);
+
+      const uiCloudLegacyTe = resolveUiState(cloudLegacyResult, 'te');
+      expect(uiCloudLegacyTe.buttonText).toBe('✓ క్లౌడ్‌కి సేవ్ చేయబడింది (మూల వివరాలు నమోదు కాలేదు)');
+      expect(uiCloudLegacyTe.buttonText).not.toBe(`✓ ${translate('saved', 'te')}`);
     });
   });
 

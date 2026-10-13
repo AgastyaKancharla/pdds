@@ -6,8 +6,10 @@
 import { AGRICULTURAL_KNOWLEDGE_CATALOG } from './catalog';
 import type {
   AgriculturalKnowledgeCatalog,
+  ClaimEvidenceNote,
   CropKnowledgeEntry,
   DiseaseKnowledgeEntry,
+  KnowledgeSource,
   LookalikeCondition,
   TreatmentCategory,
 } from './types';
@@ -176,5 +178,52 @@ export function getOfflineOrCachedKnowledge(
     disease,
     isAvailableOffline: !!(crop || disease),
   };
+}
+
+/**
+ * True ONLY when a source is both flagged as pointing to a specific document
+ * (`specificDocumentVerified`) AND names a real, non-blank supporting page/passage/
+ * table/label section (`pageOrSection`). Either condition missing, empty, or
+ * whitespace-only fails conservatively to "not verified" — a homepage-only
+ * citation must never be presented as document-verified, and a missing/blank
+ * section must never silently suppress the homepage-only disclosure.
+ */
+export function isSourceDocumentVerified(source: Pick<KnowledgeSource, 'specificDocumentVerified' | 'pageOrSection'>): boolean {
+  return !!source.specificDocumentVerified && !!source.pageOrSection && source.pageOrSection.trim().length > 0;
+}
+
+/**
+ * True when a disease defines a non-empty `chemicalTabDetail_en`/`_te` for the given
+ * language. Extracted as a small pure predicate (Phase 5.4 test-coverage fix) so that
+ * ResultScreen.tsx's statutory-safety-box condition and its regression tests call the
+ * exact same function, rather than the test re-implementing the check separately and
+ * risking drift from the real branching logic.
+ */
+export function hasChemicalTabDetail(
+  disease: Pick<DiseaseKnowledgeEntry, 'chemicalTabDetail_en' | 'chemicalTabDetail_te'> | null | undefined,
+  language: 'en' | 'te'
+): boolean {
+  if (!disease) return false;
+  const text = language === 'en' ? disease.chemicalTabDetail_en : disease.chemicalTabDetail_te;
+  return !!text;
+}
+
+/**
+ * Looks up the claim-level evidence note for one specific claimId on a disease, or
+ * undefined if that disease defines no such note. This is the single source of truth
+ * both ResultScreen.tsx and its regression tests call — never re-implemented separately —
+ * so a test can never drift from what the UI actually renders.
+ *
+ * Deliberately does NOT fall back to, derive from, or get bypassed by the disease's
+ * overall `evidenceStatus` or `sources[]`: a disease-wide status can never silently
+ * create, satisfy, or hide a specific claim's note (see ClaimEvidenceNote's doc comment
+ * in types.ts for the Phase 5.6A/5.6B/5.6C rationale this closes).
+ */
+export function getClaimEvidenceNote(
+  disease: Pick<DiseaseKnowledgeEntry, 'claimEvidence'> | null | undefined,
+  claimId: string
+): ClaimEvidenceNote | undefined {
+  if (!disease?.claimEvidence) return undefined;
+  return disease.claimEvidence.find((note) => note.claimId === claimId);
 }
 

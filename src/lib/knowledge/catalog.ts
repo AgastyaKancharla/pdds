@@ -8,7 +8,7 @@ import type { AgriculturalKnowledgeCatalog } from './types';
 
 export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
   version: '1.0.0',
-  lastReviewedDate: '2026-10-09',
+  lastReviewedDate: '2026-10-12',
   authorityStandards: [
     'Acharya N.G. Ranga Agricultural University (ANGRAU) — Vyavasaya Panchangam',
     'ICAR Crop Protection & Integrated Pest Management (IPM) Packages',
@@ -173,9 +173,9 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         {
           stepNumber: 1,
           practice_en:
-            'Treat seed with biological agent Trichoderma asperellum @ 10g/kg seed or Carbendazim 50% WP @ 2g/kg seed prior to nursery sowing.',
+            'Treat seed with biological agent Trichoderma asperellum @ 10g/kg seed prior to nursery sowing. Carbendazim 50% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5A): it has not been verified against a current, authoritative Indian pesticide registration/label source. Do not use any chemical seed-treatment dose as an instruction from PDDS — confirm the currently approved product and dose with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before treating seed with any chemical.',
           practice_te:
-            'నారుమడి విత్తేముందు కిలో విత్తనానికి 10 గ్రాముల ట్రైకోడెర్మా లేదా 2 గ్రాముల కార్బెండజిమ్ కలిపి విత్తన శుద్ధి చేయండి.',
+            'నారుమడి విత్తేముందు కిలో విత్తనానికి 10 గ్రాముల ట్రైకోడెర్మా కలిపి విత్తన శుద్ధి చేయండి. కార్బెండజిమ్ 50% WP ను కొన్నిసార్లు రసాయన విత్తన శుద్ధి ప్రత్యామ్నాయంగా వాడతారు, కానీ ఇక్కడ ముందు పేర్కొన్న నిర్దిష్ట మోతాదు నిలిపివేయబడింది: ఇది ప్రస్తుత అధికారిక భారతీయ పురుగుమందుల నమోదు/లేబుల్ మూలంతో ధృవీకరించబడలేదు. ఏ రసాయన విత్తన శుద్ధి మోతాదును PDDS సూచనగా ఉపయోగించవద్దు — ఏదైనా రసాయనంతో విత్తన శుద్ధి చేసే ముందు మీ గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ఆమోదించిన ఉత్పత్తి మరియు మోతాదును ధృవీకరించుకోండి.',
           targetTiming: 'Pre-sowing',
         },
         {
@@ -201,51 +201,21 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Spray bio-fungicide Pseudomonas fluorescens @ 10g/L or 5% Neem Seed Kernel Extract (NSKE) during early morning or late afternoon hours.',
+            'Bio-fungicide Pseudomonas fluorescens and Neem Seed Kernel Extract (NSKE) sprays during early morning or late afternoon hours are commonly used organic practices against rice blast, but a specific dose is suppressed — Phase 5.4 evidence verification could not confirm an exact figure against a primary reference accessible from this tool. Chemical fungicide classes are also commonly marketed for rice blast — Tricyclazole 75% WP (typically discussed for use once leaf lesions exceed 2-5% of canopy area) and Isoprothiolane 40% EC (discussed as a rotational option for neck blast at boot leaf stage) — but their exact doses are likewise suppressed: secondary sources gave conflicting Tricyclazole figures (roughly 120-450 g product per acre/hectare depending on source) and no verifiable dose at all for Isoprothiolane, with no primary CIBRC label accessible from this tool to confirm either. Consult local RBK for current guidance before using any organic or chemical option.',
           instruction_te:
-            'ఉదయం లేదా సాయంత్రం వేళల్లో లీటరు నీటికి 10 గ్రాముల సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా 5% వేప గింజల కషాయం పిచికారీ చేయండి.',
-          activeIngredient_en: 'Pseudomonas fluorescens / Azadirachtin',
-          activeIngredient_te: 'సూడోమోనాస్ ఫ్లోరోసెన్స్ / అజాడిరక్టిన్',
-          safetyCaution_en: 'Eco-friendly biocontrol; avoid mixing with synthetic chemical bactericides.',
-          safetyCaution_te: 'పర్యావరణ హితమైన బయో ఏజెంట్; రసాయన మందులతో కలపవద్దు.',
-        },
-        {
-          id: 't-rice-blast-chem-1',
-          stepNumber: 1,
-          category: 'chemical',
-          instruction_en:
-            'When leaf lesions exceed 2-5% of canopy area, spray Tricyclazole 75% WP @ 0.6g per litre of water, ensuring uniform coverage on upper and lower leaves.',
-          instruction_te:
-            'ఆకులపై 2-5% మచ్చలు గమనించినప్పుడు, లీటరు నీటికి ట్రైసైక్లాజోల్ 75% WP 0.6 గ్రాములు కలిపి ఆకుల కింద, పైన సమానంగా తడిసేలా పిచికారీ చేయండి.',
-          activeIngredient_en: 'Tricyclazole 75% WP',
-          activeIngredient_te: 'ట్రైసైక్లాజోల్ 75% WP',
+            'ఉదయం లేదా సాయంత్రం వేళల్లో సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా వేప గింజల కషాయం (NSKE) పిచికారీ సాధారణ పద్ధతి, కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — ఈ సాధనం ద్వారా అధికారిక మూలాన్ని పరిశీలించలేకపోయాము. అగ్గి తెగులు కోసం సాధారణంగా అమ్మబడే రసాయన శిలీంద్రనాశిని వర్గాలలో ట్రైసైక్లాజోల్ 75% WP (ఆకులపై 2-5% మచ్చలు గమనించినప్పుడు వాడేది) మరియు ఐసోప్రోథియోలేన్ 40% EC (వెన్ను విరుపు నివారణకు ప్రత్యామ్నాయం) ఉన్నాయి; రెండింటి ఖచ్చితమైన మోతాదులు అలాగే నిలిపివేయబడ్డాయి — వివిధ మూలాల్లో ట్రైసైక్లాజోల్‌కు విభిన్న మోతాదులు కనిపించాయి, ఐసోప్రోథియోలేన్‌కు ఏ ధృవీకరించిన మోతాదూ కనుగొనలేకపోయాము, అధికారిక CIBRC లేబుల్‌ను కూడా పరిశీలించలేకపోయాము. ఏదైనా సేంద్రీయ లేదా రసాయన ఎంపిక వాడే ముందు ప్రస్తుత సిఫార్సు కోసం RBK ని సంప్రదించండి.',
+          activeIngredient_en:
+            'Pseudomonas fluorescens / Azadirachtin (organic, dose suppressed); Tricyclazole 75% WP / Isoprothiolane 40% EC (chemical fungicide classes, doses suppressed — no primary CIBRC label accessible)',
+          activeIngredient_te:
+            'సూడోమోనాస్ ఫ్లోరోసెన్స్ / అజాడిరక్టిన్ (సేంద్రీయ, మోతాదు నిలిపివేయబడింది); ట్రైసైక్లాజోల్ 75% WP / ఐసోప్రోథియోలేన్ 40% EC (రసాయన వర్గాలు, మోతాదులు నిలిపివేయబడ్డాయి)',
           safetyCaution_en:
-            'Wear protective gloves and mask during spray preparation. Follow the pre-harvest interval (PHI) and waiting period stated on the approved product container label; verify with local RBK.',
+            'Eco-friendly biocontrol; avoid mixing with synthetic chemical bactericides. If a chemical fungicide dose is later confirmed: wear protective gloves and mask during spray preparation, do not spray against wind, and wash hands and spray equipment thoroughly afterward. Follow the pre-harvest interval (PHI) stated on the approved product container label; verify with local RBK.',
           safetyCaution_te:
-            'మందు కలిపేటప్పుడు మాస్క్, చేతి తొడుగులు ధరించండి. ఉత్పత్తి డబ్బా లేబుల్‌పై పేర్కొన్న కోత ముందస్తు నిరీక్షణ వ్యవధిని (PHI) పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
+            'పర్యావరణ హితమైన బయో ఏజెంట్; రసాయన మందులతో కలపవద్దు. రసాయన శిలీంద్రనాశిని మోతాదు ధృవీకరించిన తర్వాత వాడితే: మందు కలిపేటప్పుడు మాస్క్, చేతి తొడుగులు ధరించండి, గాలికి ఎదురుగా పిచికారీ చేయవద్దు, పని ముగిసిన తర్వాత చేతులను, పరికరాలను శుభ్రం చేసుకోండి. ఉత్పత్తి డబ్బా లేబుల్‌పై పేర్కొన్న కోత ముందస్తు నిరీక్షణ వ్యవధిని (PHI) పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
           regulatoryNotice_en:
-            'Statutory Warning: Read product label before use. Verify dosage with Village Agriculture Assistant / Rythu Bharosa Kendra (RBK).',
+            'Statutory Warning: Read product label before use. Rotate chemical classes to prevent fungal resistance development once a product is confirmed. Actionable chemical doses are suppressed pending primary CIBRC label verification (Phase 5.4 — direct access to ppqs.gov.in was blocked in the verifying environment; this is a tooling limitation, not a finding that either dose is wrong). Verify dosage with Village Agriculture Assistant / Rythu Bharosa Kendra (RBK).',
           regulatoryNotice_te:
-            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు లేబుల్ చదవండి. రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ అధికారితో మోతాదును ధృవీకరించుకోండి.',
-        },
-        {
-          id: 't-rice-blast-chem-2',
-          stepNumber: 2,
-          category: 'chemical',
-          instruction_en:
-            'Alternative rotational spray for neck blast at boot leaf stage: Isoprothiolane 40% EC @ 1.5 ml per litre of water.',
-          instruction_te:
-            'వెన్ను విరుపు నివారణకు ప్రత్యామ్నాయంగా చిరుపొట్ట దశలో ఐసోప్రోథియోలేన్ 40% EC 1.5 మి.లీ. లీటరు నీటికి కలిపి పిచికారీ చేయండి.',
-          activeIngredient_en: 'Isoprothiolane 40% EC',
-          activeIngredient_te: 'ఐసోప్రోథియోలేన్ 40% EC',
-          safetyCaution_en:
-            'Do not spray against wind. Wash hands and spray equipment thoroughly after use. Follow approved container label waiting period (PHI) before harvest; verify with local RBK.',
-          safetyCaution_te:
-            'గాలికి ఎదురుగా పిచికారీ చేయవద్దు. పని ముగిసిన తర్వాత చేతులను, పరికరాలను శుభ్రం చేసుకోండి. కోతకు ముందు డబ్బా లేబుల్‌పై తెలిపిన నిరీక్షణ సమయాన్ని (PHI) పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
-          regulatoryNotice_en:
-            'Rotate chemical classes to prevent fungal resistance development. CIBRC registered for paddy. Strictly adhere to approved container label guidelines.',
-          regulatoryNotice_te:
-            'శిలీంద్రాలకు రోగనిరోధకత రాకుండా మందుల వర్గాలను మారుస్తూ వాడండి. ఉత్పత్తి లేబుల్ మార్గదర్శకాలను ఖచ్చితంగా పాటించండి.',
+            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు లేబుల్ చదవండి. ఉత్పత్తి ధృవీకరించిన తర్వాత శిలీంద్రాలకు రోగనిరోధకత రాకుండా మందుల వర్గాలను మారుస్తూ వాడండి. CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు రసాయన మోతాదులు నిలిపివేయబడ్డాయి. రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ అధికారితో మోతాదును ధృవీకరించుకోండి.',
         },
         {
           id: 't-rice-blast-prev-1',
@@ -263,6 +233,10 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'If leaf blast expands rapidly to more than 10% of field hills, or if lesions appear at the panicle neck junction (neck blast) at boot leaf stage, immediately alert the Village Agriculture Assistant (VAA) at your Rythu Bharosa Kendra (RBK).',
       escalationThreshold_te:
         'పొలంలో 10% కంటే ఎక్కువ దుబ్బులకు తెగులు వ్యాపించినా లేదా వెన్ను మెడ వద్ద నల్లటి మచ్చలు కనిపిస్తే, వెంటనే మీ గ్రామ రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి.',
+      chemicalTabDetail_en:
+        'Chemical fungicide classes commonly marketed for rice blast include Tricyclazole 75% WP (discussed for use once leaf lesions exceed 2-5% of canopy area) and Isoprothiolane 40% EC (discussed as a rotational option for neck blast at boot leaf stage). A specific dose for either is suppressed: secondary sources gave conflicting Tricyclazole figures (roughly 120-450 g product per acre/hectare depending on source) and no verifiable dose at all for Isoprothiolane, with no primary CIBRC label accessible from this tool to confirm either. See the Organic tab for the full safety caution and regulatory guidance that applies to any eventual chemical use, and consult your local RBK before spraying anything.',
+      chemicalTabDetail_te:
+        'అగ్గి తెగులు కోసం సాధారణంగా అమ్మబడే రసాయన శిలీంద్రనాశిని వర్గాలలో ట్రైసైక్లాజోల్ 75% WP (ఆకులపై 2-5% మచ్చలు గమనించినప్పుడు వాడేది) మరియు ఐసోప్రోథియోలేన్ 40% EC (వెన్ను విరుపు నివారణకు ప్రత్యామ్నాయం) ఉన్నాయి. రెండింటి ఖచ్చితమైన మోతాదులు నిలిపివేయబడ్డాయి — వివిధ మూలాల్లో ట్రైసైక్లాజోల్‌కు విభిన్న మోతాదులు కనిపించాయి, ఐసోప్రోథియోలేన్‌కు ఏ ధృవీకరించిన మోతాదూ కనుగొనలేకపోయాము, అధికారిక CIBRC లేబుల్‌ను కూడా పరిశీలించలేకపోయాము. పూర్తి భద్రతా జాగ్రత్తలు మరియు నియంత్రణ మార్గదర్శకాల కోసం ఆర్గానిక్ టాబ్ చూడండి; పిచికారీకి ముందు స్థానిక RBK ని సంప్రదించండి.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
@@ -283,8 +257,8 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           url: 'https://ppqs.gov.in',
         },
       ],
-      evidenceStatus: 'verified_reference',
-      lastUpdated: '2026-10-10',
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-12',
     },
 
     'disease-chilli-leaf-curl': {
@@ -381,36 +355,31 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Spray cold-pressed Neem Oil (10,000 ppm) @ 2 ml/L or 5% NSKE to deter vector feeding and inhibit whitefly oviposition.',
+            'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS OR ORGANIC SPRAYS. Cold-pressed Neem Oil and NSKE sprays are commonly used organic practices to deter whitefly vector (Bemisia tabaci) feeding and oviposition — they have no viricidal action, only vector-suppression value — but a specific dose is suppressed — Phase 5.4 evidence verification could not confirm an exact figure against a primary reference accessible from this tool. Synthetic insecticides (e.g. Diafenthiuron 50% WP, Acetamiprid 20% SP) are also commonly discussed for suppressing this vector once it exceeds economic threshold (5-10 whiteflies per plant), but a specific product and dose for either is likewise suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli (one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the label, not just the active ingredient). Do not apply any insecticide, organic or synthetic, if whitefly vectors are absent, and consult local RBK for current guidance before using any option.',
           instruction_te:
-            'తెల్లదోమ గుడ్లు పెట్టకుండా లీటరు నీటికి 2 మి.లీ. వేప నూనె (10,000 ppm) లేదా 5% వేప కషాయం పిచికారీ చేయండి.',
-          activeIngredient_en: 'Neem Oil / Azadirachtin',
-          activeIngredient_te: 'వేప నూనె / అజాడిరక్టిన్',
-        },
-        {
-          id: 't-chilli-chem-1',
-          stepNumber: 1,
-          category: 'chemical',
-          instruction_en:
-            'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS. To suppress further transmission by the whitefly vector (Bemisia tabaci) when exceeding economic threshold (5-10 whiteflies per plant), spray Diafenthiuron 50% WP @ 1.25g/L or Acetamiprid 20% SP @ 0.2g/L. Do not apply if whitefly vectors are absent.',
-          instruction_te:
-            'రసాయన మందులతో వైరస్ నయం కాదు. తెల్లదోమ (వ్యాధి కారక కీటకం) ఉధృతి పరిమితి దాటినప్పుడు మాత్రమే వ్యాప్తిని అరికట్టడానికి డయాఫెంతియురాన్ 50% WP 1.25 గ్రా లేదా ఎసిటామిప్రిడ్ 20% SP 0.2 గ్రా లీటరు నీటికి కలిపి పిచికారీ చేయండి. తెల్లదోమ లేకపోతే పిచికారీ చేయవద్దు.',
-          activeIngredient_en: 'Vector Management: Diafenthiuron 50% WP / Acetamiprid 20% SP (Targets Bemisia tabaci vector only)',
-          activeIngredient_te: 'కీటక నివారణ: డయాఫెంతియురాన్ 50% WP / ఎసిటామిప్రిడ్ 20% SP (తెల్లదోమ మాత్రమే)',
+            'రసాయన మందులతో లేదా సేంద్రీయ కషాయాలతో వైరస్ నయం కాదు. వేప నూనె మరియు వేప కషాయం (NSKE) తెల్లదోమ (వ్యాధి కారక కీటకం) గుడ్లు పెట్టకుండా నిరోధించడానికి సాధారణంగా వాడే సేంద్రీయ పద్ధతులు — ఇవి వైరస్‌ను నయం చేయలేవు, తెల్లదోమను మాత్రమే అరికడతాయి — కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది. సింథటిక్ కీటకనాశినులు (ఉదా. డయాఫెంతియురాన్ 50% WP, ఎసిటామిప్రిడ్ 20% SP) తెల్లదోమ ఉధృతి పరిమితి (మొక్కకు 5-10) దాటినప్పుడు వాడటం గురించి సాధారణంగా చర్చించబడతాయి, కానీ నిర్దిష్ట ఉత్పత్తి మరియు మోతాదు నిలిపివేయబడింది: మిరపలో తెల్లదోమకు ఆమోదించబడినట్లు అధికారిక CIBRC లేబుల్ ఈ సాధనం ద్వారా కనుగొనలేకపోయాము (ఒక మూలం డయాఫెంతియురాన్ 50% WPను నల్లి మాత్రమే లక్ష్యంగా పేర్కొంది, తెల్లదోమ కాదు — లేబుల్‌పై లక్ష్య కీటకాన్ని ధృవీకరించుకోండి). తెల్లదోమ లేకపోతే సేంద్రీయ లేదా సింథటిక్ ఏదైనా కీటకనాశినీ పిచికారీ చేయవద్దు; ఏదైనా ఎంపిక వాడే ముందు ప్రస్తుత సిఫార్సు కోసం స్థానిక RBK ని సంప్రదించండి.',
+          activeIngredient_en:
+            'Neem Oil / Azadirachtin (organic, dose suppressed); Diafenthiuron 50% WP / Acetamiprid 20% SP (synthetic vector management, targets Bemisia tabaci only — not the virus; product/dose suppressed, possible chilli-whitefly label mismatch found in secondary sources)',
+          activeIngredient_te:
+            'వేప నూనె / అజాడిరక్టిన్ (సేంద్రీయ, మోతాదు నిలిపివేయబడింది); డయాఫెంతియురాన్ 50% WP / ఎసిటామిప్రిడ్ 20% SP (కీటక నివారణ, తెల్లదోమ మాత్రమే — వైరస్ కాదు; ఉత్పత్తి/మోతాదు నిలిపివేయబడింది)',
           safetyCaution_en:
-            'Rotate insecticide chemistry. Do not repeat the same class consecutively to prevent vector resistance. Observe mandatory pre-harvest interval on approved container label; wear protective mask and gloves.',
+            'If using any insecticide once confirmed: rotate chemistry, do not repeat the same class consecutively to prevent vector resistance, observe the mandatory pre-harvest interval on the approved container label, and wear protective mask and gloves.',
           safetyCaution_te:
-            'కీటకాలకు నిరోధకత రాకుండా మందుల రకాలను మార్చండి. ఉత్పత్తి డబ్బా లేబుల్‌పై సూచించిన నిరీక్షణ వ్యవధిని పాటించండి; రక్షణ మాస్క్, చేతి తొడుగులు ధరించండి.',
+            'కీటకనాశినీ ధృవీకరించిన తర్వాత వాడితే: మందుల రకాలను మార్చండి, నిరోధకత రాకుండా ఒకే వర్గాన్ని వరుసగా వాడవద్దు, ఉత్పత్తి డబ్బా లేబుల్‌పై సూచించిన నిరీక్షణ వ్యవధిని పాటించండి; రక్షణ మాస్క్, చేతి తొడుగులు ధరించండి.',
           regulatoryNotice_en:
-            'Statutory Warning: Insecticides manage the whitefly vector only; they have no viricidal action. Strictly adhere to approved CIBRC container label directions and pre-harvest interval.',
+            'Statutory Warning: Insecticides (organic or synthetic) manage the whitefly vector only; they have no viricidal action. Actionable synthetic product and dose are suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment, and a secondary source suggested Diafenthiuron may be labeled for chilli mites rather than whitefly). Strictly adhere to approved CIBRC container label directions once confirmed with RBK.',
           regulatoryNotice_te:
-            'చట్టబద్ధమైన హెచ్చరిక: కీటక నాశినులు తెల్లదోమను మాత్రమే అరికడతాయి, వైరస్ ను నయం చేయలేవు. ఉత్పత్తి లేబుల్ మరియు CIBRC నిబంధనలను పాటించండి.',
+            'చట్టబద్ధమైన హెచ్చరిక: కీటక నాశినులు (సేంద్రీయ లేదా సింథటిక్) తెల్లదోమను మాత్రమే అరికడతాయి, వైరస్ ను నయం చేయలేవు. CIBRC ధృవీకరణ పూర్తయ్యే వరకు నిర్దిష్ట సింథటిక్ ఉత్పత్తి మరియు మోతాదు నిలిపివేయబడ్డాయి. RBK తో ధృవీకరించుకున్న తర్వాత CIBRC లేబుల్ నిబంధనలను పాటించండి.',
         },
       ],
       escalationThreshold_en:
         'If whitefly counts exceed 15-20 per plant and leaf curling advances rapidly across the main field despite barrier cropping, consult your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) for area-wide vector suppression advisories.',
       escalationThreshold_te:
         'మొక్కకు 15-20 కంటే ఎక్కువ తెల్లదోమలు ఉండి, ఆకు ముడుత విస్తరిస్తే, గ్రామ రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి.',
+      chemicalTabDetail_en:
+        'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS. Synthetic insecticides such as Diafenthiuron 50% WP and Acetamiprid 20% SP are sometimes discussed for suppressing the whitefly vector (Bemisia tabaci) once it exceeds economic threshold (5-10 whiteflies per plant) — they have no viricidal action, only vector-suppression value. A specific product and dose are suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli. IMPORTANT TARGET-PEST WARNING: one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the approved label, not just the active ingredient name, before any use. See the Organic tab for full safety caution and regulatory guidance; consult your local RBK.',
+      chemicalTabDetail_te:
+        'రసాయన మందులతో వైరస్ నయం కాదు. డయాఫెంతియురాన్ 50% WP, ఎసిటామిప్రిడ్ 20% SP వంటి సింథటిక్ కీటకనాశినులు తెల్లదోమ (వ్యాధి కారక కీటకం) ఉధృతి పరిమితి (మొక్కకు 5-10) దాటినప్పుడు వాడటం గురించి సాధారణంగా చర్చించబడతాయి — ఇవి వైరస్‌ను నయం చేయలేవు, తెల్లదోమను మాత్రమే అరికడతాయి. నిర్దిష్ట ఉత్పత్తి మరియు మోతాదు నిలిపివేయబడ్డాయి: మిరపలో తెల్లదోమకు ఆమోదించబడినట్లు అధికారిక CIBRC లేబుల్ ఈ సాధనం ద్వారా కనుగొనలేకపోయాము. ముఖ్యమైన లక్ష్య-కీటక హెచ్చరిక: ఒక మూలం డయాఫెంతియురాన్ 50% WPను నల్లి మాత్రమే లక్ష్యంగా పేర్కొంది, తెల్లదోమ కాదు — ఏదైనా వాడే ముందు లేబుల్‌పై లక్ష్య కీటకాన్ని ధృవీకరించుకోండి, యాక్టివ్ ఇన్‌గ్రీడియంట్ పేరు మాత్రమే కాదు. పూర్తి భద్రతా జాగ్రత్తలు మరియు నియంత్రణ మార్గదర్శకాల కోసం ఆర్గానిక్ టాబ్ చూడండి; స్థానిక RBK ని సంప్రదించండి.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Chilli Crop Protection & Vector Management',
@@ -431,8 +400,8 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           url: 'https://ppqs.gov.in',
         },
       ],
-      evidenceStatus: 'verified_reference',
-      lastUpdated: '2026-10-10',
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-12',
     },
 
     'disease-cotton-bollworm': {
@@ -509,36 +478,31 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Release egg parasitoid Trichogramma bactrae @ 60,000 eggs/acre at weekly intervals from flower initiation.',
+            'Release egg parasitoid Trichogramma bactrae @ 60,000 eggs/acre at weekly intervals from flower initiation. When moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%, Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are also commonly discussed insecticide classes for cotton bollworm, but a specific dose for either is suppressed: Phase 5.4 evidence verification found several differing commercial dose figures (secondary sources ranged roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. Consult local RBK before using any chemical option.',
           instruction_te:
-            'పూత దశ నుండి వారానికోసారి ఎకరానికి 60,000 ట్రైకోగ్రామా బాక్ట్రే పరాన్నజీవుల గుడ్లను విడుదల చేయండి.',
-          activeIngredient_en: 'Trichogramma bactrae (Bio-control)',
-          activeIngredient_te: 'ట్రైకోగ్రామా బాక్ట్రే (బయో-కంట్రోల్)',
-        },
-        {
-          id: 't-cotton-chem-1',
-          stepNumber: 1,
-          category: 'chemical',
-          instruction_en:
-            'When moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%, apply Chlorantraniliprole 18.5% SC @ 0.3 ml/L or Emamectin Benzoate 5% SG @ 0.5g/L.',
-          instruction_te:
-            'బుట్టలో రోజుకు 8 పురుగులు వరుసగా 3 రోజులు పడినా లేదా 10% పూత ముడుచుకున్నప్పుడు, క్లోరాంట్రానిలిప్రోల్ 18.5% SC 0.3 మి.లీ. లేదా ఎమామెక్టిన్ బెంజోయేట్ 5% SG 0.5 గ్రాములు లీటరు నీటికి కలిపి పిచికారీ చేయండి.',
-          activeIngredient_en: 'Chlorantraniliprole 18.5% SC / Emamectin Benzoate 5% SG',
-          activeIngredient_te: 'క్లోరాంట్రానిలిప్రోల్ 18.5% SC / ఎమామెక్టిన్ బెంజోయేట్ 5% SG',
+            'పూత దశ నుండి వారానికోసారి ఎకరానికి 60,000 ట్రైకోగ్రామా బాక్ట్రే పరాన్నజీవుల గుడ్లను విడుదల చేయండి. బుట్టలో రోజుకు 8 పురుగులు వరుసగా 3 రోజులు పడినా లేదా 10% పూత ముడుచుకున్నప్పుడు, క్లోరాంట్రానిలిప్రోల్ మరియు ఎమామెక్టిన్ బెంజోయేట్ కూడా సాధారణంగా చర్చించబడే కీటకనాశిని వర్గాలు, కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — వివిధ మూలాల్లో విభిన్న మోతాదులు కనిపించాయి, అధికారిక CIBRC లేబుల్‌ను ఈ సాధనం ద్వారా పరిశీలించలేకపోయాము. ఏదైనా రసాయన ఎంపిక వాడే ముందు స్థానిక RBK ని సంప్రదించండి.',
+          activeIngredient_en:
+            'Trichogramma bactrae (organic bio-control); Chlorantraniliprole 18.5% SC / Emamectin Benzoate 5% SG (chemical classes, exact dose suppressed — conflicting secondary-source figures, no primary CIBRC label accessible)',
+          activeIngredient_te:
+            'ట్రైకోగ్రామా బాక్ట్రే (సేంద్రీయ బయో-కంట్రోల్); క్లోరాంట్రానిలిప్రోల్ 18.5% SC / ఎమామెక్టిన్ బెంజోయేట్ 5% SG (రసాయన వర్గాలు, మోతాదు నిలిపివేయబడింది)',
           safetyCaution_en:
-            'Avoid broad-spectrum pyrethroid overuse which accelerates resistance. Follow container label pre-harvest waiting period and consult local RBK.',
+            'If using any chemical insecticide once a dose is confirmed: avoid broad-spectrum pyrethroid overuse (accelerates resistance) and follow the container label pre-harvest waiting period.',
           safetyCaution_te:
-            'నిరోధకత రాకుండా పైరెథ్రాయిడ్స్ అతిగా వాడవద్దు. ఉత్పత్తి లేబుల్‌పై సూచించిన నిరీక్షణ సమయాన్ని పాటించండి మరియు RBK ని సంప్రదించండి.',
+            'రసాయన కీటకనాశినీ మోతాదు ధృవీకరించిన తర్వాత వాడితే: నిరోధకత రాకుండా పైరెథ్రాయిడ్స్ అతిగా వాడవద్దు. ఉత్పత్తి లేబుల్‌పై సూచించిన నిరీక్షణ సమయాన్ని పాటించండి.',
           regulatoryNotice_en:
-            'CIBRC labeled for cotton bollworm. Spray strictly based on ETL monitoring.',
+            'Spray any chemical option strictly based on ETL monitoring once a specific product and dose are confirmed. Actionable chemical dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Consult local RBK for the currently approved formulation and dose.',
           regulatoryNotice_te:
-            'కీటక ఉధృతి స్థాయి (ETL) దాటినప్పుడు మాత్రమే పిచికారీ చేయండి.',
+            'ఏదైనా రసాయన ఎంపికను కీటక ఉధృతి స్థాయి (ETL) ఆధారంగా, నిర్దిష్ట ఉత్పత్తి మరియు మోతాదు ధృవీకరించిన తర్వాత మాత్రమే పిచికారీ చేయండి. CIBRC ధృవీకరణ పూర్తయ్యే వరకు రసాయన మోతాదు నిలిపివేయబడింది. ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం RBK ని సంప్రదించండి.',
         },
       ],
       escalationThreshold_en:
         'When rosette flowers exceed 15% or trap catch surges above 15 moths/night, immediately consult your local RBK Agriculture Officer for community-level mass trapping and coordinated spray schedules.',
       escalationThreshold_te:
         '15% కంటే ఎక్కువ పూత దెబ్బతిన్నా లేదా బుట్టలో 15 కంటే ఎక్కువ పురుగులు పడితే, వెంటనే రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ అధికారిని సంప్రదించండి.',
+      chemicalTabDetail_en:
+        'Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are commonly discussed insecticide classes for cotton bollworm once moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%. A specific dose for either is suppressed: secondary sources gave differing commercial figures (roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. See the Organic tab for full safety caution and regulatory guidance; consult your local RBK before spraying anything.',
+      chemicalTabDetail_te:
+        'బుట్టలో రోజుకు 8 పురుగులు వరుసగా 3 రోజులు పడినా లేదా 10% పూత ముడుచుకున్నప్పుడు, క్లోరాంట్రానిలిప్రోల్ మరియు ఎమామెక్టిన్ బెంజోయేట్ సాధారణంగా చర్చించబడే కీటకనాశిని వర్గాలు. రెండింటి ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — వివిధ మూలాల్లో విభిన్న మోతాదులు కనిపించాయి, అధికారిక CIBRC లేబుల్‌ను ఈ సాధనం ద్వారా పరిశీలించలేకపోయాము. పూర్తి భద్రతా జాగ్రత్తలు మరియు నియంత్రణ మార్గదర్శకాల కోసం ఆర్గానిక్ టాబ్ చూడండి; పిచికారీకి ముందు స్థానిక RBK ని సంప్రదించండి.',
       sources: [
         {
           title: 'Pink Bollworm Management Strategy in Cotton',
@@ -559,8 +523,8 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           url: 'https://ppqs.gov.in',
         },
       ],
-      evidenceStatus: 'verified_reference',
-      lastUpdated: '2026-10-10',
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-12',
     },
 
     'disease-groundnut-tikka': {
@@ -625,9 +589,9 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         {
           stepNumber: 2,
           practice_en:
-            'Seed treatment with Mancozeb 75% WP @ 3g/kg seed or Trichoderma viride @ 10g/kg seed before sowing.',
+            'Seed treatment with bio-agent Trichoderma viride @ 10g/kg seed before sowing. Mancozeb 75% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5C): it has not been verified against a current, authoritative Indian pesticide registration/label applicable to groundnut seed treatment. Do not rely on PDDS for any chemical seed-treatment dose — confirm the currently approved product and dose with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before treating seed with any chemical.',
           practice_te:
-            'విత్తేముందు కిలో విత్తనానికి 3 గ్రాముల మాంకోజెబ్ లేదా 10 గ్రాముల ట్రైకోడెర్మా కలిపి విత్తన శుద్ధి చేయండి.',
+            'విత్తేముందు కిలో విత్తనానికి 10 గ్రాముల ట్రైకోడెర్మా కలిపి విత్తన శుద్ధి చేయండి. మాంకోజెబ్ 75% WPను కొన్నిసార్లు రసాయన విత్తన శుద్ధి ప్రత్యామ్నాయంగా వాడతారు, కానీ ఇక్కడ ముందు పేర్కొన్న నిర్దిష్ట మోతాదు నిలిపివేయబడింది: ఇది వేరుశనగ విత్తన శుద్ధికి వర్తించే ప్రస్తుత అధికారిక భారతీయ పురుగుమందుల నమోదు/లేబుల్ మూలంతో ధృవీకరించబడలేదు. ఏ రసాయన విత్తన శుద్ధి మోతాదును PDDS సూచనగా ఆధారపడవద్దు — ఏదైనా రసాయనంతో విత్తన శుద్ధి చేసే ముందు మీ గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ఆమోదించిన ఉత్పత్తి మరియు మోతాదును ధృవీకరించుకోండి.',
           targetTiming: 'Pre-sowing',
         },
       ],
@@ -637,25 +601,37 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'chemical',
           instruction_en:
-            'At initial spot appearance, spray Mancozeb 75% WP @ 2.5g/L or Tebuconazole 25.9% EC @ 1 ml/L of water.',
+            'At initial spot appearance, Mancozeb 75% WP and Tebuconazole 25.9% EC are commonly used fungicide classes for groundnut leaf spot (tikka), but a specific dose is suppressed: Phase 5.4 evidence verification found a university extension source citing Mancozeb 75% WP @ 3g/L (differing from an earlier, uncorroborated 2.5g/L figure) and found no confirming source at all for a Tebuconazole 25.9% EC dose on this crop, with no primary CIBRC label accessible from this tool.',
           instruction_te:
-            'మచ్చలు కనిపించిన వెంటనే మాంకోజెబ్ 75% WP 2.5 గ్రాములు లేదా టెబుకొనజోల్ 25.9% EC 1 మి.లీ. లీటరు నీటికి కలిపి పిచికారీ చేయండి.',
-          activeIngredient_en: 'Mancozeb 75% WP / Tebuconazole 25.9% EC',
-          activeIngredient_te: 'మాంకోజెబ్ 75% WP / టెబుకొనజోల్ 25.9% EC',
+            'మచ్చలు కనిపించిన వెంటనే మాంకోజెబ్ మరియు టెబుకొనజోల్ సాధారణంగా వాడే శిలీంద్రనాశిని వర్గాలు, కానీ ఖచ్చితమైన మోతాదు నిలిపివేయబడింది — ఒక విశ్వవిద్యాలయ మూలం వేరే మోతాదును సూచించింది, టెబుకొనజోల్ కోసం ఏ మూలం కనుగొనలేకపోయాము, అధికారిక CIBRC లేబుల్‌ను పరిశీలించలేకపోయాము.',
+          activeIngredient_en: 'Mancozeb 75% WP / Tebuconazole 25.9% EC (exact dose suppressed — conflicting/absent secondary-source figures, no primary CIBRC label accessible)',
+          activeIngredient_te: 'మాంకోజెబ్ 75% WP / టెబుకొనజోల్ 25.9% EC (మోతాదు నిలిపివేయబడింది)',
           safetyCaution_en:
             'Avoid spraying during strong midday sunshine. Maintain recommended water volume (200 L/acre). Follow approved container label waiting period (PHI) before harvest; verify with local RBK.',
           safetyCaution_te:
             'ఎండ తీవ్రంగా ఉన్నప్పుడు పిచికారీ చేయవద్దు. ఎకరానికి 200 లీటర్ల నీటిని వాడండి. కోతకు ముందు డబ్బా లేబుల్‌పై తెలిపిన నిరీక్షణ సమయాన్ని (PHI) పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
           regulatoryNotice_en:
-            'Statutory Safety Notice: Check approved product label. Verify dosage and pre-harvest interval with Village Agriculture Assistant / RBK.',
+            'Statutory Safety Notice: Check approved product label. Actionable dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Verify dosage and pre-harvest interval with Village Agriculture Assistant / RBK.',
           regulatoryNotice_te:
-            'చట్టబద్ధమైన హెచ్చరిక: ఉత్పత్తి లేబుల్ చూడండి. మోతాదు మరియు నిరీక్షణ సమయాన్ని RBK అధికారితో ధృవీకరించుకోండి.',
+            'చట్టబద్ధమైన హెచ్చరిక: ఉత్పత్తి లేబుల్ చూడండి. CIBRC ధృవీకరణ పూర్తయ్యే వరకు మోతాదు నిలిపివేయబడింది. మోతాదు మరియు నిరీక్షణ సమయాన్ని RBK అధికారితో ధృవీకరించుకోండి.',
         },
       ],
       escalationThreshold_en:
         'If defoliation begins before pod filling stage, seek advice at your local Rythu Bharosa Kendra (RBK) to prevent severe yield loss.',
       escalationThreshold_te:
         'కాయలు ఊరే దశకు ముందే ఆకులు రాలిపోవడం ప్రారంభిస్తే, రైతు భరోసా కేంద్రం (RBK) నిపుణులను సంప్రదించండి.',
+      claimEvidence: [
+        {
+          claimId: 't-groundnut-chem-1-safety-caution',
+          fieldRef: "treatments['t-groundnut-chem-1'].safetyCaution_en/_te",
+          verificationStatus: 'unsupported',
+          sourceIndexes: [0, 1, 2],
+          limitation_en:
+            'The spray water volume figure (200 L/acre) is a general spray-carrier convention seen in secondary agricultural sources — it is not confirmed against the current Mancozeb 75% WP / Tebuconazole 25.9% EC product label for this crop and pest (all three sources above link only to an organization homepage, not this specific figure). Confirm the current label directions with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before spraying.',
+          limitation_te:
+            'స్ప్రే నీటి పరిమాణం (200 L/acre) అనేది సాధారణ వ్యవసాయ మూలాల్లో కనిపించే సంప్రదాయ అంచనా మాత్రమే — ఇది ఈ పంట మరియు పురుగు కోసం ప్రస్తుత మాంకోజెబ్ 75% WP / టెబుకొనజోల్ 25.9% EC ఉత్పత్తి లేబుల్‌తో ధృవీకరించబడలేదు (పై మూలాలు మూడూ సంస్థ వెబ్‌సైట్‌కు మాత్రమే లింక్ అవుతాయి). పిచికారీకి ముందు స్థానిక గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ప్రస్తుత లేబుల్ సూచనలను ధృవీకరించుకోండి.',
+        },
+      ],
       sources: [
         {
           title: 'Vyavasaya Panchangam — Oilseeds & Groundnut Disease Management',
@@ -676,8 +652,8 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           url: 'https://ppqs.gov.in',
         },
       ],
-      evidenceStatus: 'verified_reference',
-      lastUpdated: '2026-10-10',
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-12',
     },
 
     // 6 Provisional entries (clearly labeled provisional)
@@ -830,19 +806,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'preventive',
           instruction_en:
-            'Dip setts in Carbendazim 50% WP @ 1g/L for 15 minutes before planting. Uproot and burn diseased clumps.',
+            'Uproot and burn diseased clumps immediately to prevent soil-borne spread. Use only certified disease-free setts for planting; never re-plant cane from an infested field. Chemical sett-dip dose recommendations are suppressed pending primary CIBRC label verification.',
           instruction_te:
-            'నాటేముందు విత్తన ముక్కలను లీటరు నీటికి 1 గ్రాము కార్బెండజిమ్ కలిపిన ద్రావణంలో 15 నిమిషాలు నానబెట్టండి. తెగులు సోకిన దుబ్బులను పీకి కాల్చండి.',
-          activeIngredient_en: 'Sett Treatment (Carbendazim 50% WP)',
-          activeIngredient_te: 'విత్తన శుద్ధి (కార్బెండజిమ్ 50% WP)',
+            'తెగులు సోకిన దుబ్బులను వెంటనే పీకి కాల్చండి, తద్వారా నేల ద్వారా వ్యాప్తి చెందకుండా నిరోధించవచ్చు. నాటడానికి ధృవీకరించిన ఆరోగ్యకరమైన విత్తన ముక్కలను మాత్రమే వాడండి; తెగులు సోకిన పొలం నుండి తీసిన గడలను తిరిగి నాటవద్దు. రసాయన విత్తన శుద్ధి మోతాదు సిఫార్సులు CIBRC లేబుల్ పరిశీలన పూర్తయ్యే వరకు నిలిపివేయబడ్డాయి.',
+          activeIngredient_en: 'Cultural Practice: Clump Removal + Certified Setts (Chemical sett-dip dose suppressed)',
+          activeIngredient_te: 'సాంప్రదాయ పద్ధతి: దుబ్బు తొలగింపు + ధృవీకరించిన విత్తనం (రసాయన మోతాదు నిలిపివేయబడింది)',
           safetyCaution_en:
-            'Wear protective rubber gloves and mask during sett treatment; wash hands thoroughly after handling. Dispose of residual fungicide solution safely away from water sources.',
+            'Wear protective gloves when uprooting and handling diseased clumps; wash hands thoroughly afterward. Burn or bury removed material away from irrigation channels.',
           safetyCaution_te:
-            'విత్తన శుద్ధి సమయంలో రక్షణ చేతి తొడుగులు, మాస్క్ ధరించండి. పని పూర్తయిన తర్వాత చేతులను శుభ్రంగా కడుక్కోండి.',
+            'తెగులు సోకిన దుబ్బులను తొలగించేటప్పుడు రక్షణ చేతి తొడుగులు ధరించండి; తర్వాత చేతులను శుభ్రంగా కడుక్కోండి. తొలగించిన పదార్థాన్ని కాలువలకు దూరంగా కాల్చండి లేదా పూడ్చండి.',
           regulatoryNotice_en:
-            'Sett dip preventive practice prior to planting. Do not use infected setts; Red rot is internal and cannot be cured by standing foliar chemical sprays.',
+            'Red rot is internal and systemic; it cannot be cured by standing foliar chemical sprays. Actionable synthetic fungicide sett-dip dosage is suppressed until verified directly against a primary CIBRC registration label for sugarcane red rot. Consult local Rythu Bharosa Kendra (RBK) or sugarcane factory agriculture officer for the current approved sett-treatment product and dose.',
           regulatoryNotice_te:
-            'నాటే ముందు విత్తన శుద్ధి నివారణ చర్య. ఎర్ర కుళ్ళు అంతర్గత తెగులు కావున పైరుపై పిచికారీతో నయం కాదు.',
+            'ఎర్ర కుళ్ళు తెగులు అంతర్గత, సిస్టమిక్ తెగులు; పైరుపై పిచికారీతో నయం కాదు. రసాయన విత్తన శుద్ధి మోతాదు సిఫార్సు CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం స్థానిక RBK లేదా చెరకు ఫ్యాక్టరీ వ్యవసాయ అధికారిని సంప్రదించండి.',
         },
       ],
       escalationThreshold_en: 'Report red rot outbreaks to local sugarcane factory agriculture officers and RBK.',
@@ -922,19 +898,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Apply neem-based formulation (Azadirachtin 3000 ppm) @ 2 ml/L or bio-agent Trichoderma viride @ 5g/L on lower foliage at first sign of concentric leaf spotting. Chemical fungicide spray recipes are suppressed pending primary CIBRC label verification.',
+            'Neem-based biopesticide formulations and bio-agent Trichoderma viride are commonly used against early leaf spotting, but a specific dose is suppressed pending primary CIBRC/university label verification. Chemical fungicide spray recipes are likewise suppressed pending primary CIBRC label verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer for the currently approved product and dose.',
           instruction_te:
-            'ఆకులపై తొలి మచ్చలు కనిపించినప్పుడు వేప మందు (3000 ppm) 2 మి.లీ. లేదా ట్రైకోడెర్మా 5 గ్రా లీటరు నీటికి కలిపి పిచికారీ చేయండి. రసాయన సిఫార్సులు లేబుల్ పరిశీలనలో ఉన్నాయి.',
-          activeIngredient_en: 'Azadirachtin 3000 ppm / Trichoderma viride (Chemical sprays suppressed)',
-          activeIngredient_te: 'అజాడిరక్టిన్ / ట్రైకోడెర్మా విరిడె (రసాయనాలు నిలిపివేయబడ్డాయి)',
+            'వేప ఆధారిత బయోపెస్టిసైడ్ మరియు ట్రైకోడెర్మా విరిడె ఆకు మచ్చలకు సాధారణంగా వాడతారు, కానీ నిర్దిష్ట మోతాదు CIBRC/విశ్వవిద్యాలయ లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. రసాయన సిఫార్సులు కూడా అదే కారణంతో నిలిపివేయబడ్డాయి. ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం స్థానిక RBK లేదా ఉద్యానవన అధికారిని సంప్రదించండి.',
+          activeIngredient_en: 'Neem-based biopesticide / Trichoderma viride (dose suppressed pending verification; chemical sprays suppressed)',
+          activeIngredient_te: 'వేప ఆధారిత బయోపెస్టిసైడ్ / ట్రైకోడెర్మా విరిడె (మోతాదు మరియు రసాయనాలు నిలిపివేయబడ్డాయి)',
           safetyCaution_en:
             'Avoid spraying during high winds or midday heat. Wear basic protective mask.',
           safetyCaution_te:
             'ఎండ తీవ్రంగా ఉన్నప్పుడు పిచికారీ చేయవద్దు. రక్షణ మాస్క్ ధరించండి.',
           regulatoryNotice_en:
-            'Chemical fungicide recommendations for tomato early blight are suppressed until verified directly against primary CIBRC registration label claims. Consult local Rythu Bharosa Kendra (RBK).',
+            'Both the biopesticide dose and the chemical fungicide recommendations for tomato early blight are suppressed until verified directly against a primary CIBRC/university registration label. Consult local Rythu Bharosa Kendra (RBK).',
           regulatoryNotice_te:
-            'టమాట ఎర్లీ బ్లైట్ రసాయన సిఫార్సులు CIBRC పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక RBK ని సంప్రదించండి.',
+            'టమాట ఎర్లీ బ్లైట్ కు బయోపెస్టిసైడ్ మోతాదు మరియు రసాయన సిఫార్సులు రెండూ CIBRC/విశ్వవిద్యాలయ పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక RBK ని సంప్రదించండి.',
         },
       ],
       escalationThreshold_en: 'Consult RBK if blighting reaches upper leaves and fruit clusters.',
@@ -1014,19 +990,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Spray 1% Bordeaux mixture on pruned branch cuts and pre-bloom canopy to inhibit surface fungal sporulation. Synthetic chemical fungicide recipes are suppressed pending primary CIBRC registration label validation.',
+            'Bordeaux mixture (copper sulphate + lime) is a traditional pre-bloom spray used on pruned branch cuts against anthracnose, but a specific concentration/dose is suppressed pending primary CIBRC/university label verification. Synthetic chemical fungicide recipes are likewise suppressed pending primary CIBRC registration label validation. Consult local RBK or Horticulture Officer for the currently approved concentration and timing.',
           instruction_te:
-            'కొమ్మలు కత్తిరించిన భాగాలపై మరియు పూతకు ముందు 1% బోర్డో మిశ్రమాన్ని పిచికారీ చేయండి. రసాయన సిఫార్సులు లేబుల్ పరిశీలనలో ఉన్నాయి.',
-          activeIngredient_en: 'Bordeaux Mixture (1%) Copper Sulphate + Lime (Synthetic chemical sprays suppressed)',
-          activeIngredient_te: 'బోర్డో మిశ్రమం (1%) మైలుతుత్తం + సున్నం (రసాయనాలు నిలిపివేయబడ్డాయి)',
+            'బోర్డో మిశ్రమం (మైలుతుత్తం + సున్నం) కొమ్మలు కత్తిరించిన భాగాలపై పూతకు ముందు వాడే సంప్రదాయ పద్ధతి, కానీ నిర్దిష్ట గాఢత/మోతాదు CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. రసాయన సిఫార్సులు కూడా అదే కారణంతో నిలిపివేయబడ్డాయి. ఆమోదించిన గాఢత మరియు సమయం కోసం స్థానిక RBK లేదా ఉద్యానవన అధికారిని సంప్రదించండి.',
+          activeIngredient_en: 'Bordeaux Mixture: Copper Sulphate + Lime (concentration suppressed pending verification; synthetic chemical sprays suppressed)',
+          activeIngredient_te: 'బోర్డో మిశ్రమం: మైలుతుత్తం + సున్నం (గాఢత మరియు రసాయనాలు నిలిపివేయబడ్డాయి)',
           safetyCaution_en:
             'Do not spray during full bloom / peak pollinator bee activity to avoid bee mortality. Wear eye protection and gloves.',
           safetyCaution_te:
             'తేనెటీగలకు హాని కలగకుండా పూర్తి పూత దశలో పిచికారీ చేయవద్దు. కంటి రక్షణ, చేతి తొడుగులు ధరించండి.',
           regulatoryNotice_en:
-            'Actionable synthetic chemical pesticide recommendations are suppressed pending primary CIBRC registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+            'Both the Bordeaux mixture concentration and any synthetic chemical pesticide recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
           regulatoryNotice_te:
-            'రసాయన మందుల సిఫార్సులు అధికారిక CIBRC పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక ఉద్యానవన అధికారిని సంప్రదించండి.',
+            'బోర్డో మిశ్రమం గాఢత మరియు రసాయన మందుల సిఫార్సులు రెండూ అధికారిక CIBRC పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక ఉద్యానవన అధికారిని సంప్రదించండి.',
         },
       ],
       escalationThreshold_en: 'Seek advice if blossom blight exceeds 20% across orchard trees.',
@@ -1106,11 +1082,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Incorporate Trichoderma viride / T. reesei enriched neem cake (1 kg/pit) at planting to promote competitive rhizosphere bio-suppression. Chemical fungicide drenches (e.g. Carbendazim) are scientifically ineffective against Fusarium TR4 and are strictly suppressed.',
+            'Trichoderma viride / T. reesei enriched neem cake incorporated at planting is commonly used to promote competitive rhizosphere bio-suppression, but a specific dose (e.g. quantity per pit) is suppressed pending primary CIBRC/university label verification — consult local RBK or Horticulture Officer for the currently recommended quantity. This remains secondary to biosecurity: chemical fungicide drenches (e.g. Carbendazim) are scientifically ineffective against Fusarium TR4 and are strictly suppressed regardless of dose.',
           instruction_te:
-            'నాటేటప్పుడు గుంతకు 1 కిలో ట్రైకోడెర్మా కలిపిన వేప పిండిని వేయండి. ఫ్యుసేరియం విల్ట్ కు రసాయన మందులు పనిచేయవు, కావున రసాయన సిఫార్సులు నిలిపివేయబడ్డాయి.',
-          activeIngredient_en: 'Trichoderma viride Bio-agent + Neem Cake (Chemical drenching suppressed as ineffective)',
-          activeIngredient_te: 'ట్రైకోడెర్మా విరిడె + వేప పిండి (రసాయన తడపడం నిష్ప్రయోజనం కావున నిలిపివేయబడింది)',
+            'నాటేటప్పుడు ట్రైకోడెర్మా కలిపిన వేప పిండిని గుంతలో వేయడం సాధారణ పద్ధతి, కానీ నిర్దిష్ట మోతాదు (గుంతకు పరిమాణం) CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది — ప్రస్తుత సిఫార్సు మోతాదు కోసం స్థానిక RBK లేదా ఉద్యానవన అధికారిని సంప్రదించండి. ఇది జీవభద్రత కంటే ద్వితీయమైనది: ఫ్యుసేరియం విల్ట్ (TR4) కు రసాయన మందులు (ఉదా. కార్బెండజిమ్) పనిచేయవు, కావున మోతాదుతో సంబంధం లేకుండా రసాయన సిఫార్సులు నిలిపివేయబడ్డాయి.',
+          activeIngredient_en: 'Trichoderma viride Bio-agent + Neem Cake (dose suppressed pending verification; chemical drenching suppressed as scientifically ineffective)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడె + వేప పిండి (మోతాదు నిలిపివేయబడింది; రసాయన తడపడం నిష్ప్రయోజనం కావున నిలిపివేయబడింది)',
           safetyCaution_en:
             'Biocontrol amendment; handle with clean gloves. Never transport soil, tools, or water from infected mats to healthy banana blocks.',
           safetyCaution_te:
@@ -1125,6 +1101,18 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'FUNGICIDES CANNOT CURE PANAMA WILT (TR4). Chemical claims are disproven. Immediately isolate infested plot, rogue infected clumps, apply 1-2 kg agricultural lime per pit, and consult RBK for biosecurity boundary enforcement.',
       escalationThreshold_te:
         'పనామా విల్ట్ కు రసాయన మందులు లేవు. వెంటనే తోటను వేరుచేసి, వ్యాధి సోకిన చెట్లను పీకి గుంతలో 1-2 కిలోల సున్నం వేసి RBK వ్యవసాయ సహాయకుడికి తెలియజేయండి.',
+      claimEvidence: [
+        {
+          claimId: 'disease-banana-panamawilt-escalation-threshold',
+          fieldRef: 'escalationThreshold_en/_te',
+          verificationStatus: 'unsupported',
+          sourceIndexes: [0],
+          limitation_en:
+            'The quarantine practice of roguing infected plants and treating the pit is not in dispute, but the exact lime quantity (1-2 kg per pit) is not confirmed against a specific page/section of the cited ICAR-NRCB technical guideline — only the organization homepage is linked. Confirm the exact quantity with your local RBK or Horticulture Officer.',
+          limitation_te:
+            'తెగులు సోకిన మొక్కలను తీసివేసి గుంతకు చికిత్స చేయడం అనే పద్ధతిపై సందేహం లేదు, కానీ సున్నం ఖచ్చితమైన పరిమాణం (గుంతకు 1-2 కిలోలు) ఉదహరించిన ICAR-NRCB సాంకేతిక మార్గదర్శిని యొక్క నిర్దిష్ట పేజీ/భాగంతో ధృవీకరించబడలేదు — సంస్థ వెబ్‌సైట్‌కు మాత్రమే లింక్ ఉంది. ఖచ్చితమైన పరిమాణాన్ని స్థానిక RBK లేదా ఉద్యానవన అధికారితో ధృవీకరించుకోండి.',
+        },
+      ],
       sources: [
         {
           title: 'Technical Guidelines on Biosecurity and Containment of Fusarium Wilt (TR4) in Banana',
@@ -1194,19 +1182,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Coat seed rhizomes with bio-agent Trichoderma asperellum @ 10g/kg before planting; incorporate neem cake @ 200 kg/acre to suppress soil oomycete inoculum. Chemical fungicide drench recipes are suppressed pending primary CIBRC registration label validation.',
+            'Bio-agent Trichoderma asperellum seed-rhizome coating and neem cake soil incorporation are commonly used against rhizome rot, but specific doses are suppressed pending primary CIBRC/university label verification. Chemical fungicide drench recipes are likewise suppressed pending primary CIBRC registration label validation. Consult local RBK or Horticulture Officer for currently approved products and doses.',
           instruction_te:
-            'నాటేముందు విత్తన దుంపలకు కిలోకు 10 గ్రాముల ట్రైకోడెర్మా పట్టించండి; ఎకరానికి 200 కిలోల వేప పిండి వేయండి. రసాయన సిఫార్సులు లేబుల్ పరిశీలనలో ఉన్నాయి.',
-          activeIngredient_en: 'Trichoderma asperellum + Neem Cake (Chemical drenching suppressed)',
-          activeIngredient_te: 'ట్రైకోడెర్మా అస్పెరెల్లమ్ + వేప పిండి (రసాయనాలు నిలిపివేయబడ్డాయి)',
+            'ట్రైకోడెర్మా అస్పెరెల్లమ్ దుంప శుద్ధి మరియు వేప పిండి నేలలో కలపడం దుంప కుళ్ళు తెగులుకు సాధారణంగా వాడతారు, కానీ నిర్దిష్ట మోతాదులు CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడ్డాయి. రసాయన సిఫార్సులు కూడా అదే కారణంతో నిలిపివేయబడ్డాయి. ఆమోదించిన ఉత్పత్తులు మరియు మోతాదుల కోసం స్థానిక RBK లేదా ఉద్యానవన అధికారిని సంప్రదించండి.',
+          activeIngredient_en: 'Trichoderma asperellum + Neem Cake (doses suppressed pending verification; chemical drenching suppressed)',
+          activeIngredient_te: 'ట్రైకోడెర్మా అస్పెరెల్లమ్ + వేప పిండి (మోతాదులు మరియు రసాయనాలు నిలిపివేయబడ్డాయి)',
           safetyCaution_en:
             'Eco-friendly biocontrol treatment; wear basic gloves during rhizome coating.',
           safetyCaution_te:
             'పర్యావరణ హితమైన బయో ఏజెంట్; దుంపల శుద్ధి సమయంలో చేతి తొడుగులు ధరించండి.',
           regulatoryNotice_en:
-            'Actionable synthetic chemical drenching recommendations are suppressed pending primary CIBRC registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+            'Both the bio-agent/neem cake doses and any synthetic chemical drenching recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
           regulatoryNotice_te:
-            'రసాయన మందుల సిఫార్సులు CIBRC పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక ఉద్యానవన అధికారిని సంప్రదించండి.',
+            'బయో-ఏజెంట్/వేప పిండి మోతాదులు మరియు రసాయన మందుల సిఫార్సులు రెండూ CIBRC పరిశీలనలో ఉన్నందున నిలిపివేయబడ్డాయి. స్థానిక ఉద్యానవన అధికారిని సంప్రదించండి.',
         },
       ],
       escalationThreshold_en: 'Contact local Horticultural Officer if rot patches appear in more than 5% of beds.',

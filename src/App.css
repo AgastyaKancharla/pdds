@@ -907,6 +907,10 @@ body {
   background-color: #6b9b6e;
 }
 
+.btn-saved-no-provenance {
+  background-color: #b8860b;
+}
+
 /* History Screen */
 .history-container {
   padding: 20px;

@@ -5,7 +5,13 @@ import { getMockCrop, getMockDisease, getMockTreatments, MOCK_CROPS, MOCK_DISEAS
 import { supabase } from '../lib/supabase';
 import { getLocalUserId, getAuthenticatedUserId } from '../lib/auth';
 import { saveScanRecord } from '../lib/storage';
-import { getDiseaseKnowledge, getCropKnowledge } from '../lib/knowledge';
+import {
+  getDiseaseKnowledge,
+  getCropKnowledge,
+  isSourceDocumentVerified,
+  hasChemicalTabDetail,
+  getClaimEvidenceNote,
+} from '../lib/knowledge';
 import {
   cacheRemoteCrop,
   getCachedRemoteCrop,
@@ -74,7 +80,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [activeTab, setActiveTab] = useState<TreatmentType>('organic');
   const [loading, setLoading] = useState(detected && !!cropId && !!diseaseId);
-  type SaveStatus = 'idle' | 'saving' | 'saved_cloud' | 'saved_local' | 'failed';
+  type SaveStatus = 'idle' | 'saving' | 'saved_cloud' | 'saved_cloud_no_provenance' | 'saved_local' | 'failed';
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
   const [saveError, setSaveError] = useState<string | null>(null);
   const [scanId] = useState<string>(() => 'scan_' + Date.now());
@@ -266,7 +272,15 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const handleSave = async () => {
     const activeCropId = crop?.id || selectedCropId;
     const activeDiseaseId = disease?.id || selectedDiseaseId;
-    if (saveStatus === 'saving' || saveStatus === 'saved_cloud' || saveStatus === 'saved_local' || !activeCropId || !activeDiseaseId) return;
+    if (
+      saveStatus === 'saving' ||
+      saveStatus === 'saved_cloud' ||
+      saveStatus === 'saved_cloud_no_provenance' ||
+      saveStatus === 'saved_local' ||
+      !activeCropId ||
+      !activeDiseaseId
+    )
+      return;
     setSaveStatus('saving');
     setSaveError(null);
 
@@ -304,7 +318,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       });
 
       if (saveResult.savedCloud) {
-        setSaveStatus('saved_cloud');
+        // Never claim full cloud provenance was recorded when the remote
+        // schema fell back to a legacy insert that could not store it.
+        setSaveStatus(saveResult.cloudProvenancePersisted ? 'saved_cloud' : 'saved_cloud_no_provenance');
       } else {
         setSaveStatus('saved_local');
       }
@@ -873,10 +889,50 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 margin: '8px 0',
               }}>
               <p style={{ margin: 0, fontSize: '14px', color: '#495057', lineHeight: '1.5' }}>
-                {activeTab === 'chemical' && diseaseKnowledge && diseaseKnowledge.evidenceStatus !== 'verified_reference'
+                {/*
+                  Phase 5.6B fix: this used to also require
+                  `diseaseKnowledge.evidenceStatus !== 'verified_reference'`. That status is
+                  disease-wide (covers symptoms, lookalikes, prevention, and treatments
+                  together) and this data model has no chemical-dose-specific verification
+                  flag, so a disease could in principle reach 'verified_reference' for its
+                  diagnostic content alone while its chemical dose was never independently
+                  confirmed — which would have silently swapped this safety notice for the
+                  generic "nothing cataloged" message. Rather than invent a chemical-specific
+                  verification signal that doesn't exist in the catalog, this is a conservative
+                  fail-safe: whenever a cataloged disease has no 'chemical'-category treatment
+                  entry, always show the suppression notice, regardless of evidenceStatus.
+                */}
+                {activeTab === 'chemical' && diseaseKnowledge
                   ? t('suppressedChemicalNotice')
                   : t('noCategoryRecommendation')}
               </p>
+              {/*
+                Disease-specific chemical-suppression detail (e.g. Rice Blast, Chilli Leaf
+                Curl, Cotton Pink Bollworm): their chemical-class discussion was folded into
+                a non-'chemical' treatment entry's text, so the Chemical tab would otherwise
+                show only the generic notice above and hide this detail entirely — including,
+                for Chilli, the mite-vs-whitefly target-pest label mismatch. This paragraph
+                is additive, never a replacement for the generic notice, so the two can never
+                contradict each other; it never restates a dose, only the same suppression
+                status in more disease-specific terms.
+              */}
+              {activeTab === 'chemical' && hasChemicalTabDetail(diseaseKnowledge, language) && (
+                <p
+                  style={{
+                    marginTop: '10px',
+                    fontSize: '13px',
+                    color: '#7a1f1f',
+                    lineHeight: '1.5',
+                    textAlign: 'left',
+                    background: '#fff5f5',
+                    border: '1px solid #f1c0c0',
+                    borderRadius: '6px',
+                    padding: '10px',
+                  }}>
+                  ⚠️{' '}
+                  {language === 'en' ? diseaseKnowledge?.chemicalTabDetail_en : diseaseKnowledge?.chemicalTabDetail_te}
+                </p>
+              )}
               {diseaseKnowledge && diseaseKnowledge.preventionGuidance.length > 0 && activeTab === 'preventive' && (
                 <p style={{ marginTop: '8px', fontSize: '13px', color: '#2d6a4f', fontWeight: 500 }}>
                   🛡️ {t('seePreventionPracticesAbove')}
@@ -899,6 +955,22 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                       ⚠️ <strong>{t('safetyCautionLabel')}</strong> {step.safety_caution}
                     </div>
                   )}
+                  {/*
+                    Claim-level evidence note: additive qualification for one specific field
+                    (never a replacement for the text above it) — see ClaimEvidenceNote in
+                    src/lib/knowledge/types.ts. Deliberately independent of this disease's
+                    overall evidenceStatus/sources.
+                  */}
+                  {(() => {
+                    const note = getClaimEvidenceNote(diseaseKnowledge, `${step.id}-safety-caution`);
+                    if (!note) return null;
+                    return (
+                      <div style={{ fontSize: '11px', color: '#8a6d00', marginTop: '4px', lineHeight: '1.4', fontStyle: 'italic' }}>
+                        ℹ️ <strong>{t('claimEvidenceLimitationLabel')}</strong>{' '}
+                        {language === 'en' ? note.limitation_en : note.limitation_te}
+                      </div>
+                    );
+                  })()}
                   {step.regulatory_notice && (
                     <div style={{ fontSize: '11px', color: '#2b8a3e', marginTop: '4px', lineHeight: '1.4' }}>
                       🏛️ <strong>{t('regulatoryGuidanceLabel')}</strong> {step.regulatory_notice}
@@ -908,7 +980,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               </div>
             ))
           )}
-          {activeTab === 'chemical' && displayTreatments.length > 0 && (
+          {activeTab === 'chemical' &&
+            (displayTreatments.length > 0 || hasChemicalTabDetail(diseaseKnowledge, language)) && (
             <div className="statutory-safety-box">
               <div style={{ marginBottom: '6px' }}>
                 ⚠️ <strong>{language === 'en' ? 'Statutory Warning:' : 'చట్టబద్ధమైన హెచ్చరిక:'}</strong>{' '}
@@ -928,6 +1001,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             <p className="card-body escalation-text">
               {language === 'en' ? diseaseKnowledge.escalationThreshold_en : diseaseKnowledge.escalationThreshold_te}
             </p>
+            {(() => {
+              const note = getClaimEvidenceNote(diseaseKnowledge, `${diseaseKnowledge.id}-escalation-threshold`);
+              if (!note) return null;
+              return (
+                <p
+                  className="card-body"
+                  style={{ fontSize: '11px', color: '#8a6d00', marginTop: '6px', lineHeight: '1.4', fontStyle: 'italic' }}>
+                  ℹ️ <strong>{t('claimEvidenceLimitationLabel')}</strong>{' '}
+                  {language === 'en' ? note.limitation_en : note.limitation_te}
+                </p>
+              );
+            })()}
           </div>
         )}
 
@@ -942,6 +1027,15 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 <div style={{ fontSize: '10px', color: '#889988', marginTop: '2px' }}>
                   Reviewed: {src.reviewDate} {src.url ? `• Reference: ${src.url}` : ''}
                 </div>
+                {isSourceDocumentVerified(src) ? (
+                  <div style={{ fontSize: '10px', color: '#2e7d32', marginTop: '2px' }}>
+                    {t('sourceSectionLabel')}: {src.pageOrSection}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '10px', color: '#8a6d00', marginTop: '2px', fontStyle: 'italic' }}>
+                    ⚠️ {t('sourceHomepageOnlyDisclosure')}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -968,6 +1062,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           className={`footer-btn primary-btn ${
             saveStatus === 'saved_cloud'
               ? 'btn-saved'
+              : saveStatus === 'saved_cloud_no_provenance'
+              ? 'btn-saved-no-provenance'
               : saveStatus === 'saved_local'
               ? 'btn-saved-local'
               : saveStatus === 'failed'
@@ -975,11 +1071,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               : ''
           }`}
           onClick={handleSave}
-          disabled={saveStatus === 'saving' || saveStatus === 'saved_cloud' || saveStatus === 'saved_local'}>
+          disabled={
+            saveStatus === 'saving' ||
+            saveStatus === 'saved_cloud' ||
+            saveStatus === 'saved_cloud_no_provenance' ||
+            saveStatus === 'saved_local'
+          }>
           {saveStatus === 'saving'
             ? '…'
             : saveStatus === 'saved_cloud'
             ? `✓ ${t('saved')}`
+            : saveStatus === 'saved_cloud_no_provenance'
+            ? t('savedCloudNoProvenance')
             : saveStatus === 'saved_local'
             ? `💾 ${t('savedLocally')}`
             : saveStatus === 'failed'
@@ -987,6 +1090,23 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             : t('saveToHistory')}
         </button>
       </div>
+
+      {saveStatus === 'saved_cloud_no_provenance' && (
+        <div
+          className="save-status-subtext"
+          style={{
+            fontSize: '11px',
+            color: '#8a6d00',
+            backgroundColor: '#fff8e1',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            margin: '8px 16px',
+            textAlign: 'center',
+            lineHeight: '1.4',
+          }}>
+          ⚠️ {t('savedCloudNoProvenanceDesc')}
+        </div>
+      )}
 
       {saveStatus === 'saved_local' && (
         <div

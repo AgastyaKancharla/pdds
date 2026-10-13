@@ -11,6 +11,9 @@ import {
   getAllSupportedDiseases,
   getOfflineReferenceCatalog,
   getTreatmentsForCategory,
+  isSourceDocumentVerified,
+  hasChemicalTabDetail,
+  getClaimEvidenceNote,
 } from '../knowledge';
 import { MOCK_TREATMENTS } from '../mockData';
 import { validateAndNormalizeAiResponse } from '../ai/validator';
@@ -21,7 +24,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
     it('has a valid version, review date, and authority standards', () => {
       const catalog = AGRICULTURAL_KNOWLEDGE_CATALOG;
       expect(catalog.version).toBe('1.0.0');
-      expect(catalog.lastReviewedDate).toBe('2026-10-09');
+      expect(catalog.lastReviewedDate).toBe('2026-10-12');
       expect(catalog.authorityStandards.length).toBeGreaterThanOrEqual(3);
       expect(catalog.authorityStandards.some((s) => s.includes('ANGRAU'))).toBe(true);
       expect(catalog.authorityStandards.some((s) => s.includes('ICAR'))).toBe(true);
@@ -83,26 +86,36 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
   });
 
   describe('Evidence Status Differentiation', () => {
-    it('distinguishes verified_reference diseases from unverified and conflicting diseases', () => {
-      const verifiedIds = [
+    it('distinguishes unverified from conflicting diseases; no entry currently claims verified_reference', () => {
+      // Phase 5.4 evidence-verification pass: Rice Blast, Chilli Leaf Curl, Cotton Pink
+      // Bollworm, and Groundnut Tikka previously claimed evidenceStatus 'verified_reference'
+      // while every one of their specific chemical doses turned out to be unconfirmable
+      // against a primary CIBRC label (the verifying environment could not reach ppqs.gov.in
+      // or any other external host — a tooling/network limitation, not a finding that the
+      // underlying doses are wrong). They were downgraded to 'unverified' and their chemical
+      // doses suppressed, consistent with every other non-fully-verified catalog entry. As a
+      // result, zero disease entries currently hold 'verified_reference' — this is itself an
+      // invariant worth asserting, so a future entry can't silently claim it without review.
+      const formerlyVerifiedIds = [
         'disease-rice-blast',
         'disease-chilli-leaf-curl',
         'disease-cotton-bollworm',
         'disease-groundnut-tikka',
       ];
 
-      for (const id of verifiedIds) {
+      for (const id of formerlyVerifiedIds) {
         const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(d, `Missing disease: ${id}`).toBeDefined();
-        expect(d.evidenceStatus).toBe('verified_reference');
-        // Verified entries must have both pathological and abiotic lookalikes
+        expect(d.evidenceStatus).toBe('unverified');
+        // These entries must still have both pathological and abiotic lookalikes —
+        // that quality bar is independent of evidenceStatus and unaffected by this change.
         const hasPathological = d.similarConditions.some((l) => l.isPathological);
         const hasAbiotic = d.similarConditions.some((l) => !l.isPathological);
         expect(hasPathological, `${id} missing pathological lookalike`).toBe(true);
         expect(hasAbiotic, `${id} missing abiotic lookalike`).toBe(true);
       }
 
-      const unverifiedIds = [
+      const otherUnverifiedIds = [
         'disease-maize-armyworm',
         'disease-sugarcane-redrot',
         'disease-tomato-earlyblight',
@@ -110,7 +123,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         'disease-turmeric-rhizomerot',
       ];
 
-      for (const id of unverifiedIds) {
+      for (const id of otherUnverifiedIds) {
         const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(d, `Missing disease: ${id}`).toBeDefined();
         expect(d.evidenceStatus).toBe('unverified');
@@ -120,6 +133,14 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const panama = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[conflictingId];
       expect(panama).toBeDefined();
       expect(panama.evidenceStatus).toBe('conflicting');
+
+      // No disease entry currently claims verified_reference. If this ever becomes false,
+      // it must be because a real, document-level verification was done and recorded
+      // (see the specificDocumentVerified regression test), not a casual relabeling.
+      const verifiedReferenceCount = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).filter(
+        (d) => d.evidenceStatus === 'verified_reference'
+      ).length;
+      expect(verifiedReferenceCount).toBe(0);
     });
   });
 
@@ -137,17 +158,142 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       }
     });
 
-    it('requires active ingredients and safety cautions for verified chemical treatments', () => {
+    it('requires active ingredients and safety cautions for any chemical treatment', () => {
       const chemicalTreatments = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).flatMap((d) =>
         d.treatments.filter((t) => t.category === 'chemical')
       );
 
-      // Only verified entries contain chemical treatments (Rice Blast x2, Chilli x1, Cotton x1, Groundnut x1 = 5)
-      expect(chemicalTreatments.length).toBe(5);
+      // As of the Phase 5.4 evidence-verification pass, the catalog's prior 4 unverified
+      // 'chemical' treatments (Rice Blast x2, Chilli x1, Cotton x1) had their suppressed-dose
+      // explanations folded into each disease's existing organic entry (matching the pattern
+      // already used by Maize/Tomato/Mango/Turmeric) and were removed as standalone entries —
+      // tagging genuinely chemical content as 'preventive' was itself a mislabel. Groundnut
+      // Tikka had no other treatment entry to fold into, so it remains standalone and its
+      // category was reverted to the truthful 'chemical' (not 'preventive') — its content
+      // stays fully non-actionable (dose suppressed), enforced below and by the dose/
+      // suppression-pairing regression test. This is why exactly 1 chemical treatment exists
+      // catalog-wide, not 0 and not 5.
+      expect(chemicalTreatments.length).toBe(1);
+      expect(chemicalTreatments[0].id).toBe('t-groundnut-chem-1');
       for (const t of chemicalTreatments) {
         expect(t.activeIngredient_en).toBeDefined();
         expect(t.safetyCaution_en).toBeDefined();
         expect(t.safetyCaution_en!.trim().length).toBeGreaterThan(0);
+      }
+    });
+
+    it('Phase 5.4 regression: no unverified/provisional/conflicting disease entry exposes an actionable dose (chemical OR organic/biological)', () => {
+      // Guards against the Sugarcane Red Rot defect found in the 5.4 evidence-integrity audit:
+      // a specific Carbendazim sett-dip dose was given under evidenceStatus "unverified" while
+      // every other non-verified entry (Maize, Tomato, Mango, Turmeric, Banana) suppressed its
+      // chemical dosage pending primary CIBRC label verification. This asserts the suppression
+      // pattern is applied catalog-wide, not just to a few hand-picked entries.
+      //
+      // Per the Phase 5.4 follow-up decision, the same standard also applies to organic/
+      // biological doses (neem, Trichoderma, Bordeaux mixture, etc.) in non-verified entries —
+      // "unsupported actionable recommendations" are suppressed regardless of whether the
+      // active ingredient is synthetic or organic. Only verified_reference entries may still
+      // state a specific dose.
+      //
+      // NOTE: this does NOT assert "zero 'chemical'-category treatments in non-verified
+      // entries" — Groundnut Tikka's single treatment is truthfully tagged 'chemical' (see
+      // the test above) specifically because its content discusses pesticide active
+      // ingredients, and mistagging it 'organic' or 'preventive' to pass this check would be
+      // exactly the mislabeling this correction round fixed. The real invariant enforced here
+      // is content-level: no treatment instruction, in ANY category, may carry a dose without
+      // suppression language.
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        if (disease.evidenceStatus === 'verified_reference') continue;
+
+        // No treatment instruction text, in ANY category (organic and chemical included), in
+        // a non-verified entry may carry a bare active-ingredient dose (e.g. "@ 1g/L",
+        // "50% WP", "1% Bordeaux") unless it is explicitly framed as suppressed/pending-
+        // verification.
+        const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
+        for (const t of disease.treatments) {
+          if (dosePattern.test(t.instruction_en)) {
+            expect(
+              /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || ''),
+              `${disease.id} treatment ${t.id} (category: ${t.category}) gives a dosed instruction without suppression language`
+            ).toBe(true);
+          }
+        }
+      }
+    });
+
+    it('Phase 5.4 regression: specificDocumentVerified is never true without a real deep link and a cited section', () => {
+      // Guards the honesty of the citation-granularity flag added during the 5.4 audit.
+      // A source must never claim "specificDocumentVerified: true" unless it actually links
+      // past the bare organization homepage AND names the supporting page/passage/table/
+      // label section (pageOrSection). This prevents the flag from ever being flipped to
+      // true as a shortcut without doing (or at least recording) the real verification work.
+      const allSources = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).flatMap((d) => d.sources);
+      expect(allSources.length).toBeGreaterThan(0);
+
+      for (const src of allSources) {
+        if (src.specificDocumentVerified === true) {
+          expect(src.url, `"${src.title}" claims specificDocumentVerified but has no url`).toBeDefined();
+          // A homepage-only URL has no path beyond an optional trailing slash.
+          const urlPath = new URL(src.url!).pathname.replace(/\/$/, '');
+          expect(
+            urlPath.length,
+            `"${src.title}" claims specificDocumentVerified but url "${src.url}" is a bare homepage`
+          ).toBeGreaterThan(0);
+          expect(
+            src.pageOrSection && src.pageOrSection.trim().length > 0,
+            `"${src.title}" claims specificDocumentVerified but has no pageOrSection`
+          ).toBe(true);
+        }
+      }
+
+      // As of this audit, no source has actually been verified against a specific document yet
+      // (every current url is an organization homepage) — this is intentionally a hard assertion
+      // so that the moment real document-level verification work lands, this test forces a
+      // deliberate update rather than silently passing either way.
+      const verifiedCount = allSources.filter((s) => s.specificDocumentVerified === true).length;
+      expect(verifiedCount).toBe(0);
+    });
+
+    it('Phase 5.4 fix: isSourceDocumentVerified requires BOTH specificDocumentVerified AND a non-blank pageOrSection', () => {
+      // Guards the ResultScreen.tsx source-disclosure UI bug found in the independent diff
+      // review: specificDocumentVerified alone used to be treated as sufficient to enter the
+      // "verified" render branch, so a source missing pageOrSection rendered NEITHER the
+      // verified section label NOR the homepage-only disclosure — a silent failure, not a
+      // conservative one. isSourceDocumentVerified is the single source of truth both the UI
+      // and this test use, so this test exercises the extracted helper directly rather than
+      // the JSX (there is no component-rendering harness — e.g. @testing-library — wired into
+      // this project's vitest setup, so the smallest testable unit is this pure function).
+
+      // Valid verified case: both fields present and meaningful.
+      expect(isSourceDocumentVerified({ specificDocumentVerified: true, pageOrSection: 'Table 3, p. 12' })).toBe(true);
+
+      // Missing pageOrSection must fail conservatively (fall back to disclosure), even though
+      // specificDocumentVerified is true.
+      expect(isSourceDocumentVerified({ specificDocumentVerified: true, pageOrSection: undefined })).toBe(false);
+
+      // Empty-string pageOrSection must also fail conservatively.
+      expect(isSourceDocumentVerified({ specificDocumentVerified: true, pageOrSection: '' })).toBe(false);
+
+      // Whitespace-only pageOrSection must fail conservatively (not just a truthiness check).
+      expect(isSourceDocumentVerified({ specificDocumentVerified: true, pageOrSection: '   ' })).toBe(false);
+
+      // A real pageOrSection does not matter if specificDocumentVerified itself is false/absent —
+      // a homepage-only citation must never be reported as document-verified.
+      expect(isSourceDocumentVerified({ specificDocumentVerified: false, pageOrSection: 'Table 3, p. 12' })).toBe(
+        false
+      );
+      expect(isSourceDocumentVerified({ pageOrSection: 'Table 3, p. 12' })).toBe(false);
+
+      // Both fields absent (today's actual catalog state) must fail conservatively.
+      expect(isSourceDocumentVerified({})).toBe(false);
+
+      // Cross-check against the live catalog: every current source must resolve to false,
+      // since (per the test above) none has a verified document yet.
+      const allSourcesNow = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).flatMap((d) => d.sources);
+      for (const src of allSourcesNow) {
+        expect(isSourceDocumentVerified(src), `"${src.title}" should not resolve as document-verified yet`).toBe(
+          false
+        );
       }
     });
   });
@@ -169,7 +315,10 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(blast).not.toBeNull();
       expect(blast?.name_en).toBe('Rice Blast');
       expect(blast?.cropId).toBe('crop-rice');
-      expect(blast?.evidenceStatus).toBe('verified_reference');
+      // Phase 5.4: downgraded from 'verified_reference' once its chemical doses were
+      // found unconfirmable against a primary CIBRC label (see Evidence Status
+      // Differentiation describe block above for the full rationale).
+      expect(blast?.evidenceStatus).toBe('unverified');
 
       expect(getDiseaseKnowledge('disease-unknown')).toBeNull();
       expect(getDiseaseKnowledge(null)).toBeNull();
@@ -312,11 +461,22 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         expect(mockChemMaize.length).toBeGreaterThan(0);
         expect(maizeChem.treatments.some((t) => t.instruction.toLowerCase().includes('emamectin'))).toBe(false);
 
-        // Groundnut Tikka only has chemical curated; preventive is empty in treatments
+        // Groundnut Tikka: its one curated treatment discusses Mancozeb/Tebuconazole
+        // (dose suppressed — no primary CIBRC label was accessible to confirm either figure)
+        // and is truthfully tagged 'chemical' — a Phase 5.4 correction round found that an
+        // earlier pass had mistagged it 'preventive' to make the category empty, which was
+        // itself a mislabel of genuinely chemical content. 'chemical' is populated here;
+        // 'preventive' is the empty category for this disease (it has no other treatment).
         const groundnutPrev = getTreatmentsForCategory('disease-groundnut-tikka', 'preventive', 'en');
         expect(groundnutPrev.hasCuratedEntry).toBe(true);
         expect(groundnutPrev.isEmptyCategory).toBe(true);
         expect(groundnutPrev.treatments).toHaveLength(0);
+
+        const groundnutChem = getTreatmentsForCategory('disease-groundnut-tikka', 'chemical', 'en');
+        expect(groundnutChem.isEmptyCategory).toBe(false);
+        expect(groundnutChem.treatments.length).toBeGreaterThan(0);
+        // The suppression must still be explicit in the surfaced copy, not silently dropped.
+        expect(groundnutChem.treatments.some((t) => /suppress/i.test(t.instruction))).toBe(true);
 
         // Sugarcane Red Rot has preventive sett treatment, but NO chemical standing spray
         const sugarcaneChem = getTreatmentsForCategory('disease-sugarcane-redrot', 'chemical', 'en');
@@ -326,15 +486,20 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       });
 
       it('safely distinguishes populated categories from empty categories', () => {
-        // Rice Blast has all 3 categories populated
+        // Rice Blast: its Tricyclazole/Isoprothiolane discussion (doses could not be
+        // confirmed against a primary CIBRC label) was folded into the existing organic
+        // entry's text rather than kept as standalone mistagged 'preventive' entries, so
+        // 'chemical' is empty for THIS disease specifically (Groundnut Tikka is the one
+        // catalog entry that still legitimately populates 'chemical' — see above). 'organic'
+        // and 'preventive' remain genuinely populated for Rice Blast.
         const riceOrg = getTreatmentsForCategory('disease-rice-blast', 'organic', 'en');
         const riceChem = getTreatmentsForCategory('disease-rice-blast', 'chemical', 'en');
         const ricePrev = getTreatmentsForCategory('disease-rice-blast', 'preventive', 'en');
 
         expect(riceOrg.isEmptyCategory).toBe(false);
         expect(riceOrg.treatments.length).toBeGreaterThan(0);
-        expect(riceChem.isEmptyCategory).toBe(false);
-        expect(riceChem.treatments.length).toBeGreaterThan(0);
+        expect(riceChem.isEmptyCategory).toBe(true);
+        expect(riceChem.treatments).toHaveLength(0);
         expect(ricePrev.isEmptyCategory).toBe(false);
         expect(ricePrev.treatments.length).toBeGreaterThan(0);
       });
@@ -555,7 +720,12 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       it('explicitly warns that chemicals do not cure viral infections in Chilli Leaf Curl', () => {
         const chilli = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-chilli-leaf-curl'];
         expect(chilli).toBeDefined();
-        const chem = chilli.treatments.find((t) => t.category === 'chemical');
+        // A Phase 5.4 correction round folded the standalone (and mistagged 'preventive')
+        // vector-management entry into Chilli's single organic entry (t-chilli-org-1) —
+        // the suppressed insecticide dose is now discussed there instead of a separate
+        // entry. The critical "virus cannot be cured by chemicals, vector-only" warning
+        // this test guards must survive that merge unchanged, wherever it now lives.
+        const chem = chilli.treatments.find((t) => t.id === 't-chilli-org-1');
         expect(chem).toBeDefined();
         const textEn = `${chem?.instruction_en} ${chem?.regulatoryNotice_en}`.toLowerCase();
         expect(textEn).toContain('cannot be cured');
@@ -575,32 +745,61 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         expect(treatmentNotice).toContain('quarantine');
       });
 
-      it('strictly suppresses chemical treatments for all unverified catalog entries', () => {
-        const unverifiedIds = [
+      it('strictly suppresses ACTIONABLE chemical treatments for all unverified catalog entries', () => {
+        // Phase 5.4: Rice Blast, Chilli Leaf Curl, Cotton Pink Bollworm, and Groundnut Tikka
+        // joined this list after their previously-actionable chemical doses were found
+        // unconfirmable against a primary CIBRC label and suppressed. A later correction
+        // round found that Rice/Chilli/Cotton's suppressed-chemical entries had been
+        // mistagged 'preventive' (to force zero 'chemical'-category entries) and folded
+        // them into each disease's existing organic entry instead; Groundnut Tikka, which
+        // had no other entry to fold into, keeps its one treatment truthfully tagged
+        // 'chemical' — so this test checks "no ACTIONABLE chemical treatment" (dose-level),
+        // not "zero 'chemical'-category entries" (tag-level), which is the real invariant.
+        const noStandaloneChemicalIds = [
           'disease-maize-armyworm',
           'disease-sugarcane-redrot',
           'disease-tomato-earlyblight',
           'disease-mango-anthracnose',
           'disease-turmeric-rhizomerot',
+          'disease-rice-blast',
+          'disease-chilli-leaf-curl',
+          'disease-cotton-bollworm',
         ];
 
-        for (const id of unverifiedIds) {
+        for (const id of noStandaloneChemicalIds) {
           const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
           expect(d.evidenceStatus).toBe('unverified');
           const chem = d.treatments.filter((t) => t.category === 'chemical');
-          expect(chem, `Unverified disease ${id} must not have actionable chemical treatments`).toHaveLength(0);
+          expect(chem, `Unverified disease ${id} must not have a standalone 'chemical'-category treatment`).toHaveLength(
+            0
+          );
         }
+
+        // Groundnut Tikka: the one exception, with a truthfully-tagged but non-actionable entry.
+        const groundnut = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
+        expect(groundnut.evidenceStatus).toBe('unverified');
+        const groundnutChem = groundnut.treatments.filter((t) => t.category === 'chemical');
+        expect(groundnutChem).toHaveLength(1);
+        expect(
+          groundnutChem.every((t) => /suppress/i.test(t.instruction_en)),
+          'Groundnut Tikka chemical treatment must remain explicitly suppressed/non-actionable'
+        ).toBe(true);
       });
 
-      it('ensures verified entries include direct authoritative URLs and review dates', () => {
-        const verifiedIds = [
+      it('ensures formerly "verified" entries still include direct authoritative URLs and review dates', () => {
+        // These 4 entries are no longer evidenceStatus 'verified_reference' (see Phase 5.4
+        // evidence-verification pass above) — but they still carry multiple sources with
+        // well-formed https URLs and review dates. This test only checks that structural
+        // bar; it does NOT claim those sources are document-level verified (none are — see
+        // the specificDocumentVerified regression test, which asserts that count is 0).
+        const formerlyVerifiedIds = [
           'disease-rice-blast',
           'disease-chilli-leaf-curl',
           'disease-cotton-bollworm',
           'disease-groundnut-tikka',
         ];
 
-        for (const id of verifiedIds) {
+        for (const id of formerlyVerifiedIds) {
           const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
           expect(d.sources.length).toBeGreaterThanOrEqual(2);
           for (const s of d.sources) {
@@ -610,6 +809,488 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           }
         }
       });
+    });
+  });
+
+  describe('Phase 5.4 fix: Chemical-tab cross-tab discoverability', () => {
+    // Mirrors the exact rendering logic in src/screens/ResultScreen.tsx's Chemical tab:
+    // 1. `displayTreatments` = getTreatmentsForCategory(diseaseId, 'chemical', language).treatments
+    // 2. If that list is empty, an empty-category card shows the generic suppression notice,
+    //    plus (new in this fix) a disease-specific `chemicalTabDetail_en/_te` paragraph when
+    //    the disease defines one — additive, never a replacement for the generic notice.
+    // 3. If that list is non-empty, the real treatment card(s) render directly instead.
+    // There is no @testing-library / component-rendering harness wired into this project's
+    // vitest setup (confirmed in earlier Phase 5.4 rounds), so — consistent with the existing
+    // storage.test.ts `resolveUiState` precedent — this mirrors the actual data-flow logic
+    // against the real catalog and service functions rather than rendering JSX.
+    //
+    // Phase 5.6B fix: `genericNoticeIsSuppressionVariant` previously also required
+    // `disease.evidenceStatus !== 'verified_reference'`, mirroring the latent coupling found
+    // in Phase 5.6A. ResultScreen.tsx no longer references evidenceStatus for this notice at
+    // all (see the fix comment there) — it is now unconditionally true whenever the chemical
+    // category is empty for a cataloged disease, so this mirror is updated to match.
+    function resolveChemicalTabRender(diseaseId: string, language: 'en' | 'te') {
+      const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[diseaseId];
+      const catResult = getTreatmentsForCategory(diseaseId, 'chemical', language);
+      const detailText = language === 'en' ? disease.chemicalTabDetail_en : disease.chemicalTabDetail_te;
+      const detailShown = catResult.isEmptyCategory && !!detailText;
+      const genericNoticeIsSuppressionVariant = catResult.isEmptyCategory;
+      return {
+        isEmptyCategory: catResult.isEmptyCategory,
+        genericNoticeIsSuppressionVariant,
+        detailShown,
+        detailText: detailShown ? detailText : undefined,
+        realTreatments: catResult.treatments,
+      };
+    }
+
+    it('exposes Rice Blast, Chilli Leaf Curl, and Cotton Pink Bollworm chemical-suppression detail on the Chemical tab', () => {
+      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+        const en = resolveChemicalTabRender(id, 'en');
+        expect(en.isEmptyCategory, `${id} should have no standalone 'chemical' entry`).toBe(true);
+        expect(en.genericNoticeIsSuppressionVariant, `${id} must show the suppression-variant generic notice`).toBe(
+          true
+        );
+        expect(en.detailShown, `${id} must surface disease-specific detail on the Chemical tab`).toBe(true);
+        expect(en.detailText!.length).toBeGreaterThan(20);
+        expect(/suppress/i.test(en.detailText!), `${id} detail must state suppression explicitly`).toBe(true);
+
+        const te = resolveChemicalTabRender(id, 'te');
+        expect(te.detailShown, `${id} must also surface Telugu detail`).toBe(true);
+        expect(te.detailText).not.toBe(en.detailText);
+        expect(te.detailText!.length).toBeGreaterThan(10);
+      }
+    });
+
+    it("surfaces Chilli Leaf Curl's viral/vector distinction and mite-vs-whitefly mismatch warning specifically on the Chemical tab", () => {
+      // This is the single most safety-relevant detail this fix restores: before it, a user
+      // checking only the Chemical tab would never see this warning at all.
+      const { detailText } = resolveChemicalTabRender('disease-chilli-leaf-curl', 'en');
+      expect(detailText).toBeDefined();
+      const lower = detailText!.toLowerCase();
+      expect(lower).toContain('cannot be cured');
+      expect(lower).toContain('vector');
+      expect(lower).toContain('mite');
+      expect(lower).toContain('whitefly');
+      expect(lower).toContain('verify the target pest');
+
+      const teDetail = resolveChemicalTabRender('disease-chilli-leaf-curl', 'te').detailText;
+      expect(teDetail).toBeDefined();
+      expect(teDetail).toContain('వైరస్'); // virus
+      expect(teDetail).toContain('నల్లి'); // mite
+      expect(teDetail).toContain('తెల్లదోమ'); // whitefly
+    });
+
+    it('keeps organic guidance fully available on the Organic tab for all three merged diseases', () => {
+      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+        const org = getTreatmentsForCategory(id, 'organic', 'en');
+        expect(org.isEmptyCategory, `${id} Organic tab must remain populated`).toBe(false);
+        expect(org.treatments.length).toBeGreaterThan(0);
+        expect(org.treatments[0].instruction.length).toBeGreaterThan(0);
+      }
+    });
+
+    it("leaves Groundnut Tikka's Chemical tab exactly as it was (real entry, no generic notice, no redundant detail)", () => {
+      const result = resolveChemicalTabRender('disease-groundnut-tikka', 'en');
+      expect(result.isEmptyCategory).toBe(false);
+      expect(result.detailShown).toBe(false); // no detail field defined, and none needed
+      expect(result.realTreatments).toHaveLength(1);
+      expect(result.realTreatments[0].id).toBe('t-groundnut-chem-1');
+      expect(/suppress/i.test(result.realTreatments[0].instruction)).toBe(true);
+
+      // Groundnut never defines chemicalTabDetail — it would be redundant/dead data since
+      // its Chemical tab already renders the real, specific entry directly.
+      const groundnut = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
+      expect(groundnut.chemicalTabDetail_en).toBeUndefined();
+      expect(groundnut.chemicalTabDetail_te).toBeUndefined();
+    });
+
+    it('never exposes an actionable dose through chemicalTabDetail, for any disease that defines one', () => {
+      const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        if (!disease.chemicalTabDetail_en) continue;
+        if (dosePattern.test(disease.chemicalTabDetail_en)) {
+          expect(
+            /suppress/i.test(disease.chemicalTabDetail_en),
+            `${disease.id} chemicalTabDetail_en gives a dosed figure without suppression language`
+          ).toBe(true);
+        }
+        // Must never claim a primary label was actually verified.
+        expect(/verified against a primary|confirmed by cibrc/i.test(disease.chemicalTabDetail_en)).toBe(false);
+      }
+    });
+
+    it('never lets the disease-specific detail contradict the generic suppression notice', () => {
+      // The detail paragraph only ever renders inside the SAME branch that shows the generic
+      // notice (isEmptyCategory === true) — and since Phase 5.6B, that notice is unconditionally
+      // the suppression variant whenever the chemical category is empty, independent of
+      // evidenceStatus — so the two can never disagree about whether chemical info is
+      // suppressed here.
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        if (!disease.chemicalTabDetail_en) continue;
+        const { isEmptyCategory, genericNoticeIsSuppressionVariant, detailShown } = resolveChemicalTabRender(
+          disease.id,
+          'en'
+        );
+        expect(isEmptyCategory, `${disease.id} must have an empty 'chemical' category for its detail to apply`).toBe(
+          true
+        );
+        expect(
+          genericNoticeIsSuppressionVariant,
+          `${disease.id} generic notice must be the suppression variant whenever detail is shown`
+        ).toBe(true);
+        expect(detailShown).toBe(true);
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Statutory safety-box coverage (src/screens/ResultScreen.tsx lines ~948-949):
+    //   {activeTab === 'chemical' &&
+    //     (displayTreatments.length > 0 || hasChemicalTabDetail(diseaseKnowledge, language)) && (
+    //       <div className="statutory-safety-box">...
+    // `hasChemicalTabDetail` is imported directly from src/lib/knowledge (the same function
+    // the component calls — not a re-implementation), and `displayTreatments.length` is
+    // exactly `getTreatmentsForCategory(diseaseId, 'chemical', language).treatments.length`
+    // (verified equivalent to the component's inline filter earlier in this file). This
+    // helper is therefore the real production predicate, evaluated with real inputs — a
+    // data-flow/predicate test, not a rendered-DOM test: no component-rendering harness
+    // (e.g. @testing-library) is wired into this project, so no claim is made here that the
+    // box was visually rendered or browser-tested.
+    function shouldShowChemicalStatutoryBox(diseaseId: string, language: 'en' | 'te'): boolean {
+      const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[diseaseId];
+      const treatmentsCount = getTreatmentsForCategory(diseaseId, 'chemical', language).treatments.length;
+      return treatmentsCount > 0 || hasChemicalTabDetail(disease, language);
+    }
+
+    it('hasChemicalTabDetail: true only for a non-empty detail string in the requested language', () => {
+      expect(hasChemicalTabDetail({ chemicalTabDetail_en: 'x' }, 'en')).toBe(true);
+      expect(hasChemicalTabDetail({ chemicalTabDetail_en: 'x' }, 'te')).toBe(false); // wrong language
+      expect(hasChemicalTabDetail({ chemicalTabDetail_en: '' }, 'en')).toBe(false); // empty string
+      expect(hasChemicalTabDetail({}, 'en')).toBe(false); // field absent
+      expect(hasChemicalTabDetail(null, 'en')).toBe(false); // no disease at all
+      expect(hasChemicalTabDetail(undefined, 'en')).toBe(false);
+    });
+
+    it('shows the statutory safety box for Rice Blast, Chilli Leaf Curl, and Cotton Pink Bollworm via the chemicalTabDetail branch, despite zero Chemical-tab treatment entries', () => {
+      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+        const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
+        expect(treatmentsCount, `${id} must have zero 'chemical' treatment entries`).toBe(0);
+        expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en')).toBe(true);
+        expect(
+          shouldShowChemicalStatutoryBox(id, 'en'),
+          `${id} statutory safety box must render via the chemicalTabDetail branch`
+        ).toBe(true);
+        // Telugu reaches the same outcome through the same branch.
+        expect(shouldShowChemicalStatutoryBox(id, 'te')).toBe(true);
+      }
+    });
+
+    it('shows the statutory safety box for Groundnut Tikka via the real treatment-entry branch, not the detail branch', () => {
+      const id = 'disease-groundnut-tikka';
+      const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
+      expect(treatmentsCount, `${id} must have a real 'chemical' treatment entry`).toBeGreaterThan(0);
+      expect(
+        hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en'),
+        `${id} must NOT define chemicalTabDetail — it would be redundant with its real entry`
+      ).toBe(false);
+      expect(
+        shouldShowChemicalStatutoryBox(id, 'en'),
+        `${id} statutory safety box must still render, via displayTreatments.length > 0`
+      ).toBe(true);
+    });
+
+    it('does NOT show the statutory safety box for a disease with neither a Chemical-tab treatment entry nor chemicalTabDetail (negative control)', () => {
+      // Maize Fall Armyworm: its sole treatment is 'organic' with no chemicalTabDetail
+      // defined — neither branch of the OR-condition is satisfied.
+      const id = 'disease-maize-armyworm';
+      const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
+      expect(treatmentsCount).toBe(0);
+      expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en')).toBe(false);
+      expect(shouldShowChemicalStatutoryBox(id, 'en')).toBe(false);
+      expect(shouldShowChemicalStatutoryBox(id, 'te')).toBe(false);
+    });
+  });
+
+  describe('Phase 5.5A fix: Rice Blast prevention-guidance chemical-dose suppression', () => {
+    // src/screens/ResultScreen.tsx renders ONLY `prev.practice_en`/`prev.practice_te` (and
+    // optional `targetTiming`) for each preventionGuidance[] step — PreventionStep has no
+    // separate safetyCaution/regulatoryNotice field (see src/lib/knowledge/types.ts). So the
+    // suppression disclosure for this step must live inside practice_en/_te itself to ever
+    // reach the user; these tests check the actual rendered field.
+    const riceBlast = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-blast'];
+    const seedStep = riceBlast.preventionGuidance.find((p) => p.stepNumber === 1)!;
+
+    it('no longer presents an actionable Carbendazim dose for rice seed treatment', () => {
+      // The specific dosed instruction ("Carbendazim 50% WP @ 2g/kg seed") must be gone;
+      // any remaining mention of Carbendazim must be paired with suppression language.
+      expect(seedStep.practice_en).not.toContain('Carbendazim 50% WP @ 2g/kg seed');
+      expect(seedStep.practice_te).not.toContain('2 గ్రాముల కార్బెండజిమ్ కలిపి');
+      if (/carbendazim/i.test(seedStep.practice_en)) {
+        expect(/suppress/i.test(seedStep.practice_en)).toBe(true);
+      }
+    });
+
+    it('carries the suppression safety disclosure in both English and Telugu', () => {
+      const en = seedStep.practice_en.toLowerCase();
+      expect(en).toContain('suppress');
+      expect(en).toContain('not been verified');
+      expect(en).toContain('rbk');
+      const te = seedStep.practice_te;
+      expect(te).toContain('నిలిపివేయబడింది'); // "is suppressed"
+      expect(te).toContain('ధృవీకరించబడలేదు'); // "has not been verified"
+      expect(te).toContain('RBK');
+    });
+
+    it('does not claim Carbendazim is illegal, ineffective, or universally unsafe — only unverified here', () => {
+      const en = seedStep.practice_en.toLowerCase();
+      expect(en).not.toMatch(/illegal|banned|ineffective|unsafe|dangerous/);
+    });
+
+    it('keeps the supported non-chemical Trichoderma seed-treatment instruction actionable', () => {
+      expect(seedStep.practice_en).toContain('Trichoderma asperellum @ 10g/kg seed');
+      expect(seedStep.targetTiming).toBe('Pre-sowing');
+    });
+
+    it('leaves the other two Rice Blast prevention steps (fertilizer timing, irrigation/weed hygiene) untouched and present', () => {
+      expect(riceBlast.preventionGuidance).toHaveLength(3);
+      const fertilizerStep = riceBlast.preventionGuidance.find((p) => p.stepNumber === 2)!;
+      const hygieneStep = riceBlast.preventionGuidance.find((p) => p.stepNumber === 3)!;
+      expect(fertilizerStep.practice_en).toContain('3 split doses');
+      expect(hygieneStep.practice_en).toContain('irrigation channels');
+      // Neither contains a specific pesticide product/dose that would need the same treatment —
+      // split nitrogen timing and bund hygiene are general cultural practices, not pesticide
+      // doses requiring label verification.
+      expect(/@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|seed)/i.test(fertilizerStep.practice_en)).toBe(false);
+      expect(/@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|seed)/i.test(hygieneStep.practice_en)).toBe(false);
+    });
+
+    it('does not disturb any other Rice Blast evidence/suppression safeguard already in place', () => {
+      expect(riceBlast.evidenceStatus).toBe('unverified');
+      expect(riceBlast.treatments.filter((t) => t.category === 'chemical')).toHaveLength(0);
+      expect(hasChemicalTabDetail(riceBlast, 'en')).toBe(true);
+    });
+  });
+
+  describe('Phase 5.5C fix: Groundnut Tikka prevention-guidance chemical-dose suppression', () => {
+    // Same gap class as Phase 5.5A (Rice Blast): ResultScreen.tsx renders only
+    // prev.practice_en/_te (and optional targetTiming) for each preventionGuidance[] step —
+    // there is no separate safetyCaution/regulatoryNotice field on PreventionStep — so the
+    // suppression disclosure must live inside practice_en/_te itself to ever reach the user.
+    const groundnutTikka = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
+    const seedStep = groundnutTikka.preventionGuidance.find((p) => p.stepNumber === 2)!;
+
+    it('is the intended seed-treatment step', () => {
+      expect(seedStep).toBeDefined();
+      expect(seedStep.targetTiming).toBe('Pre-sowing');
+    });
+
+    it('no longer presents an actionable Mancozeb dose for groundnut seed treatment', () => {
+      expect(seedStep.practice_en).not.toContain('Mancozeb 75% WP @ 3g/kg seed');
+      expect(seedStep.practice_te).not.toContain('3 గ్రాముల మాంకోజెబ్ లేదా');
+      if (/mancozeb/i.test(seedStep.practice_en)) {
+        expect(/suppress/i.test(seedStep.practice_en)).toBe(true);
+      }
+    });
+
+    it('carries the suppression safety disclosure in both English and Telugu', () => {
+      const en = seedStep.practice_en.toLowerCase();
+      expect(en).toContain('suppress');
+      expect(en).toContain('not been verified');
+      expect(en).toContain('rbk');
+      const te = seedStep.practice_te;
+      expect(te).toContain('నిలిపివేయబడింది'); // "is suppressed"
+      expect(te).toContain('ధృవీకరించబడలేదు'); // "has not been verified"
+      expect(te).toContain('RBK');
+    });
+
+    it('does not claim Mancozeb is illegal, ineffective, or universally unsafe — only unverified here', () => {
+      const en = seedStep.practice_en.toLowerCase();
+      expect(en).not.toMatch(/illegal|banned|ineffective|unsafe|dangerous/);
+    });
+
+    it('keeps the supported non-chemical Trichoderma seed-treatment instruction actionable at its existing rate', () => {
+      expect(seedStep.practice_en).toContain('Trichoderma viride @ 10g/kg seed');
+      expect(seedStep.practice_te).toContain('10 గ్రాముల ట్రైకోడెర్మా');
+    });
+
+    it('leaves the other Groundnut Tikka prevention step (crop rotation) and catalog-wide invariants untouched', () => {
+      expect(groundnutTikka.preventionGuidance).toHaveLength(2);
+      const rotationStep = groundnutTikka.preventionGuidance.find((p) => p.stepNumber === 1)!;
+      expect(rotationStep.practice_en).toContain('crop rotation');
+      expect(/@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|seed)/i.test(rotationStep.practice_en)).toBe(false);
+
+      expect(groundnutTikka.evidenceStatus).toBe('unverified');
+      expect(groundnutTikka.treatments.filter((t) => t.category === 'chemical')).toHaveLength(1);
+
+      // Rice Blast's Phase 5.5A fix must be unaffected by this change.
+      const riceBlastCheck = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-blast'];
+      expect(riceBlastCheck.preventionGuidance.find((p) => p.stepNumber === 1)!.practice_en).toContain(
+        'Trichoderma asperellum @ 10g/kg seed'
+      );
+    });
+  });
+
+  describe('Phase 5.6B fix: Chemical safety disclosure independence from evidenceStatus', () => {
+    // Phase 5.6A identified a latent coupling in src/screens/ResultScreen.tsx: the Chemical
+    // tab's empty-category safety notice used to require
+    // `diseaseKnowledge.evidenceStatus !== 'verified_reference'` in addition to the category
+    // being empty. `evidenceStatus` is disease-wide (symptoms, lookalikes, prevention, and
+    // treatments all share one value) and this catalog has no chemical-dose-specific
+    // verification flag, so a disease reaching 'verified_reference' for its diagnostic content
+    // alone could, in principle, have silently swapped this safety message for the generic
+    // "nothing cataloged" text even though its chemical dose was never confirmed.
+    //
+    // The fix removes the evidenceStatus clause entirely: the notice is now unconditionally
+    // the suppression variant whenever a cataloged disease has no 'chemical'-category
+    // treatment entry. This function reproduces that exact (now one-clause) production
+    // expression literally, since no @testing-library / component-rendering harness is wired
+    // into this project (confirmed in every prior phase) — this is a data-flow/predicate test
+    // against the real expression's logical shape, not a rendered-DOM test, and no claim is
+    // made that the fix was visually or browser-verified.
+    function resolveChemicalEmptyCategoryNotice(
+      activeTabIsChemical: boolean,
+      hasDiseaseEntry: boolean
+    ): 'suppressedChemicalNotice' | 'noCategoryRecommendation' {
+      return activeTabIsChemical && hasDiseaseEntry ? 'suppressedChemicalNotice' : 'noCategoryRecommendation';
+    }
+
+    it('cannot be bypassed by a disease-level verified_reference status (the latent-coupling scenario)', () => {
+      // No real catalog entry currently claims 'verified_reference' (see 'Evidence Status
+      // Differentiation' above — the invariant is 0). This test does not fabricate one in the
+      // catalog; it simply proves that the FIXED expression no longer branches on
+      // evidenceStatus at all, so even the hypothetical that would have defeated the OLD
+      // condition (`evidenceStatus === 'verified_reference'` on a disease with an empty
+      // chemical category) cannot suppress the safety notice under the new logic.
+      expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
+    });
+
+    it('preserves current behavior for all unverified and conflicting entries with an empty chemical category', () => {
+      for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
+        const chemCount = getTreatmentsForCategory(disease.id, 'chemical', 'en').treatments.length;
+        if (chemCount > 0) continue; // Groundnut Tikka — real entry renders instead, unaffected
+        expect(
+          ['unverified', 'conflicting'].includes(disease.evidenceStatus),
+          `${disease.id} expected to be unverified/conflicting, found ${disease.evidenceStatus}`
+        ).toBe(true);
+        expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
+      }
+    });
+
+    it('still surfaces the three disease-specific chemicalTabDetail disclosures (Rice, Chilli, Cotton) alongside the notice', () => {
+      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+        const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        expect(getTreatmentsForCategory(id, 'chemical', 'en').treatments).toHaveLength(0);
+        expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
+        expect(hasChemicalTabDetail(disease, 'en')).toBe(true);
+        expect(hasChemicalTabDetail(disease, 'te')).toBe(true);
+      }
+    });
+
+    it('is not gated on language — English and Telugu reach the same notice decision', () => {
+      // The fixed expression never inspects `language` at all (only evidenceStatus was
+      // removed), so this is a direct equivalence check rather than a duplicated branch.
+      expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe(
+        resolveChemicalEmptyCategoryNotice(true, true)
+      );
+      for (const id of ['disease-rice-blast', 'disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
+        const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        expect(hasChemicalTabDetail(disease, 'en')).toBe(hasChemicalTabDetail(disease, 'te'));
+      }
+    });
+
+    it('does not make any treatment dose or recommendation accidentally actionable', () => {
+      // This fix only changes which TEXT STRING is chosen for an already-empty category — it
+      // cannot add, alter, or un-suppress any treatment entry or dose. Re-assert the
+      // catalog-wide invariants from Phase 5.4/5.5A/5.5C/5.6A are unchanged.
+      const allDiseases = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases);
+      expect(allDiseases.filter((d) => d.evidenceStatus === 'verified_reference')).toHaveLength(0);
+      const allTreatments = allDiseases.flatMap((d) => d.treatments);
+      const chemicalTreatments = allTreatments.filter((t) => t.category === 'chemical');
+      expect(chemicalTreatments).toHaveLength(1);
+      expect(chemicalTreatments.every((t) => /suppress/i.test(t.instruction_en))).toBe(true);
+      const allSources = allDiseases.flatMap((d) => d.sources);
+      expect(allSources.filter((s) => s.specificDocumentVerified === true)).toHaveLength(0);
+    });
+  });
+
+  describe('Claim-level evidence architecture (ClaimEvidenceNote / getClaimEvidenceNote)', () => {
+    // Closes the gap identified across Phase 5.6A-5.6C: a disease-wide evidenceStatus and a
+    // generic sources[] list cannot distinguish "this one specific numeric claim has
+    // claim-specific support" from "nothing on this entry has been checked that closely".
+    // getClaimEvidenceNote is the single lookup both ResultScreen.tsx and these tests call —
+    // mirroring the claimId construction the component actually uses
+    // (`${step.id}-safety-caution`, `${disease.id}-escalation-threshold`) rather than
+    // re-implementing the check separately, so the test can't drift from the real UI.
+    const groundnut = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
+    const banana = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-banana-panamawilt'];
+
+    it('finds the Groundnut Tikka spray-volume note via the exact claimId the UI constructs', () => {
+      const note = getClaimEvidenceNote(groundnut, 't-groundnut-chem-1-safety-caution');
+      expect(note).toBeDefined();
+      expect(note!.verificationStatus).toBe('unsupported');
+      expect(note!.limitation_en.length).toBeGreaterThan(20);
+      expect(note!.limitation_te.length).toBeGreaterThan(10);
+    });
+
+    it('finds the Banana Panama Wilt lime-quantity note via the exact claimId the UI constructs', () => {
+      const note = getClaimEvidenceNote(banana, `${banana.id}-escalation-threshold`);
+      expect(note).toBeDefined();
+      expect(note!.verificationStatus).toBe('unsupported');
+      expect(note!.limitation_en.length).toBeGreaterThan(20);
+      expect(note!.limitation_te.length).toBeGreaterThan(10);
+    });
+
+    it('carries the RBK/officer referral in both English and Telugu for both notes (EN/TE parity)', () => {
+      for (const [disease, claimId] of [
+        [groundnut, 't-groundnut-chem-1-safety-caution'],
+        [banana, `${banana.id}-escalation-threshold`],
+      ] as const) {
+        const note = getClaimEvidenceNote(disease, claimId)!;
+        expect(note.limitation_en.toLowerCase()).toContain('rbk');
+        expect(note.limitation_te).toContain('RBK');
+        // Neither language claims the figure IS verified/confirmed — only that it is not.
+        expect(note.limitation_en.toLowerCase()).not.toMatch(/\bis confirmed\b|\bis verified\b/);
+      }
+    });
+
+    it('preserves the underlying guidance text — this is a qualification, not a suppression', () => {
+      // Phase 5.6C explicitly recommended "add a clear evidence limitation", not suppress,
+      // for these two claims (unlike the Phase 5.5A/5.5C Carbendazim/Mancozeb seed-treatment
+      // doses, which were suppressed). The original figures must still be present verbatim.
+      const groundnutTreatment = groundnut.treatments.find((t) => t.id === 't-groundnut-chem-1')!;
+      expect(groundnutTreatment.safetyCaution_en).toContain('200 L/acre');
+      expect(groundnutTreatment.safetyCaution_te).toContain('200 లీటర్ల');
+      expect(banana.escalationThreshold_en).toContain('1-2 kg agricultural lime per pit');
+      expect(banana.escalationThreshold_te).toContain('1-2 కిలోల సున్నం');
+    });
+
+    it('is never auto-created or auto-upgraded by the disease-wide evidenceStatus or sources[]', () => {
+      // Both diseases are 'unverified'/'conflicting' overall (same as most of the catalog) —
+      // the claim note's own 'unsupported' status is a separate, explicitly-set value, not
+      // derived from evidenceStatus. A disease with the SAME evidenceStatus but no claimEvidence
+      // array (e.g. Rice Blast, also 'unverified') must resolve to no note at all.
+      expect(groundnut.evidenceStatus).toBe('unverified');
+      expect(banana.evidenceStatus).toBe('conflicting');
+      const riceBlast = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-blast'];
+      expect(riceBlast.evidenceStatus).toBe('unverified'); // same status as Groundnut
+      expect(getClaimEvidenceNote(riceBlast, 't-groundnut-chem-1-safety-caution')).toBeUndefined();
+      expect(riceBlast.claimEvidence).toBeUndefined();
+    });
+
+    it('returns undefined for an unknown claimId, a disease with no claimEvidence, or a null/undefined disease', () => {
+      expect(getClaimEvidenceNote(groundnut, 'not-a-real-claim-id')).toBeUndefined();
+      expect(getClaimEvidenceNote(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-maize-armyworm'], 'anything')).toBeUndefined();
+      expect(getClaimEvidenceNote(null, 't-groundnut-chem-1-safety-caution')).toBeUndefined();
+      expect(getClaimEvidenceNote(undefined, 't-groundnut-chem-1-safety-caution')).toBeUndefined();
+    });
+
+    it('does not affect any other disease — only Groundnut Tikka and Banana Panama Wilt define claimEvidence', () => {
+      const withClaimEvidence = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases).filter(
+        (d) => d.claimEvidence && d.claimEvidence.length > 0
+      );
+      expect(withClaimEvidence.map((d) => d.id).sort()).toEqual(
+        ['disease-banana-panamawilt', 'disease-groundnut-tikka'].sort()
+      );
     });
   });
 });

@@ -134,4 +134,25 @@ describe('OpenRouter AI Provider Adapter', () => {
     expect(response.error?.code).toBe('TIMEOUT');
     expect(response.error?.retryable).toBe(true);
   });
+
+  describe('browser-context construction guard (client-side secret-exposure prevention)', () => {
+    // This project's vitest config declares no `test.environment`, so vitest's default
+    // ('node') applies: `window` is undefined here, same as every other test above. This
+    // block explicitly simulates a browser global to prove the guard in the constructor
+    // actually fires, then always removes the simulated global afterward so no other test
+    // in this file (or any other file) is affected.
+    afterEach(() => {
+      delete (globalThis as { window?: unknown }).window;
+    });
+
+    it('throws immediately if instantiated with a browser-like `window` global present', () => {
+      (globalThis as { window?: unknown }).window = {};
+      expect(() => new OpenRouterAdapter({ apiKey: 'test-key' })).toThrow(/never be instantiated in a browser/i);
+    });
+
+    it('does not throw in the normal (non-browser) test/server environment used by every other test in this file', () => {
+      expect(typeof (globalThis as { window?: unknown }).window).toBe('undefined');
+      expect(() => new OpenRouterAdapter({ apiKey: 'test-key' })).not.toThrow();
+    });
+  });
 });
