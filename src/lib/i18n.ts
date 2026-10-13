@@ -84,6 +84,33 @@ export const translations = {
     en: 'Diagnosed another crop? Switch here to view remedies:',
     te: 'మరొక పంట కోసం నివారణలు చూడాలా? ఇక్కడ మార్చండి:',
   },
+  selectConditionHint: {
+    en: 'This crop has several known conditions. Compare them here:',
+    te: 'ఈ పంటకు తెలిసిన సమస్యలు చాలా ఉన్నాయి. వాటిని ఇక్కడ పోల్చి చూడండి:',
+  },
+  nonPathogenicChipTag: { en: 'not a disease', te: 'తెగులు కాదు' },
+  captureGuidanceTitle: { en: 'What to photograph for a clearer answer', te: 'స్పష్టమైన సమాధానం కోసం ఏమి ఫోటో తీయాలి' },
+  captureGuidanceWhy: { en: 'Why this view:', te: 'ఈ కోణం ఎందుకు:' },
+  captureRequiredNotice: {
+    en: 'This condition cannot be confirmed from a normal leaf or canopy photo alone. Until the view above is photographed, treat the result as a possibility, not a confirmed diagnosis.',
+    te: 'ఈ సమస్యను సాధారణ ఆకు లేదా పంట ఫోటో ద్వారా మాత్రమే నిర్ధారించలేము. పైన చెప్పిన కోణాన్ని ఫోటో తీసే వరకు, ఈ ఫలితాన్ని నిర్ధారణగా కాకుండా ఒక అవకాశంగా మాత్రమే పరిగణించండి.',
+  },
+  fieldFollowUpsTitle: { en: 'Check these in the field', te: 'పొలంలో వీటిని పరిశీలించండి' },
+  fieldFollowUpsIntro: {
+    en: 'A photograph cannot settle these. Checking them yourself is what separates this condition from the look-alikes above.',
+    te: 'వీటిని ఫోటో ద్వారా తేల్చలేము. మీరే స్వయంగా పరిశీలించడం ద్వారానే ఈ సమస్యను పైన చెప్పిన పోలిక సమస్యల నుండి వేరు చేయగలరు.',
+  },
+  followUpIfYes: { en: 'If yes:', te: 'అవును అయితే:' },
+  followUpIfNo: { en: 'If no:', te: 'కాదు అయితే:' },
+  severityTitle: { en: 'How bad is it, and is treatment worth it?', te: 'ఎంత తీవ్రంగా ఉంది, చికిత్స చేయడం విలువైనదేనా?' },
+  severityMild: { en: 'Mild', te: 'స్వల్పం' },
+  severityModerate: { en: 'Moderate', te: 'మధ్యస్థం' },
+  severitySevere: { en: 'Severe', te: 'తీవ్రం' },
+  nonPathogenicNoChemicalTitle: { en: 'No pesticide applies to this condition', te: 'ఈ సమస్యకు పురుగు మందు పనికిరాదు' },
+  nonPathogenicNoChemicalBody: {
+    en: 'This is not caused by a pest or a pathogen, so no fungicide or insecticide can correct it. Spraying would add cost, risk scorching already-stressed leaves, and leave the real cause untreated while the crop keeps declining. See the Preventive tab for the corrective steps that do apply.',
+    te: 'దీనికి కారణం పురుగు లేదా తెగులు కాదు, కాబట్టి ఏ శిలీంద్రనాశకం లేదా పురుగు మందూ దీన్ని సరిదిద్దలేదు. పిచికారీ చేస్తే ఖర్చు పెరుగుతుంది, అప్పటికే ఒత్తిడిలో ఉన్న ఆకులు మాడే ప్రమాదం ఉంది, అసలు కారణం అలాగే ఉండిపోయి పంట క్షీణిస్తూనే ఉంటుంది. వర్తించే సరిదిద్దే చర్యల కోసం నివారణ టాబ్ చూడండి.',
+  },
   healthyCropTitle: { en: 'Crop Appears Healthy', te: 'పంట ఆరోగ్యంగా కనిపిస్తోంది' },
   healthyCropDesc: {
     en: 'Great news! No severe disease or pest damage was detected. Continue standard agronomic practices, balanced nutrient application, and regular field monitoring.',

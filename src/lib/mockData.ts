@@ -130,6 +130,120 @@ export const MOCK_DISEASES: Disease[] = [
     created_at: new Date().toISOString(),
   },
   {
+    id: 'disease-rice-blb',
+    crop_id: 'crop-rice',
+    name_en: 'Bacterial Leaf Blight',
+    name_te: 'ఎండాకు తెగులు',
+    type: 'Bacterial (Xanthomonas oryzae pv. oryzae)',
+    symptoms_en:
+      'Water-soaked pale stripes begin at the leaf tip or margin and extend downwards, turning straw-yellow with a wavy edge. A cut lesion releases milky bacterial ooze.',
+    symptoms_te:
+      'ఆకు కొన లేదా అంచు నుండి నీటిలో నానినట్లు పాలిపోయిన చారలు మొదలై కిందికి వ్యాపిస్తాయి, అలల అంచుతో గడ్డి పసుపు రంగులోకి మారతాయి. కోసిన మచ్చ నుండి పాల వంటి బ్యాక్టీరియా చీము కారుతుంది.',
+    affected_parts: ['Leaves', 'Leaf Sheath', 'Whole Seedling'],
+    urgency_level: 'High',
+    urgency_color: 'red',
+    ap_specific_tip_en:
+      'Spreads fast after storms and in continuously flooded deltaic fields. Drain the plot and stop nitrogen top-dressing before considering any spray.',
+    ap_specific_tip_te:
+      'గాలి దుమారాల తరువాత, నిరంతరం నీరు నిల్వ ఉండే డెల్టా పొలాల్లో వేగంగా వ్యాపిస్తుంది. ఏదైనా పిచికారీ ఆలోచించే ముందు పొలంలోని నీటిని తీసి, నత్రజని ఎరువులు ఆపండి.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'disease-rice-sheathblight',
+    crop_id: 'crop-rice',
+    name_en: 'Sheath Blight',
+    name_te: 'పాము పొడ తెగులు',
+    type: 'Fungal (Rhizoctonia solani)',
+    symptoms_en:
+      'Oval greenish-grey blotches on the leaf sheath starting near the water line, drying to a straw-white centre with a purple-brown wavy border like snakeskin, then climbing upward.',
+    symptoms_te:
+      'నీటి మట్టం దగ్గర ఆకు తొడుగుపై అండాకార బూడిద-పచ్చ మచ్చలు మొదలై, మధ్య భాగం గడ్డి తెలుపు రంగులోకి మారి చుట్టూ ఊదా-గోధుమ వంకర అంచుతో పాము పొడ వలె ఉండి, పైకి ఎక్కుతాయి.',
+    affected_parts: ['Leaf Sheath', 'Leaves', 'Tillers', 'Panicle'],
+    urgency_level: 'High',
+    urgency_color: 'red',
+    ap_specific_tip_en:
+      'Worst in densely planted, heavily fertilised deltaic paddy. Leave alleys between beds so air can dry the base of the crop.',
+    ap_specific_tip_te:
+      'దట్టంగా నాటి, ఎరువులు ఎక్కువగా వేసిన డెల్టా వరిలో ఎక్కువ. మడుల మధ్య బాటలు వదిలితే గాలి ప్రసరించి పంట మొదళ్లు ఆరుతాయి.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'disease-rice-brownspot',
+    crop_id: 'crop-rice',
+    name_en: 'Brown Spot',
+    name_te: 'గోధుమ రంగు మచ్చల తెగులు',
+    type: 'Fungal (Bipolaris oryzae)',
+    symptoms_en:
+      'Many small separate circular to oval brown spots scattered over the leaf blade, each with a dark margin and pale centre, worst on the older lower leaves.',
+    symptoms_te:
+      'ఆకు అంతటా చెల్లాచెదురుగా చిన్న విడివిడి గుండ్రని లేదా అండాకార గోధుమ మచ్చలు; ప్రతి మచ్చకు ముదురు అంచు, లోపల పాలిపోయిన రంగు; కింది ముదురు ఆకులపై ఎక్కువ.',
+    affected_parts: ['Leaves', 'Leaf Sheath', 'Grain / Husk', 'Seedlings'],
+    urgency_level: 'Medium',
+    urgency_color: 'yellow',
+    ap_specific_tip_en:
+      'Treat this as a soil fertility warning, not just a disease. It is common in rainfed and sandy fields in Rayalaseema — get a soil test before spending on a fungicide.',
+    ap_specific_tip_te:
+      'దీన్ని కేవలం తెగులుగా కాకుండా నేల సార లోపానికి హెచ్చరికగా చూడండి. రాయలసీమలోని వర్షాధార, ఇసుక నేలల్లో సాధారణం — శిలీంద్రనాశకంపై ఖర్చు పెట్టే ముందు భూసార పరీక్ష చేయించండి.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'disease-rice-stemborer',
+    crop_id: 'crop-rice',
+    name_en: 'Yellow Stem Borer',
+    name_te: 'కాండం తొలుచు పురుగు',
+    type: 'Insect Pest (Scirpophaga incertulas)',
+    symptoms_en:
+      'Dead heart in the vegetative stage — the dried central shoot pulls out easily while outer leaves stay green. White empty panicles at the reproductive stage, with a bore hole and powdery frass near a node.',
+    symptoms_te:
+      'ఎదుగుదల దశలో మొవ్వు చావు — బయటి ఆకులు పచ్చగా ఉండగా ఎండిన మధ్య మొవ్వు సులభంగా ఊడి వస్తుంది. వెన్ను దశలో తెల్లని ఖాళీ కంకులు; కణుపు దగ్గర రంధ్రం, పొడి రెట్టలు ఉంటాయి.',
+    affected_parts: ['Stem / Tiller', 'Central Shoot', 'Panicle'],
+    urgency_level: 'High',
+    urgency_color: 'red',
+    ap_specific_tip_en:
+      'Plough in stubble right after harvest and plant in step with neighbouring fields — staggered planting in the deltas keeps the moth supplied with young crop.',
+    ap_specific_tip_te:
+      'కోత అయిన వెంటనే మోళ్లను దున్నేయండి, పక్క పొలాలతో కలిసి ఒకే సమయంలో నాటండి — డెల్టాల్లో వేర్వేరు సమయాల్లో నాటడం వల్ల రెక్కల పురుగుకు నిరంతరం లేత పంట దొరుకుతుంది.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'disease-rice-gallmidge',
+    crop_id: 'crop-rice',
+    name_en: 'Rice Gall Midge',
+    name_te: 'కాండం ఈగ',
+    type: 'Insect Pest (Orseolia oryzae)',
+    symptoms_en:
+      'The affected tiller becomes a hollow silvery-white tube like an onion leaf (silver shoot) and never produces a panicle. The plant stays alive and compensates with extra tillers; there is no bore hole and no frass.',
+    symptoms_te:
+      'ఆశించిన పిలక ఉల్లి ఆకు వంటి బోలు వెండి తెలుపు గొట్టంగా (ఉల్లి కాడ) మారి ఎప్పటికీ వెన్ను ఇవ్వదు. మొక్క బతికి ఉండి అదనపు పిలకలతో భర్తీ చేసుకుంటుంది; రంధ్రం గానీ రెట్టలు గానీ ఉండవు.',
+    affected_parts: ['Tiller', 'Growing Point'],
+    urgency_level: 'Medium',
+    urgency_color: 'yellow',
+    ap_specific_tip_en:
+      'Late and staggered planting is the biggest risk. Where it recurs every year in your village, a resistant variety controls it far more cheaply than any spray.',
+    ap_specific_tip_te:
+      'ఆలస్యంగా, వేర్వేరు సమయాల్లో నాటడమే అతిపెద్ద ప్రమాదం. మీ గ్రామంలో ప్రతి ఏటా వస్తుంటే, ఏ పిచికారీ కంటే తట్టుకునే రకం చాలా తక్కువ ఖర్చుతో దీన్ని నియంత్రిస్తుంది.',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'disease-rice-zincdeficiency',
+    crop_id: 'crop-rice',
+    name_en: 'Zinc Deficiency (Khaira)',
+    name_te: 'జింక్ లోపం (ఖైరా)',
+    type: 'Nutrient Deficiency (not an infection)',
+    symptoms_en:
+      'Appears in patches two to four weeks after transplanting. Dusty rust-brown blotching near the midrib and base of lower leaves, with clear stunting, shortened internodes and poor tillering.',
+    symptoms_te:
+      'నాటిన రెండు నుండి నాలుగు వారాల తరువాత మడులుగా కనిపిస్తుంది. కింది ఆకుల ఈనె, మొదలు దగ్గర దుమ్ము రంగు తుప్పు మరకలు; మొక్కలు స్పష్టంగా గిడసబారి, కణుపుల మధ్య దూరం తగ్గి, పిలకలు తక్కువగా వస్తాయి.',
+    affected_parts: ['Lower Leaves', 'Whole Plant', 'Tillers'],
+    urgency_level: 'Medium',
+    urgency_color: 'yellow',
+    ap_specific_tip_en:
+      'Routinely mistaken for Brown Spot, which wastes a fungicide. Patchy damage with stunting on high-pH or levelled land is a soil problem — ask your RBK for a zinc rate from a soil test.',
+    ap_specific_tip_te:
+      'దీన్ని గోధుమ రంగు మచ్చల తెగులుగా పొరబడటం సర్వసాధారణం, దాంతో శిలీంద్రనాశకం వృథా అవుతుంది. ఎక్కువ pH ఉన్న లేదా చదును చేసిన నేలల్లో మడులుగా నష్టం, గిడసబారడం ఉంటే అది నేల సమస్య — భూసార పరీక్ష ఆధారంగా జింక్ మోతాదు కోసం RBK ను అడగండి.',
+    created_at: new Date().toISOString(),
+  },
+  {
     id: 'disease-chilli-leaf-curl',
     crop_id: 'crop-chilli',
     name_en: 'Chilli Leaf Curl Virus',
@@ -307,21 +421,6 @@ export const MOCK_DISEASES: Disease[] = [
     urgency_color: 'red',
     ap_specific_tip_en: 'A 2023-24 Nandyal/Kurnool survey recorded whitefly crossing ETL at 6.66/3 leaves in August — begin close monitoring from July.',
     ap_specific_tip_te: '2023-24 నంద్యాల/కర్నూలు సర్వేలో ఆగస్టులో 3 ఆకులకు 6.66 తెల్లదోమలతో ETL దాటింది — జూలై నుండే నిశిత పరిశీలన ప్రారంభించండి.',
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'disease-rice-sheathblight',
-    crop_id: 'crop-rice',
-    name_en: 'Sheath Blight',
-    name_te: 'కాటుక/తోలు కుళ్ళు తెగులు (షీత్ బ్లైట్)',
-    type: 'Fungal (Rhizoctonia solani)',
-    symptoms_en: 'Oval water-soaked greenish-gray lesions on the leaf sheath near the waterline, enlarging with a straw-colored center and dark border, spreading upward.',
-    symptoms_te: 'నీటి మట్టం దగ్గర ఆకు కణుపుపై గుడ్డు ఆకారపు నీరు పట్టిన మచ్చలు, మధ్యలో గడ్డి రంగు, అంచున ముదురు గోధుమ రంగు వలయం, పైకి వ్యాపిస్తుంది.',
-    affected_parts: ['Leaf Sheath', 'Leaves', 'Flag Leaf'],
-    urgency_level: 'Medium',
-    urgency_color: 'yellow',
-    ap_specific_tip_en: 'A rabi 2020-21 Nellore/Chittoor survey measured severity at 6.11%-13.44%. Avoid dense sowing and split nitrogen doses to reduce canopy congestion.',
-    ap_specific_tip_te: 'రబీ 2020-21 నెల్లూరు/చిత్తూరు సర్వేలో తీవ్రత 6.11%-13.44% గా నమోదైంది. దట్టమైన విత్తనం మరియు ఒకేసారి నత్రజని వేయడం నివారించండి.',
     created_at: new Date().toISOString(),
   },
   {

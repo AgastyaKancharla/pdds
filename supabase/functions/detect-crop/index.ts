@@ -112,16 +112,61 @@ Rules:
 
 6. If diseased or pest-damaged, map to EXACT catalog IDs where supported:
    Catalog:
-   - crop-rice: disease-rice-blast (Rice Blast), disease-rice-sheathblight (Sheath Blight)
-   - crop-chilli: disease-chilli-leaf-curl (Chilli Leaf Curl Virus), disease-chilli-thrips (Thrips / Murda Complex)
-   - crop-cotton: disease-cotton-bollworm (Pink Bollworm), disease-cotton-whitefly (Whitefly)
-   - crop-groundnut: disease-groundnut-tikka (Tikka Leaf Spot), disease-groundnut-rust (Groundnut Rust)
-   - crop-maize: disease-maize-armyworm (Fall Armyworm), disease-maize-turcicumblight (Turcicum Leaf Blight)
+   - crop-rice: disease-rice-blast (Rice Blast — spindle/diamond lesions, pointed ends, ash-grey centre; or blackened panicle neck)
+   - crop-rice: disease-rice-blb (Bacterial Leaf Blight — continuous water-soaked stripes from leaf TIP or MARGIN running downward, wavy edge, straw-yellow then greyish-white; NOT discrete spots)
+   - crop-rice: disease-rice-sheathblight (Sheath Blight — oval blotches on the leaf SHEATH near the water line, straw-white centre with purple-brown wavy snakeskin border, climbing upward)
+   - crop-rice: disease-rice-brownspot (Brown Spot — many small SEPARATE round/oval brown spots with blunt edges scattered on the blade, worst on older LOWER leaves)
+   - crop-rice: disease-rice-stemborer (Yellow Stem Borer — dead heart that pulls out easily, or white empty panicles, WITH a bore hole and powdery frass)
+   - crop-rice: disease-rice-gallmidge (Rice Gall Midge — shoot converted into a hollow silvery tube like an onion leaf, plant still alive, NO bore hole and NO frass)
+   - crop-rice: disease-rice-zincdeficiency (Zinc Deficiency / khaira — diffuse rust-brown blotching near midrib and leaf base, in PATCHES, with clear stunting and poor tillering; this is a nutrient disorder, not an infection)
+   - crop-chilli: disease-chilli-leaf-curl (Chilli Leaf Curl Virus — leaves curl UPWARD, thickened and crinkled with vein clearing, scattered patches where the whitefly vector fed)
+   - crop-chilli: disease-chilli-thrips (Thrips / Murda Complex — silvery-bronze scarring streaks on the leaf UNDERSIDE with boat-shaped upward curling concentrated at the growing tips, stunted bushy new growth)
+   - crop-cotton: disease-cotton-bollworm (Pink Bollworm — rosetted flowers, bore holes plugged with frass, pink larvae inside bolls)
+   - crop-cotton: disease-cotton-whitefly (Whitefly — clouds of tiny white adults on disturbance, flat scale-like nymphs on leaf undersides, sticky honeydew with black sooty mould)
+   - crop-groundnut: disease-groundnut-tikka (Tikka Leaf Spot — FLAT circular reddish-brown to black spots that do not rupture or shed powder)
+   - crop-groundnut: disease-groundnut-rust (Groundnut Rust — RAISED orange to reddish-brown pustules on the leaf underside that rupture and leave orange powder on the finger when rubbed)
+   - crop-maize: disease-maize-armyworm (Fall Armyworm — ragged windowpane leaf tearing with heavy sawdust-like frass deep inside the whorl)
+   - crop-maize: disease-maize-turcicumblight (Turcicum Leaf Blight — long elliptical cigar/boat-shaped greyish-green to tan lesions running parallel to the veins, starting on the LOWER leaves)
    - crop-sugarcane: disease-sugarcane-redrot (Red Rot)
    - crop-tomato: disease-tomato-earlyblight (Early Blight)
    - crop-mango: disease-mango-anthracnose (Anthracnose)
    - crop-banana: disease-banana-panamawilt (Panama Wilt)
    - crop-turmeric: disease-turmeric-rhizomerot (Rhizome Rot), disease-turmeric-leafspot (Turmeric Leaf Spot)
+
+   RICE DIFFERENTIAL DISCIPLINE — several rice conditions look alike in a photograph. Do not
+   guess between them on a weak image. Apply these rules:
+   - Lesion SHAPE separates Blast from Brown Spot: pointed spindle with grey centre = Blast;
+     round/oval blunt and uniformly brown = Brown Spot. If shape is not resolvable in the
+     image, return "uncertain" rather than picking one.
+   - Continuous stripes from the tip/margin = Bacterial Leaf Blight, never Brown Spot.
+   - Damage on the SHEATH near the water line = Sheath Blight, not a leaf disease.
+   - Dead heart or white panicle: a visible bore hole with frass = Stem Borer; a blackened
+     shrivelled neck with no hole = Blast (neck blast). If neither is visible, return
+     "uncertain" — these two need opposite treatments (insecticide vs fungicide) and a wrong
+     call wastes the farmer's money.
+   - A living silvery hollow tube with no bore hole = Gall Midge, not Stem Borer.
+   - Patchy stunting with diffuse rust blotching near the midrib = Zinc Deficiency, NOT Brown
+     Spot. This distinction matters: a fungicide cannot fix a zinc deficiency. When the image
+     shows patchiness and stunting alongside healthy plants, prefer disease-rice-zincdeficiency.
+
+   OTHER-CROP DIFFERENTIAL DISCIPLINE — the same rule applies to the newly added conditions.
+   Where the distinguishing feature is not resolvable in the image, return "uncertain" rather
+   than guessing between a pathogen and a pest, because the treatments differ:
+   - Groundnut: RAISED pustules that rupture into orange powder = Rust; FLAT non-powdery
+     circular spots = Tikka Leaf Spot. Both often appear on the same plant — if both are
+     clearly present, report the one that dominates the image and name the other in
+     differentialHypotheses.
+   - Chilli: silvery-bronze scarring on the leaf underside plus distorted bushy growing tips =
+     Thrips/Murda (a pest); thickened crinkled leaves with vein clearing and no scarring =
+     Leaf Curl Virus. A chemical cannot cure the virus, so a wrong call here wastes money.
+   - Cotton: visible clouds of small white flying adults, honeydew and sooty mould = Whitefly;
+     rosetted flowers and bored bolls with pink larvae = Pink Bollworm. These are different
+     pests needing different products.
+   - Maize: long cigar/boat-shaped lesions running along the veins on lower leaves = Turcicum
+     Leaf Blight (a fungus); ragged windowpane tearing with frass in the whorl = Fall Armyworm
+     (a caterpillar). A fungicide does nothing to armyworm.
+   - Turmeric: discrete dark-brown spots with a yellow halo on the leaves while the rhizome is
+     firm = Leaf Spot; soft foul-smelling decaying rhizomes with collar rot = Rhizome Rot.
 
    If recognized crop and disease match one above:
    {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
