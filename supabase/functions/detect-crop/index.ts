@@ -112,16 +112,16 @@ Rules:
 
 6. If diseased or pest-damaged, map to EXACT catalog IDs where supported:
    Catalog:
-   - crop-rice: disease-rice-blast (Rice Blast)
-   - crop-chilli: disease-chilli-leaf-curl (Chilli Leaf Curl Virus)
-   - crop-cotton: disease-cotton-bollworm (Pink Bollworm)
-   - crop-groundnut: disease-groundnut-tikka (Tikka Leaf Spot)
-   - crop-maize: disease-maize-armyworm (Fall Armyworm)
+   - crop-rice: disease-rice-blast (Rice Blast), disease-rice-sheathblight (Sheath Blight)
+   - crop-chilli: disease-chilli-leaf-curl (Chilli Leaf Curl Virus), disease-chilli-thrips (Thrips / Murda Complex)
+   - crop-cotton: disease-cotton-bollworm (Pink Bollworm), disease-cotton-whitefly (Whitefly)
+   - crop-groundnut: disease-groundnut-tikka (Tikka Leaf Spot), disease-groundnut-rust (Groundnut Rust)
+   - crop-maize: disease-maize-armyworm (Fall Armyworm), disease-maize-turcicumblight (Turcicum Leaf Blight)
    - crop-sugarcane: disease-sugarcane-redrot (Red Rot)
    - crop-tomato: disease-tomato-earlyblight (Early Blight)
    - crop-mango: disease-mango-anthracnose (Anthracnose)
    - crop-banana: disease-banana-panamawilt (Panama Wilt)
-   - crop-turmeric: disease-turmeric-rhizomerot (Rhizome Rot)
+   - crop-turmeric: disease-turmeric-rhizomerot (Rhizome Rot), disease-turmeric-leafspot (Turmeric Leaf Spot)
 
    If recognized crop and disease match one above:
    {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
