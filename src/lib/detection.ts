@@ -149,6 +149,34 @@ function analyzeImageViaCanvas(imageUri: string): Promise<PixelEvaluation> {
   });
 }
 
+interface GatewayErrorBody {
+  error?: string;
+  userFacingMessageEn?: string;
+  userFacingMessageTe?: string;
+}
+
+/**
+ * Reads the JSON body of a failed Edge Function response. supabase-js reports a non-2xx
+ * function response as an error whose `context` carries the underlying Response, so the
+ * gateway's own explanation (e.g. the daily scan limit, with its reset time and RBK
+ * referral) is only reachable this way. Returns null on anything unexpected — a diagnosis
+ * is never derived from here, only an explanatory message, so failing to read it is
+ * harmless and must never throw into the caller.
+ */
+async function readGatewayErrorBody(error: unknown): Promise<GatewayErrorBody | null> {
+  try {
+    const context = (error as { context?: unknown })?.context;
+    if (!context || typeof context !== 'object') return null;
+    const response = context as { json?: () => Promise<unknown> };
+    if (typeof response.json !== 'function') return null;
+    const body = await response.json();
+    if (!body || typeof body !== 'object') return null;
+    return body as GatewayErrorBody;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Main crop disease detection function.
  * Dispatches request through secure server-side Supabase Edge Function gateway.
@@ -262,6 +290,31 @@ export async function detectDisease(
           mimeType,
         },
       });
+
+      // A non-2xx gateway response surfaces as `error`, with the body reachable through
+      // error.context. Without reading it, a farmer who has used today's scan allowance
+      // would see a generic "service unavailable" and have no idea why or when it resets —
+      // so the gateway's own bilingual explanation is extracted and surfaced here.
+      if (error) {
+        const gatewayBody = await readGatewayErrorBody(error);
+        if (gatewayBody?.error === 'DailyScanLimitReached') {
+          const quotaDiag = createFallbackDiagnosis('provider_unavailable', {
+            provider: 'gateway',
+            model: 'daily_quota',
+          });
+          return {
+            detected: false,
+            reason: 'provider_unavailable',
+            messageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
+            messageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
+            normalizedDiagnosis: {
+              ...quotaDiag,
+              userFacingMessageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
+              userFacingMessageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
+            },
+          };
+        }
+      }
 
       if (!error && data && data.success && data.rawResult) {
         const normalized = validateAndNormalizeAiResponse(data.rawResult, data.metadata || {

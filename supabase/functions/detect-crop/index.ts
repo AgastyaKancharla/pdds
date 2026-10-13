@@ -14,10 +14,58 @@ const corsHeaders = {
 const DEFAULT_MODEL = 'dots-studio/dots-3-note-preview:free';
 const MAX_IMAGE_PAYLOAD_BYTES = 4 * 1024 * 1024; // 4 MB base64 payload limit
 
+/**
+ * Per-user daily scan cap. The upstream free tier has a hard daily ceiling for the whole
+ * project, so without a per-user cap one heavy user or a loop could consume the day's
+ * capacity for every farmer. Override with AI_DAILY_SCAN_LIMIT once a paid upstream tier
+ * makes a higher per-user number affordable.
+ */
+const DEFAULT_DAILY_SCAN_LIMIT = 15;
+
 interface RequestPayload {
   imageBase64: string;
   mimeType?: string;
   cropHint?: string;
+}
+
+interface QuotaDecision {
+  allowed: boolean;
+  scans_used: number;
+  daily_limit: number;
+  scans_remaining: number;
+}
+
+/**
+ * Calls a Postgres RPC as the END USER, forwarding their bearer token rather than using a
+ * service-role key. Postgres validates the JWT and the function derives the account from
+ * auth.uid(), so an invalid or forged token simply has no identity and is refused — this is
+ * what replaces the previous check, which only verified that the header started with
+ * "Bearer " and never confirmed it belonged to anyone.
+ */
+async function callUserRpc(
+  supabaseUrl: string,
+  anonKey: string,
+  userJwt: string,
+  fnName: string,
+  body: Record<string, unknown>
+): Promise<{ ok: boolean; status: number; data: unknown }> {
+  const res = await fetch(`${supabaseUrl}/rest/v1/rpc/${fnName}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: anonKey,
+      Authorization: `Bearer ${userJwt}`,
+    },
+    body: JSON.stringify(body),
+  });
+
+  let data: unknown = null;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
+  }
+  return { ok: res.ok, status: res.status, data };
 }
 
 Deno.serve(async (req: Request) => {
@@ -48,12 +96,26 @@ Deno.serve(async (req: Request) => {
   // 2. Validate environment configuration
   const openRouterApiKey = Deno.env.get('OPENROUTER_API_KEY');
   const openRouterModel = Deno.env.get('OPENROUTER_MODEL') || DEFAULT_MODEL;
+  const supabaseUrl = Deno.env.get('SUPABASE_URL');
+  const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
 
   if (!openRouterApiKey) {
     return new Response(
       JSON.stringify({
         error: 'ConfigurationError',
         message: 'OPENROUTER_API_KEY is not configured on the server.',
+      }),
+      { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Fail CLOSED if the quota backend is not configured. Falling through to an unmetered
+  // upstream call would quietly recreate the exact exposure the quota exists to close.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return new Response(
+      JSON.stringify({
+        error: 'ConfigurationError',
+        message: 'Scan quota backend is not configured on the server.',
       }),
       { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -87,6 +149,79 @@ Deno.serve(async (req: Request) => {
   const cleanBase64 = payload.imageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
   const mimeType = payload.mimeType || 'image/jpeg';
   const dataUri = `data:${mimeType};base64,${cleanBase64}`;
+
+  // 3b. Verify the caller and claim one daily scan slot, atomically.
+  // Deliberately placed AFTER payload validation (a malformed request should not cost the
+  // farmer a slot) and BEFORE the upstream call (the slot is what rations that call).
+  const userJwt = authHeader.slice('Bearer '.length).trim();
+  const dailyLimitRaw = Number(Deno.env.get('AI_DAILY_SCAN_LIMIT'));
+  const dailyLimit =
+    Number.isFinite(dailyLimitRaw) && dailyLimitRaw > 0 ? Math.floor(dailyLimitRaw) : DEFAULT_DAILY_SCAN_LIMIT;
+
+  let quota: QuotaDecision;
+  try {
+    const claim = await callUserRpc(supabaseUrl, supabaseAnonKey, userJwt, 'claim_ai_scan_slot', {
+      p_daily_limit: dailyLimit,
+    });
+
+    // 401/403, or the function's own "authentication required", means the token did not
+    // resolve to a real account. This is the check that actually authenticates the caller.
+    if (claim.status === 401 || claim.status === 403) {
+      return new Response(
+        JSON.stringify({
+          error: 'Unauthorized',
+          message: 'Valid caller authentication token is required.',
+        }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!claim.ok || !claim.data || typeof claim.data !== 'object') {
+      throw new Error(`quota RPC failed with status ${claim.status}`);
+    }
+
+    quota = claim.data as QuotaDecision;
+  } catch (quotaErr) {
+    // Fail closed: if the quota cannot be established, the upstream call does not happen.
+    console.error('[detect-crop] Quota check failed:', quotaErr);
+    return new Response(
+      JSON.stringify({
+        error: 'QuotaUnavailable',
+        message: 'Could not verify your daily scan allowance. Please try again shortly.',
+        userFacingMessageEn: 'Could not verify your daily scan allowance. Please try again shortly.',
+        userFacingMessageTe:
+          'మీ రోజువారీ స్కాన్ పరిమితిని ధృవీకరించలేకపోయాము. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.',
+      }),
+      { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  if (!quota.allowed) {
+    return new Response(
+      JSON.stringify({
+        error: 'DailyScanLimitReached',
+        message: `Daily scan limit reached (${quota.scans_used}/${quota.daily_limit}).`,
+        quota,
+        userFacingMessageEn: `You have used all ${quota.daily_limit} of today's scans. The limit resets after midnight. For an urgent problem, contact your Rythu Bharosa Kendra (RBK) — they can inspect the crop in person, which is more reliable than any photo diagnosis.`,
+        userFacingMessageTe: `ఈ రోజు మీకు కేటాయించిన ${quota.daily_limit} స్కాన్‌లు పూర్తయ్యాయి. అర్ధరాత్రి తర్వాత పరిమితి మళ్లీ మొదలవుతుంది. అత్యవసరమైతే మీ రైతు భరోసా కేంద్రం (RBK) ను సంప్రదించండి — వారు పంటను ప్రత్యక్షంగా పరిశీలించగలరు, ఇది ఏ ఫోటో నిర్ధారణ కంటే నమ్మదగినది.`,
+      }),
+      { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  /**
+   * Refunds the slot claimed above. Called when the upstream AI call fails, so an outage or
+   * upstream rate-limit does not silently spend part of the farmer's daily allowance on a
+   * diagnosis they never received. Best-effort by design: a failed refund must never turn
+   * into a second error shown to the user.
+   */
+  const refundSlot = async () => {
+    try {
+      await callUserRpc(supabaseUrl, supabaseAnonKey, userJwt, 'release_ai_scan_slot', {});
+    } catch (refundErr) {
+      console.error('[detect-crop] Slot refund failed:', refundErr);
+    }
+  };
 
   // 4. Construct prompt for agricultural diagnosis
   const prompt = `You are HereForNature's AI crop health analyzer for Andhra Pradesh agriculture.
@@ -212,6 +347,8 @@ Rules:
 
     if (!upstreamResponse.ok) {
       const status = upstreamResponse.status;
+      // No diagnosis was produced, so the slot goes back.
+      await refundSlot();
       return new Response(
         JSON.stringify({
           error: status === 429 ? 'RateLimitExceeded' : 'UpstreamProviderError',
@@ -228,6 +365,7 @@ Rules:
     const content = data?.choices?.[0]?.message?.content;
 
     if (!content) {
+      await refundSlot();
       return new Response(
         JSON.stringify({ error: 'EmptyResponse', message: 'Provider returned empty response.' }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -238,17 +376,25 @@ Rules:
     try {
       parsedResult = JSON.parse(content);
     } catch {
+      await refundSlot();
       return new Response(
         JSON.stringify({ error: 'MalformedOutput', message: 'Failed to parse model output as JSON.' }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Return structured payload with model metadata
+    // Return structured payload with model metadata.
+    // `quota` lets the client show the farmer how many scans remain today, so hitting the
+    // cap is never a surprise.
     return new Response(
       JSON.stringify({
         success: true,
         rawResult: parsedResult,
+        quota: {
+          scansUsedToday: quota.scans_used,
+          dailyLimit: quota.daily_limit,
+          scansRemainingToday: quota.scans_remaining,
+        },
         metadata: {
           provider: 'openrouter',
           model: openRouterModel,
@@ -260,6 +406,7 @@ Rules:
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     const isTimeout = err instanceof Error && err.name === 'AbortError';
+    await refundSlot();
 
     return new Response(
       JSON.stringify({
