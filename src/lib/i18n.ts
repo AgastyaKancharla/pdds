@@ -58,6 +58,7 @@ export const translations = {
     te: 'ప్రత్యక్ష AI నిర్ధారణ తాత్కాలికంగా నిలిపివేయబడింది. ఇప్పుడు ఫోటో తీసినా ఫలితం రాదు — నమూనా స్కాన్ ప్రయత్నించండి, లేదా ప్రత్యక్ష తనిఖీ కోసం మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.',
   },
   backToHome: { en: 'Back to Home', te: 'హోమ్‌కి తిరిగి వెళ్ళండి' },
+  privacyAndTerms: { en: 'Privacy & Terms', te: 'గోప్యత & నిబంధనలు' },
   cropNotDetected: { en: 'Crop Not Detected', te: 'పంట గుర్తించబడలేదు' },
   cropNotDetectedTitle: { en: 'No Crop or Disease Found', te: 'పంట లేదా తెగులు కనుగొనబడలేదు' },
   unrecognizedImage: { en: 'Unrecognized Image', te: 'గుర్తించబడని చిత్రం' },

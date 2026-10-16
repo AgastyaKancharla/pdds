@@ -14,6 +14,7 @@ import { HomeScreen } from './screens/HomeScreen';
 import { ScanScreen, type ScanResultData } from './screens/ScanScreen';
 import { ResultScreen } from './screens/ResultScreen';
 import { HistoryScreen } from './screens/HistoryScreen';
+import { PrivacyScreen } from './screens/PrivacyScreen';
 import { SAMPLE_CROP_IMAGE } from './lib/mockData';
 import './App.css';
 
@@ -78,7 +79,10 @@ function AppFrame() {
       {/* Main Screen Body */}
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<HomeScreen onStartScan={goScan} />} />
+          <Route
+            path="/"
+            element={<HomeScreen onStartScan={goScan} onOpenPrivacy={() => navigate('/privacy')} />}
+          />
 
           <Route path="/scan" element={<ScanScreen onScanComplete={showResult} onBack={goHome} />} />
 
@@ -104,6 +108,8 @@ function AppFrame() {
             path="/history"
             element={<HistoryScreen onSelectScan={showResult} onStartScan={goScan} />}
           />
+
+          <Route path="/privacy" element={<PrivacyScreen onBack={goHome} />} />
 
           {/* Unknown URL: go home instead of rendering nothing. */}
           <Route path="*" element={<Navigate to="/" replace />} />
