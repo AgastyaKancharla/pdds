@@ -32,6 +32,42 @@ export interface DetectionFailure {
 export type DetectionResult = DetectionSuccess | DetectionFailure;
 
 /**
+ * Master switch for live, photo-based AI diagnosis. OFF by default: there is currently no
+ * budget for the upstream AI provider, and the diagnostic accuracy of the underlying
+ * general-purpose vision LLM has never been measured (see data/evaluation_manifest.json —
+ * 400 fixtures specified, 0 verified on disk). Shipping an unmeasured pesticide/treatment
+ * recommendation to real farmers is a safety risk this project's whole evidence-integrity
+ * design exists to avoid, so the honest default is "paused," not "best effort."
+ *
+ * This gates ONLY the real photo -> AI gateway call. It does not touch:
+ *  - the 🧪 demo/sample path (pure local mock data, see the isDemoSample branch above),
+ *  - the bundled agricultural knowledge catalog (fully browsable offline), or
+ *  - scan history / any other feature.
+ *
+ * Flip to true once there is a funded upstream tier (or a trained classifier) AND a measured
+ * accuracy baseline to stand behind — not before.
+ */
+let aiLiveDiagnosisEnabled = false;
+
+/**
+ * Test-only seam for exercising the gateway-dispatch branch below. Never call this from
+ * application code — the real app always runs with the module default above.
+ */
+export function __setAiLiveDiagnosisEnabledForTests(enabled: boolean): void {
+  aiLiveDiagnosisEnabled = enabled;
+}
+
+/**
+ * Read-only check for UI code (e.g. ScanScreen) that wants to warn the farmer BEFORE they
+ * take a photo, rather than after they wait through the "analyzing" spinner only to receive
+ * the paused message. Intentionally has no corresponding public setter — only
+ * __setAiLiveDiagnosisEnabledForTests (test-only) and the module constant above control it.
+ */
+export function isAiLiveDiagnosisEnabled(): boolean {
+  return aiLiveDiagnosisEnabled;
+}
+
+/**
  * @deprecated Categorical urgency must be determined by validated disease catalog data, not raw AI confidence scores.
  * High confidence on a minor leaf spot should not be labeled urgent red, nor should low confidence on lethal blight be labeled green.
  * Retained for legacy backward compatibility.
@@ -261,6 +297,30 @@ export async function detectDisease(
       messageEn: fallbackDiag.userFacingMessageEn,
       messageTe: fallbackDiag.userFacingMessageTe,
       normalizedDiagnosis: fallbackDiag,
+    };
+  }
+
+  // 2b. Live AI diagnosis is currently paused (see aiLiveDiagnosisEnabled doc comment above).
+  // This is checked AFTER the free client-side pixel pre-filter (so obviously-bad images
+  // still get an honest, immediate rejection) and BEFORE anything that would call the paid
+  // upstream provider.
+  if (!aiLiveDiagnosisEnabled) {
+    const pausedDiag = createFallbackDiagnosis(
+      'provider_unavailable',
+      { provider: 'gateway', model: 'ai_scanning_paused' },
+      {
+        messageEn:
+          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.",
+        messageTe:
+          'ప్రత్యక్ష AI ఫోటో నిర్ధారణ తాత్కాలికంగా నిలిపివేయబడింది. క్రింద మీ పంట తెలిసిన పరిస్థితులను చూడండి, లేదా ప్రత్యక్ష తనిఖీ కోసం మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.',
+      }
+    );
+    return {
+      detected: false,
+      reason: 'provider_unavailable',
+      messageEn: pausedDiag.userFacingMessageEn,
+      messageTe: pausedDiag.userFacingMessageTe,
+      normalizedDiagnosis: pausedDiag,
     };
   }
 

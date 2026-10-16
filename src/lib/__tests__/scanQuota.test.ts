@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { detectDisease } from '../detection';
+import { detectDisease, __setAiLiveDiagnosisEnabledForTests } from '../detection';
 
 /**
  * `supabase.functions` is a getter on the real client, so stubbing the property on the
@@ -166,6 +166,17 @@ describe('Per-user daily AI scan quota', () => {
 
   describe('Client handling of a quota refusal', () => {
     const image = 'data:image/jpeg;base64,/9j/4AAQSkZJRg==';
+
+    // These tests exercise the gateway-dispatch branch of detectDisease (quota/error-body
+    // handling), which the real app currently never reaches by default — live AI diagnosis
+    // is paused (see detection.ts) pending budget and a measured accuracy baseline. Opt back
+    // in for just this block, and always reset to the real default afterward.
+    beforeEach(() => {
+      __setAiLiveDiagnosisEnabledForTests(true);
+    });
+    afterEach(() => {
+      __setAiLiveDiagnosisEnabledForTests(false);
+    });
 
     it('surfaces the gateway\'s own explanation instead of a generic failure, and never invents a diagnosis', async () => {
       // Mirrors how supabase-js reports a non-2xx function response: an error carrying the
