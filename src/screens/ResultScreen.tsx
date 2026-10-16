@@ -105,7 +105,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     let cancelled = false;
 
     async function loadData() {
-      if (!detected || !selectedCropId || !selectedDiseaseId) {
+      // Deliberately NOT gated on `detected`: a farmer whose photo failed to auto-diagnose
+      // (AI paused, unclear image, unsupported crop) can still manually pick a crop/condition
+      // from the fallback view below, and that pick must actually load real catalog data
+      // instead of being silently ignored -- the whole point is that this app's usefulness
+      // never depends on AI succeeding.
+      if (!selectedCropId || !selectedDiseaseId) {
         setLoading(false);
         return;
       }
@@ -363,8 +368,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     );
   }
 
-  // Non-detected or special failure view (healthy, unsupported crop, non-crop image, abiotic stress, nutrient deficiency, or unclear)
-  if (!detected || !crop || !disease) {
+  // Fallback view: nothing resolved yet (no AI detection, and no manual crop/condition pick
+  // either). Deliberately NOT gated on `detected` alone -- once a farmer manually picks a crop
+  // from the "browse offline" chips below, `crop`/`disease` populate from the local catalog
+  // and this must hand off to the full detail view below, even though the original scan never
+  // got a real AI detection. Without this, those chips would silently do nothing.
+  if (!crop || !disease) {
     const isHealthy = failureReason === 'healthy';
     const isUnsupported = failureReason === 'unsupported_crop';
     const isUnclear = failureReason === 'unclear';
@@ -478,7 +487,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             </div>
           )}
 
-          {(isUnsupported || isOffline) && (
+          {/*
+            Shown regardless of why auto-detection failed (AI paused, unclear photo,
+            unsupported crop, ...): the app's usefulness should never depend on AI succeeding,
+            so there is always a manual way to find real guidance for a farmer's actual crop.
+          */}
+          {!isHealthy && !isAbiotic && !isNutrient && (
             <div className="card supported-crops-card">
               <h4 className="card-title">
                 🌾 {language === 'en' ? 'Browse Supported AP Crop Guides Offline:' : 'ఆఫ్‌లైన్ AP పంటల నివారణ మార్గదర్శి:'}

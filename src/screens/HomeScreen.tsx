@@ -1,11 +1,13 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { isAiLiveDiagnosisEnabled } from '../lib/detection';
 
 interface HomeScreenProps {
   onStartScan: () => void;
+  onOpenPrivacy: () => void;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan, onOpenPrivacy }) => {
   const { language, setLanguage, t } = useLanguage();
 
   return (
@@ -46,8 +48,21 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan }) => {
           <div className="feature-item">
             <span className="feature-icon">🔍</span>
             <div>
-              <strong>{language === 'en' ? 'Instant AI Diagnosis' : 'తక్షణ AI నిర్ధారణ'}</strong>
-              <p>{language === 'en' ? 'Identify foliar lesions, blight & pests' : 'తెగుళ్లు మరియు పురుగుల గుర్తింపు'}</p>
+              {isAiLiveDiagnosisEnabled() ? (
+                <>
+                  <strong>{language === 'en' ? 'Instant AI Diagnosis' : 'తక్షణ AI నిర్ధారణ'}</strong>
+                  <p>{language === 'en' ? 'Identify foliar lesions, blight & pests' : 'తెగుళ్లు మరియు పురుగుల గుర్తింపు'}</p>
+                </>
+              ) : (
+                <>
+                  <strong>{language === 'en' ? 'Crop Disease Reference Guide' : 'పంట తెగుళ్ల సమాచార గైడ్'}</strong>
+                  <p>
+                    {language === 'en'
+                      ? 'Browse 21 known conditions with photos & symptoms'
+                      : '21 తెలిసిన సమస్యలను ఫోటోలు & లక్షణాలతో చూడండి'}
+                  </p>
+                </>
+              )}
             </div>
           </div>
           <div className="feature-item">
@@ -66,6 +81,22 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan }) => {
           <span>{t('scanNow')}</span>
         </button>
       </div>
+
+      <button
+        type="button"
+        onClick={onOpenPrivacy}
+        style={{
+          background: 'none',
+          border: 'none',
+          color: '#868e96',
+          fontSize: '12px',
+          textDecoration: 'underline',
+          cursor: 'pointer',
+          marginTop: '16px',
+          padding: '8px',
+        }}>
+        {t('privacyAndTerms')}
+      </button>
     </div>
   );
 };
