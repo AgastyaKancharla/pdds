@@ -32,6 +32,42 @@ export interface DetectionFailure {
 export type DetectionResult = DetectionSuccess | DetectionFailure;
 
 /**
+ * Master switch for live, photo-based AI diagnosis. OFF by default: there is currently no
+ * budget for the upstream AI provider, and the diagnostic accuracy of the underlying
+ * general-purpose vision LLM has never been measured (see data/evaluation_manifest.json —
+ * 400 fixtures specified, 0 verified on disk). Shipping an unmeasured pesticide/treatment
+ * recommendation to real farmers is a safety risk this project's whole evidence-integrity
+ * design exists to avoid, so the honest default is "paused," not "best effort."
+ *
+ * This gates ONLY the real photo -> AI gateway call. It does not touch:
+ *  - the 🧪 demo/sample path (pure local mock data, see the isDemoSample branch above),
+ *  - the bundled agricultural knowledge catalog (fully browsable offline), or
+ *  - scan history / any other feature.
+ *
+ * Flip to true once there is a funded upstream tier (or a trained classifier) AND a measured
+ * accuracy baseline to stand behind — not before.
+ */
+let aiLiveDiagnosisEnabled = false;
+
+/**
+ * Test-only seam for exercising the gateway-dispatch branch below. Never call this from
+ * application code — the real app always runs with the module default above.
+ */
+export function __setAiLiveDiagnosisEnabledForTests(enabled: boolean): void {
+  aiLiveDiagnosisEnabled = enabled;
+}
+
+/**
+ * Read-only check for UI code (e.g. ScanScreen) that wants to warn the farmer BEFORE they
+ * take a photo, rather than after they wait through the "analyzing" spinner only to receive
+ * the paused message. Intentionally has no corresponding public setter — only
+ * __setAiLiveDiagnosisEnabledForTests (test-only) and the module constant above control it.
+ */
+export function isAiLiveDiagnosisEnabled(): boolean {
+  return aiLiveDiagnosisEnabled;
+}
+
+/**
  * @deprecated Categorical urgency must be determined by validated disease catalog data, not raw AI confidence scores.
  * High confidence on a minor leaf spot should not be labeled urgent red, nor should low confidence on lethal blight be labeled green.
  * Retained for legacy backward compatibility.
@@ -149,6 +185,34 @@ function analyzeImageViaCanvas(imageUri: string): Promise<PixelEvaluation> {
   });
 }
 
+interface GatewayErrorBody {
+  error?: string;
+  userFacingMessageEn?: string;
+  userFacingMessageTe?: string;
+}
+
+/**
+ * Reads the JSON body of a failed Edge Function response. supabase-js reports a non-2xx
+ * function response as an error whose `context` carries the underlying Response, so the
+ * gateway's own explanation (e.g. the daily scan limit, with its reset time and RBK
+ * referral) is only reachable this way. Returns null on anything unexpected — a diagnosis
+ * is never derived from here, only an explanatory message, so failing to read it is
+ * harmless and must never throw into the caller.
+ */
+async function readGatewayErrorBody(error: unknown): Promise<GatewayErrorBody | null> {
+  try {
+    const context = (error as { context?: unknown })?.context;
+    if (!context || typeof context !== 'object') return null;
+    const response = context as { json?: () => Promise<unknown> };
+    if (typeof response.json !== 'function') return null;
+    const body = await response.json();
+    if (!body || typeof body !== 'object') return null;
+    return body as GatewayErrorBody;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Main crop disease detection function.
  * Dispatches request through secure server-side Supabase Edge Function gateway.
@@ -236,6 +300,30 @@ export async function detectDisease(
     };
   }
 
+  // 2b. Live AI diagnosis is currently paused (see aiLiveDiagnosisEnabled doc comment above).
+  // This is checked AFTER the free client-side pixel pre-filter (so obviously-bad images
+  // still get an honest, immediate rejection) and BEFORE anything that would call the paid
+  // upstream provider.
+  if (!aiLiveDiagnosisEnabled) {
+    const pausedDiag = createFallbackDiagnosis(
+      'provider_unavailable',
+      { provider: 'gateway', model: 'ai_scanning_paused' },
+      {
+        messageEn:
+          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.",
+        messageTe:
+          'ప్రత్యక్ష AI ఫోటో నిర్ధారణ తాత్కాలికంగా నిలిపివేయబడింది. క్రింద మీ పంట తెలిసిన పరిస్థితులను చూడండి, లేదా ప్రత్యక్ష తనిఖీ కోసం మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.',
+      }
+    );
+    return {
+      detected: false,
+      reason: 'provider_unavailable',
+      messageEn: pausedDiag.userFacingMessageEn,
+      messageTe: pausedDiag.userFacingMessageTe,
+      normalizedDiagnosis: pausedDiag,
+    };
+  }
+
   // 3. Dispatch through Supabase Edge Function Gateway
   if (base64 && supabase) {
     try {
@@ -262,6 +350,31 @@ export async function detectDisease(
           mimeType,
         },
       });
+
+      // A non-2xx gateway response surfaces as `error`, with the body reachable through
+      // error.context. Without reading it, a farmer who has used today's scan allowance
+      // would see a generic "service unavailable" and have no idea why or when it resets —
+      // so the gateway's own bilingual explanation is extracted and surfaced here.
+      if (error) {
+        const gatewayBody = await readGatewayErrorBody(error);
+        if (gatewayBody?.error === 'DailyScanLimitReached') {
+          const quotaDiag = createFallbackDiagnosis('provider_unavailable', {
+            provider: 'gateway',
+            model: 'daily_quota',
+          });
+          return {
+            detected: false,
+            reason: 'provider_unavailable',
+            messageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
+            messageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
+            normalizedDiagnosis: {
+              ...quotaDiag,
+              userFacingMessageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
+              userFacingMessageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
+            },
+          };
+        }
+      }
 
       if (!error && data && data.success && data.rawResult) {
         const normalized = validateAndNormalizeAiResponse(data.rawResult, data.metadata || {

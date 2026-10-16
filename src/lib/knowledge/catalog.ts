@@ -41,7 +41,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Commercial / Spice',
       apMajorDistricts: ['Guntur', 'Prakasam', 'Kurnool', 'Palnadu'],
       growingSeasons: ['Kharif', 'Late Kharif'],
-      commonDiseaseIds: ['disease-chilli-leaf-curl'],
+      commonDiseaseIds: ['disease-chilli-leaf-curl', 'disease-chilli-thrips'],
     },
     'crop-cotton': {
       id: 'crop-cotton',
@@ -51,7 +51,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Commercial / Fibre',
       apMajorDistricts: ['Kurnool', 'Anantapur', 'Guntur', 'YSR Kadapa'],
       growingSeasons: ['Kharif'],
-      commonDiseaseIds: ['disease-cotton-bollworm'],
+      commonDiseaseIds: ['disease-cotton-bollworm', 'disease-cotton-whitefly'],
     },
     'crop-groundnut': {
       id: 'crop-groundnut',
@@ -61,7 +61,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Oilseed / Legume',
       apMajorDistricts: ['Anantapur', 'Sri Sathya Sai', 'Kurnool', 'Chittoor'],
       growingSeasons: ['Kharif (Rainfed)', 'Rabi (Irrigated)'],
-      commonDiseaseIds: ['disease-groundnut-tikka'],
+      commonDiseaseIds: ['disease-groundnut-tikka', 'disease-groundnut-rust'],
     },
     'crop-maize': {
       id: 'crop-maize',
@@ -71,7 +71,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Cereal / Feed',
       apMajorDistricts: ['Guntur', 'West Godavari', 'Prakasam'],
       growingSeasons: ['Kharif', 'Rabi'],
-      commonDiseaseIds: ['disease-maize-armyworm'],
+      commonDiseaseIds: ['disease-maize-armyworm', 'disease-maize-turcicumblight'],
     },
     'crop-sugarcane': {
       id: 'crop-sugarcane',
@@ -121,7 +121,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Spice / Rhizome',
       apMajorDistricts: ['Guntur', 'Prakasam', 'YSR Kadapa'],
       growingSeasons: ['Kharif (June-July to Feb)'],
-      commonDiseaseIds: ['disease-turmeric-rhizomerot'],
+      commonDiseaseIds: ['disease-turmeric-rhizomerot', 'disease-turmeric-leafspot'],
     },
   },
   diseases: {
@@ -1131,6 +1131,13 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           specificDocumentVerified: true,
           pageOrSection:
             'Rice crop entries, target "Sheath blight" — Validamycin 3% L (2000 g/ha, 750 L, 14 days), Hexaconazole 5% EC (1000 ml/ha, 500 L, 40 days), Propiconazole 25% EC (500 g/ha, 750 L, 30 days).',
+        },
+        {
+          title: 'Sheath blight severity survey, Nellore and Chittoor districts, AP, rabi 2020-21 (severity 6.11%-13.44%)',
+          organization: 'South Asian Journal of Applied Sciences (sasapjas.org)',
+          reviewDate: '2023-09-01',
+          url: 'https://sasapjas.org/wp-content/uploads/2023/09/09-Kalavathi.pdf',
+          geographicScope: 'ap_specific',
         },
       ],
       evidenceStatus: 'provisional',
@@ -2223,6 +2230,25 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       ],
       treatments: [
         {
+          id: 't-groundnut-tikka-org-nske-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A Rajasthan trial (ICAR, published on epubs.icar.org.in) found that NSKE (Neem Seed Kernel Extract) combined with a Trichoderma + Pseudomonas fluorescens bio-agent treatment reduced Tikka leaf spot incidence by 60.54% compared to untreated plots. This is real, cited evidence of effectiveness — but it is from Rajasthan, not Andhra Pradesh (geographicScope: other_state below), and the specific NSKE concentration and application interval used in that trial are suppressed here pending confirmation against a current university/CIBRC label. Do not infer an exact spray strength from the 60.54% figure — it describes an outcome, not a label rate. Consult your local RBK/VAA for the current recommended NSKE concentration and bio-agent dose for groundnut tikka in your district.',
+          instruction_te:
+            'రాజస్థాన్‌లో జరిగిన ఒక ICAR ట్రయల్ (epubs.icar.org.in లో ప్రచురితం) ప్రకారం, వేప గింజల కషాయం (NSKE) ను ట్రైకోడెర్మా + సూడోమోనాస్ ఫ్లోరోసెన్స్ బయో-ఏజెంట్ చికిత్సతో కలిపి వాడినప్పుడు, చికిత్స చేయని ప్లాట్లతో పోలిస్తే టిక్కా ఆకు మచ్చ తెగులు ఉధృతి 60.54% తగ్గింది. ఇది ప్రభావశీలతకు నిజమైన, ఉదహరించిన ఆధారమే — కానీ ఇది ఆంధ్రప్రదేశ్‌లో కాదు, రాజస్థాన్‌లో జరిగింది (క్రింద geographicScope: other_state), మరియు ఆ ట్రయల్‌లో వాడిన నిర్దిష్ట NSKE గాఢత, పిచికారీ వ్యవధి ప్రస్తుత విశ్వవిద్యాలయ/CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు ఇక్కడ నిలిపివేయబడ్డాయి. 60.54% అంకె నుండి ఖచ్చితమైన గాఢతను ఊహించవద్దు — అది ఫలితాన్ని మాత్రమే సూచిస్తుంది, లేబుల్ మోతాదును కాదు. మీ జిల్లాకు టిక్కా తెగులుకు ప్రస్తుత సిఫార్సు NSKE గాఢత మరియు బయో-ఏజెంట్ మోతాదు కోసం స్థానిక RBK/VAA ని సంప్రదించండి.',
+          activeIngredient_en: 'NSKE (Neem Seed Kernel Extract) + Trichoderma / Pseudomonas fluorescens (concentration suppressed — Rajasthan trial outcome cited, not an AP-confirmed label rate)',
+          activeIngredient_te: 'NSKE (వేప గింజల కషాయం) + ట్రైకోడెర్మా / సూడోమోనాస్ ఫ్లోరోసెన్స్ (గాఢత నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Eco-friendly biocontrol combination; avoid mixing with synthetic chemical fungicides in the same spray tank. Wear basic gloves during preparation and application.',
+          safetyCaution_te:
+            'పర్యావరణ హితమైన బయో-నియంత్రణ కలయిక; అదే స్ప్రే టాంక్‌లో రసాయన శిలీంద్రనాశినులతో కలపవద్దు. తయారీ మరియు పిచికారీ సమయంలో చేతి తొడుగులు ధరించండి.',
+          regulatoryNotice_en:
+            'The 60.54% reduction figure is a real ICAR-published trial result from Rajasthan, not Andhra Pradesh — treat it as supporting evidence that this organic combination can work, not as an AP-specific or dose-confirmed recommendation. Confirm the current recommended concentration with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+          regulatoryNotice_te:
+            '60.54% తగ్గుదల అంకె రాజస్థాన్ నుండి వచ్చిన నిజమైన ICAR ట్రయల్ ఫలితం, ఆంధ్రప్రదేశ్‌ది కాదు — ఈ సేంద్రీయ కలయిక పనిచేయగలదనడానికి ఇది మద్దతు ఆధారంగా మాత్రమే భావించండి, AP-నిర్దిష్ట లేదా మోతాదు-ధృవీకరించిన సిఫార్సుగా కాదు. ప్రస్తుత సిఫార్సు గాఢతను గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ధృవీకరించుకోండి.',
+        },
+        {
           id: 't-groundnut-chem-1',
           stepNumber: 1,
           category: 'chemical',
@@ -2257,6 +2283,17 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           limitation_te:
             'స్ప్రే నీటి పరిమాణం (200 L/acre) అనేది సాధారణ వ్యవసాయ మూలాల్లో కనిపించే సంప్రదాయ అంచనా మాత్రమే — ఇది ఈ పంట మరియు పురుగు కోసం ప్రస్తుత మాంకోజెబ్ 75% WP / టెబుకొనజోల్ 25.9% EC ఉత్పత్తి లేబుల్‌తో ధృవీకరించబడలేదు (పై మూలాలు మూడూ సంస్థ వెబ్‌సైట్‌కు మాత్రమే లింక్ అవుతాయి). పిచికారీకి ముందు స్థానిక గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ప్రస్తుత లేబుల్ సూచనలను ధృవీకరించుకోండి.',
         },
+        {
+          claimId: 't-groundnut-tikka-org-nske-1-reduction-figure',
+          fieldRef: "treatments['t-groundnut-tikka-org-nske-1'].instruction_en/_te",
+          verificationStatus: 'provisional',
+          sourceIndexes: [3],
+          locator: 'epubs.icar.org.in — Rajasthan field trial, NSKE + Trichoderma/P. fluorescens vs. untreated control (60.54% incidence reduction)',
+          limitation_en:
+            'The 60.54% reduction figure is a real ICAR-published trial result, reached via a research subagent\'s search/fetch rather than a direct page read by this session, and the trial location was Rajasthan, not Andhra Pradesh. Marked provisional (not verified) because the exact NSKE concentration used in that trial was not independently confirmed, and the result has not been shown to replicate under AP growing conditions. Confirm current local guidance with RBK/VAA.',
+          limitation_te:
+            '60.54% తగ్గుదల అంకె నిజమైన ICAR-ప్రచురిత ట్రయల్ ఫలితం, దీన్ని ఒక పరిశోధన సబ్ ఏజెంట్ శోధన ద్వారా చేరుకుంది, ఈ సెషన్ నేరుగా పేజీని చదవలేదు; ట్రయల్ రాజస్థాన్‌లో జరిగింది, ఆంధ్రప్రదేశ్‌లో కాదు. దీన్ని తాత్కాలికంగా (ధృవీకరించినదిగా కాకుండా) గుర్తించడానికి కారణం — ట్రయల్‌లో వాడిన ఖచ్చితమైన NSKE గాఢతను స్వతంత్రంగా ధృవీకరించలేదు, మరియు ఈ ఫలితం AP వ్యవసాయ పరిస్థితుల్లో పునరావృతమవుతుందని చూపలేదు. ప్రస్తుత స్థానిక మార్గదర్శకత్వం కోసం RBK/VAA ని సంప్రదించండి.',
+        },
       ],
       sources: [
         {
@@ -2277,9 +2314,16 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           reviewDate: '2026-03-31',
           url: 'https://ppqs.gov.in',
         },
+        {
+          title: 'NSKE + Trichoderma/Pseudomonas fluorescens field trial against groundnut Tikka leaf spot (60.54% incidence reduction vs. untreated control), Rajasthan',
+          organization: 'ICAR — epubs.icar.org.in open-access repository',
+          reviewDate: '2024-01-01',
+          url: 'https://epubs.icar.org.in',
+          geographicScope: 'other_state',
+        },
       ],
       evidenceStatus: 'unverified',
-      lastUpdated: '2026-10-12',
+      lastUpdated: '2026-10-13',
     },
 
     // 6 Provisional entries (clearly labeled provisional)
@@ -2841,6 +2885,560 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       ],
       evidenceStatus: 'unverified',
       lastUpdated: '2026-10-10',
+    },
+
+    // 6 entries added per the Oct 2026 market-research expansion pass (see reports/Plant diagnosis app market research.md).
+    'disease-groundnut-rust': {
+      id: 'disease-groundnut-rust',
+      cropId: 'crop-groundnut',
+      name_en: 'Groundnut Rust',
+      name_te: 'వేరుశనగ తుప్పు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Puccinia arachidis',
+      pathogenOrVector_te: 'శిలీంద్రం: పుక్సీనియా అరాచిడిస్',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Small, raised, orange to reddish-brown pustules (uredinia) on the lower leaf surface, which rupture and release a dusty orange spore mass that sticks to fingers when rubbed.',
+        'Corresponding pale yellow spots on the upper leaf surface directly above each pustule.',
+        'Severe infection causes premature drying and shedding of leaves, often together with Tikka leaf spot on the same plant.',
+      ],
+      observableSymptoms_te: [
+        'ఆకుల అడుగు భాగంలో చిన్న చిన్న ఎరుపు-గోధుమ రంగు బొబ్బలు (పస్ట్యూల్స్) ఏర్పడి, తాకినప్పుడు పొడి రూపంలో ఎరుపు రంగు బీజాలు చేతికి అంటుకుంటాయి.',
+        'ప్రతి బొబ్బకు పైభాగాన ఆకు పై తలంపై లేత పసుపు రంగు మచ్చ కనిపిస్తుంది.',
+        'తీవ్రమైతే ఆకులు ముందుగానే ఎండి రాలిపోతాయి, తరచూ టిక్కా ఆకుమచ్చ తెగులుతో కలిసి కనిపిస్తుంది.',
+      ],
+      affectedParts: ['Leaves (lower surface)', 'Petioles', 'Stems (severe cases)'],
+      similarConditions: [
+        {
+          id: 'groundnut-tikka-leafspot',
+          name_en: 'Tikka Leaf Spot (Cercospora/Phaeoisariopsis spp. / Pathogen)',
+          name_te: 'టిక్కా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Tikka spots are flat, circular, reddish-brown to black lesions that do not rupture or release powder when rubbed; rust pustules are raised, rupture under light pressure, and leave an orange powdery residue on fingers.',
+          differentiatingFactors_te:
+            'టిక్కా మచ్చలు చదునుగా, గుండ్రంగా ఉండి రుద్దినా పొడి రాదు; తుప్పు తెగులు బొబ్బలు ఉబ్బెత్తుగా ఉండి తేలికగా పగిలి ఎరుపు పొడిని వదులుతాయి.',
+        },
+        {
+          id: 'groundnut-spider-mite-damage',
+          name_en: 'Spider Mite Damage (Tetranychus spp. / Pest)',
+          name_te: 'సాలీడు నల్లి నష్టం (పెస్ట్)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Spider mite damage shows fine stippled yellow-bronze speckling and faint webbing on leaf undersides, with no raised pustules or spore powder; rust produces discrete raised pustules that release powder on rubbing.',
+          differentiatingFactors_te:
+            'సాలీడు నల్లి సోకినప్పుడు ఆకు అడుగున సన్నని పసుపు-కంచు రంగు చుక్కలు, నూలు పోగుల వంటి గూడు కనిపిస్తాయి, బొబ్బలు ఉండవు; తుప్పు తెగులులో ప్రత్యేకమైన బొబ్బలు ఉండి పొడిని వదులుతాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High relative humidity with moderate temperatures (20-25°C) during the later crop growth stages.',
+        'Dense canopy with poor air circulation; continuous rainfed groundnut cultivation without rotation.',
+      ],
+      environmentalRiskFactors_te: [
+        'పంట చివరి దశలో ఎక్కువ తేమ, మోస్తరు ఉష్ణోగ్రతలు (20-25°C) ఉండటం.',
+        'దట్టమైన పైరు, గాలి ప్రసరణ తక్కువగా ఉండటం; పంట మార్పిడి లేకుండా వరుసగా వేరుశనగ సాగు చేయడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Follow crop rotation with cereals (bajra, jowar, maize) rather than continuous groundnut, and use locally recommended tolerant varieties where available.',
+          practice_te: 'వరుసగా వేరుశనగ వేయకుండా సజ్జ, జొన్న లేదా మొక్కజొన్నతో పంట మార్పిడి చేయండి; అందుబాటులో ఉంటే తెగులును తట్టుకునే రకాలను వాడండి.',
+          targetTiming: 'Pre-season planning',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid overcrowded sowing; maintain recommended plant spacing to improve canopy air circulation and reduce humidity build-up.',
+          practice_te: 'మొక్కల మధ్య సిఫార్సు చేసిన ఎడం పాటించండి, పైరు గుంపుగా ఉండకుండా చూడండి; తద్వారా తేమ పేరుకోవడం తగ్గుతుంది.',
+          targetTiming: 'Sowing',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-groundnut-rust-chem-1',
+          stepNumber: 1,
+          category: 'chemical',
+          instruction_en:
+            'A 2024 ANGRAU/ICRISAT-linked demonstration in Nellore district (AP) recorded rust severity at 16% under farmer practice versus 5% in fungicide-treated demonstration plots — showing that timely fungicide spraying is effective, but the source summary available to this tool did not name the specific fungicide product or its dose used in that demonstration. Mancozeb and Tebuconazole-class fungicides, already listed on the Tikka leaf spot entry for this same crop, are also commonly discussed for combined leaf-spot-and-rust control, but their dose remains suppressed there for the same reason. Do not infer a dose from the 16%-vs-5% figure — it describes an outcome, not a label rate. Consult your local RBK/VAA for the current approved product and dose before spraying.',
+          instruction_te:
+            '2024లో నెల్లూరు జిల్లాలో (AP) జరిగిన ANGRAU/ICRISAT అనుబంధ ప్రదర్శనలో, రైతు పద్ధతిలో తుప్పు తెగులు తీవ్రత 16% ఉండగా, శిలీంద్రనాశిని వాడిన ప్రదర్శన ప్లాట్లలో 5% మాత్రమే ఉంది — సకాలంలో మందు పిచికారీ ప్రభావవంతంగా పనిచేస్తుందని ఇది చూపిస్తుంది, కానీ ఏ నిర్దిష్ట మందు, ఎంత మోతాదు వాడారో ఈ మూలంలో పేర్కొనలేదు. ఈ పంటకే టిక్కా ఆకు మచ్చ తెగులు విభాగంలో పేర్కొన్న మాంకోజెబ్/టెబుకొనజోల్ వర్గాలు తుప్పుకు కూడా కలిపి వాడటం సాధారణంగా చర్చించబడుతుంది, కానీ అక్కడ కూడా మోతాదు నిలిపివేయబడింది. 16%-వర్సెస్-5% అంకెల నుండి మోతాదును ఊహించవద్దు — అది ఫలితాన్ని మాత్రమే సూచిస్తుంది, లేబుల్ మోతాదును కాదు. పిచికారీకి ముందు ప్రస్తుత ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం స్థానిక RBK/VAA ని సంప్రదించండి.',
+          activeIngredient_en: 'Mancozeb / Tebuconazole-class fungicides (same classes as Tikka leaf spot; dose suppressed — outcome data found, not a label rate)',
+          activeIngredient_te: 'మాంకోజెబ్ / టెబుకొనజోల్ వర్గ శిలీంద్రనాశినులు (టిక్కా తెగులుకు వాడేవే; మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Avoid spraying during peak midday heat or strong wind. Wear mask and gloves during spray preparation and application. Follow the pre-harvest interval stated on the approved product label; verify with local RBK.',
+          safetyCaution_te:
+            'ఎండ తీవ్రంగా లేదా గాలి ఎక్కువగా ఉన్నప్పుడు పిచికారీ చేయవద్దు. మందు కలిపేటప్పుడు, పిచికారీ చేసేటప్పుడు మాస్క్, చేతి తొడుగులు ధరించండి. ఉత్పత్తి లేబుల్‌పై తెలిపిన కోత ముందస్తు నిరీక్షణ వ్యవధిని పాటించండి; స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
+          regulatoryNotice_en:
+            'Statutory Warning: Read the approved product label before use. The 16%-vs-5% demonstration figure describes a result, not a dose — do not treat it as a spray rate. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+          regulatoryNotice_te:
+            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు ఆమోదించిన లేబుల్ చదవండి. 16%-వర్సెస్-5% అంకెలు ఫలితాన్ని మాత్రమే సూచిస్తాయి, మోతాదును కాదు. ప్రస్తుత ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ధృవీకరించుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If rust pustules spread to the upper canopy leaves or combine with heavy Tikka leaf spot defoliation before pod-filling, contact your local Rythu Bharosa Kendra (RBK) promptly.',
+      escalationThreshold_te:
+        'తుప్పు తెగులు పైభాగపు ఆకులకు వ్యాపించినా, లేదా టిక్కా ఆకుమచ్చతో కలిసి కాయలు ఊరే దశకు ముందే ఆకులు రాలితే, వెంటనే స్థానిక రైతు భరోసా కేంద్రం (RBK) ని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Groundnut foliar disease demonstration trial (rust severity, farmer practice vs. fungicide-treated plots), Nellore district, AP, 2024',
+          organization: 'ICRISAT (International Crops Research Institute for the Semi-Arid Tropics) — open access repository',
+          reviewDate: '2024-01-01',
+          url: 'https://oar.icrisat.org/411/1/58373.pdf',
+          geographicScope: 'ap_specific',
+        },
+        {
+          title: 'Changing Scenario of Groundnut Diseases (multi-state field survey including Andhra Pradesh, Karnataka, Tamil Nadu)',
+          organization: 'ICRISAT — open access repository',
+          reviewDate: '1999-01-01',
+          url: 'https://oar.icrisat.org/2236',
+          geographicScope: 'other_state',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-chilli-thrips': {
+      id: 'disease-chilli-thrips',
+      cropId: 'crop-chilli',
+      name_en: 'Chilli Thrips / Murda Complex',
+      name_te: 'మిరప తామర పురుగు (మోడ్చా/మర్దా తెగులు)',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest: Thrips parvispinus (and other thrips species), part of the Murda sucking-pest complex',
+      pathogenOrVector_te: 'కీటకం: తామర పురుగు (త్రిప్స్ పార్విస్పైనస్ తదితర జాతులు) — మోడ్చా/మర్దా రసం పీల్చే పురుగుల సముదాయంలో భాగం',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Upward curling of young leaves with silvery or bronze streaking and scarring along the undersides, concentrated near growing tips.',
+        'Stunted, bushy, deformed new growth ("Murda"/malformation) with shortened internodes.',
+        'Flower and young fruit drop under heavy infestation.',
+      ],
+      observableSymptoms_te: [
+        'లేత ఆకులు పైకి ముడుచుకుని, అడుగుభాగాన వెండి/కంచు రంగు చారలతో కనిపిస్తాయి, ఇది మొగ్గల దగ్గర ఎక్కువగా ఉంటుంది.',
+        'కొత్త చిగుళ్లు గిడసబారి, పొదలా మారి ("మోడ్చా/మర్దా") కణుపుల మధ్య దూరం తగ్గుతుంది.',
+        'తీవ్రమైతే పూత మరియు లేత కాయలు రాలిపోతాయి.',
+      ],
+      affectedParts: ['Young Leaves', 'Growing Tips', 'Flowers', 'Young Fruit'],
+      similarConditions: [
+        {
+          id: 'chilli-leafcurl-virus-lookalike',
+          name_en: 'Chilli Leaf Curl Virus (Begomovirus / Pathogen)',
+          name_te: 'మిరప ఆకు ముడుత వైరస్ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Thrips/Murda damage shows visible silvery-bronze scarring streaks on leaf undersides and boat-shaped upward curling concentrated at growing tips; leaf curl virus causes thickened, crinkled, vein-cleared foliage without the silvery scarring, and spreads to older leaves as well.',
+          differentiatingFactors_te:
+            'తామర పురుగు/మోడ్చా నష్టంలో ఆకు అడుగున వెండి-కంచు రంగు చారలు కనిపిస్తాయి, మొగ్గల దగ్గర పడవ ఆకారంలో ముడుచుకుంటాయి; వైరస్ తెగులులో ఈనెలు ఉబ్బి, దళసరిగా మారతాయి, వెండి చారలు ఉండవు, పాత ఆకులకు కూడా వ్యాపిస్తుంది.',
+        },
+        {
+          id: 'chilli-nutrient-tipburn',
+          name_en: 'Boron/Calcium Deficiency Tip Distortion (Abiotic Nutrient Stress)',
+          name_te: 'బోరాన్/కాల్షియం లోపం వల్ల చిగురు వైకల్యం (పోషక లోపం)',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Nutrient-deficiency tip distortion causes brittle, thickened growing points without any silvery scarring or visible insects, and does not improve after an insecticide application; thrips damage shows the characteristic scarring and visible tiny insects when tapping affected shoots over white paper.',
+          differentiatingFactors_te:
+            'పోషక లోపం వల్ల చిగురు గట్టిగా, పెళుసుగా మారుతుంది, వెండి చారలు లేదా కీటకాలు కనిపించవు, కీటకనాశిని వాడినా మార్పు ఉండదు; తామర పురుగు నష్టంలో లక్షణ చారలు కనిపిస్తాయి, దెబ్బతిన్న చిగుళ్లను తెల్లకాగితంపై దులిపితే చిన్న పురుగులు కనిపిస్తాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Hot, dry weather with low humidity, favoring rapid thrips population buildup.',
+        'Continuous chilli cultivation near other thrips-host crops (onion, cotton) without a break crop.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఎండ, పొడి వాతావరణం, తక్కువ తేమ ఉండటం — తామర పురుగు సంతతి వేగంగా పెరగడానికి అనుకూలం.',
+        'ఉల్లి, పత్తి వంటి తామర పురుగు ఆశ్రయించే పంటల పక్కనే వరుసగా మిరప సాగు చేయడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Install blue sticky traps (reported more attractive to thrips than yellow traps) at canopy level, in addition to yellow traps for whitefly, for early monitoring.',
+          practice_te: 'తామర పురుగులను ముందుగానే గుర్తించడానికి తెల్లదోమకు వాడే పసుపు అట్టలతో పాటు నీలం రంగు జిగురు అట్టలను (తామరకు ఎక్కువ ఆకర్షణీయం) పైరు ఎత్తులో అమర్చండి.',
+          targetTiming: 'Transplanting onward',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid excess nitrogen fertilizer, which produces soft, succulent growth that is more attractive to thrips.',
+          practice_te: 'నత్రజని ఎరువు అధికంగా వేయవద్దు — ఇది మెత్తని లేత చిగురును పెంచి తామర పురుగులను ఆకర్షిస్తుంది.',
+          targetTiming: 'Throughout season',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-chilli-thrips-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A Krishna district (AP) IPM field study reported thrips/Murda incidence falling from 16.0% to 9.5% under an integrated management approach (combining practices such as traps, border crops, and timed sprays), and a January 2023 NBAIR survey independently documented this thrips species across Telangana and Andhra Pradesh fields. Neither source available to this tool specified the exact spray product or dose used to achieve that reduction. Neem-based (Azadirachtin) sprays are a commonly used organic option against thrips, but a specific dose is suppressed pending primary CIBRC/university label verification. Consult local RBK for the current recommended product and dose.',
+          instruction_te:
+            'కృష్ణా జిల్లా (AP) లో జరిగిన ఒక IPM అధ్యయనంలో, సమీకృత యాజమాన్య పద్ధతుల (బుట్టలు, రక్షణ పంటలు, సకాలంలో పిచికారీ వంటివి కలిపిన విధానం) ద్వారా తామర పురుగు/మోడ్చా ఉధృతి 16.0% నుండి 9.5%కి తగ్గినట్లు నమోదైంది; 2023 జనవరిలో NBAIR సర్వే తెలంగాణ, ఆంధ్రప్రదేశ్ పొలాల్లో ఈ తామర జాతిని స్వతంత్రంగా నమోదు చేసింది. ఈ తగ్గుదలకు ఖచ్చితంగా ఏ మందు, ఎంత మోతాదు వాడారో ఈ రెండు మూలాల్లోనూ పేర్కొనలేదు. వేప ఆధారిత (అజాడిరక్టిన్) పిచికారీ తామర పురుగులకు సాధారణంగా వాడే సేంద్రీయ ఎంపిక, కానీ నిర్దిష్ట మోతాదు CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. ప్రస్తుత సిఫార్సు ఉత్పత్తి మరియు మోతాదు కోసం స్థానిక RBK ని సంప్రదించండి.',
+          activeIngredient_en: 'Neem-based Azadirachtin sprays (dose suppressed); IPM-combination outcome documented (16.0%→9.5%) without a named product/dose',
+          activeIngredient_te: 'వేప ఆధారిత అజాడిరక్టిన్ (మోతాదు నిలిపివేయబడింది); IPM ఫలితం (16.0%→9.5%) నమోదైంది కానీ మందు పేరు లేదు',
+          safetyCaution_en:
+            'Spray during early morning or late evening when thrips are most active on exposed surfaces. Wear mask and gloves. Rotate insecticide classes if synthetic options are later confirmed, to slow resistance development (thrips build resistance quickly).',
+          safetyCaution_te:
+            'తామర పురుగులు ఎక్కువగా కనిపించే ఉదయం లేదా సాయంత్రం వేళల్లో పిచికారీ చేయండి. మాస్క్, చేతి తొడుగులు ధరించండి. సింథటిక్ ఎంపికలు ధృవీకరించిన తర్వాత వాడితే, నిరోధకత పెరగకుండా మందుల వర్గాలను మారుస్తూ వాడండి (తామర పురుగులు త్వరగా నిరోధకత పెంచుకుంటాయి).',
+          regulatoryNotice_en:
+            'Statutory Warning: Read the approved product label before use. The cited 16.0%→9.5% field outcome and the NBAIR survey both confirm thrips/Murda as a real, documented AP-region problem, but neither names an actionable spray product or dose. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+          regulatoryNotice_te:
+            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు ఆమోదించిన లేబుల్ చదవండి. ఉదహరించిన 16.0%→9.5% ఫలితం మరియు NBAIR సర్వే రెండూ తామర పురుగు/మోడ్చా నిజమైన సమస్య అని నిర్ధారిస్తాయి, కానీ మందు పేరు లేదా మోతాదును పేర్కొనవు. ప్రస్తుత ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం VAA/RBK తో ధృవీకరించుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If new-growth distortion ("Murda") spreads to more than 20% of plants, or flower/fruit drop becomes heavy, consult your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK).',
+      escalationThreshold_te:
+        'మోడ్చా/మర్దా లక్షణాలు 20% కంటే ఎక్కువ మొక్కలకు వ్యాపించినా, లేదా పూత/కాయలు ఎక్కువగా రాలితే, రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'IPM field study on chilli thrips/Murda complex, Krishna district, AP (incidence 16.0% → 9.5% under integrated management)',
+          organization: 'Published in The Pharma Innovation Journal (phytojournal.com)',
+          reviewDate: '2019-01-01',
+          url: 'https://www.phytojournal.com/archives/2019/vol8issue4/PartAY/8-4-584-112.pdf',
+          geographicScope: 'ap_specific',
+        },
+        {
+          title: 'Chilli thrips (Thrips parvispinus) outbreak survey, Telangana and Andhra Pradesh, January 2023',
+          organization: 'ICAR - National Bureau of Agricultural Insect Resources (NBAIR), Bengaluru',
+          reviewDate: '2023-01-01',
+          url: 'https://www.nbair.res.in/sites/default/files/2023-02/Chilli%20thrips%20survey%20report%20-%20Jan%202023.pdf',
+          geographicScope: 'ap_specific',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-cotton-whitefly': {
+      id: 'disease-cotton-whitefly',
+      cropId: 'crop-cotton',
+      name_en: 'Cotton Whitefly',
+      name_te: 'పత్తి తెల్లదోమ',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest / Virus Vector: Bemisia tabaci',
+      pathogenOrVector_te: 'కీటకం / వైరస్ వాహకం: బెమిసియా టబాసి (తెల్లదోమ)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Clouds of small white adult insects flying up when the plant canopy is disturbed; nymphs visible as tiny flat scales on leaf undersides.',
+        'Sticky honeydew excretion on leaves leading to black sooty mould growth, reducing photosynthesis.',
+        'Yellowing, premature leaf drop, and, where whitefly acts as a virus vector, associated leaf curl symptoms on cotton and neighboring susceptible crops.',
+      ],
+      observableSymptoms_te: [
+        'పైరును కదిలిస్తే చిన్న తెల్లటి పురుగుల గుంపు ఎగురుతూ కనిపిస్తుంది; ఆకు అడుగున చదునైన చిన్న నిమ్ఫ్‌లు కనిపిస్తాయి.',
+        'ఆకులపై జిగురు లాంటి తేనెవంటి పదార్థం స్రవించి, దానిపై నల్లని మసి బూజు పెరుగుతుంది, దీనివల్ల కిరణజన్య సంయోగక్రియ తగ్గుతుంది.',
+        'ఆకులు పసుపు రంగులోకి మారి ముందుగానే రాలిపోతాయి; తెల్లదోమ వైరస్ వాహకంగా పనిచేసినప్పుడు ఆకు ముడుత లక్షణాలు కూడా కనిపించవచ్చు.',
+      ],
+      affectedParts: ['Leaves (undersides)', 'Whole Canopy', 'Squares/Bolls (indirectly, via sooty mould and virus transmission)'],
+      similarConditions: [
+        {
+          id: 'cotton-jassid-hopperburn',
+          name_en: 'Jassid / Leafhopper "Hopperburn" (Amrasca biguttula / Pest)',
+          name_te: 'ఆకుతొట్టు పురుగు నష్టం (జాసిడ్)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Jassid damage produces a reddish-yellow triangular "hopperburn" discoloration starting at leaf margins and tips, without visible flying white insects; whitefly produces no leaf-margin discoloration pattern but is directly visible as clouds of tiny white insects when the canopy is disturbed, along with sticky honeydew and sooty mould.',
+          differentiatingFactors_te:
+            'జాసిడ్ పురుగు నష్టంలో ఆకు అంచులు, కొనలు ఎర్రటి-పసుపు త్రికోణాకారంలో రంగు మారతాయి, తెల్లటి పురుగులు ఎగరడం కనిపించదు; తెల్లదోమలో అలాంటి అంచు రంగు మార్పు ఉండదు, కానీ పైరు కదిలిస్తే తెల్లటి పురుగుల గుంపు నేరుగా కనిపిస్తుంది, జిగురు మరియు మసి బూజు కూడా ఉంటాయి.',
+        },
+        {
+          id: 'cotton-clcuv-virus',
+          name_en: 'Cotton Leaf Curl Virus (CLCuV / Pathogen, whitefly-transmitted)',
+          name_te: 'పత్తి ఆకు ముడుత వైరస్ తెగులు (తెల్లదోమ ద్వారా వ్యాప్తి)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Leaf curl virus symptoms (upward curling, vein thickening, leaf-like enations on the underside) are the downstream viral disease that whitefly can transmit; whitefly itself is the vector/pest being observed directly (flying insects, honeydew, sooty mould) and can be present without visible leaf curl symptoms yet showing.',
+          differentiatingFactors_te:
+            'ఆకు ముడుత వైరస్ లక్షణాలు (పైకి ముడుచుకోవడం, ఈనెలు ఉబ్బడం, ఆకు వంటి పెరుగుదలలు) తెల్లదోమ వ్యాప్తి చేసే వైరస్ వ్యాధి; తెల్లదోమ అనేది స్వయంగా కనిపించే పురుగు/వాహకం (ఎగిరే పురుగులు, జిగురు, మసి బూజు) — ఆకు ముడుత లక్షణాలు ఇంకా కనిపించకముందే తెల్లదోమ ఉండవచ్చు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Hot, dry weather, especially August-September, favoring rapid whitefly population buildup — matching a 2023-24 Nandyal/Kurnool (AP) district survey finding.',
+        'Overuse of broad-spectrum synthetic pyrethroids, which can trigger whitefly population flare-ups by killing natural predators.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఎండ, పొడి వాతావరణం, ముఖ్యంగా ఆగస్టు-సెప్టెంబర్ నెలల్లో తెల్లదోమ సంతతి వేగంగా పెరగడానికి అనుకూలం — ఇది 2023-24 నంద్యాల/కర్నూలు (AP) జిల్లా సర్వే ఫలితాలతో సరిపోలుతుంది.',
+        'విస్తృత-స్థాయి సింథటిక్ పైరెథ్రాయిడ్స్ అతిగా వాడటం వల్ల సహజ శత్రు పురుగులు చనిపోయి తెల్లదోమ ఉధృతి పెరుగుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Monitor regularly: a 2023-24 ANGRAU survey in Nandyal/Kurnool (AP) recorded whitefly counts crossing the economic threshold level (ETL) at 6.66 whitefly per 3 leaves in August — begin close monitoring from July onward in similar districts.',
+          practice_te: 'క్రమం తప్పకుండా పరిశీలించండి: 2023-24లో నంద్యాల/కర్నూలు (AP) జిల్లాలో జరిగిన ANGRAU సర్వేలో ఆగస్టులో 3 ఆకులకు 6.66 తెల్లదోమలు నమోదై ఆర్థిక నష్టపరిమితి (ETL) దాటాయి — ఇలాంటి జిల్లాల్లో జూలై నుండే నిశిత పరిశీలన ప్రారంభించండి.',
+          targetTiming: 'July onward (pre-ETL monitoring)',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Install yellow sticky traps (12-15 per acre) at canopy level for early detection and mass trapping.',
+          practice_te: 'ముందస్తు గుర్తింపు కోసం ఎకరానికి 12-15 పసుపు జిగురు అట్టలను పైరు ఎత్తులో అమర్చండి.',
+          targetTiming: 'Squaring stage onward',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-cotton-whitefly-chem-1',
+          stepNumber: 1,
+          category: 'chemical',
+          instruction_en:
+            'The same 2023-24 Nandyal/Kurnool (AP) survey that documented whitefly crossing ETL, and a CICR (Central Institute for Cotton Research) advisory describing whitefly as a vector of multiple viral diseases with 15-30% yield loss potential, both establish whitefly as a serious, AP-confirmed threat — but neither source available to this tool named a specific insecticide product or dose for this crop/pest combination. Diafenthiuron and Pyriproxyfen-class insecticides are commonly discussed for whitefly management once ETL is crossed, but a specific dose is suppressed pending primary CIBRC label verification. Consult local RBK for the current approved product and dose.',
+          instruction_te:
+            'తెల్లదోమ ETL దాటినట్లు నమోదు చేసిన అదే 2023-24 నంద్యాల/కర్నూలు (AP) సర్వే, మరియు తెల్లదోమను బహుళ వైరస్ వ్యాధుల వాహకంగా, 15-30% దిగుబడి నష్టం కలిగించగలదని పేర్కొన్న CICR సలహా — రెండూ తెల్లదోమను AP లో నిజంగా ధృవీకరించిన తీవ్రమైన సమస్యగా నిర్ధారిస్తాయి, కానీ ఈ పంట/పురుగు కలయికకు నిర్దిష్ట మందు పేరు లేదా మోతాదును ఏ మూలమూ పేర్కొనలేదు. ETL దాటిన తర్వాత డయాఫెంతియురాన్, పైరిప్రాక్సిఫెన్ వర్గ కీటకనాశినులు సాధారణంగా చర్చించబడతాయి, కానీ నిర్దిష్ట మోతాదు CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. ప్రస్తుత ఆమోదించిన ఉత్పత్తి మరియు మోతాదు కోసం స్థానిక RBK ని సంప్రదించండి.',
+          activeIngredient_en: 'Diafenthiuron / Pyriproxyfen-class insecticides (dose suppressed — AP-confirmed ETL-crossing threat, no named product/dose in sources)',
+          activeIngredient_te: 'డయాఫెంతియురాన్ / పైరిప్రాక్సిఫెన్ వర్గం (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Spray only after confirming ETL is crossed (avoid prophylactic spraying, which accelerates resistance). Avoid repeated use of the same insecticide class consecutively. Wear mask and gloves; follow the pre-harvest interval on the approved label.',
+          safetyCaution_te:
+            'ETL దాటినట్లు నిర్ధారించుకున్న తర్వాతే పిచికారీ చేయండి (ముందుజాగ్రత్తగా పిచికారీ చేయడం నిరోధకతను పెంచుతుంది). ఒకే మందుల వర్గాన్ని వరుసగా వాడవద్దు. మాస్క్, చేతి తొడుగులు ధరించండి; ఆమోదించిన లేబుల్‌పై కోత ముందస్తు నిరీక్షణ వ్యవధిని పాటించండి.',
+          regulatoryNotice_en:
+            'Statutory Warning: Read the approved product label before use. Spray strictly based on ETL monitoring (6.66 whitefly/3 leaves was the AP survey\'s crossing point, but confirm the currently applicable ETL for your area with RBK, as it can vary by season and advisory). Actionable product and dose are suppressed pending primary CIBRC label verification.',
+          regulatoryNotice_te:
+            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు ఆమోదించిన లేబుల్ చదవండి. ETL పరిశీలన ఆధారంగానే పిచికారీ చేయండి (AP సర్వేలో 3 ఆకులకు 6.66 అనేది గమనించిన పరిమితి, కానీ మీ ప్రాంతానికి ప్రస్తుత ETL ను RBK తో ధృవీకరించుకోండి). CIBRC లేబుల్ ధృవీకరణ పూర్తయ్యే వరకు ఉత్పత్తి మరియు మోతాదు నిలిపివేయబడ్డాయి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If whitefly counts exceed the locally confirmed ETL (the AP survey observed crossing at 6.66/3 leaves) or sooty mould coverage becomes heavy, contact your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) for area-wide management advice.',
+      escalationThreshold_te:
+        'తెల్లదోమ సంఖ్య స్థానికంగా ధృవీకరించిన ETL దాటినా (AP సర్వేలో 3 ఆకులకు 6.66 వద్ద దాటింది) లేదా మసి బూజు తీవ్రంగా వ్యాపించినా, ప్రాంత వ్యాప్త యాజమాన్య సలహా కోసం రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Whitefly and pink bollworm incidence survey, Nandyal/Kurnool districts, AP, 2023-24 (6.66 whitefly/3 leaves at Dornipadu mandal in August, crossing ETL)',
+          organization: 'South Asian Journal of Applied Sciences (sasapjas.org)',
+          reviewDate: '2024-01-01',
+          url: 'https://sasapjas.org/?p=5691',
+          geographicScope: 'ap_specific',
+        },
+        {
+          title: 'Whitefly Management Advisory (vector of multiple viral diseases, 500+ host plant species, 15-30% yield loss)',
+          organization: 'ICAR - Central Institute for Cotton Research (CICR), Nagpur',
+          reviewDate: '2024-01-01',
+          url: 'https://cicr.icar.gov.in/wp-content/uploads/PA_24_Whitefly.pdf',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-turmeric-leafspot': {
+      id: 'disease-turmeric-leafspot',
+      cropId: 'crop-turmeric',
+      name_en: 'Turmeric Leaf Spot',
+      name_te: 'పసుపు ఆకు మచ్చ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Colletotrichum capsici',
+      pathogenOrVector_te: 'శిలీంద్రం: కొల్లెటోట్రైకం క్యాప్సిసి',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Small, oval to irregular dark brown spots with a yellow halo, scattered across the leaf blade (distinct from the many small rectangular spots of leaf blotch, and from the collar/rhizome rot that affects this same crop).',
+        'Spots may enlarge and coalesce under heavy infection, giving leaves a blighted, scorched appearance.',
+        'Premature drying of affected leaves from the margins inward; rhizomes themselves remain unaffected (this disease is foliar only).',
+      ],
+      observableSymptoms_te: [
+        'ఆకుపై చిన్న, గుండ్రని లేదా క్రమరహిత ముదురు గోధుమ మచ్చలు, చుట్టూ పసుపు వలయంతో చెదురుమదురుగా కనిపిస్తాయి (ఇది ఆకు మచ్చ తెగులు (బ్లాచ్)లో కనిపించే చిన్న దీర్ఘచతురస్ర మచ్చల కంటే, అలాగే ఇదే పంటలో కనిపించే దుంప కుళ్ళు తెగులు కంటే భిన్నమైనది).',
+        'తీవ్రమైతే మచ్చలు పెద్దవై కలిసిపోయి ఆకు మాడిపోయినట్లు కనిపిస్తుంది.',
+        'దెబ్బతిన్న ఆకులు అంచుల నుండి లోపలికి ముందుగానే ఎండిపోతాయి; ఈ తెగులు ఆకులకే పరిమితం — దుంపలపై ప్రభావం ఉండదు.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'turmeric-leaf-blotch-lookalike',
+          name_en: 'Leaf Blotch (Taphrina maculans / Pathogen)',
+          name_te: 'ఆకు మచ్చ తెగులు (బ్లాచ్, టాఫ్రినా)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Leaf blotch (a separate, already-catalogued disease on this crop) produces hundreds of small, numerous rectangular or oval reddish-yellow spots densely covering the leaf; this leaf spot (Colletotrichum capsici) produces comparatively fewer, larger, more irregular dark-brown lesions with a distinct yellow halo.',
+          differentiatingFactors_te:
+            'ఆకు మచ్చ తెగులు (బ్లాచ్, ఇది ఇదే పంటలో విడిగా నమోదైన తెగులు) ఆకుపై వందలాది చిన్న దీర్ఘచతురస్ర ఎరుపు-పసుపు మచ్చలను దట్టంగా కలిగిస్తుంది; ఈ ఆకు మచ్చ తెగులు (కొల్లెటోట్రైకం) పోలిస్తే తక్కువ సంఖ్యలో, పెద్దవిగా, క్రమరహితంగా ముదురు గోధుమ రంగులో పసుపు వలయంతో కనిపిస్తాయి.',
+        },
+        {
+          id: 'turmeric-sunscorch',
+          name_en: 'Sun-scorch / Heat Stress Leaf Scald (Abiotic)',
+          name_te: 'ఎండ వేడిమి వల్ల ఆకు కాలిపోవడం (భౌతిక ఒత్తిడి)',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Sun-scorch produces irregular bleached, papery-white to tan patches concentrated on the sun-exposed upper canopy, with no distinct dark lesion margin or yellow halo; leaf spot produces discrete dark brown spots with a clear yellow halo distributed across the canopy regardless of sun exposure.',
+          differentiatingFactors_te:
+            'ఎండ వేడిమి వల్ల ఎండకు తగిలే పై ఆకులపై క్రమరహిత తెల్లటి/లేత గోధుమ రంగు మచ్చలు కనిపిస్తాయి, స్పష్టమైన ముదురు అంచు లేదా పసుపు వలయం ఉండదు; ఆకు మచ్చ తెగులులో స్పష్టమైన పసుపు వలయంతో ముదురు గోధుమ మచ్చలు ఎండ తగలని ఆకులపై కూడా కనిపిస్తాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid weather during the southwest monsoon growth period, similar to conditions favoring other turmeric foliar diseases on this crop.',
+        'Dense, poorly ventilated canopy from close spacing.',
+      ],
+      environmentalRiskFactors_te: [
+        'నైరుతి రుతుపవనాల సమయంలో వెచ్చని, తేమతో కూడిన వాతావరణం — ఇదే పంటలో ఇతర ఆకు తెగుళ్లకు కూడా అనుకూలమైన పరిస్థితులు.',
+        'దగ్గరగా నాటడం వల్ల దట్టమైన, గాలి ప్రసరణ తక్కువగా ఉండే పైరు.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain recommended plant spacing to improve canopy air circulation and reduce leaf-wetness duration.',
+          practice_te: 'గాలి ప్రసరణ మెరుగుపరచడానికి, ఆకులపై తేమ ఎక్కువసేపు ఉండకుండా ఉండటానికి సిఫార్సు చేసిన మొక్కల ఎడం పాటించండి.',
+          targetTiming: 'Sowing/Planting',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy heavily infected leaves promptly to reduce spore spread within the field.',
+          practice_te: 'తెగులు తీవ్రంగా సోకిన ఆకులను వెంటనే తొలగించి నాశనం చేయండి, తద్వారా పొలంలో బీజాల వ్యాప్తి తగ్గుతుంది.',
+          targetTiming: 'Throughout season',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-turmeric-leafspot-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'No AP-specific survey or trial data for this particular leaf spot (Colletotrichum capsici, as distinct from the leaf blotch and rhizome rot already catalogued for this crop) was found during this research pass — this entry is sourced only to general ANGRAU/ICAR-IISR turmeric plant-protection guidance, in the same manner as the original catalog baseline. Bio-agent Trichoderma-based foliar sprays and neem-based options are commonly discussed for turmeric foliar diseases generally, but a specific dose is suppressed pending primary CIBRC/university label verification specific to this disease. Consult local RBK or Horticulture Officer for current guidance.',
+          instruction_te:
+            'ఈ పరిశోధనలో, ఈ ప్రత్యేక ఆకు మచ్చ తెగులుకు (కొల్లెటోట్రైకం క్యాప్సిసి — ఇదే పంటలో ఇప్పటికే నమోదైన ఆకు మచ్చ బ్లాచ్ మరియు దుంప కుళ్ళు తెగుళ్ల కంటే భిన్నమైనది) ప్రత్యేకమైన AP సర్వే లేదా ట్రయల్ డేటా కనుగొనలేకపోయాము — ఈ నమోదు సాధారణ ANGRAU/ICAR-IISR పసుపు పంట రక్షణ మార్గదర్శకాలపై మాత్రమే ఆధారపడింది, ఇది అసలు కేటలాగ్ బేస్‌లైన్ తీరులోనే ఉంది. ట్రైకోడెర్మా ఆధారిత పిచికారీ మరియు వేప ఆధారిత ఎంపికలు పసుపు ఆకు తెగుళ్లకు సాధారణంగా చర్చించబడతాయి, కానీ నిర్దిష్ట మోతాదు CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడింది. ప్రస్తుత మార్గదర్శకత్వం కోసం స్థానిక RBK లేదా ఉద్యానవన అధికారిని సంప్రదించండి.',
+          activeIngredient_en: 'Trichoderma-based foliar spray / Neem-based options (dose suppressed; no AP-specific source found for this particular disease)',
+          activeIngredient_te: 'ట్రైకోడెర్మా ఆధారిత పిచికారీ / వేప ఆధారిత ఎంపికలు (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Eco-friendly biocontrol option; avoid mixing with synthetic chemical fungicides. Wear basic gloves during preparation.',
+          safetyCaution_te:
+            'పర్యావరణ హితమైన బయో ఏజెంట్; రసాయన శిలీంద్రనాశినులతో కలపవద్దు. తయారీ సమయంలో చేతి తొడుగులు ధరించండి.',
+          regulatoryNotice_en:
+            'Both the bio-agent dose and any chemical fungicide recommendation for this specific leaf spot are suppressed pending primary CIBRC/university registration verification — this is a weaker evidence base than most other entries in this catalog (no disease-specific AP survey was found), so treat all guidance here as general good practice, not a confirmed protocol. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+          regulatoryNotice_te:
+            'ఈ ప్రత్యేక ఆకు మచ్చ తెగులుకు బయో-ఏజెంట్ మోతాదు మరియు రసాయన శిలీంద్రనాశిని సిఫార్సులు రెండూ CIBRC/విశ్వవిద్యాలయ ధృవీకరణ పూర్తయ్యే వరకు నిలిపివేయబడ్డాయి — ఈ కేటలాగ్‌లోని ఇతర నమోదుల కంటే ఇది బలహీనమైన ఆధారం (ఈ తెగులుకు ప్రత్యేక AP సర్వే కనుగొనలేదు), కావున ఇక్కడి మార్గదర్శకత్వాన్ని సాధారణ మంచి పద్ధతిగా మాత్రమే భావించండి, ధృవీకరించిన విధానంగా కాదు. స్థానిక రైతు భరోసా కేంద్రం (RBK) లేదా ఉద్యానవన అధికారిని సంప్రదించండి.',
+        },
+      ],
+      escalationThreshold_en: 'Consult your local Horticulture Officer if leaf spot coverage exceeds roughly 20% of canopy leaf area or spots begin coalescing rapidly.',
+      escalationThreshold_te: 'ఆకు మచ్చలు పైరులో దాదాపు 20% కంటే ఎక్కువ విస్తరించినా లేదా వేగంగా కలిసిపోతున్నా స్థానిక ఉద్యానవన అధికారిని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Turmeric Production and Plant Protection Guidelines (general foliar disease management)',
+          organization: 'ANGRAU & ICAR - Indian Institute of Spices Research (IISR)',
+          reviewDate: '2024-07-30',
+          url: 'https://spices.res.in',
+        },
+        {
+          title: 'Vyavasaya Panchangam — Spices & Turmeric Crop Guide',
+          organization: 'ANGRAU, Guntur, Andhra Pradesh',
+          reviewDate: '2025-06-01',
+          url: 'https://angrau.ac.in',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-13',
+    },
+
+    'disease-maize-turcicumblight': {
+      id: 'disease-maize-turcicumblight',
+      cropId: 'crop-maize',
+      name_en: 'Turcicum Leaf Blight',
+      name_te: 'మొక్కజొన్న టర్సికమ్ ఆకు ఎండు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Exserohilum turcicum',
+      pathogenOrVector_te: 'శిలీంద్రం: ఎక్సెరోహైలం టర్సికం',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Long, elliptical, cigar-shaped (boat-shaped) grayish-green to tan lesions on leaves, typically starting on lower leaves first.',
+        'Lesions enlarge and run parallel to leaf veins, often coalescing to blight large sections of the leaf.',
+        'Severe infection from knee-high stage onward can cause substantial premature leaf death, reducing grain fill.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులపై పొడవాటి, దీర్ఘవృత్తాకార (సిగార్/పడవ ఆకారం) బూడిద-ఆకుపచ్చ నుండి గోధుమ రంగు మచ్చలు ఏర్పడతాయి, సాధారణంగా కింది ఆకులపై మొదట కనిపిస్తాయి.',
+        'మచ్చలు ఈనెలకు సమాంతరంగా పెరిగి, తీవ్రమైతే కలిసిపోయి ఆకు పెద్ద భాగాన్ని ఆక్రమిస్తాయి.',
+        'మోకాలు ఎత్తు దశ నుండి తీవ్రంగా సోకితే ఆకులు ముందుగానే చనిపోయి గింజ నిండుదల తగ్గుతుంది.',
+      ],
+      affectedParts: ['Leaves (lower first, progressing upward)'],
+      similarConditions: [
+        {
+          id: 'maize-southern-leaf-blight',
+          name_en: 'Maydis / Southern Leaf Blight (Bipolaris maydis / Pathogen)',
+          name_te: 'దక్షిణ ఆకు ఎండు తెగులు (బైపోలారిస్ మేడిస్)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Southern leaf blight (Maydis) produces smaller, more rectangular tan lesions bounded by leaf veins, often with a reddish-brown border; Turcicum leaf blight produces larger, elongated cigar/boat-shaped lesions that are not strictly rectangular.',
+          differentiatingFactors_te:
+            'దక్షిణ ఆకు ఎండు తెగులు (మేడిస్) ఈనెల మధ్య చిన్న, దీర్ఘచతురస్రాకార గోధుమ మచ్చలను ఎర్రటి-గోధుమ అంచుతో కలిగిస్తుంది; టర్సికమ్ ఆకు ఎండు తెగులు పొడవాటి సిగార్/పడవ ఆకారపు మచ్చలను కలిగిస్తుంది, ఇవి దీర్ఘచతురస్రాకారంలో ఉండవు.',
+        },
+        {
+          id: 'maize-moisture-stress-leaftip',
+          name_en: 'Moisture-Stress Leaf Firing (Abiotic)',
+          name_te: 'తేమ లోపం వల్ల ఆకు కొన ఎండిపోవడం (భౌతిక ఒత్తిడి)',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Moisture-stress leaf firing starts at the leaf tip and margins and moves inward in a V-shaped pattern, affecting mostly upper/exposed leaves uniformly across the field regardless of plant age; Turcicum lesions appear as discrete elongated patches anywhere along the leaf blade, starting on lower leaves first.',
+          differentiatingFactors_te:
+            'తేమ లోపం వల్ల ఆకు కొన నుండి అంచుల వరకు V ఆకారంలో ఎండిపోవడం మొదలవుతుంది, ఇది పొలమంతా పై ఆకులపై ఒకేలా కనిపిస్తుంది; టర్సికమ్ తెగులు మచ్చలు ఆకుపై ఎక్కడైనా విడివిడిగా పొడవాటి ఆకారంలో కనిపిస్తాయి, కింది ఆకులపై మొదట మొదలవుతాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Moderate temperatures (18-27°C) with high humidity and heavy dew, especially from the knee-high growth stage onward.',
+        'Continuous maize monocropping without rotation in the same field.',
+      ],
+      environmentalRiskFactors_te: [
+        'మోస్తరు ఉష్ణోగ్రతలు (18-27°C), అధిక తేమ, భారీ మంచు — ముఖ్యంగా మోకాలు ఎత్తు దశ నుండి.',
+        'అదే పొలంలో పంట మార్పిడి లేకుండా వరుసగా మొక్కజొన్న సాగు చేయడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Practice crop rotation with non-cereal crops and remove/plough in crop residue after harvest, since the fungus survives on infected debris.',
+          practice_te: 'తృణధాన్యాలు కాని పంటలతో పంట మార్పిడి చేయండి; కోత తర్వాత మిగిలిన పంట వ్యర్థాలను తొలగించండి లేదా దుక్కిలో కలిపేయండి, ఎందుకంటే శిలీంద్రం సోకిన వ్యర్థాలపై జీవించి ఉంటుంది.',
+          targetTiming: 'Post-harvest / pre-season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Where available, choose locally recommended tolerant/resistant maize hybrids for your district.',
+          practice_te: 'అందుబాటులో ఉంటే, మీ జిల్లాకు సిఫార్సు చేసిన తెగులును తట్టుకునే మొక్కజొన్న హైబ్రిడ్లను ఎంచుకోండి.',
+          targetTiming: 'Pre-sowing variety selection',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-maize-turcicum-chem-1',
+          stepNumber: 1,
+          category: 'chemical',
+          instruction_en:
+            'ICAR - Indian Institute of Maize Research (IIMR) publishes a spray schedule for this disease naming Mancozeb 75% WP @ 2.5-3 g/litre at 7-10 day intervals starting from the knee-high growth stage. This is a cleaner, single-institution figure than some other entries in this catalog, but per this catalog\'s house standard, no chemical dose is ever shown as unconditionally actionable here — even a clean ICAR-IIMR institutional figure has not been independently cross-checked by this tool against a current CIBRC product label, and label-approved rates can be revised over time. Treat the 2.5-3 g/litre figure as a starting reference point only, and confirm the current approved product, concentration, and spray interval for your district with your local RBK/VAA before mixing or spraying anything.',
+          instruction_te:
+            'ICAR - భారతీయ మొక్కజొన్న పరిశోధనా సంస్థ (IIMR) ఈ తెగులుకు మాంకోజెబ్ 75% WP @ లీటరుకు 2.5-3 గ్రాముల చొప్పున మోకాలు ఎత్తు దశ నుండి 7-10 రోజుల వ్యవధిలో పిచికారీ షెడ్యూల్‌ను ప్రచురించింది. ఇది ఈ కేటలాగ్‌లోని మరికొన్ని నమోదుల కంటే స్పష్టమైన, ఒకే సంస్థ నుండి వచ్చిన అంకె అయినప్పటికీ, ఈ కేటలాగ్ సూత్రం ప్రకారం — ఏ రసాయన మోతాదును కూడా ఇక్కడ షరతులు లేకుండా వాడదగినదిగా చూపించము; స్పష్టమైన ICAR-IIMR సంస్థాగత అంకె అయినా, దీన్ని ప్రస్తుత CIBRC ఉత్పత్తి లేబుల్‌తో ఈ సాధనం స్వతంత్రంగా ధృవీకరించలేదు, మరియు లేబుల్-ఆమోదిత మోతాదులు కాలానుగుణంగా మారవచ్చు. 2.5-3 గ్రాముల/లీటరు అంకెను కేవలం ఒక ప్రారంభ సూచనగా మాత్రమే పరిగణించండి; మందు కలిపేముందు లేదా పిచికారీకి ముందు మీ జిల్లాకు ప్రస్తుత ఆమోదించిన ఉత్పత్తి, గాఢత, మరియు పిచికారీ వ్యవధిని స్థానిక RBK/VAA తో ధృవీకరించుకోండి.',
+          activeIngredient_en: 'Mancozeb 75% WP @ 2.5-3 g/L, 7-10 day intervals from knee-high stage (ICAR-IIMR institutional figure — treat as a reference point, not an unconditional instruction; confirm with RBK/VAA)',
+          activeIngredient_te: 'మాంకోజెబ్ 75% WP @ 2.5-3 గ్రా./లీ, మోకాలు ఎత్తు నుండి 7-10 రోజుల వ్యవధిలో (ICAR-IIMR అంకె — సూచనగా మాత్రమే, RBK/VAAతో ధృవీకరించుకోండి)',
+          safetyCaution_en:
+            'Wear protective mask and gloves during mixing and spraying. Avoid spraying during strong wind or peak midday heat. Follow the pre-harvest interval stated on the currently approved product container label; verify with local RBK before relying on the 2.5-3 g/L figure above.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు, పిచికారీ చేసేటప్పుడు రక్షణ మాస్క్, చేతి తొడుగులు ధరించండి. గాలి ఎక్కువగా లేదా ఎండ తీవ్రంగా ఉన్నప్పుడు పిచికారీ చేయవద్దు. పైన ఇచ్చిన 2.5-3 గ్రా./లీ అంకెపై ఆధారపడే ముందు, ప్రస్తుత ఆమోదించిన ఉత్పత్తి డబ్బా లేబుల్‌పై తెలిపిన కోత ముందస్తు నిరీక్షణ వ్యవధిని స్థానిక RBK వద్ద ధృవీకరించుకోండి.',
+          regulatoryNotice_en:
+            'Statutory Warning: Read the currently approved product label before use. The Mancozeb figure above comes from an ICAR-IIMR institutional source, which is stronger sourcing than a secondary/blog source, but it is still not independently cross-checked here against a current CIBRC registration label, and this catalog never presents any chemical dose as unconditionally actionable regardless of source strength. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before use.',
+          regulatoryNotice_te:
+            'చట్టబద్ధమైన హెచ్చరిక: ఉపయోగించే ముందు ప్రస్తుత ఆమోదించిన ఉత్పత్తి లేబుల్ చదవండి. పై మాంకోజెబ్ అంకె ICAR-IIMR సంస్థాగత మూలం నుండి వచ్చింది, ఇది ద్వితీయ/బ్లాగ్ మూలం కంటే బలమైనదే, కానీ దీన్ని ప్రస్తుత CIBRC నమోదు లేబుల్‌తో ఈ సాధనం స్వతంత్రంగా ధృవీకరించలేదు, మరియు మూలం ఎంత బలంగా ఉన్నా ఏ రసాయన మోతాదును ఈ కేటలాగ్ షరతులు లేకుండా చూపించదు. వాడకం ముందు ప్రస్తుత ఆమోదించిన ఉత్పత్తి మరియు మోతాదును గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) తో ధృవీకరించుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If lesions spread above the ear leaf before tasseling, or overall leaf blighting exceeds 25-30% of total leaf area, contact your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) promptly, as grain fill can be significantly affected.',
+      escalationThreshold_te:
+        'పూత దశకు ముందే మచ్చలు కంకి ఆకుకు పైకి వ్యాపించినా, లేదా మొత్తం ఆకు విస్తీర్ణంలో 25-30% కంటే ఎక్కువ దెబ్బతిన్నా, వెంటనే రైతు భరోసా కేంద్రం (RBK) వ్యవసాయ సహాయకుడిని సంప్రదించండి — గింజ నిండుదల గణనీయంగా ప్రభావితమవుతుంది.',
+      claimEvidence: [
+        {
+          claimId: 't-maize-turcicum-chem-1-dose',
+          fieldRef: "treatments['t-maize-turcicum-chem-1'].instruction_en/_te",
+          verificationStatus: 'provisional',
+          sourceIndexes: [0],
+          locator: 'aicrpmaize.icar.gov.in/?p=1163 — ICAR-IIMR Turcicum leaf blight management page (Mancozeb spray schedule)',
+          limitation_en:
+            'This is a real institutional (ICAR-IIMR) figure, not a secondary/blog estimate — a stronger starting point than several other suppressed doses in this catalog. It is marked provisional rather than verified because this tool could not independently cross-check it against a current CIBRC product registration/label, and the page was reached via a research subagent\'s fetch/search rather than a direct page-and-section read by this session. Confirm with your local RBK/VAA before relying on it.',
+          limitation_te:
+            'ఇది నిజమైన సంస్థాగత (ICAR-IIMR) అంకె, ద్వితీయ/బ్లాగ్ అంచనా కాదు — ఈ కేటలాగ్‌లోని మరికొన్ని నిలిపివేసిన మోతాదుల కంటే బలమైన ప్రారంభ బిందువు. దీన్ని ధృవీకరించినదిగా కాకుండా తాత్కాలికంగా గుర్తించడానికి కారణం — దీన్ని ప్రస్తుత CIBRC ఉత్పత్తి నమోదు/లేబుల్‌తో ఈ సాధనం స్వతంత్రంగా ధృవీకరించలేకపోయింది, మరియు ఈ పేజీని పరిశోధన సబ్ ఏజెంట్ శోధన ద్వారా చేరుకుంది, ఈ సెషన్ నేరుగా పేజీ/విభాగాన్ని చదవలేదు. దీనిపై ఆధారపడే ముందు స్థానిక RBK/VAA తో ధృవీకరించుకోండి.',
+        },
+      ],
+      sources: [
+        {
+          title: 'Turcicum Leaf Blight management guidance for Maize (Mancozeb spray schedule)',
+          organization: 'ICAR - Indian Institute of Maize Research (IIMR)',
+          reviewDate: '2024-01-01',
+          url: 'https://aicrpmaize.icar.gov.in/?p=1163',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'provisional',
+      lastUpdated: '2026-10-13',
     },
   },
 };

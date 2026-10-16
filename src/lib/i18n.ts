@@ -53,6 +53,10 @@ export const translations = {
     en: 'No camera? You can still upload a crop picture or test with our sample image instantly.',
     te: 'కెమెరా లేదా? మీరు పంట చిత్రాన్ని అప్‌లోడ్ చేయవచ్చు లేదా నమూనా చిత్రంతో వెంటనే పరీక్షించవచ్చు.',
   },
+  aiScanningPausedBanner: {
+    en: 'Live AI diagnosis is temporarily paused. Taking a photo below will not return a result right now — try the sample scan, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.',
+    te: 'ప్రత్యక్ష AI నిర్ధారణ తాత్కాలికంగా నిలిపివేయబడింది. ఇప్పుడు ఫోటో తీసినా ఫలితం రాదు — నమూనా స్కాన్ ప్రయత్నించండి, లేదా ప్రత్యక్ష తనిఖీ కోసం మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.',
+  },
   backToHome: { en: 'Back to Home', te: 'హోమ్‌కి తిరిగి వెళ్ళండి' },
   cropNotDetected: { en: 'Crop Not Detected', te: 'పంట గుర్తించబడలేదు' },
   cropNotDetectedTitle: { en: 'No Crop or Disease Found', te: 'పంట లేదా తెగులు కనుగొనబడలేదు' },

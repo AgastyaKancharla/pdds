@@ -21,7 +21,7 @@ import {
   requiresSpecialCapture,
   getSeverityBand,
 } from '../knowledge';
-import { MOCK_TREATMENTS } from '../mockData';
+import { MOCK_TREATMENTS, MOCK_DISEASES, getMockDisease } from '../mockData';
 import { validateAndNormalizeAiResponse } from '../ai/validator';
 import { translations, translate, type TranslationKey } from '../i18n';
 
@@ -200,8 +200,22 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // waiting on. Groundnut Tikka's entry is unchanged and still suppressed. The structural
       // requirements below (active ingredient + safety caution on every chemical entry) are
       // what actually matter and now apply across all of them.
-      expect(chemicalTreatments.length).toBeGreaterThanOrEqual(11);
-      expect(chemicalTreatments.map((t) => t.id)).toContain('t-groundnut-chem-1');
+      //
+      // The Oct 2026 market-research pass then added three more truthfully-tagged 'chemical'
+      // entries (Groundnut Rust, Cotton Whitefly, Maize Turcicum Leaf Blight). Unlike the Rice
+      // ones, these are NOT document-verified against a CIBRC registry — they stay
+      // non-actionable (dose suppressed, or shown as a reference point only for the ICAR-IIMR
+      // Maize figure). Both kinds coexist deliberately, and the dose/suppression-pairing test
+      // below is what enforces the distinction per entry.
+      expect(chemicalTreatments.length).toBeGreaterThanOrEqual(14);
+      for (const requiredId of [
+        't-groundnut-chem-1',
+        't-groundnut-rust-chem-1',
+        't-cotton-whitefly-chem-1',
+        't-maize-turcicum-chem-1',
+      ]) {
+        expect(chemicalTreatments.map((t) => t.id)).toContain(requiredId);
+      }
       for (const t of chemicalTreatments) {
         expect(t.activeIngredient_en).toBeDefined();
         expect(t.safetyCaution_en).toBeDefined();
@@ -260,9 +274,19 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
         for (const t of disease.treatments) {
           if (dosePattern.test(t.instruction_en)) {
+            // Maize Turcicum Leaf Blight (added in the Oct 2026 market-research pass) is a
+            // deliberate variant: its dose comes from a clean, single ICAR-IIMR institutional
+            // source rather than a conflicting/absent secondary figure, so the house decision
+            // was to show the real number but explicitly frame it as "a reference point only,
+            // never unconditionally actionable" rather than the word "suppressed" — the same
+            // underlying safety guarantee (never actionable without RBK/VAA confirmation),
+            // worded to match why it's being qualified. Both framings satisfy this invariant.
+            const hasSuppressionLanguage = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
+            const hasReferencePointLanguage =
+              /unconditionally actionable/i.test(t.instruction_en) || /unconditionally actionable/i.test(t.regulatoryNotice_en || '');
             expect(
-              /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || ''),
-              `${disease.id} treatment ${t.id} (category: ${t.category}) gives a dosed instruction without suppression language, and the entry cites no document-verified source`
+              hasSuppressionLanguage || hasReferencePointLanguage,
+              `${disease.id} treatment ${t.id} (category: ${t.category}) gives a dosed instruction without suppression or reference-point-only language, and the entry cites no document-verified source`
             ).toBe(true);
           }
         }
@@ -468,6 +492,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const allCrops = getAllSupportedCrops();
       expect(allCrops.length).toBe(10);
 
+      // 10 original + 6 added in the Oct 2026 market-research expansion pass.
       const allDiseases = getAllSupportedDiseases();
       expect(allDiseases.length).toBeGreaterThanOrEqual(16);
 
@@ -946,6 +971,38 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           groundnutChem.every((t) => /suppress/i.test(t.instruction_en)),
           'Groundnut Tikka chemical treatment must remain explicitly suppressed/non-actionable'
         ).toBe(true);
+
+        // Oct 2026 market-research pass: 3 more diseases join Groundnut Tikka as truthfully-
+        // tagged 'chemical' entries that remain non-actionable. 2 of them use the same
+        // "suppressed" wording; Maize Turcicum Leaf Blight (sourced to a clean, single
+        // ICAR-IIMR institutional dose rather than a conflicting/absent secondary figure)
+        // instead uses "never... unconditionally actionable" / "reference point only" —
+        // a deliberate different wording for the same non-actionable guarantee (see the
+        // Phase 5.4-regression dose-suppression test above for the same distinction).
+        //
+        // Rice Sheath Blight is deliberately NOT in this list: the Rice expansion's own entry
+        // for it carries CIBRC-registry-verified doses, so it is covered by the
+        // document-verified branch of the catalog-wide invariant instead of the suppressed one.
+        const suppressedWordingIds = ['disease-groundnut-rust', 'disease-cotton-whitefly'];
+        for (const id of suppressedWordingIds) {
+          const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+          expect(d.evidenceStatus).toBe('provisional');
+          const chem = d.treatments.filter((t) => t.category === 'chemical');
+          expect(chem, `${id} must have exactly one truthfully-tagged chemical entry`).toHaveLength(1);
+          expect(
+            chem.every((t) => /suppress/i.test(t.instruction_en)),
+            `${id} chemical treatment must remain explicitly suppressed/non-actionable`
+          ).toBe(true);
+        }
+
+        const maizeTurcicum = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-maize-turcicumblight'];
+        expect(maizeTurcicum.evidenceStatus).toBe('provisional');
+        const maizeTurcicumChem = maizeTurcicum.treatments.filter((t) => t.category === 'chemical');
+        expect(maizeTurcicumChem).toHaveLength(1);
+        expect(
+          maizeTurcicumChem.every((t) => /unconditionally actionable/i.test(t.instruction_en)),
+          'Maize Turcicum Leaf Blight chemical treatment must remain explicitly framed as non-actionable (reference-point wording)'
+        ).toBe(true);
       });
 
       it('ensures formerly "verified" entries still include direct authoritative URLs and review dates', () => {
@@ -1347,13 +1404,17 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
     });
 
-    it('preserves current behavior for all unverified and conflicting entries with an empty chemical category', () => {
+    it('preserves current behavior for all non-verified entries with an empty chemical category', () => {
+      // The Oct 2026 market-research pass added 'provisional' diseases (e.g. Chilli Thrips,
+      // Turmeric Leaf Spot) that also have an empty chemical category — 'provisional' joins
+      // 'unverified'/'conflicting' as an acceptable non-verified status here; this still
+      // excludes only 'verified_reference' (zero entries catalog-wide, see above).
       for (const disease of Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases)) {
         const chemCount = getTreatmentsForCategory(disease.id, 'chemical', 'en').treatments.length;
-        if (chemCount > 0) continue; // Groundnut Tikka — real entry renders instead, unaffected
+        if (chemCount > 0) continue; // Groundnut Tikka et al. — real entry renders instead, unaffected
         expect(
-          ['unverified', 'conflicting'].includes(disease.evidenceStatus),
-          `${disease.id} expected to be unverified/conflicting, found ${disease.evidenceStatus}`
+          ['unverified', 'conflicting', 'provisional'].includes(disease.evidenceStatus),
+          `${disease.id} expected to be unverified/conflicting/provisional, found ${disease.evidenceStatus}`
         ).toBe(true);
         expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
       }
@@ -1401,9 +1462,17 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       for (const { disease, t } of chemicalTreatments) {
         const suppressed = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
         const documentBacked = disease.sources.some(isSourceDocumentVerified);
+        // Third valid state, added with Maize Turcicum Leaf Blight in the Oct 2026 pass: a dose
+        // from a clean single institutional source (ICAR-IIMR) that is neither registry-verified
+        // nor hidden, but shown with explicit "never unconditionally actionable / reference point
+        // only" framing plus a claim-level evidence note. The safety guarantee is the same —
+        // nothing here is usable without RBK/VAA confirmation.
+        const referencePointOnly =
+          /unconditionally actionable/i.test(t.instruction_en) ||
+          /unconditionally actionable/i.test(t.regulatoryNotice_en || '');
         expect(
-          suppressed || documentBacked,
-          `${disease.id} treatment ${t.id} is neither dose-suppressed nor backed by a document-verified source`
+          suppressed || documentBacked || referencePointOnly,
+          `${disease.id} treatment ${t.id} is not dose-suppressed, not backed by a document-verified source, and not framed as reference-point-only`
         ).toBe(true);
       }
     });
@@ -1497,10 +1566,13 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // notes pinning its copper and streptocycline figures to the CIBRC registry rows) and
       // Zinc Deficiency (one 'unsupported' note recording that no zinc sulphate rate could be
       // sourced, since a fertiliser is outside the CIBRC pesticide registries entirely).
+      // The Oct 2026 market-research pass added one more: Maize Turcicum Leaf Blight, whose
+      // note records why its ICAR-IIMR dose is 'provisional' rather than verified.
       expect(withClaimEvidence.map((d) => d.id).sort()).toEqual(
         [
           'disease-banana-panamawilt',
           'disease-groundnut-tikka',
+          'disease-maize-turcicumblight',
           'disease-rice-blb',
           'disease-rice-zincdeficiency',
         ].sort()
@@ -1521,6 +1593,156 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           }
         }
       }
+    });
+
+    it('finds the Maize Turcicum Leaf Blight dose claim note and the Groundnut Tikka NSKE reduction-figure note', () => {
+      const maize = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-maize-turcicumblight'];
+      const note = getClaimEvidenceNote(maize, 't-maize-turcicum-chem-1-dose');
+      expect(note).toBeDefined();
+      expect(note!.verificationStatus).toBe('provisional');
+      expect(note!.locator).toBeDefined();
+      expect(note!.limitation_en.length).toBeGreaterThan(20);
+      expect(note!.limitation_te.length).toBeGreaterThan(10);
+
+      const groundnutNskeNote = getClaimEvidenceNote(groundnut, 't-groundnut-tikka-org-nske-1-reduction-figure');
+      expect(groundnutNskeNote).toBeDefined();
+      expect(groundnutNskeNote!.verificationStatus).toBe('provisional');
+      expect(groundnutNskeNote!.limitation_en.toLowerCase()).toContain('rajasthan');
+    });
+  });
+
+  describe('Oct 2026 market-research expansion pass: new non-Rice disease entries + geographicScope', () => {
+    // This pass originally drafted six entries. Rice Sheath Blight was one of them, but the
+    // concurrent Rice expansion landed its own, richer Sheath Blight entry (severity bands,
+    // guided diagnostic questions, CIBRC-registry-verified doses) on main first. Rather than
+    // keep a weaker duplicate, that entry was dropped and its one genuinely additive piece of
+    // evidence — the AP-specific Nellore/Chittoor severity survey — was folded into the Rice
+    // entry instead, asserted separately below.
+    const newDiseaseIds = [
+      'disease-groundnut-rust',
+      'disease-chilli-thrips',
+      'disease-cotton-whitefly',
+      'disease-turmeric-leafspot',
+      'disease-maize-turcicumblight',
+    ];
+
+    it('adds five new non-Rice diseases, each with a valid crop foreign key and complete bilingual metadata', () => {
+      const expectedCropIds: Record<string, string> = {
+        'disease-groundnut-rust': 'crop-groundnut',
+        'disease-chilli-thrips': 'crop-chilli',
+        'disease-cotton-whitefly': 'crop-cotton',
+        'disease-turmeric-leafspot': 'crop-turmeric',
+        'disease-maize-turcicumblight': 'crop-maize',
+      };
+
+      for (const id of newDiseaseIds) {
+        const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        expect(d, `Missing disease: ${id}`).toBeDefined();
+        expect(d.cropId).toBe(expectedCropIds[id]);
+        expect(d.name_en.trim().length).toBeGreaterThan(0);
+        expect(d.name_te.trim().length).toBeGreaterThan(0);
+        expect(d.observableSymptoms_en.length).toBeGreaterThan(0);
+        expect(d.observableSymptoms_te.length).toBeGreaterThan(0);
+        expect(d.similarConditions.length).toBeGreaterThanOrEqual(2);
+        for (const lookalike of d.similarConditions) {
+          expect(lookalike.differentiatingFactors_en.trim().length).toBeGreaterThan(15);
+          expect(lookalike.differentiatingFactors_te.trim().length).toBeGreaterThan(15);
+        }
+        expect(d.sources.length).toBeGreaterThan(0);
+        expect(d.escalationThreshold_en.trim().length).toBeGreaterThan(0);
+        expect(d.escalationThreshold_te.trim().length).toBeGreaterThan(0);
+      }
+
+      // Each new ID is referenced from its crop's commonDiseaseIds.
+      for (const [diseaseId, cropId] of Object.entries(expectedCropIds)) {
+        expect(AGRICULTURAL_KNOWLEDGE_CATALOG.crops[cropId].commonDiseaseIds).toContain(diseaseId);
+      }
+    });
+
+    it('gives 4 of the 5 new entries evidenceStatus "provisional" (AP-specific survey/trial data found) and Turmeric Leaf Spot "unverified" (no AP-specific source found)', () => {
+      const provisionalIds = newDiseaseIds.filter((id) => id !== 'disease-turmeric-leafspot');
+      for (const id of provisionalIds) {
+        expect(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id].evidenceStatus, id).toBe('provisional');
+      }
+      expect(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-turmeric-leafspot'].evidenceStatus).toBe('unverified');
+    });
+
+    it('never misattributes the existing Rhizome Rot 32.22% Guntur figure to the new, separate Turmeric Leaf Spot entry', () => {
+      // Guntur itself legitimately appears (ANGRAU's general sourcing address, and it's one of
+      // this crop's apMajorDistricts) — what must never appear is the specific 32.22% figure,
+      // which belongs to the existing Rhizome Rot entry, not this new Leaf Spot entry.
+      const leafSpot = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-turmeric-leafspot'];
+      const allText = JSON.stringify(leafSpot).toLowerCase();
+      expect(allText).not.toContain('32.22');
+    });
+
+    it('marks at least one source per AP-specific new entry with geographicScope "ap_specific"', () => {
+      const apSpecificIds = ['disease-groundnut-rust', 'disease-chilli-thrips', 'disease-cotton-whitefly'];
+      for (const id of apSpecificIds) {
+        const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        expect(
+          d.sources.some((s) => s.geographicScope === 'ap_specific'),
+          `${id} should cite at least one ap_specific source`
+        ).toBe(true);
+      }
+
+      // The AP-specific sheath blight severity survey survived the de-duplication against the
+      // Rice expansion's own entry: the duplicate entry was dropped, this source was not.
+      const sheathBlight = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-rice-sheathblight'];
+      const foldedSource = sheathBlight.sources.find((s) => s.geographicScope === 'ap_specific');
+      expect(foldedSource, 'Rice Sheath Blight must retain the folded-in AP severity survey').toBeDefined();
+      expect(foldedSource!.url).toContain('sasapjas.org');
+
+      // The Groundnut Rust multi-state ICRISAT source is honestly scoped as other_state, not
+      // silently folded into ap_specific just because the disease overall has AP evidence too.
+      const rust = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-rust'];
+      expect(rust.sources.some((s) => s.geographicScope === 'other_state')).toBe(true);
+
+      // The Rajasthan NSKE trial added to the existing Groundnut Tikka entry is honestly
+      // scoped as other_state (it is real evidence, but not from Andhra Pradesh).
+      const tikka = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
+      expect(tikka.sources.some((s) => s.geographicScope === 'other_state')).toBe(true);
+    });
+
+    it('never claims an unconditionally actionable chemical dose for any of the new entries (same catalog-wide rule as all other entries)', () => {
+      const dosePattern = /@\s*[\d.]+\s*(g|ml|kg|l)\s*\/\s*(l|kg|acre|pit)|\b\d+(\.\d+)?%\s/i;
+      for (const id of newDiseaseIds) {
+        const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        for (const t of d.treatments) {
+          if (dosePattern.test(t.instruction_en)) {
+            const hasSuppressionLanguage = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
+            const hasReferencePointLanguage =
+              /unconditionally actionable/i.test(t.instruction_en) ||
+              /unconditionally actionable/i.test(t.regulatoryNotice_en || '');
+            expect(
+              hasSuppressionLanguage || hasReferencePointLanguage,
+              `${id} treatment ${t.id} gives a dosed instruction without suppression or reference-point-only language`
+            ).toBe(true);
+          }
+        }
+      }
+    });
+
+    it('still directs the farmer to RBK/VAA from every chemical treatment on the new entries', () => {
+      for (const id of newDiseaseIds) {
+        const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
+        for (const t of d.treatments.filter((t) => t.category === 'chemical')) {
+          const text = `${t.safetyCaution_en} ${t.regulatoryNotice_en}`.toLowerCase();
+          expect(text.includes('rbk') || text.includes('vaa')).toBe(true);
+        }
+      }
+    });
+
+    it('registers all new disease IDs in MOCK_DISEASES so the AI validator does not downgrade them to unsupported_disease', () => {
+      for (const id of newDiseaseIds) {
+        const mock = getMockDisease(id);
+        expect(mock, `${id} missing from MOCK_DISEASES`).toBeDefined();
+        expect(mock!.name_en.trim().length).toBeGreaterThan(0);
+        expect(mock!.name_te.trim().length).toBeGreaterThan(0);
+      }
+      // Guards against future accidental duplicate IDs in the mock registry.
+      const ids = MOCK_DISEASES.map((d) => d.id);
+      expect(new Set(ids).size).toBe(ids.length);
     });
   });
 });

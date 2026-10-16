@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { detectDisease, type DetectionResult } from '../lib/detection';
+import { detectDisease, isAiLiveDiagnosisEnabled, type DetectionResult } from '../lib/detection';
 import { SAMPLE_CROP_IMAGE } from '../lib/mockData';
 import { compressImage, validateImageFile } from '../lib/imageUtils';
 import type { DetectionFailureReason } from '../types/database';
@@ -253,6 +253,10 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack }
             {language === 'en' ? 'Choose Image Source' : 'చిత్ర ఎంపిక మార్గం'}
           </h3>
           <p className="scan-card-desc">{t('cameraUnavailableDesc')}</p>
+
+          {!isAiLiveDiagnosisEnabled() && (
+            <div className="offline-notice-banner ai-paused-banner">⏸️ {t('aiScanningPausedBanner')}</div>
+          )}
 
           {cameraError && <div className="camera-error-banner">{cameraError}</div>}
 

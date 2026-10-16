@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { urgencyFromConfidence } from '../lib/detection';
 import { getMockCrop, getMockDisease, getMockTreatments, MOCK_CROPS, MOCK_DISEASES } from '../lib/mockData';
-import { supabase } from '../lib/supabase';
 import { getLocalUserId, getAuthenticatedUserId } from '../lib/auth';
 import { saveScanRecord } from '../lib/storage';
 import {
@@ -15,14 +14,7 @@ import {
   isNonPathogenicCondition,
   allowsChemicalPestControl,
 } from '../lib/knowledge';
-import {
-  cacheRemoteCrop,
-  getCachedRemoteCrop,
-  cacheRemoteDisease,
-  getCachedRemoteDisease,
-  cacheRemoteTreatments,
-  getCachedRemoteTreatments,
-} from '../lib/cache/knowledgeCache';
+import { getCachedRemoteCrop, getCachedRemoteDisease, getCachedRemoteTreatments } from '../lib/cache/knowledgeCache';
 import { cacheScanResult } from '../lib/cache/scanResultCache';
 import type { Crop, Disease, Treatment, TreatmentType, UrgencyColor } from '../types/database';
 import type { DiagnosticTier } from '../lib/ai/types';
@@ -123,36 +115,14 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       let loadedDisease: Disease | null = null;
       let loadedTreatments: Treatment[] = [];
 
-      if (supabase) {
-        try {
-          const [cropRes, diseaseRes, treatmentsRes] = await Promise.all([
-            supabase.from('crops').select('*').eq('id', selectedCropId).single(),
-            supabase.from('diseases').select('*').eq('id', selectedDiseaseId).single(),
-            supabase
-              .from('treatments')
-              .select('*')
-              .eq('disease_id', selectedDiseaseId)
-              .order('step_number', { ascending: true }),
-          ]);
+      // No remote crops/diseases/treatments fetch here: the connected Supabase project's
+      // `diseases` table has a uuid primary key and there are no `crops`/`treatments` tables
+      // at all, so a query against this repo's text catalog IDs (e.g. "crop-rice") would fail
+      // on every single result view (see supabase/migrations/006_create_scan_history_and_storage_bucket.sql
+      // for why those tables are intentionally left alone). Go straight to the local cache/
+      // bundled-catalog fallback below, which already covers 100% of real traffic.
 
-          if (cropRes.data) {
-            loadedCrop = cropRes.data as Crop;
-            cacheRemoteCrop(loadedCrop);
-          }
-          if (diseaseRes.data) {
-            loadedDisease = diseaseRes.data as Disease;
-            cacheRemoteDisease(loadedDisease);
-          }
-          if (treatmentsRes.data && treatmentsRes.data.length > 0) {
-            loadedTreatments = treatmentsRes.data as Treatment[];
-            cacheRemoteTreatments(selectedDiseaseId, loadedTreatments);
-          }
-        } catch (err) {
-          console.warn('[HereForNature] Supabase load note:', err);
-        }
-      }
-
-      // If remote load was unavailable (e.g. offline), query local reference cache before mock/catalog
+      // Query local reference cache (populated by any past successful remote load) before mock/catalog
       if (!loadedCrop && selectedCropId) {
         const cachedCrop = getCachedRemoteCrop(selectedCropId);
         loadedCrop = cachedCrop?.data || getMockCrop(selectedCropId) || null;

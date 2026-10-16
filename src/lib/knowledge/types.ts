@@ -32,6 +32,15 @@ export interface KnowledgeSource {
   specificDocumentVerified?: boolean;
   /** Supporting page, passage, table, or pesticide-label section. Only meaningful when specificDocumentVerified is true. */
   pageOrSection?: string;
+  /**
+   * Where the finding this source documents was actually observed/tested, independent of
+   * where the publishing organization is based. An ICAR institute can publish a trial from
+   * Tripura or Rajasthan — that is real, citable evidence, but it is not the same claim as
+   * an Andhra-Pradesh-specific finding, and the catalog must not blur the two. Omit only
+   * when a source is a general/national guidance document with no specific trial location
+   * (e.g. a CIBRC label applicable nationwide).
+   */
+  geographicScope?: 'ap_specific' | 'other_state' | 'national' | 'international';
 }
 
 /**
