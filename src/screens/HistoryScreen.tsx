@@ -3,8 +3,45 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../lib/supabase';
 import { getAuthenticatedUserId, resetGuestSession, getLocalUserId } from '../lib/auth';
 import { resolveScanImageUrl } from '../lib/storage';
-import type { ScanHistoryWithDetails, UrgencyColor } from '../types/database';
+import { getCropKnowledge, getDiseaseKnowledge } from '../lib/knowledge';
+import { getMockCrop, getMockDisease } from '../lib/mockData';
+import type { ScanHistoryRow, ScanHistoryWithDetails, UrgencyColor } from '../types/database';
 import type { ScanResultData } from './ScanScreen';
+
+/**
+ * Resolves a scan row's crop/disease names from this repo's own catalog, never from a
+ * database join. `crop_detected_id`/`disease_detected_id` are deliberately plain text with
+ * no FK to a `crops`/`diseases` table (see supabase/migrations/006_create_scan_history_and_
+ * storage_bucket.sql) -- the connected project has no such tables in this shape, so a
+ * PostgREST embedded select (`crops:crop_detected_id(...)`) would error on every row.
+ */
+function resolveHistoryDetails(
+  cropId: string | null,
+  diseaseId: string | null
+): Pick<ScanHistoryWithDetails, 'crops' | 'diseases'> {
+  const cropKnowledge = cropId ? getCropKnowledge(cropId) : null;
+  const mockCrop = cropId ? getMockCrop(cropId) : undefined;
+  const crops = cropKnowledge
+    ? { id: cropKnowledge.id, name_en: cropKnowledge.name_en, name_te: cropKnowledge.name_te }
+    : mockCrop
+      ? { id: mockCrop.id, name_en: mockCrop.name_en, name_te: mockCrop.name_te }
+      : null;
+
+  const diseaseKnowledge = diseaseId ? getDiseaseKnowledge(diseaseId) : null;
+  const mockDisease = diseaseId ? getMockDisease(diseaseId) : undefined;
+  const diseases = diseaseKnowledge
+    ? {
+        id: diseaseKnowledge.id,
+        name_en: diseaseKnowledge.name_en,
+        name_te: diseaseKnowledge.name_te,
+        urgency_color: diseaseKnowledge.urgencyColor,
+      }
+    : mockDisease
+      ? { id: mockDisease.id, name_en: mockDisease.name_en, name_te: mockDisease.name_te, urgency_color: mockDisease.urgency_color }
+      : null;
+
+  return { crops, diseases };
+}
 
 interface HistoryScreenProps {
   onSelectScan: (data: ScanResultData) => void;
@@ -65,16 +102,18 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ onSelectScan, onSt
         try {
           const { data, error } = await supabase
             .from('scan_history')
-            .select(
-              '*, crops:crop_detected_id(id, name_en, name_te), diseases:disease_detected_id(id, name_en, name_te, urgency_color)'
-            )
+            .select('*')
             .eq('user_id', authUserId)
             .order('created_at', { ascending: false })
             .limit(50);
 
           if (!error && data && data.length > 0) {
             if (!cancelled) {
-              setRows(data as unknown as ScanHistoryWithDetails[]);
+              const withDetails: ScanHistoryWithDetails[] = (data as ScanHistoryRow[]).map((row) => ({
+                ...row,
+                ...resolveHistoryDetails(row.crop_detected_id, row.disease_detected_id),
+              }));
+              setRows(withDetails);
               setLoading(false);
             }
             return;
