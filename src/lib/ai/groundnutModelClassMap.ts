@@ -14,6 +14,11 @@
  * deficiency is too generic to map to a specific written guide).
  * `status: 'healthy'` is not a disease/pest id; the app's existing healthy-crop path
  * handles it (urgencyColor green, healthyCropTitle banner).
+ *
+ * `modelLabel` values use underscores, not the HF dataset's raw space-separated label
+ * text ("healthy leaf", "late leaf spot", "nutrition deficiency") -- the training
+ * notebook writes each class to a folder named `label.replace(' ', '_')` before YOLO
+ * trains on it, so the model's actual output class names are the underscored form.
  */
 export interface GroundnutModelClassMapping {
   modelLabel: string;
@@ -22,18 +27,18 @@ export interface GroundnutModelClassMapping {
 }
 
 export const GROUNDNUT_MODEL_CLASS_MAP: GroundnutModelClassMapping[] = [
-  { modelLabel: 'healthy leaf', diseaseId: null, status: 'healthy' },
+  { modelLabel: 'healthy_leaf', diseaseId: null, status: 'healthy' },
 
   // Tikka Leaf Spot catalog entry explicitly covers both the early and late stage
   // of the disease (different fungi, same written guide) -- see catalog.ts.
   { modelLabel: 'early_leaf_spot', diseaseId: 'disease-groundnut-tikka' },
-  { modelLabel: 'late leaf spot', diseaseId: 'disease-groundnut-tikka' },
+  { modelLabel: 'late_leaf_spot', diseaseId: 'disease-groundnut-tikka' },
 
   { modelLabel: 'rust', diseaseId: 'disease-groundnut-rust' },
 
   // Too generic to map -- the catalog has no single "nutrient deficiency" guide for
   // groundnut, and guessing which nutrient would be fabricating a diagnosis.
-  { modelLabel: 'nutrition deficiency', diseaseId: null },
+  { modelLabel: 'nutrition_deficiency', diseaseId: null },
 ];
 
 export function getGroundnutModelMapping(modelLabel: string): GroundnutModelClassMapping | undefined {
