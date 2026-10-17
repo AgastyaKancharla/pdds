@@ -29,17 +29,27 @@ describe('Offline/PWA configuration safety', () => {
     expect(viteConfig).toContain('NetworkOnly');
 
     // Stronger than a substring check: the Supabase rule must be the NetworkOnly one.
-    // A future edit that switches it to any caching strategy fails here.
-    const supabaseRule = viteConfig.slice(viteConfig.indexOf('supabase'));
+    // A future edit that switches it to any caching strategy fails here. Bounded to just
+    // this one rule object (up to its closing "},"), not the rest of the file -- other
+    // runtime-caching rules may legitimately use a caching strategy for unrelated, static
+    // assets (e.g. on-device ML model weights), which must not trip this Supabase-specific
+    // safety check.
+    const supabaseIndex = viteConfig.indexOf('supabase');
+    const supabaseRuleEnd = viteConfig.indexOf('},', supabaseIndex) + 2;
+    const supabaseRule = viteConfig.slice(supabaseIndex, supabaseRuleEnd);
     const handlerMatch = supabaseRule.match(/handler:\s*'([A-Za-z]+)'/);
     expect(handlerMatch, 'Supabase runtime-caching rule must declare a handler').toBeTruthy();
     expect(handlerMatch![1]).toBe('NetworkOnly');
 
-    // No caching strategy that could return a stale response may appear anywhere in the
-    // service-worker config. StaleWhileRevalidate/CacheFirst on an API route is the specific
-    // mistake this guards against.
+    // No caching strategy that could return a stale response may apply to Supabase traffic
+    // specifically -- that's the actual invariant (an AI diagnosis must never be served from
+    // cache). StaleWhileRevalidate/CacheFirst on an API route is the specific mistake this
+    // guards against; a different, static, non-diagnosis asset (e.g. an ML model file) is
+    // fine to cache and is intentionally not covered by this check.
     for (const forbidden of ['StaleWhileRevalidate', 'CacheFirst', 'CacheOnly']) {
-      expect(viteConfig, `${forbidden} must not be used for any runtime route`).not.toContain(forbidden);
+      expect(supabaseRule, `${forbidden} must not be used for the Supabase runtime route`).not.toContain(
+        forbidden
+      );
     }
   });
 

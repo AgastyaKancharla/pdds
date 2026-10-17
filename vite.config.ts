@@ -16,6 +16,12 @@ export default defineConfig({
       manifest: false,
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,svg,woff2}'],
+        // The vendored TF.js/TFLite UMD bundles and WASM glue scripts also end as plain
+        // .js files in the build output (Vite copies public/ verbatim), so the glob above
+        // would otherwise sweep them into the EAGER precache for every visitor -- exactly
+        // what the CacheFirst runtime rule below is meant to avoid. Excluded here; they're
+        // cached lazily on first real on-device-diagnosis use instead.
+        globIgnores: ['vendor/**', 'tflite-wasm/**'],
         navigateFallback: '/index.html',
         // SAFETY: a diagnosis must never be served from cache. A stale or replayed result
         // would be indistinguishable from a live one on screen, which is exactly the class of
@@ -27,6 +33,24 @@ export default defineConfig({
           {
             urlPattern: /^https:\/\/[a-z0-9-]+\.supabase\.co\/.*/i,
             handler: 'NetworkOnly',
+          },
+          // On-device model weights (.tflite, several MB each), the vendored TF.js/TFLite
+          // UMD bundles (public/vendor/), and the TFLite WASM runtime + its glue scripts
+          // (public/tflite-wasm/, ~3.6MB per variant, 4 variants) are deliberately NOT in
+          // the eager precache list above -- a farmer on limited mobile data shouldn't have
+          // their first app load blocked on ~25MB of ML assets they may never use. Cache
+          // them lazily on first real use instead (CacheFirst), so on-device diagnosis
+          // still works offline from the second scan onward. Re-running a crop's model does
+          // not change its filename, so a retrained replacement needs a new filename (e.g.
+          // `_v2`) to bust this cache -- unlike a diagnosis result, a model file update is
+          // safe to version this way.
+          {
+            urlPattern: /\/(models|tflite-wasm|vendor)\/.*\.(tflite|wasm|js)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'on-device-model-assets',
+              expiration: { maxEntries: 30 },
+            },
           },
         ],
         // Keep the precache from silently ballooning if the bundle grows.
