@@ -1,13 +1,20 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { isAiLiveDiagnosisEnabled } from '../lib/detection';
+import { ScanScreen, type ScanResultData } from './ScanScreen';
 
 interface HomeScreenProps {
-  onStartScan: () => void;
+  onScanComplete: (data: ScanResultData) => void;
+  onOpenLibrary: () => void;
   onOpenPrivacy: () => void;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan, onOpenPrivacy }) => {
+/**
+ * The home screen IS the diagnosis screen: taking a photo or uploading one is the primary
+ * action here, not hidden behind a second "Scan Crop" tap. ScanScreen's capture/upload/sample
+ * logic is reused as-is (embedded, no own header) rather than duplicated.
+ */
+export const HomeScreen: React.FC<HomeScreenProps> = ({ onScanComplete, onOpenLibrary, onOpenPrivacy }) => {
   const { language, setLanguage, t } = useLanguage();
 
   return (
@@ -36,65 +43,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onStartScan, onOpenPriva
         <h1 className="hero-title">{t('appName')}</h1>
         <span className="hero-subtitle">{t('poweredBy')}</span>
         <p className="hero-tagline">{t('tagline')}</p>
+      </div>
 
-        <div className="features-grid">
-          <div className="feature-item">
-            <span className="feature-icon">🌾</span>
-            <div>
-              <strong>{language === 'en' ? 'AP Crops Supported' : 'AP పంటల మద్దతు'}</strong>
-              <p>{language === 'en' ? 'Paddy, Chilli, Cotton & Cash Crops' : 'వరి, మిరప, ప్రత్తి మొదలైనవి'}</p>
-            </div>
-          </div>
-          <div className="feature-item">
-            <span className="feature-icon">🔍</span>
-            <div>
-              {isAiLiveDiagnosisEnabled() ? (
-                <>
-                  <strong>{language === 'en' ? 'Instant AI Diagnosis' : 'తక్షణ AI నిర్ధారణ'}</strong>
-                  <p>{language === 'en' ? 'Identify foliar lesions, blight & pests' : 'తెగుళ్లు మరియు పురుగుల గుర్తింపు'}</p>
-                </>
-              ) : (
-                <>
-                  <strong>{language === 'en' ? 'Crop Disease Reference Guide' : 'పంట తెగుళ్ల సమాచార గైడ్'}</strong>
-                  <p>
-                    {language === 'en'
-                      ? 'Browse 21 known conditions with photos & symptoms'
-                      : '21 తెలిసిన సమస్యలను ఫోటోలు & లక్షణాలతో చూడండి'}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="feature-item">
-            <span className="feature-icon">🧪</span>
-            <div>
-              <strong>{language === 'en' ? 'Organic & Chemical' : 'సేంద్రియ & రసాయన'}</strong>
-              <p>{language === 'en' ? 'Step-by-step treatment guidance' : 'స్పష్టమైన చికిత్సా సూచనలు'}</p>
-            </div>
-          </div>
+      <ScanScreen onScanComplete={onScanComplete} onBack={() => {}} embedded />
+
+      <button type="button" className="library-teaser-card" onClick={onOpenLibrary}>
+        <span className="feature-icon">📖</span>
+        <div>
+          <strong>{language === 'en' ? 'Browse the full Crop Library' : 'పూర్తి పంటల గ్రంథాలయం చూడండి'}</strong>
+          <p>
+            {language === 'en'
+              ? (isAiLiveDiagnosisEnabled() ? 'All 21 known conditions, with or without a photo' : 'All 21 known conditions — no photo needed')
+              : '21 తెలిసిన సమస్యలు — ఫోటో అవసరం లేదు'}
+          </p>
         </div>
-      </div>
+        <span className="library-teaser-arrow">→</span>
+      </button>
 
-      <div className="home-action">
-        <button type="button" className="primary-cta-btn" onClick={onStartScan}>
-          <span className="cta-icon">📷</span>
-          <span>{t('scanNow')}</span>
-        </button>
-      </div>
-
-      <button
-        type="button"
-        onClick={onOpenPrivacy}
-        style={{
-          background: 'none',
-          border: 'none',
-          color: '#868e96',
-          fontSize: '12px',
-          textDecoration: 'underline',
-          cursor: 'pointer',
-          marginTop: '16px',
-          padding: '8px',
-        }}>
+      <button type="button" className="privacy-link-btn" onClick={onOpenPrivacy}>
         {t('privacyAndTerms')}
       </button>
     </div>

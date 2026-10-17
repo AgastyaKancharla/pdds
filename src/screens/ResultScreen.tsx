@@ -19,6 +19,7 @@ import { cacheScanResult } from '../lib/cache/scanResultCache';
 import type { Crop, Disease, Treatment, TreatmentType, UrgencyColor } from '../types/database';
 import type { DiagnosticTier } from '../lib/ai/types';
 import type { ScanResultData } from './ScanScreen';
+import { CROP_ICONS } from '../lib/cropIcons';
 
 interface ResultScreenProps {
   scanData: ScanResultData;
@@ -49,19 +50,6 @@ function getDefaultConditionIdForCrop(cropId: string): string | undefined {
   return MOCK_DISEASES.find((d) => d.crop_id === cropId)?.id;
 }
 
-const CROP_ICONS: Record<string, string> = {
-  'crop-rice': '🌾',
-  'crop-chilli': '🌶️',
-  'crop-cotton': '☁️',
-  'crop-groundnut': '🥜',
-  'crop-maize': '🌽',
-  'crop-sugarcane': '🎋',
-  'crop-tomato': '🍅',
-  'crop-mango': '🥭',
-  'crop-banana': '🍌',
-  'crop-turmeric': '🌿',
-};
-
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   scanData,
   onScanAnother,
@@ -88,7 +76,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   const [disease, setDisease] = useState<Disease | null>(null);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
   const [activeTab, setActiveTab] = useState<TreatmentType>('organic');
-  const [loading, setLoading] = useState(detected && !!cropId && !!diseaseId);
+  // Not gated on `detected`: a Library/manual-browse open also has real catalog data to
+  // resolve, and showing the spinner briefly beats flashing the "not detected" fallback card
+  // for one frame while that resolves.
+  const [loading, setLoading] = useState(!!cropId && !!diseaseId);
   type SaveStatus = 'idle' | 'saving' | 'saved_cloud' | 'saved_cloud_no_provenance' | 'saved_local' | 'failed';
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -268,6 +259,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   }, [isPest, diseaseKnowledge, disease, t]);
 
   const effectiveTier: DiagnosticTier = useMemo(() => {
+    // The original scan never produced a real AI detection, yet a crop/condition is showing --
+    // that only happens via the Library or the manual "browse offline" chips. No photo was ever
+    // analyzed, so this must never read as an AI result.
+    if (!detected && crop && disease) return 'reference_lookup';
     const rawTier = scanData.diagnosticTier || scanData.normalizedDiagnosis?.provenance?.tier;
     if (rawTier === 'expert_confirmed') {
       return 'ai_preliminary_hypothesis';
@@ -276,7 +271,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     if (isDemoSample) return 'demonstration_sample';
     if (scanData.isCachedResult) return 'legacy_or_unknown';
     return 'ai_preliminary_hypothesis';
-  }, [scanData.diagnosticTier, scanData.normalizedDiagnosis, isDemoSample, scanData.isCachedResult]);
+  }, [detected, crop, disease, scanData.diagnosticTier, scanData.normalizedDiagnosis, isDemoSample, scanData.isCachedResult]);
 
   const handleSave = async () => {
     const activeCropId = crop?.id || selectedCropId;
@@ -350,6 +345,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         ? (language === 'en' ? 'Demonstration Sample (Illustrative Preview)' : 'నమూనా ప్రదర్శన (సూచనార్థం మాత్రమే)')
         : effectiveTier === 'legacy_or_unknown'
         ? (language === 'en' ? 'Legacy Record (Unspecified Provenance)' : 'పాత రికార్డు (అనిర్దిష్ట మూలం)')
+        : effectiveTier === 'reference_lookup'
+        ? (language === 'en' ? 'Reference Lookup (Not AI-Diagnosed)' : 'సూచన శోధన (AI నిర్ధారణ కాదు)')
         : (language === 'en' ? 'Preliminary AI Observation (Confirm with RBK before spraying)' : 'ప్రాథమిక AI పరిశీలన (పిచికారీకి ముందు RBK తో ధృవీకరించుకోండి)');
     const message =
       `${t('appName')} - AP Crop Doctor\n` +
@@ -630,6 +627,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               🔬 {t('aiPreliminaryHypothesisBadge')}
             </div>
           )}
+          {effectiveTier === 'reference_lookup' && (
+            <div
+              className="evidence-badge"
+              style={{
+                marginBottom: 0,
+                backgroundColor: '#E3F2FD',
+                color: '#1565C0',
+                border: '1px solid #BBDEFB',
+              }}>
+              📖 {t('referenceLookupBadge')}
+            </div>
+          )}
 
           {diseaseKnowledge?.evidenceStatus === 'verified_reference' && (
             <div className="evidence-badge evidence-verified" style={{ marginBottom: 0 }}>
@@ -715,6 +724,21 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               fontWeight: 500,
             }}>
             📋 <strong>{t('legacyRecordBadge')}:</strong> {t('legacyRecordNotice')}
+          </div>
+        ) : effectiveTier === 'reference_lookup' ? (
+          <div
+            className="reference-lookup-notice-banner"
+            style={{
+              margin: '8px 0',
+              padding: '10px 14px',
+              background: '#E3F2FD',
+              border: '1px solid #BBDEFB',
+              borderRadius: '8px',
+              color: '#1565C0',
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>
+            📖 <strong>{t('referenceLookupBadge')}:</strong> {t('referenceLookupNotice')}
           </div>
         ) : (
           <div

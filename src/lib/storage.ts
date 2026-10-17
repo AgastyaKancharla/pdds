@@ -197,9 +197,15 @@ export async function saveScanRecord(params: SaveScanParams): Promise<SaveScanRe
     }
   }
 
+  // 'reference_lookup' is a real, honest in-session tier (the farmer browsed the catalog
+  // manually -- no AI, no demo) but the scan_history table's diagnostic_tier CHECK constraint
+  // (migration 006) only allows ai_preliminary_hypothesis/demonstration_sample/legacy_or_unknown,
+  // same as the existing expert_confirmed remap below. Store it as legacy_or_unknown rather than
+  // widening the DB constraint for a value the history list already treats as "not a live AI
+  // result" either way.
   const effectiveDiagnosticTier: DiagnosticTier =
-    diagnosticTier === 'expert_confirmed'
-      ? 'ai_preliminary_hypothesis'
+    diagnosticTier === 'expert_confirmed' || diagnosticTier === 'reference_lookup'
+      ? (diagnosticTier === 'expert_confirmed' ? 'ai_preliminary_hypothesis' : 'legacy_or_unknown')
       : diagnosticTier || (isDemoSample ? 'demonstration_sample' : 'legacy_or_unknown');
 
   const localRecord = {
