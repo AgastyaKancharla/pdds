@@ -1028,6 +1028,34 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       );
     });
 
+    it('demotes reference_lookup tier (Library/manual-browse, no AI involved) to legacy_or_unknown before persisting', async () => {
+      vi.mocked(authModule.getAuthenticatedUserId).mockResolvedValue('user_prov_2b');
+
+      const storageMock = (supabase as any).storage.from(CROP_SCANS_BUCKET);
+      storageMock.upload.mockResolvedValueOnce({ data: { path: 'user_prov_2b/scan_prov_2b.jpg' }, error: null });
+
+      const dbMock = (supabase as any).from('scan_history');
+      dbMock.insert.mockResolvedValueOnce({ error: null });
+
+      const result = await saveScanRecord({
+        scanId: 'scan_prov_2b',
+        imageUri: '',
+        cropId: 'crop-rice',
+        diseaseId: 'disease-rice-blast',
+        urgencyColor: 'red',
+        diagnosticTier: 'reference_lookup', // scan_history's CHECK constraint doesn't allow this value
+        isDemoSample: false,
+      });
+
+      expect(result.success).toBe(true);
+      expect(dbMock.insert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'scan_prov_2b',
+          diagnostic_tier: 'legacy_or_unknown',
+        })
+      );
+    });
+
     it('gracefully falls back to legacy columns if cloud schema lacks diagnostic_tier, reporting cloudProvenancePersisted: false', async () => {
       vi.mocked(authModule.getAuthenticatedUserId).mockResolvedValue('user_prov_3');
 

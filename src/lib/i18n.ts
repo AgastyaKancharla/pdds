@@ -59,6 +59,12 @@ export const translations = {
   },
   backToHome: { en: 'Back to Home', te: 'హోమ్‌కి తిరిగి వెళ్ళండి' },
   privacyAndTerms: { en: 'Privacy & Terms', te: 'గోప్యత & నిబంధనలు' },
+  cropLibrary: { en: 'Crop Library', te: 'పంటల గ్రంథాలయం' },
+  cropLibrarySubheading: {
+    en: 'Browse every cataloged crop and its known conditions — no photo needed.',
+    te: 'నమోదు చేసిన ప్రతి పంట మరియు దాని తెలిసిన సమస్యలను చూడండి — ఫోటో అవసరం లేదు.',
+  },
+  library: { en: 'Library', te: 'గ్రంథాలయం' },
   cropNotDetected: { en: 'Crop Not Detected', te: 'పంట గుర్తించబడలేదు' },
   cropNotDetectedTitle: { en: 'No Crop or Disease Found', te: 'పంట లేదా తెగులు కనుగొనబడలేదు' },
   unrecognizedImage: { en: 'Unrecognized Image', te: 'గుర్తించబడని చిత్రం' },
@@ -178,6 +184,14 @@ export const translations = {
   evidenceStatusDemo: {
     en: 'Demonstration Sample Only',
     te: 'నమూనా ప్రదర్శన మాత్రమే',
+  },
+  referenceLookupBadge: {
+    en: 'Reference Lookup (Not AI-Diagnosed)',
+    te: 'సూచన శోధన (AI నిర్ధారణ కాదు)',
+  },
+  referenceLookupNotice: {
+    en: 'You browsed this from the knowledge catalog — no photo was analyzed by AI. Verify against what you actually see in your field before acting.',
+    te: 'దీనిని మీరు జ్ఞాన సేకరణ నుండి స్వయంగా ఎంచుకున్నారు — ఏ ఫోటోను AI విశ్లేషించలేదు. చర్య తీసుకునే ముందు మీ పొలంలో కనిపించే వాస్తవ పరిస్థితితో సరిపోల్చుకోండి.',
   },
   pesticideSafetyWarning: {
     en: 'Statutory Safety Notice: Check approved product label. Wear personal protective equipment (PPE) and verify dosage and waiting period with Village Agriculture Assistant / RBK.',

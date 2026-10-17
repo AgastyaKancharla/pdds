@@ -26,9 +26,12 @@ export interface ScanResultData {
 interface ScanScreenProps {
   onScanComplete: (data: ScanResultData) => void;
   onBack: () => void;
+  /** When true, renders without its own header/back button -- used when embedded directly
+   * inside the Home screen, which already has its own app-wide header. */
+  embedded?: boolean;
 }
 
-export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack }) => {
+export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, embedded = false }) => {
   const { language, t } = useLanguage();
   const [busy, setBusy] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
@@ -185,7 +188,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack }
   };
 
   return (
-    <div className="scan-container">
+    <div className={`scan-container ${embedded ? 'embedded' : ''}`}>
       {/* Hidden file inputs */}
       <input
         type="file"
@@ -203,13 +206,15 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack }
         onChange={handleFileInputChange}
       />
 
-      <div className="scan-header">
-        <button type="button" className="btn-back" onClick={onBack} disabled={busy}>
-          ← {t('backToHome')}
-        </button>
-        <h2 className="scan-title">{t('scanNow')}</h2>
-        <div style={{ width: 80 }} />
-      </div>
+      {!embedded && (
+        <div className="scan-header">
+          <button type="button" className="btn-back" onClick={onBack} disabled={busy}>
+            ← {t('backToHome')}
+          </button>
+          <h2 className="scan-title">{t('scanNow')}</h2>
+          <div style={{ width: 80 }} />
+        </div>
+      )}
 
       {busy ? (
         <div className="analyzing-overlay">

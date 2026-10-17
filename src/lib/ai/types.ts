@@ -64,7 +64,11 @@ export type DiagnosticTier =
   | 'ai_preliminary_hypothesis'
   | 'demonstration_sample'
   | 'expert_confirmed'
-  | 'legacy_or_unknown';
+  | 'legacy_or_unknown'
+  /** The farmer manually browsed the reference catalog (Library, or the crop-browse chips
+   * shown when auto-detection didn't run/failed) -- no photo was ever analyzed by AI or a
+   * demo sample. Must read honestly as "you looked this up," never as an AI result. */
+  | 'reference_lookup';
 
 export interface ExpertReviewRecord {
   reviewedBy: string;

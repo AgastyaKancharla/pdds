@@ -11,9 +11,10 @@ import {
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ensureAnonymousSession } from './lib/auth';
 import { HomeScreen } from './screens/HomeScreen';
-import { ScanScreen, type ScanResultData } from './screens/ScanScreen';
+import { type ScanResultData } from './screens/ScanScreen';
 import { ResultScreen } from './screens/ResultScreen';
 import { HistoryScreen } from './screens/HistoryScreen';
+import { LibraryScreen } from './screens/LibraryScreen';
 import { PrivacyScreen } from './screens/PrivacyScreen';
 import { SAMPLE_CROP_IMAGE } from './lib/mockData';
 import './App.css';
@@ -30,6 +31,27 @@ interface ResultRouteState {
   scanResult?: ScanResultData;
 }
 
+const HomeIcon = () => (
+  <svg className="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M3 11.5 12 4l9 7.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5.5 10v9.5a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1V15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4.5a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1V10" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const LibraryIcon = () => (
+  <svg className="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5v-13Z" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const HistoryIcon = () => (
+  <svg className="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 8v4.5l3 2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 function AppFrame() {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -42,7 +64,6 @@ function AppFrame() {
   }, []);
 
   const goHome = () => navigate('/');
-  const goScan = () => navigate('/scan');
   const showResult = (data: ScanResultData) =>
     navigate('/result', { state: { scanResult: data } satisfies ResultRouteState });
 
@@ -58,10 +79,23 @@ function AppFrame() {
     });
   };
 
+  /** Opens a Library condition's full guidance by reusing ResultScreen's own manual-browse
+   * rendering (today's fix for the "browse offline" chips) -- no photo involved, so this is
+   * tagged 'reference_lookup', never shown as an AI result. */
+  const handleSelectLibraryCondition = (cropId: string, diseaseId: string) => {
+    showResult({
+      imageUri: '',
+      detected: false,
+      cropId,
+      diseaseId,
+      diagnosticTier: 'reference_lookup',
+    });
+  };
+
   // Nav highlighting is derived from the URL, so it stays correct when the farmer uses the
   // device's own back/forward gestures instead of the in-app buttons.
   const onHome = !!useMatch('/');
-  const onScan = !!useMatch('/scan');
+  const onLibrary = !!useMatch('/library/*');
   const onHistory = !!useMatch('/history');
 
   const scanResult = (location.state as ResultRouteState | null)?.scanResult;
@@ -81,10 +115,17 @@ function AppFrame() {
         <Routes>
           <Route
             path="/"
-            element={<HomeScreen onStartScan={goScan} onOpenPrivacy={() => navigate('/privacy')} />}
+            element={
+              <HomeScreen
+                onScanComplete={showResult}
+                onOpenLibrary={() => navigate('/library')}
+                onOpenPrivacy={() => navigate('/privacy')}
+              />
+            }
           />
 
-          <Route path="/scan" element={<ScanScreen onScanComplete={showResult} onBack={goHome} />} />
+          {/* Legacy bookmark/link safety net: scanning now happens on the home screen itself. */}
+          <Route path="/scan" element={<Navigate to="/" replace />} />
 
           <Route
             path="/result"
@@ -92,7 +133,7 @@ function AppFrame() {
               scanResult ? (
                 <ResultScreen
                   scanData={scanResult}
-                  onScanAnother={goScan}
+                  onScanAnother={goHome}
                   onHome={goHome}
                   onSelectSample={handleSelectSample}
                 />
@@ -106,8 +147,11 @@ function AppFrame() {
 
           <Route
             path="/history"
-            element={<HistoryScreen onSelectScan={showResult} onStartScan={goScan} />}
+            element={<HistoryScreen onSelectScan={showResult} onStartScan={goHome} />}
           />
+
+          <Route path="/library" element={<LibraryScreen onSelectCondition={handleSelectLibraryCondition} />} />
+          <Route path="/library/:cropId" element={<LibraryScreen onSelectCondition={handleSelectLibraryCondition} />} />
 
           <Route path="/privacy" element={<PrivacyScreen onBack={goHome} />} />
 
@@ -119,20 +163,20 @@ function AppFrame() {
       {/* Bottom Navigation Bar */}
       <nav className="app-nav">
         <button type="button" className={`nav-item ${onHome ? 'active' : ''}`} onClick={goHome}>
-          <span className="nav-icon">🏠</span>
+          <HomeIcon />
           <span className="nav-label">{t('home')}</span>
         </button>
 
-        <button type="button" className={`nav-item ${onScan ? 'active' : ''}`} onClick={goScan}>
-          <span className="nav-icon">📷</span>
-          <span className="nav-label">{t('scanNow')}</span>
+        <button type="button" className={`nav-item ${onLibrary ? 'active' : ''}`} onClick={() => navigate('/library')}>
+          <LibraryIcon />
+          <span className="nav-label">{t('library')}</span>
         </button>
 
         <button
           type="button"
           className={`nav-item ${onHistory ? 'active' : ''}`}
           onClick={() => navigate('/history')}>
-          <span className="nav-icon">📜</span>
+          <HistoryIcon />
           <span className="nav-label">{t('history')}</span>
         </button>
       </nav>
