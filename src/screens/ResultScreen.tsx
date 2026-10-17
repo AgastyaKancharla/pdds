@@ -382,38 +382,41 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     let dotClass = 'not-detected-dot';
     let badgeText = t('cropNotDetected');
     let titleText = t('cropNotDetectedTitle');
-    let secondaryTitle = language === 'en' ? 'పంట లేదా తెగులు కనుగొనబడలేదు' : 'No Crop or Disease Found';
+    // Secondary subtitle is optional -- only set it when it carries real information (the
+    // identified crop name) beyond what titleText already says. Always in the farmer's chosen
+    // language, never the other one.
+    let secondaryTitle: string | null = null;
+    const cropNameInLanguage = language === 'en' ? cropNameEn || cropNameTe : cropNameTe || cropNameEn;
 
     if (isHealthy) {
       badgeClass = 'healthy-badge';
       dotClass = 'healthy-dot';
       badgeText = t('healthyCropTitle');
       titleText = t('healthyCropTitle');
-      secondaryTitle = language === 'en' ? 'పంట ఆరోగ్యంగా ఉంది' : 'Crop Appears Healthy';
+      secondaryTitle = cropNameInLanguage || null;
     } else if (isAbiotic) {
       badgeClass = 'unsupported-badge';
       dotClass = 'unsupported-dot';
       badgeText = t('abioticStressTitle');
       titleText = t('abioticStressTitle');
-      secondaryTitle = cropNameEn || cropNameTe || (language === 'en' ? 'పర్యావరణ ఒత్తిడి' : 'Abiotic Stress');
+      secondaryTitle = cropNameInLanguage || null;
     } else if (isNutrient) {
       badgeClass = 'unsupported-badge';
       dotClass = 'unsupported-dot';
       badgeText = t('nutrientDeficiencyTitle');
       titleText = t('nutrientDeficiencyTitle');
-      secondaryTitle = cropNameEn || cropNameTe || (language === 'en' ? 'పోషక లోపం' : 'Nutrient Deficiency');
+      secondaryTitle = cropNameInLanguage || null;
     } else if (isUnsupported) {
       badgeClass = 'unsupported-badge';
       dotClass = 'unsupported-dot';
       badgeText = t('unsupportedCropTitle');
       titleText = t('unsupportedCropTitle');
-      secondaryTitle = cropNameEn || cropNameTe || (language === 'en' ? 'పంట డేటాబేస్ లో లేదు' : 'Crop Not in Database');
+      secondaryTitle = cropNameInLanguage || null;
     } else if (isOffline) {
       badgeClass = 'unsupported-badge';
       dotClass = 'unsupported-dot';
       badgeText = t('offlineModeBadge');
       titleText = t('offlineModeBadge');
-      secondaryTitle = language === 'en' ? 'ఆఫ్‌లైన్ వ్యవసాయ మార్గదర్శి' : 'Offline Agricultural Guide';
     }
 
     const explanationText =
@@ -441,7 +444,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </div>
 
           <h2 className="disease-title">{titleText}</h2>
-          <h3 className="disease-title-secondary">{secondaryTitle}</h3>
+          {secondaryTitle && <h3 className="disease-title-secondary">{secondaryTitle}</h3>}
 
           <div className="card unrecognized-card">
             <h4 className="card-title">
@@ -671,9 +674,6 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <h2 className="disease-title">
           {language === 'en' ? disease.name_en : disease.name_te}
         </h2>
-        <h3 className="disease-title-secondary">
-          {language === 'en' ? disease.name_te : disease.name_en}
-        </h3>
 
         {diseaseKnowledge && (
           <p className="pathogen-text">

@@ -42,7 +42,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onScanComplete, onOpenLi
         </div>
         <h1 className="hero-title">{t('appName')}</h1>
         <span className="hero-subtitle">{t('poweredBy')}</span>
-        <p className="hero-tagline">{t('tagline')}</p>
       </div>
 
       <ScanScreen onScanComplete={onScanComplete} onBack={() => {}} embedded />
