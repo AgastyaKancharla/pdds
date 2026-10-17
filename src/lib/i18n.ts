@@ -3,7 +3,6 @@ export type Language = 'en' | 'te';
 export const translations = {
   appName: { en: 'HereForNature', te: 'హియర్‌ఫర్‌నేచర్' },
   poweredBy: { en: 'Powered by AgastyaOne', te: 'AgastyaOne ద్వారా అందించబడింది' },
-  tagline: { en: 'AI crop doctor for AP farmers', te: 'AP రైతుల కోసం AI పంట వైద్యుడు' },
   scanNow: { en: 'Scan Crop', te: 'పంటను స్కాన్ చేయండి' },
   history: { en: 'History', te: 'చరిత్ర' },
   home: { en: 'Home', te: 'హోమ్' },
