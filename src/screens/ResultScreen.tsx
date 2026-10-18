@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { urgencyFromConfidence } from '../lib/detection';
-import { getMockCrop, getMockDisease, getMockTreatments, MOCK_CROPS, MOCK_DISEASES } from '../lib/mockData';
+import { getMockCrop, getMockDisease, getMockTreatments, MOCK_DISEASES } from '../lib/mockData';
 import { getLocalUserId, getAuthenticatedUserId } from '../lib/auth';
 import { saveScanRecord } from '../lib/storage';
 import {
@@ -13,6 +13,9 @@ import {
   getConditionsForCrop,
   isNonPathogenicCondition,
   allowsChemicalPestControl,
+  getAllSupportedCrops,
+  cropKnowledgeToCrop,
+  diseaseKnowledgeToDisease,
 } from '../lib/knowledge';
 import { getCachedRemoteCrop, getCachedRemoteDisease, getCachedRemoteTreatments } from '../lib/cache/knowledgeCache';
 import { cacheScanResult } from '../lib/cache/scanResultCache';
@@ -122,10 +125,21 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       if (!loadedCrop && selectedCropId) {
         const cachedCrop = getCachedRemoteCrop(selectedCropId);
         loadedCrop = cachedCrop?.data || getMockCrop(selectedCropId) || null;
+        // Bridges any catalog crop that was never backfilled into the legacy MOCK_CROPS array
+        // (e.g. Brinjal) -- without this, a catalog-only crop would resolve `cropKnowledge`
+        // correctly but still fail the `!crop` render gate below.
+        if (!loadedCrop) {
+          const knowledge = getCropKnowledge(selectedCropId);
+          if (knowledge) loadedCrop = cropKnowledgeToCrop(knowledge);
+        }
       }
       if (!loadedDisease && selectedDiseaseId) {
         const cachedDisease = getCachedRemoteDisease(selectedDiseaseId);
         loadedDisease = cachedDisease?.data || getMockDisease(selectedDiseaseId) || null;
+        if (!loadedDisease) {
+          const knowledge = getDiseaseKnowledge(selectedDiseaseId);
+          if (knowledge) loadedDisease = diseaseKnowledgeToDisease(knowledge);
+        }
       }
       if (loadedTreatments.length === 0 && selectedDiseaseId) {
         const cachedTreatments = getCachedRemoteTreatments(selectedDiseaseId);
@@ -498,7 +512,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 🌾 {language === 'en' ? 'Browse Supported AP Crop Guides Offline:' : 'ఆఫ్‌లైన్ AP పంటల నివారణ మార్గదర్శి:'}
               </h4>
               <div className="crop-switch-chips" style={{ marginTop: '8px' }}>
-                {MOCK_CROPS.map((c) => (
+                {getAllSupportedCrops().map((c) => (
                   <button
                     key={c.id}
                     type="button"
@@ -768,7 +782,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <div className="crop-switch-section">
           <span className="crop-switch-hint">{t('selectCropHint')}</span>
           <div className="crop-switch-chips">
-            {MOCK_CROPS.map((c) => {
+            {getAllSupportedCrops().map((c) => {
               const isActive = c.id === (crop?.id || selectedCropId);
               return (
                 <button
