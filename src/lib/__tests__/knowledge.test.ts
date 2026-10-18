@@ -499,14 +499,15 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(allCrops.length).toBe(13);
 
       // 10 original + 6 added in the Oct 2026 market-research expansion pass + 4 new Brinjal
-      // conditions + 5 new Okra conditions + 5 new Citrus conditions.
+      // conditions + 5 new Okra conditions + 5 new Citrus conditions + 3 new Rice conditions
+      // (BPH, Leaf Folder, False Smut) from the Priority 3 existing-crop expansion.
       const allDiseases = getAllSupportedDiseases();
-      expect(allDiseases.length).toBeGreaterThanOrEqual(30);
+      expect(allDiseases.length).toBeGreaterThanOrEqual(33);
 
       // Rice is the first crop expanded beyond a single condition. This previously asserted
       // exactly one rice disease, which was the assumption the whole UI inherited.
       const riceDiseases = getAllSupportedDiseases('crop-rice');
-      expect(riceDiseases.length).toBe(7);
+      expect(riceDiseases.length).toBe(10);
       expect(riceDiseases.map((d) => d.id).sort()).toEqual(
         [
           'disease-rice-blast',
@@ -516,13 +517,16 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           'disease-rice-sheathblight',
           'disease-rice-stemborer',
           'disease-rice-zincdeficiency',
+          'disease-rice-bph',
+          'disease-rice-leaffolder',
+          'disease-rice-falsesmut',
         ].sort()
       );
     });
 
     it('getConditionsForCrop orders conditions by urgency then name, and is stable', () => {
       const rice = getConditionsForCrop('crop-rice');
-      expect(rice.length).toBe(7);
+      expect(rice.length).toBe(10);
 
       // High urgency first, then Medium, then Low — a farmer opening a crop should meet the
       // condition most likely to cost them the crop, not whichever key happened to be first.
@@ -550,7 +554,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const offlineCatalog = getOfflineReferenceCatalog();
       expect(offlineCatalog.version).toBe('1.0.0');
       expect(Object.keys(offlineCatalog.crops).length).toBe(13);
-      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(30);
+      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(33);
     });
   });
 
