@@ -44,7 +44,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Commercial / Spice',
       apMajorDistricts: ['Guntur', 'Prakasam', 'Kurnool', 'Palnadu'],
       growingSeasons: ['Kharif', 'Late Kharif'],
-      commonDiseaseIds: ['disease-chilli-leaf-curl', 'disease-chilli-thrips'],
+      commonDiseaseIds: ['disease-chilli-leaf-curl', 'disease-chilli-thrips', 'disease-chilli-anthracnose', 'disease-chilli-powderymildew'],
     },
     'crop-cotton': {
       id: 'crop-cotton',
@@ -5535,6 +5535,217 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Commercial Crops — Cotton Bacterial Blight Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-chilli-anthracnose': {
+      id: 'disease-chilli-anthracnose',
+      cropId: 'crop-chilli',
+      name_en: 'Anthracnose / Fruit Rot',
+      name_te: 'ఆంత్రాక్నోస్ / కాయ కుళ్ళు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Colletotrichum capsici (and related Colletotrichum species)',
+      pathogenOrVector_te: 'శిలీంద్రం: కొలెటోట్రైకమ్ కాప్సిసి (మరియు సంబంధిత కొలెటోట్రైకమ్ జాతులు)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Sunken, circular to oval spots on ripening and ripe fruit, often with visible concentric rings within the lesion.',
+        'As the spot matures, tiny orange-to-pink spore masses appear in the center, especially in humid weather — a distinguishing feature of this disease.',
+        'Severely affected fruit shrivels, rots, and drops early; infection can also appear as dark lesions on stems and leaves, though fruit damage is the main economic concern.',
+      ],
+      observableSymptoms_te: [
+        'పండుతున్న, పండిన కాయలపై లోతుగా, గుండ్రని లేదా అండాకార మచ్చలు కనిపిస్తాయి, తరచుగా మచ్చ లోపల వలయాకారపు గీతలు కనిపిస్తాయి.',
+        'మచ్చ ముదిరే కొద్దీ, మధ్యలో చిన్న నారింజ-గులాబీ రంగు బీజ ద్రవ్యరాశి కనిపిస్తుంది, ముఖ్యంగా తేమతో కూడిన వాతావరణంలో — ఇది ఈ తెగులుకు ప్రత్యేక గుర్తింపు.',
+        'తీవ్రంగా సోకిన కాయలు ముడుచుకుని కుళ్ళి ముందుగా రాలతాయి; కాండం, ఆకులపై కూడా ముదురు మచ్చలు కనిపించవచ్చు, కానీ ఆర్థికంగా ప్రధాన నష్టం కాయలకే.',
+      ],
+      affectedParts: ['Fruits', 'Stems', 'Leaves'],
+      similarConditions: [
+        {
+          id: 'chilli-anthracnose-vs-leafcurl',
+          name_en: 'Chilli Leaf Curl Virus',
+          name_te: 'మిరప ఆకు ముడుత తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Anthracnose primarily damages ripening fruit with sunken, concentric-ringed lesions and orange spore masses; leaf curl virus instead shows upward leaf curling, thickening, and vein clearing with little direct fruit lesion damage.',
+          differentiatingFactors_te:
+            'ఆంత్రాక్నోస్ ప్రధానంగా పండుతున్న కాయలను లోతైన, వలయాకార మచ్చలు, నారింజ బీజ ద్రవ్యరాశితో దెబ్బతీస్తుంది; ఆకు ముడుత వైరస్ బదులుగా ఆకులు పైకి ముడుచుకోవడం, మందం, ఈనెల స్పష్టత చూపుతుంది, కాయలపై నేరుగా మచ్చలు తక్కువ.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid weather with frequent rain during fruit ripening — the single biggest risk window for this disease.',
+        'Infected seed or transplants carrying the fungus into a new planting.',
+        'Continuous chilli cultivation on the same field without rotation, which lets the fungus build up in crop residue.',
+      ],
+      environmentalRiskFactors_te: [
+        'కాయ పండే దశలో తరచుగా వర్షంతో వెచ్చని, తేమతో కూడిన వాతావరణం — ఈ తెగులుకు అతిపెద్ద ప్రమాద కాలం.',
+        'తెగులు సోకిన విత్తనం లేదా నారు మొక్కల ద్వారా కొత్త పంటకు తెగులు వ్యాపించడం.',
+        'పంట మార్పిడి లేకుండా అదే పొలంలో పదేపదే మిరప వేయడం వల్ల పంట అవశేషాల్లో శిలీంద్రం పేరుకుపోవడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Use certified, disease-free seed and treat seed with a biological agent (Trichoderma-based) before sowing where available.',
+          practice_te: 'ధృవీకరించిన, తెగులు లేని విత్తనాన్ని వాడండి; వీలైతే విత్తేముందు ట్రైకోడెర్మా ఆధారిత జీవ నియంత్రణ కారకంతో విత్తన శుద్ధి చేయండి.',
+          targetTiming: 'Pre-sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Harvest fruit promptly at maturity and avoid leaving overripe fruit on the plant, since ripening fruit is most susceptible.',
+          practice_te: 'కాయలు పక్వానికి రాగానే వెంటనే కోయండి; మొక్కపై ఎక్కువగా పండిన కాయలను వదలకండి — పండుతున్న కాయలే ఎక్కువగా తెగులుకు గురవుతాయి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Remove and destroy infected fruit and crop debris rather than leaving them in the field, and rotate with a non-Solanaceous crop for 2-3 years where field layout allows.',
+          practice_te: 'తెగులు సోకిన కాయలు, పంట అవశేషాలను పొలంలో వదలకుండా తీసి నాశనం చేయండి; వీలైతే 2-3 సంవత్సరాలు సోలనేసి కుటుంబానికి చెందని పంటలతో పంట మార్పిడి చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-chilli-anth-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Pseudomonas fluorescens or Trichoderma viride-based foliar sprays are commonly documented biologicals against anthracnose, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'ఆంత్రాక్నోస్‌కు వ్యతిరేకంగా సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా ట్రైకోడెర్మా విరిడి ఆధారిత పిచికారీలు సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతులు, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Pseudomonas fluorescens / Trichoderma viride (organic, dose unverified)',
+          activeIngredient_te: 'సూడోమోనాస్ ఫ్లోరోసెన్స్ / ట్రైకోడెర్మా విరిడి (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-chilli-anth-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Mancozeb or Carbendazim foliar sprays are widely documented for anthracnose/fruit rot management, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop, and chilli is harvested frequently, so a wrong waiting period is a real risk. Do not spray from memory.',
+          instruction_te:
+            'ఆంత్రాక్నోస్/కాయ కుళ్ళు తెగులుకు మాంకోజెబ్ లేదా కార్బెండజిమ్ పిచికారీలు విస్తృతంగా వాడతారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది, మిరపను తరచుగా కోస్తారు కాబట్టి తప్పు నిరీక్షణ వ్యవధి నిజమైన ప్రమాదం. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Mancozeb / Carbendazim (dose suppressed)',
+          activeIngredient_te: 'మాంకోజెబ్ / కార్బెండజిమ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, given chilli\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'మిరపను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If fruit rot affects more than about 10-15% of the standing crop despite sanitation and prompt harvest, consult your VAA/RBK promptly.',
+      escalationThreshold_te:
+        'పరిశుభ్రత, వెంటనే కోత చర్యలు తీసుకున్నా నిలబడిన పంటలో 10-15% కంటే ఎక్కువ కాయలకు కుళ్ళు తెగులు సోకితే, వెంటనే VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Commercial Crops — Chilli Anthracnose/Fruit Rot Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-chilli-powderymildew': {
+      id: 'disease-chilli-powderymildew',
+      cropId: 'crop-chilli',
+      name_en: 'Powdery Mildew',
+      name_te: 'బూడిద బూజు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Leveillula taurica',
+      pathogenOrVector_te: 'శిలీంద్రం: లెవిల్లులా టౌరికా',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Pale yellow, diffuse patches appear on the upper leaf surface, with a fine white to greyish powdery fungal growth visible on the corresponding leaf underside.',
+        'Older, lower leaves are usually affected first, turning yellow, then brown, and dropping prematurely as the disease progresses.',
+        'Unlike most powdery mildews that coat the upper leaf surface, this species grows mainly on the underside — the top of the leaf often just looks blotchy yellow until the leaf is turned over.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు పై ఉపరితలంపై లేత పసుపు రంగు, అస్పష్టమైన మచ్చలు కనిపిస్తాయి; దానికి సరిగ్గా అడుగున సన్నని తెలుపు-బూడిద రంగు పొడి వంటి శిలీంద్ర పెరుగుదల కనిపిస్తుంది.',
+        'సాధారణంగా ముదురు, కింది ఆకులు మొదట సోకి పసుపు రంగులోకి మారి, తర్వాత గోధుమ రంగులోకి మారి తెగులు ముదిరే కొద్దీ ముందుగా రాలతాయి.',
+        'చాలా బూడిద బూజు తెగుళ్లు ఆకు పై ఉపరితలాన్ని కప్పేయడానికి భిన్నంగా, ఈ జాతి ప్రధానంగా అడుగు భాగంలో పెరుగుతుంది — ఆకును తిప్పి చూసేవరకు పై భాగం కేవలం పసుపు మచ్చలుగా కనిపిస్తుంది.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'chilli-powderymildew-vs-thrips',
+          name_en: 'Chilli Thrips / Murda Complex',
+          name_te: 'మిరప తామర పురుగు (మోడ్చా/మర్దా తెగులు)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Powdery mildew shows diffuse yellow patches on the upper leaf with white powdery fungal growth visible underneath when turned over, and no leaf curling; thrips/murda causes upward leaf curling with silvery-bronze scarring and stunted bushy new growth, with no powdery coating.',
+          differentiatingFactors_te:
+            'బూడిద బూజు తెగులులో ఆకు పైన అస్పష్టమైన పసుపు మచ్చలు ఉండి, తిప్పి చూస్తే అడుగున తెలుపు పొడి శిలీంద్ర పెరుగుదల కనిపిస్తుంది, ఆకు ముడుచుకోదు; తామర/మోడ్చాలో ఆకు పైకి ముడుచుకుని వెండి-కంచు రంగు చారలు, చిగురు గిడసబారడం కనిపిస్తుంది, పొడి పూత ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Dry weather with moderate temperatures and low rainfall — unlike many fungal diseases, this one is favored by drier conditions rather than high humidity.',
+        'Dense planting and a closed canopy with poor air circulation.',
+        'Water-stressed or nutrient-stressed plants tend to show more severe symptoms.',
+      ],
+      environmentalRiskFactors_te: [
+        'పొడి వాతావరణం, మధ్యస్థ ఉష్ణోగ్రత, తక్కువ వర్షపాతం — చాలా శిలీంద్ర తెగుళ్లకు భిన్నంగా, ఇది ఎక్కువ తేమ కంటే పొడి పరిస్థితులకు అనుకూలం.',
+        'దట్టంగా నాటడం, గాలి ప్రసరణ సరిగా లేని మూసిన ఆకుల పందిరి.',
+        'నీటి ఒత్తిడి లేదా పోషక ఒత్తిడికి గురైన మొక్కలు మరింత తీవ్రమైన లక్షణాలను చూపుతాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain consistent irrigation to avoid water stress, and avoid overly dense planting so air can circulate through the canopy.',
+          practice_te: 'నీటి ఒత్తిడిని నివారించడానికి స్థిరమైన నీటిపారుదల పాటించండి; గాలి ప్రసరణ కోసం అతిగా దట్టంగా నాటడం మానండి.',
+          targetTiming: 'Throughout the growing season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy heavily affected lower leaves to reduce the spread of spores to healthy upper foliage.',
+          practice_te: 'ఆరోగ్యకరమైన పై ఆకులకు బీజాలు వ్యాపించకుండా తీవ్రంగా సోకిన కింది ఆకులను తీసివేసి నాశనం చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-chilli-pm-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A dilute wettable sulphur spray or neem oil is commonly used against powdery mildew in vegetable/spice crops generally, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK, and avoid spraying sulphur during very hot weather since it can scorch leaves.',
+          instruction_te:
+            'కూరగాయ/సుగంధ ద్రవ్యాల పంటల్లో బూడిద బూజు తెగులుకు సాధారణంగా పలుచటి వెట్టబుల్ సల్ఫర్ పిచికారీ లేదా వేప నూనె వాడతారు, కానీ ఖచ్చితమైన గాఢతను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి; చాలా వేడి వాతావరణంలో సల్ఫర్ పిచికారీ చేయవద్దు, అది ఆకులను కాల్చవచ్చు.',
+          activeIngredient_en: 'Wettable Sulphur / Neem oil (organic, dose unverified)',
+          activeIngredient_te: 'వెట్టబుల్ సల్ఫర్ / వేప నూనె (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-chilli-pm-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Systemic fungicides such as Hexaconazole or Myclobutanil are commonly used against powdery mildew when sulphur is not sufficient, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'సల్ఫర్ సరిపోనప్పుడు బూడిద బూజు తెగులుకు హెక్సాకొనజోల్ లేదా మైక్లోబ్యుటానిల్ వంటి సిస్టమిక్ శిలీంద్రనాశకాలు సాధారణంగా వాడతారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Hexaconazole / Myclobutanil (dose suppressed)',
+          activeIngredient_te: 'హెక్సాకొనజోల్ / మైక్లోబ్యుటానిల్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If yellowing and leaf drop spreads to more than about 20% of the plant\'s foliage despite irrigation and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+      escalationThreshold_te:
+        'నీటిపారుదల, పరిశుభ్రత చర్యలు తీసుకున్నా మొక్క ఆకుల్లో 20% కంటే ఎక్కువ భాగానికి పసుపు రంగు, ఆకు రాలడం వ్యాపిస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Commercial Crops — Chilli Powdery Mildew Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-18',
           geographicScope: 'national',
