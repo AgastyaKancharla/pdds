@@ -54,7 +54,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Commercial / Fibre',
       apMajorDistricts: ['Kurnool', 'Anantapur', 'Guntur', 'YSR Kadapa'],
       growingSeasons: ['Kharif'],
-      commonDiseaseIds: ['disease-cotton-bollworm', 'disease-cotton-whitefly'],
+      commonDiseaseIds: ['disease-cotton-bollworm', 'disease-cotton-whitefly', 'disease-cotton-jassids', 'disease-cotton-bacterialblight'],
     },
     'crop-groundnut': {
       id: 'crop-groundnut',
@@ -5315,6 +5315,226 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Cereal Crops — Rice False Smut Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-cotton-jassids': {
+      id: 'disease-cotton-jassids',
+      cropId: 'crop-cotton',
+      name_en: 'Cotton Jassids (Leafhoppers)',
+      name_te: 'పత్తి ఆకు తీగ దోమ (జాసిడ్స్)',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest: Amrasca biguttula biguttula (cotton jassid/leafhopper)',
+      pathogenOrVector_te: 'కీటకం: అమ్రాస్కా బిగుట్టులా బిగుట్టులా (పత్తి జాసిడ్/ఆకు తీగ దోమ)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Leaf margins turn yellow and curl downward (cupping) early on, usually noticed first on the lower/older leaves.',
+        'As feeding continues, the yellowing progresses to a reddish-bronze discoloration spreading inward from the margins — a symptom pattern often called "hopperburn" or "reddening" on cotton.',
+        'Severely affected leaves become brittle, curl down further, turn brick-red/bronze, and dry up; the plant shows stunted growth and reduced boll formation. Turning a leaf over usually reveals small, pale green, wedge-shaped insects that move sideways or diagonally when disturbed — a distinctive behavior for this pest.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు అంచులు మొదట పసుపు రంగులోకి మారి కిందికి ముడుచుకుంటాయి (కప్పింగ్); సాధారణంగా కింది/ముదురు ఆకులపై ముందుగా గమనించవచ్చు.',
+        'ఆహారం తీసుకోవడం కొనసాగే కొద్దీ, పసుపు రంగు అంచుల నుండి లోపలికి ఎరుపు-కంచు రంగు మార్పుగా మారుతుంది — దీన్ని పత్తిలో తరచుగా "హాపర్‌బర్న్" లేదా "రెడ్నింగ్" అంటారు.',
+        'తీవ్రంగా సోకిన ఆకులు పెళుసుగా మారి మరింత కిందికి ముడుచుకుని, ఇటుక-ఎరుపు/కంచు రంగులోకి మారి ఎండిపోతాయి; మొక్క గిడసబారి, కాయ కాపు తగ్గుతుంది. ఆకును తిప్పి చూస్తే సాధారణంగా చిన్న, లేత ఆకుపచ్చ, చీలిక ఆకారపు పురుగులు కనిపిస్తాయి, అవి కదిలించినప్పుడు పక్కకు లేదా వాలుగా కదులుతాయి — ఇది ఈ పురుగు ప్రత్యేక లక్షణం.',
+      ],
+      affectedParts: ['Leaves', 'Whole Plant'],
+      similarConditions: [
+        {
+          id: 'cotton-jassids-vs-potassium',
+          name_en: 'Potassium Deficiency',
+          name_te: 'పొటాష్ లోపం',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Jassid damage starts with downward leaf-margin curling (cupping) and yellowing before reddening, with small pale-green, sideways-moving insects visible on the leaf underside; potassium deficiency shows a more generalized interveinal/marginal yellowing-to-bronzing across the plant without the early downward cupping and without any insects present.',
+          differentiatingFactors_te:
+            'జాసిడ్ నష్టం ఆకు అంచులు కిందికి ముడుచుకోవడం (కప్పింగ్), ఎర్రబడటానికి ముందు పసుపు రంగుతో మొదలై, ఆకు అడుగున చిన్న లేత ఆకుపచ్చ, పక్కకు కదిలే పురుగులు కనిపిస్తాయి; పొటాష్ లోపం మొక్క అంతటా ఈనెల మధ్య/అంచు పసుపు-కంచు రంగు మార్పుగా మరింత సాధారణంగా కనిపిస్తుంది, తొలి కప్పింగ్ ఉండదు, పురుగులు ఉండవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Hot, dry weather with intermittent rain, and a gap between rains which favors jassid population buildup.',
+        'Hairless or sparsely-haired (smooth-leaved) cotton varieties are generally more susceptible than hairy-leaved ones.',
+        'Excessive nitrogen application, which promotes the lush, succulent growth jassids prefer.',
+      ],
+      environmentalRiskFactors_te: [
+        'వేడి, పొడి వాతావరణం, అడపాదడపా వర్షాలు, వర్షాల మధ్య ఖాళీ కాలం జాసిడ్ సంఖ్య పెరగడానికి అనుకూలం.',
+        'వెంట్రుకలు లేని లేదా తక్కువ వెంట్రుకలు గల (నునుపైన ఆకుల) పత్తి రకాలు సాధారణంగా వెంట్రుకలు ఎక్కువగా ఉన్న రకాల కంటే ఎక్కువగా తెగులుకు గురవుతాయి.',
+        'అధిక నత్రజని వాడకం వల్ల జాసిడ్స్ ఇష్టపడే మెత్తని, లేత పెరుగుదల కలుగుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Where available, grow a locally recommended hairy-leaved or jassid-tolerant variety, especially in fields with a history of repeated outbreaks.',
+          practice_te: 'అందుబాటులో ఉంటే, ముఖ్యంగా పదేపదే ఉధృతి వచ్చిన పొలాల్లో, వెంట్రుకలు గల ఆకులు లేదా జాసిడ్ తట్టుకునే స్థానికంగా సిఫారసు చేసిన రకాన్ని వేయండి.',
+          targetTiming: 'At variety selection, before sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid excessive nitrogen application, and scout the undersides of leaves regularly from the seedling stage onward rather than waiting for visible reddening.',
+          practice_te: 'అధిక నత్రజని వాడకం మానండి; ఎరుపు కనిపించే వరకు వేచి ఉండకుండా, నారు దశ నుండే ఆకుల అడుగు భాగాన్ని క్రమం తప్పకుండా పరిశీలించండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Conserve natural enemies (spiders, ladybird beetles) by avoiding unnecessary broad-spectrum sprays early in the season.',
+          practice_te: 'సీజన్ తొలిదశలో అనవసర విస్తృత-శ్రేణి పిచికారీలను నివారించడం ద్వారా సహజ శత్రువులను (సాలెపురుగులు, లేడీబర్డ్ బీటిల్స్) కాపాడండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-cotton-jassid-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Neem oil or Neem Seed Kernel Extract (NSKE) sprays are commonly used against jassids at early, low-density infestations, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'తొలిదశలో తక్కువ సాంద్రత ఉన్నప్పుడు జాసిడ్స్‌కు వ్యతిరేకంగా వేప నూనె లేదా వేప గింజల కషాయం పిచికారీ సాధారణంగా వాడతారు, కానీ ఖచ్చితమైన గాఢతను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
+          activeIngredient_te: 'వేప నూనె / వేప గింజల కషాయం (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Once leaves have already turned brittle and bronze-red, that damage does not reverse — treatment at that stage is about protecting the remaining healthy growth, not restoring damaged leaves.',
+          safetyCaution_te: 'ఆకులు ఇప్పటికే పెళుసుగా, కంచు-ఎరుపు రంగులోకి మారిన తర్వాత ఆ నష్టం తిరిగిరాదు — ఆ దశలో చికిత్స లక్ష్యం మిగిలిన ఆరోగ్యకరమైన పెరుగుదలను కాపాడటమే, దెబ్బతిన్న ఆకులను బాగు చేయడం కాదు.',
+        },
+        {
+          id: 't-cotton-jassid-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Systemic insecticides such as Acetamiprid, Thiamethoxam, or Flonicamid are commonly recommended against cotton jassids, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'పత్తి జాసిడ్స్‌కు వ్యతిరేకంగా ఎసిటామిప్రిడ్, థయామిథాక్సామ్, లేదా ఫ్లోనికామిడ్ వంటి సిస్టమిక్ పురుగుమందులు సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Acetamiprid / Thiamethoxam / Flonicamid (dose suppressed)',
+          activeIngredient_te: 'ఎసిటామిప్రిడ్ / థయామిథాక్సామ్ / ఫ్లోనికామిడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards. Spray coverage of the leaf underside matters, since that is where jassids actually feed.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి. జాసిడ్స్ నిజంగా ఆహారం తీసుకునే ఆకు అడుగు భాగానికి పిచికారీ బాగా తగలడం ముఖ్యం.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If downward curling and yellowing/reddening spreads to more than about 2-3 leaves per plant across a large share of the field, or appears early in the season on young plants, consult your VAA/RBK promptly.',
+      escalationThreshold_te:
+        'పొలంలో ఎక్కువ భాగం మొక్కలకు కిందికి ముడుచుకోవడం, పసుపు/ఎరుపు రంగు మార్పు ఒక్కో మొక్కకు 2-3 కంటే ఎక్కువ ఆకులకు వ్యాపించినా, లేదా సీజన్ తొలిదశలో లేత మొక్కలపై కనిపించినా, వెంటనే VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Commercial Crops — Cotton Jassid Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-cotton-bacterialblight': {
+      id: 'disease-cotton-bacterialblight',
+      cropId: 'crop-cotton',
+      name_en: 'Bacterial Blight (Angular Leaf Spot / Black Arm)',
+      name_te: 'బ్యాక్టీరియా ఆకుమచ్చ తెగులు (కోణాకార మచ్చ / నల్ల చేయి తెగులు)',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Bacterium: Xanthomonas citri pv. malvacearum',
+      pathogenOrVector_te: 'బ్యాక్టీరియా: జాంథోమోనాస్ సిట్రి పివి. మాల్వేసియారం',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Small, water-soaked, angular lesions on leaves, bound by the leaf veins (giving an "angular" shape rather than round), which dry to dark brown or black as they age.',
+        'On stems and branches, elongated black streaks or lesions can appear and, in severe cases, girdle the stem — a phase often called "black arm" — causing the branch or whole plant to wilt and break.',
+        'On bolls, small round, water-soaked, sunken black spots appear that can enlarge and lead to boll rot, premature opening, and stained/damaged lint.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులపై చిన్న, నీటిలో నానినట్లు కనిపించే, కోణాకార మచ్చలు ఈనెలతో ఆగి ఉంటాయి (గుండ్రంగా కాక కోణాకారంగా); ఇవి ముదిరే కొద్దీ ముదురు గోధుమ లేదా నల్ల రంగులోకి మారి ఆరిపోతాయి.',
+        'కాండం, కొమ్మలపై పొడవైన నల్లని చారలు లేదా గాయాలు కనిపించవచ్చు; తీవ్రమైన సందర్భాల్లో ఇవి కాండాన్ని చుట్టుముట్టవచ్చు — దీన్ని తరచుగా "నల్ల చేయి" దశ అంటారు — దీనివల్ల కొమ్మ లేదా మొత్తం మొక్క వాడిపోయి విరిగిపోవచ్చు.',
+        'కాయలపై చిన్న గుండ్రని, నీటిలో నానినట్లు కనిపించే, లోతైన నల్ల మచ్చలు కనిపిస్తాయి; ఇవి పెద్దవై కాయ కుళ్ళు, ముందస్తు పగిలిపోవడం, మరక పడిన/దెబ్బతిన్న దూదికి దారితీయవచ్చు.',
+      ],
+      affectedParts: ['Leaves', 'Stems', 'Bolls'],
+      similarConditions: [
+        {
+          id: 'cotton-bacterialblight-vs-fungalspot',
+          name_en: 'Fungal Leaf Spot (e.g. Alternaria/Grey Mildew)',
+          name_te: 'శిలీంద్ర ఆకు మచ్చ (ఉదా. ఆల్టర్నేరియా/బూడిద బూజు)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Bacterial blight lesions are angular and bound tightly by leaf veins, often with stem streaking/girdling and boll spotting on the same plant; common fungal leaf spots on cotton are more rounded, not vein-bound, and typically do not girdle the stem or rot the boll in the same way.',
+          differentiatingFactors_te:
+            'బ్యాక్టీరియా ఆకుమచ్చలో గాయాలు కోణాకారంగా, ఈనెలతో గట్టిగా ఆగి ఉంటాయి; తరచుగా అదే మొక్కపై కాండం చారలు/చుట్టుముట్టడం, కాయ మచ్చలు కూడా కనిపిస్తాయి; పత్తిలో సాధారణ శిలీంద్ర ఆకు మచ్చలు మరింత గుండ్రంగా, ఈనెలతో ఆగకుండా ఉండి, సాధారణంగా కాండాన్ని చుట్టుముట్టవు లేదా కాయను అదే విధంగా కుళ్ళించవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Wind-driven rain, which spreads the bacteria over distance and forces it into leaf wounds/stomata — outbreaks typically worsen fastest after storms.',
+        'Infected or uncertified seed, which can carry the bacterium directly into a new planting.',
+        'Dense planting and continuous cotton cultivation on the same land without rotation, which lets bacteria carried in crop debris build up over seasons.',
+      ],
+      environmentalRiskFactors_te: [
+        'గాలితో కూడిన వర్షం బ్యాక్టీరియాను దూరం వరకు వ్యాపింపజేసి, ఆకు గాయాలు/రంధ్రాల్లోకి బలవంతంగా చేరుస్తుంది — తుఫానుల తర్వాత ఉధృతి వేగంగా పెరుగుతుంది.',
+        'తెగులు సోకిన లేదా ధృవీకరించని విత్తనం బ్యాక్టీరియాను నేరుగా కొత్త పంటలోకి తీసుకురావచ్చు.',
+        'దట్టంగా నాటడం, పంట మార్పిడి లేకుండా అదే భూమిలో నిరంతరం పత్తి పండించడం వల్ల పంట అవశేషాల్లో బ్యాక్టీరియా సీజన్ల తరబడి పేరుకుపోతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Use certified, disease-free seed from a trusted source — seed-borne infection is one of the main ways this bacterium enters a new field.',
+          practice_te: 'నమ్మకమైన మూలం నుండి ధృవీకరించిన, తెగులు లేని విత్తనాన్ని వాడండి — విత్తనం ద్వారా వచ్చే తెగులు ఈ బ్యాక్టీరియా కొత్త పొలంలోకి ప్రవేశించే ప్రధాన మార్గాల్లో ఒకటి.',
+          targetTiming: 'At sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid working in the field or handling plants while foliage is wet, which can spread the bacteria mechanically between plants.',
+          practice_te: 'ఆకులు తడిగా ఉన్నప్పుడు పొలంలో పనిచేయడం, మొక్కలను తాకడం మానండి — దీనివల్ల బ్యాక్టీరియా యాంత్రికంగా మొక్కల మధ్య వ్యాపించవచ్చు.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Remove and destroy crop debris after harvest rather than leaving it in the field, and rotate with a non-host crop for at least one season where field layout allows.',
+          practice_te: 'కోత తర్వాత పంట అవశేషాలను పొలంలో వదలకుండా తీసి నాశనం చేయండి; వీలైతే కనీసం ఒక సీజన్ ఈ బ్యాక్టీరియాకు ఆశ్రయం ఇవ్వని పంటతో పంట మార్పిడి చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-cotton-bb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A copper-based spray (e.g. copper oxychloride) is a commonly documented field approach against bacterial blight and is accepted in both organic and conventional programs, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'బ్యాక్టీరియా ఆకుమచ్చకు వ్యతిరేకంగా రాగి ఆధారిత పిచికారీ (ఉదా. కాపర్ ఆక్సీక్లోరైడ్) సాధారణంగా వాడే పొలం పద్ధతి, ఇది సేంద్రియ, సంప్రదాయ పద్ధతుల్లో రెండింటిలోనూ ఆమోదయోగ్యం, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride (dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Copper sprays protect new growth from fresh infection but do not cure tissue already showing lesions — removing severely infected plant debris alongside spraying matters as much as the spray itself.',
+          safetyCaution_te: 'రాగి పిచికారీలు కొత్త పెరుగుదలను కొత్త తెగులు నుండి కాపాడతాయి కానీ ఇప్పటికే గాయాలున్న కణజాలాన్ని నయం చేయవు — పిచికారీతో పాటు తీవ్రంగా సోకిన మొక్క అవశేషాలను తొలగించడం కూడా అంతే ముఖ్యం.',
+        },
+        {
+          id: 't-cotton-bb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Streptocycline (a streptomycin-based bactericide) combined with copper spray is sometimes used against severe bacterial blight outbreaks in cotton, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'పత్తిలో తీవ్రమైన బ్యాక్టీరియా ఆకుమచ్చ వ్యాప్తికి వ్యతిరేకంగా కొన్నిసార్లు స్ట్రెప్టోసైక్లిన్ (స్ట్రెప్టోమైసిన్ ఆధారిత బాక్టీరిసైడ్)ను రాగి పిచికారీతో కలిపి వాడతారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Streptocycline + Copper oxychloride (dose suppressed)',
+          activeIngredient_te: 'స్ట్రెప్టోసైక్లిన్ + కాపర్ ఆక్సీక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If stem streaking/girdling ("black arm") appears on multiple plants, or boll spotting affects more than about 10% of bolls, consult your VAA/RBK promptly, since this disease can spread quickly after wind-driven rain.',
+      escalationThreshold_te:
+        'అనేక మొక్కలపై కాండం చారలు/చుట్టుముట్టడం ("నల్ల చేయి") కనిపించినా, లేదా 10% కంటే ఎక్కువ కాయలకు మచ్చలు కనిపించినా, వెంటనే VAA/RBK ను సంప్రదించండి — గాలితో కూడిన వర్షం తర్వాత ఈ తెగులు వేగంగా వ్యాపించగలదు.',
+      sources: [
+        {
+          title: 'Package of Practices for Commercial Crops — Cotton Bacterial Blight Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-18',
           geographicScope: 'national',
