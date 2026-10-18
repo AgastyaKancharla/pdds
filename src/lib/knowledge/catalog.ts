@@ -123,6 +123,21 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       growingSeasons: ['Kharif (June-July to Feb)'],
       commonDiseaseIds: ['disease-turmeric-rhizomerot', 'disease-turmeric-leafspot'],
     },
+    'crop-brinjal': {
+      id: 'crop-brinjal',
+      name_en: 'Brinjal / Eggplant',
+      name_te: 'వంకాయ',
+      scientificName: 'Solanum melongena L.',
+      category: 'Vegetable / Solanaceous',
+      apMajorDistricts: ['Guntur', 'East Godavari', 'West Godavari', 'Kurnool', 'Chittoor'],
+      growingSeasons: ['Kharif', 'Rabi', 'Summer (irrigated)'],
+      commonDiseaseIds: [
+        'disease-brinjal-shootfruitborer',
+        'disease-brinjal-phomopsisblight',
+        'disease-brinjal-wetrot',
+        'disease-brinjal-fruitcracking',
+      ],
+    },
   },
   diseases: {
     'disease-rice-blast': {
@@ -3439,6 +3454,409 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       ],
       evidenceStatus: 'provisional',
       lastUpdated: '2026-10-13',
+    },
+    'disease-brinjal-shootfruitborer': {
+      id: 'disease-brinjal-shootfruitborer',
+      cropId: 'crop-brinjal',
+      name_en: 'Shoot and Fruit Borer',
+      name_te: 'కాండం మరియు కాయ తొలిచే పురుగు',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest: Leucinodes orbonalis (brinjal shoot and fruit borer)',
+      pathogenOrVector_te: 'కీటకం: ల్యూసినోడిస్ ఆర్బొనాలిస్ (వంకాయ కాండం, కాయ తొలిచే పురుగు)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Young shoots wilt and droop ("dead heart") with a small bore hole and larval frass (excreta) visible at the entry point.',
+        'In fruits, a small bore hole plugged with frass is visible on the surface; the fruit shows little external rot but is hollowed and tunneled inside by the larva.',
+        'Infested fruits are unmarketable even though the outer skin often still looks mostly healthy.',
+      ],
+      observableSymptoms_te: [
+        'లేత చిగుళ్లు వాడిపోయి వంగిపోతాయి; తొలిచిన రంధ్రం వద్ద పురుగు విసర్జించిన పదార్థం కనిపిస్తుంది.',
+        'కాయలపై చిన్న రంధ్రం, దాని చుట్టూ పురుగు విసర్జించిన పదార్థం కనిపిస్తుంది; పైకి ఎక్కువ కుళ్ళు కనిపించకపోయినా లోపల కాయ తొలిచి ఉంటుంది.',
+        'పైకి బాగానే కనిపించినా, తొలిచిన కాయలు అమ్మకానికి పనికిరావు.',
+      ],
+      affectedParts: ['Shoots', 'Fruits'],
+      similarConditions: [
+        {
+          id: 'brinjal-wetrot-vs-borer',
+          name_en: 'Wet Fruit Rot (Rhizopus/Choanephora)',
+          name_te: 'తడి కాయకుళ్ళు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Borer damage always has a plugged bore hole with frass and a dry tunnel inside; wet rot has no bore hole, instead a soft, watery, foul-smelling rot that spreads rapidly across the fruit surface.',
+          differentiatingFactors_te:
+            'పురుగు తొలిచిన కాయలో రంధ్రం, దాని చుట్టూ విసర్జిత పదార్థం ఉంటుంది, లోపల పొడిగా తొలిచి ఉంటుంది; తడి కుళ్ళులో రంధ్రం ఉండదు, బదులుగా మెత్తని, తడి, దుర్వాసనతో కూడిన కుళ్ళు వేగంగా వ్యాపిస్తుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid weather allows multiple, overlapping pest generations through the season.',
+        'Continuous brinjal cultivation on the same land without rotation builds up the local pest population.',
+        'Leaving infested shoots and fruits on the plant lets larvae complete their lifecycle and re-infest.',
+      ],
+      environmentalRiskFactors_te: [
+        'వెచ్చని, తేమతో కూడిన వాతావరణంలో ఈ పురుగు అనేక తరాలు వరుసగా వృద్ధి చెందుతుంది.',
+        'ఒకే పొలంలో పంట మార్పిడి లేకుండా పదేపదే వంకాయ వేయడం వల్ల పురుగు సంఖ్య పెరుగుతుంది.',
+        'తొలిచిన చిగుళ్లు, కాయలను మొక్కపైనే వదిలేస్తే పురుగు జీవితచక్రం పూర్తి చేసుకుని మళ్ళీ సోకుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Hand-pick and destroy (bury or burn) wilted shoots and infested/bored fruits every week throughout the season — this single practice is the most widely recommended, lowest-cost control for this pest.',
+          practice_te:
+            'ప్రతి వారం వాడిన చిగుళ్లను, తొలిచిన కాయలను చేతితో ఏరి నాశనం చేయండి (పూడ్చిపెట్టండి లేదా కాల్చండి) — ఇది అతి తక్కువ ఖర్చుతో అత్యంత సిఫారసు చేయబడిన పద్ధతి.',
+          targetTiming: 'Weekly, throughout the season',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Install pheromone traps (Leucinodes orbonalis-specific lure) at roughly 8-10 traps per acre for monitoring and mass trapping of male moths.',
+          practice_te:
+            'మగ శలభాలను ఆకర్షించి పట్టుకోవడానికి ఎకరానికి 8-10 ఫెరోమోన్ ఎరలను ఏర్పాటు చేయండి.',
+          targetTiming: 'From transplanting onward',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Avoid ratooning (cutting back and regrowing) a heavily infested crop, since surviving larvae inside old stems carry the infestation into the new flush.',
+          practice_te:
+            'ఎక్కువగా పురుగు సోకిన పంటను మళ్ళీ కత్తిరించి పెంచవద్దు — పాత కాండంలో మిగిలిన పురుగులు కొత్త చిగుళ్లకు సోకుతాయి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-brinjal-sfb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Neem seed kernel extract (NSKE) or neem oil sprays are commonly used against early-instar larvae before they bore in, but a specific concentration/dose is not confirmed against a primary label from this session — confirm the rate with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before spraying.',
+          instruction_te:
+            'లేత పురుగులు కాయలు తొలవకముందే వేప గింజల కషాయం లేదా వేప నూనె పిచికారీ సాధారణంగా వాడతారు, కానీ ఖచ్చితమైన గాఢత/మోతాదును ఈ సెషన్ ధృవీకరించలేదు — పిచికారీకి ముందు గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) వద్ద మోతాదును నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Azadirachtin (organic, dose unverified)',
+          activeIngredient_te: 'అజాడిరక్టిన్ (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Once a larva has bored into a shoot or fruit, no spray can reach it — hand-picking is the only way to remove it at that stage.',
+          safetyCaution_te: 'పురుగు ఒకసారి లోపలికి తొలుచుకుపోతే, ఏ పిచికారీ మందు దాన్ని చేరదు — ఆ దశలో చేతితో ఏరడమే ఏకైక మార్గం.',
+        },
+        {
+          id: 't-brinjal-sfb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Insecticides such as Flubendiamide, Spinosad, or Emamectin benzoate are commonly registered against Lepidopteran shoot/fruit borers in brinjal, but a specific dose for this pest/crop combination is suppressed here — this session could not confirm a current CIBRC-registered figure, and brinjal fruit is harvested frequently (every few days), so a wrong waiting period is a real risk. Do not spray from memory.',
+          instruction_te:
+            'వంకాయలో కాండం/కాయ తొలిచే పురుగుకు ఫ్లుబెండమైడ్, స్పినోసాడ్, ఎమామెక్టిన్ బెంజోయేట్ వంటి మందులు సాధారణంగా నమోదై ఉన్నాయి, కానీ ఈ నిర్దిష్ట పురుగు/పంట కలయికకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది, వంకాయను తరచుగా (కొద్ది రోజులకోసారి) కోస్తారు కాబట్టి తప్పు నిరీక్షణ వ్యవధి నిజమైన ప్రమాదం. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Flubendiamide / Spinosad / Emamectin benzoate (organic/chemical dose suppressed)',
+          activeIngredient_te: 'ఫ్లుబెండమైడ్ / స్పినోసాడ్ / ఎమామెక్టిన్ బెంజోయేట్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) and check your product container label before spraying — brinjal is often picked every 3-5 days, so a product with a long waiting period may force skipping a harvest round.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని గ్రామ వ్యవసాయ సహాయకుడు (VAA) / రైతు భరోసా కేంద్రం (RBK) వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి — వంకాయను తరచుగా 3-5 రోజులకోసారి కోస్తారు కాబట్టి, ఎక్కువ నిరీక్షణ వ్యవధి ఉన్న మందు వాడితే ఒక కోత తప్పిపోవచ్చు.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 10% of shoots or fruits show borer damage despite regular hand-picking and trapping, or pheromone trap catches stay high week over week, consult your VAA/RBK for a tailored spray program.',
+      escalationThreshold_te:
+        'క్రమం తప్పకుండా ఏరివేత, ఎరలు ఏర్పాటు చేసినా 10% కంటే ఎక్కువ చిగుళ్లు లేదా కాయలు దెబ్బతింటే, లేదా ఫెరోమోన్ ఎరలలో పురుగుల సంఖ్య వారం వారం ఎక్కువగా ఉంటే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Brinjal Pest Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-brinjal-phomopsisblight': {
+      id: 'disease-brinjal-phomopsisblight',
+      cropId: 'crop-brinjal',
+      name_en: 'Phomopsis Blight & Fruit Rot',
+      name_te: 'ఫోమోప్సిస్ ఆకుమచ్చ మరియు కాయకుళ్ళు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Phomopsis vexans',
+      pathogenOrVector_te: 'శిలీంద్రం: ఫోమోప్సిస్ వెక్సాన్స్',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Small circular brown spots with greyish centers on leaves, which can enlarge and merge, causing leaf drop.',
+        'A girdling blight near the soil line can kill young seedlings (damping-off) in the nursery.',
+        'On fruits: sunken, water-soaked spots that enlarge and turn pale brown-grey, often showing tiny black dots (fungal fruiting bodies) arranged in rings; the fruit eventually shrivels and rots.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులపై చిన్న గుండ్రని గోధుమ రంగు మచ్చలు, మధ్యలో బూడిద రంగు కేంద్రం ఉంటాయి; ఇవి పెద్దవై కలిసిపోయి ఆకు రాలుతుంది.',
+        'నారుమడిలో నేల మట్టానికి దగ్గర కాండం చుట్టూ తెగులు సోకి లేత మొక్కలు చనిపోవచ్చు.',
+        'కాయలపై: లోతుగా, తడిగా కనిపించే మచ్చలు పెద్దవై లేత గోధుమ-బూడిద రంగులోకి మారతాయి; తరచుగా వలయాకారంలో చిన్న నల్లని బిందువులు (శిలీంద్ర బీజకోశాలు) కనిపిస్తాయి; చివరికి కాయ ముడుచుకుని కుళ్ళిపోతుంది.',
+      ],
+      affectedParts: ['Leaves', 'Stems', 'Fruits'],
+      similarConditions: [
+        {
+          id: 'brinjal-wetrot-vs-phomopsis',
+          name_en: 'Wet Fruit Rot (Rhizopus/Choanephora)',
+          name_te: 'తడి కాయకుళ్ళు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Phomopsis fruit rot shows small black dots (pycnidia) arranged in concentric rings on a firm, pale lesion; wet rot is a soft, rapidly-spreading, watery rot with no ring pattern and a stronger foul smell.',
+          differentiatingFactors_te:
+            'ఫోమోప్సిస్ కాయకుళ్ళులో గట్టిగా ఉండే లేత మచ్చపై వలయాకారంలో చిన్న నల్లని బిందువులు కనిపిస్తాయి; తడి కుళ్ళులో వలయాకారం ఉండదు, మెత్తని, వేగంగా వ్యాపించే, ఎక్కువ దుర్వాసన గల కుళ్ళు ఉంటుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid weather (around 25-30°C) with frequent rain or overhead irrigation spreads spores via splash.',
+        'Infected seed or nursery seedlings carry the fungus into a new planting.',
+        'Continuous brinjal cultivation on the same field without rotation allows the fungus to build up in crop residue.',
+      ],
+      environmentalRiskFactors_te: [
+        'వెచ్చని, తేమతో కూడిన వాతావరణం (సుమారు 25-30°C), తరచుగా వర్షాలు లేదా పైనుండి తడిపే నీటిపారుదల వల్ల బీజాలు చిందరవందరగా వ్యాపిస్తాయి.',
+        'తెగులు సోకిన విత్తనం లేదా నారు మొక్కల ద్వారా కొత్త పంటకు తెగులు వ్యాపిస్తుంది.',
+        'పంట మార్పిడి లేకుండా అదే పొలంలో పదేపదే వంకాయ వేయడం వల్ల పంట అవశేషాల్లో శిలీంద్రం పేరుకుపోతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Use disease-free seed or seedlings from a trusted nursery, and treat seed with a biological agent (Trichoderma-based) before sowing where available.',
+          practice_te: 'నమ్మకమైన నారుమడి నుండి తెగులు లేని విత్తనం/నారు వాడండి, వీలైతే విత్తేముందు ట్రైకోడెర్మా ఆధారిత జీవ నియంత్రణ కారకంతో విత్తన శుద్ధి చేయండి.',
+          targetTiming: 'Pre-sowing / pre-transplanting',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy infected leaves, fallen fruit, and crop debris at the end of the season rather than leaving them in the field.',
+          practice_te: 'తెగులు సోకిన ఆకులు, రాలిన కాయలు, పంట అవశేషాలను పొలంలో వదలకుండా తీసి నాశనం చేయండి.',
+          targetTiming: 'Throughout season and post-harvest',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Rotate with a non-solanaceous crop (not tomato, chilli, or potato) for 2-3 years where field layout allows.',
+          practice_te: 'వీలైతే 2-3 సంవత్సరాలు సోలనేసి కుటుంబానికి చెందని పంటలతో (టమాట, మిరప, బంగాళాదుంప కాకుండా) పంట మార్పిడి చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-brinjal-phomopsis-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Trichoderma viride applied to soil/root zone is a commonly documented biological approach against soil-borne Phomopsis inoculum, but a specific application rate is not confirmed from a primary source in this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'నేలలో ఉండే ఫోమోప్సిస్ బీజాలకు వ్యతిరేకంగా ట్రైకోడెర్మా విరిడిని నేల/వేరు ప్రాంతానికి వేయడం సాధారణ సేంద్రియ పద్ధతి, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-brinjal-phomopsis-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Mancozeb or Carbendazim foliar sprays are widely documented for Phomopsis blight management, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'ఫోమోప్సిస్ తెగులుకు మాంకోజెబ్ లేదా కార్బెండజిమ్ పిచికారీలు విస్తృతంగా వాడతారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Mancozeb / Carbendazim (dose suppressed)',
+          activeIngredient_te: 'మాంకోజెబ్ / కార్బెండజిమ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given brinjal\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'వంకాయను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If fruit rot affects more than about 10-15% of the standing crop, or seedling damping-off appears in the nursery, consult your VAA/RBK promptly.',
+      escalationThreshold_te:
+        'నిలబడిన పంటలో 10-15% కంటే ఎక్కువ కాయలకు కుళ్ళు తెగులు సోకినా, నారుమడిలో మొక్కలు చనిపోతున్నా, వెంటనే VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Brinjal Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-brinjal-wetrot': {
+      id: 'disease-brinjal-wetrot',
+      cropId: 'crop-brinjal',
+      name_en: 'Wet Fruit Rot',
+      name_te: 'తడి కాయకుళ్ళు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungi: Rhizopus spp. / Choanephora spp. (secondary fruit-rot fungi, often entering through wounds)',
+      pathogenOrVector_te: 'శిలీంద్రాలు: రైజోపస్ / కోయనెఫోరా జాతులు (గాయాల ద్వారా ప్రవేశించే ద్వితీయ కాయకుళ్ళు శిలీంద్రాలు)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'A soft, watery rot that spreads rapidly across the fruit, often starting where the fruit touches wet soil or has an injury (including an old borer hole).',
+        'The fruit becomes mushy with a distinct foul smell; whitish or grey fungal growth can appear on the surface in advanced stages.',
+        'Spreads quickly to touching fruits in storage or dense foliage.',
+      ],
+      observableSymptoms_te: [
+        'కాయ తడి నేలను తాకిన చోట లేదా ఏదైనా గాయం (పాత పురుగు రంధ్రం సహా) ఉన్న చోట మెత్తని, తడి కుళ్ళు వేగంగా వ్యాపిస్తుంది.',
+        'కాయ మెత్తగా, దుర్వాసనతో మారుతుంది; ముదిరిన దశలో తెల్లని లేదా బూడిద రంగు శిలీంద్ర పెరుగుదల కనిపించవచ్చు.',
+        'నిల్వలో లేదా దట్టమైన ఆకుల మధ్య తాకుతున్న కాయలకు వేగంగా వ్యాపిస్తుంది.',
+      ],
+      affectedParts: ['Fruits'],
+      similarConditions: [
+        {
+          id: 'brinjal-wetrot-vs-phomopsis-2',
+          name_en: 'Phomopsis Blight & Fruit Rot',
+          name_te: 'ఫోమోప్సిస్ ఆకుమచ్చ మరియు కాయకుళ్ళు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Wet rot is soft, watery, and spreads fast with a strong foul smell and no ring pattern; Phomopsis rot is firmer, paler, and shows tiny black dots in concentric rings.',
+          differentiatingFactors_te:
+            'తడి కుళ్ళు మెత్తగా, తడిగా, వేగంగా వ్యాపిస్తుంది, తీవ్రమైన దుర్వాసన ఉంటుంది, వలయాకారం ఉండదు; ఫోమోప్సిస్ కుళ్ళు గట్టిగా, లేత రంగులో ఉండి వలయాకారంలో నల్లని బిందువులు చూపుతుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High humidity and waterlogging around the fruiting zone.',
+        'Fruit resting directly on wet soil.',
+        'Mechanical injury or insect damage (including Shoot and Fruit Borer entry holes) that gives the fungus an entry wound.',
+      ],
+      environmentalRiskFactors_te: [
+        'కాయ ఉండే ప్రాంతంలో ఎక్కువ తేమ, నీరు నిలవడం.',
+        'కాయ నేరుగా తడి నేలను తాకడం.',
+        'యాంత్రిక గాయాలు లేదా కీటకాల నష్టం (కాండం/కాయ తొలిచే పురుగు రంధ్రాలతో సహా) శిలీంద్రానికి ప్రవేశ మార్గం ఇస్తాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Stake plants or use mulch so fruits do not rest directly on wet soil.',
+          practice_te: 'కాయలు నేరుగా తడి నేలను తాకకుండా మొక్కలకు ఆధారం ఇవ్వండి లేదా మల్చింగ్ వాడండి.',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Harvest fruit promptly at maturity and avoid bruising or injuring fruit during picking and handling.',
+          practice_te: 'కాయలు పక్వానికి రాగానే వెంటనే కోయండి; కోసేటప్పుడు, తర్వాత నిర్వహణలో కాయలకు గాయం కాకుండా జాగ్రత్త వహించండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Control the Shoot and Fruit Borer, since its bore holes are a common entry wound for this rot.',
+          practice_te: 'కాండం/కాయ తొలిచే పురుగును అదుపులో ఉంచండి — దాని రంధ్రాలు ఈ కుళ్ళుకు సాధారణ ప్రవేశ మార్గం.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-brinjal-wetrot-prev-1',
+          stepNumber: 1,
+          category: 'preventive',
+          instruction_en:
+            'This rot is largely a wound-and-moisture problem rather than a primary infection, so prevention (drainage, staking, prompt harvest, borer control) matters more than any spray. A copper-based fungicide (e.g. copper oxychloride) is sometimes used as a general field sanitation spray, but a specific dose is not confirmed from a primary source here — confirm with your VAA/RBK if you choose to spray.',
+          instruction_te:
+            'ఈ కుళ్ళు ఎక్కువగా గాయం మరియు తేమ వల్ల కలిగేదే తప్ప ప్రాథమిక తెగులు కాదు కాబట్టి, పిచికారీ కంటే నివారణ చర్యలే (నీటి పారుదల, ఆధారం ఇవ్వడం, వెంటనే కోత, పురుగు నియంత్రణ) ఎక్కువ ముఖ్యం. సాధారణ పొలం పరిశుభ్రత కోసం కొన్నిసార్లు రాగి ఆధారిత శిలీంద్రనాశకం (ఉదా. కాపర్ ఆక్సీక్లోరైడ్) వాడతారు, కానీ ఖచ్చితమైన మోతాదును ఇక్కడ ధృవీకరించలేదు — పిచికారీ చేయదలిస్తే VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (ఐచ్ఛికం, మోతాదు ధృవీకరించబడలేదు)',
+        },
+      ],
+      escalationThreshold_en:
+        'If rot spreads rapidly through the field or causes more than about 15% fruit loss despite drainage and sanitation steps, consult your VAA/RBK.',
+      escalationThreshold_te:
+        'నీటి పారుదల, పరిశుభ్రత చర్యలు తీసుకున్నా కుళ్ళు వేగంగా వ్యాపిస్తున్నా లేదా 15% కంటే ఎక్కువ కాయ నష్టం జరిగినా, VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Brinjal Post-Harvest and Fruit Rot Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-brinjal-fruitcracking': {
+      id: 'disease-brinjal-fruitcracking',
+      cropId: 'crop-brinjal',
+      name_en: 'Fruit Cracking (Physiological)',
+      name_te: 'కాయ పగుళ్లు (పోషక/నీటి లోపం)',
+      conditionCategory: 'physiological_disorder',
+      pathogenOrVector_en: 'Non-pathogenic: irregular soil moisture and/or calcium/boron nutrition during rapid fruit growth',
+      pathogenOrVector_te: 'తెగులు కాదు: కాయ వేగంగా పెరిగే దశలో అసమాన నేల తేమ మరియు/లేదా కాల్షియం/బోరాన్ పోషక లోపం',
+      urgencyLevel: 'Low',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Irregular cracks or splits on the fruit skin, often radiating outward from near the stalk/calyx end.',
+        'Cracks may heal over with a corky, hardened edge, or stay open and invite secondary soft rot.',
+        'No bore hole, frass, or fungal ring pattern is present — the crack itself is a clean split in the skin.',
+      ],
+      observableSymptoms_te: [
+      'కాయ తొడిమ/పీచు భాగం దగ్గర నుండి బయటకు విస్తరించే అసమాన పగుళ్లు కనిపిస్తాయి.',
+        'పగుళ్లు మాన్చుకుని గట్టిపడిన అంచుతో ఉండవచ్చు, లేదా తెరిచే ఉండి ద్వితీయ మెత్తని కుళ్ళుకు దారితీయవచ్చు.',
+        'రంధ్రం, పురుగు విసర్జిత పదార్థం, లేదా శిలీంద్ర వలయాకారం ఉండవు — పగులు కేవలం శుభ్రమైన చీలికలా ఉంటుంది.',
+      ],
+      affectedParts: ['Fruits'],
+      similarConditions: [
+        {
+          id: 'brinjal-cracking-vs-phomopsis',
+          name_en: 'Phomopsis Blight & Fruit Rot',
+          name_te: 'ఫోమోప్సిస్ ఆకుమచ్చ మరియు కాయకుళ్ళు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Cracking is a clean skin split with no rot, discoloration ring, or fungal dots unless a crack later gets secondarily infected; Phomopsis rot is a sunken, discolored lesion with pycnidia from the start.',
+          differentiatingFactors_te:
+            'పగులు అనేది శుభ్రమైన చర్మం చీలిక మాత్రమే, దానికి తర్వాత ద్వితీయ తెగులు సోకనంతవరకు కుళ్ళు, రంగు మార్పు, శిలీంద్ర బిందువులు ఉండవు; ఫోమోప్సిస్ కుళ్ళు మొదటి నుండే లోతుగా, రంగు మారిన మచ్చగా బీజకోశాలతో కనిపిస్తుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'A long dry spell followed by heavy irrigation or sudden rain, causing the fruit to swell faster than its skin can stretch.',
+        'Inconsistent irrigation scheduling in general.',
+        'Calcium or boron deficiency in the soil, and some cultivars are more prone than others.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఎక్కువ రోజులు నీరు లేకుండా ఉండి, తరువాత ఒకేసారి ఎక్కువ నీరు పెట్టడం లేదా భారీ వర్షం పడటం వల్ల కాయ చర్మం సాగే వేగం కంటే వేగంగా లోపల పెరుగుతుంది.',
+        'నీటి పారుదలలో క్రమబద్ధత లేకపోవడం.',
+        'నేలలో కాల్షియం లేదా బోరాన్ లోపం; కొన్ని రకాలు ఎక్కువగా దీనికి గురవుతాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain even, consistent soil moisture through regular irrigation — avoid long dry spells followed by heavy watering.',
+          practice_te: 'క్రమం తప్పకుండా నీటిపారుదల ద్వారా నేలలో సమానమైన తేమను కాపాడండి — ఎక్కువ రోజులు ఆరబెట్టి తర్వాత ఒకేసారి ఎక్కువ నీరు పెట్టవద్దు.',
+          targetTiming: 'Throughout fruiting period',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Mulch around the base of plants to conserve soil moisture and reduce swings between wet and dry.',
+          practice_te: 'నేల తేమను కాపాడటానికి, తడి-పొడి మార్పులను తగ్గించడానికి మొక్కల మొదళ్ల చుట్టూ మల్చింగ్ వేయండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'If cracking persists despite consistent irrigation, have your soil tested for calcium and boron levels through your RBK.',
+          practice_te: 'స్థిరమైన నీటిపారుదల చేసినా పగుళ్లు కొనసాగితే, మీ RBK ద్వారా నేలలో కాల్షియం, బోరాన్ స్థాయిలను పరీక్షించుకోండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-brinjal-cracking-prev-1',
+          stepNumber: 1,
+          category: 'preventive',
+          instruction_en:
+            'This is a physiological disorder, not a disease or pest — there is no pesticide or fungicide for fruit cracking. Consistent irrigation scheduling and mulching are the primary corrective measures; a soil-test-guided calcium or boron correction may help if a nutrient deficiency is confirmed.',
+          instruction_te:
+            'ఇది తెగులు లేదా పురుగు కాదు, శారీరక లోపం మాత్రమే — కాయ పగుళ్లకు ఏ పురుగుమందు లేదా శిలీంద్రనాశకం పనిచేయదు. స్థిరమైన నీటిపారుదల ప్రణాళిక, మల్చింగ్ ప్రధాన దిద్దుబాటు చర్యలు; నేల పరీక్షలో పోషక లోపం నిర్ధారణ అయితే కాల్షియం లేదా బోరాన్ సరిచేయడం సహాయపడవచ్చు.',
+          activeIngredient_en: 'None (agronomic correction only)',
+          activeIngredient_te: 'ఏదీ లేదు (వ్యవసాయ పద్ధతుల ద్వారా మాత్రమే దిద్దుబాటు)',
+        },
+      ],
+      escalationThreshold_en:
+        'If a large share of fruit (roughly 20% or more) keeps cracking despite consistent irrigation and mulching, ask your VAA/RBK about a soil nutrient test for calcium and boron.',
+      escalationThreshold_te:
+        'స్థిరమైన నీటిపారుదల, మల్చింగ్ చేసినా సుమారు 20% కంటే ఎక్కువ కాయలు పగులుతూనే ఉంటే, కాల్షియం, బోరాన్ కోసం నేల పోషక పరీక్ష గురించి మీ VAA/RBK ను అడగండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Brinjal Fruit Quality and Physiological Disorders',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
     },
   },
 };

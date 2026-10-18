@@ -15,6 +15,7 @@ import type {
   SeverityBand,
   TreatmentCategory,
 } from './types';
+import type { Crop, Disease } from '../../types/database';
 
 /**
  * Returns knowledge details for a given crop ID.
@@ -94,6 +95,48 @@ export function getAllSupportedDiseases(cropId?: string): DiseaseKnowledgeEntry[
  */
 export function getOfflineReferenceCatalog(): AgriculturalKnowledgeCatalog {
   return AGRICULTURAL_KNOWLEDGE_CATALOG;
+}
+
+/**
+ * Synthesizes a legacy `Crop` record from a curated catalog entry. ResultScreen.tsx still
+ * resolves its render-gating `crop`/`disease` state from the legacy `Crop`/`Disease` shape
+ * (via `getMockCrop`/`getMockDisease`), which only covers the original 10 crops. Any crop
+ * added to the catalog afterward (e.g. Brinjal) would otherwise never populate that state and
+ * would always hit the "not found" fallback view, even though `getCropKnowledge` resolves it
+ * fine. This bridges the gap without requiring every new catalog crop to also be hand-added
+ * to the legacy mock arrays.
+ */
+export function cropKnowledgeToCrop(entry: CropKnowledgeEntry): Crop {
+  return {
+    id: entry.id,
+    name_en: entry.name_en,
+    name_te: entry.name_te,
+    category: entry.category,
+    tier: 2,
+    ap_regions: entry.apMajorDistricts.length > 0 ? entry.apMajorDistricts : null,
+    growing_season: entry.growingSeasons.length > 0 ? entry.growingSeasons.join(' / ') : null,
+    image_url: null,
+    created_at: new Date().toISOString(),
+  };
+}
+
+/** Same bridging purpose as `cropKnowledgeToCrop`, for the `Disease` shape. */
+export function diseaseKnowledgeToDisease(entry: DiseaseKnowledgeEntry): Disease {
+  return {
+    id: entry.id,
+    crop_id: entry.cropId,
+    name_en: entry.name_en,
+    name_te: entry.name_te,
+    type: entry.pathogenOrVector_en,
+    symptoms_en: entry.observableSymptoms_en.join(' '),
+    symptoms_te: entry.observableSymptoms_te.join(' '),
+    affected_parts: entry.affectedParts,
+    urgency_level: entry.urgencyLevel,
+    urgency_color: entry.urgencyColor,
+    ap_specific_tip_en: null,
+    ap_specific_tip_te: null,
+    created_at: new Date().toISOString(),
+  };
 }
 
 export interface CuratedTreatmentDisplay {
