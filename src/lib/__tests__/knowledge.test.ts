@@ -39,9 +39,9 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
     it('contains all 10 core Andhra Pradesh crops plus the catalog-expansion crops, with complete bilingual metadata', () => {
       const crops = Object.values(AGRICULTURAL_KNOWLEDGE_CATALOG.crops);
-      // 10 original core crops + Brinjal + Okra, the new crops added in the Oct 2026 catalog
-      // expansion pass (new crops beyond the original 10, not just new conditions on them).
-      expect(crops.length).toBe(12);
+      // 10 original core crops + Brinjal + Okra + Citrus, the new crops added in the Oct 2026
+      // catalog expansion pass (new crops beyond the original 10, not just new conditions on them).
+      expect(crops.length).toBe(13);
 
       const expectedCropIds = [
         'crop-rice',
@@ -56,6 +56,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         'crop-turmeric',
         'crop-brinjal',
         'crop-okra',
+        'crop-citrus',
       ];
 
       for (const id of expectedCropIds) {
@@ -494,13 +495,13 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
     it('returns lists of all supported crops and diseases', () => {
       const allCrops = getAllSupportedCrops();
-      // 10 original core crops + Brinjal + Okra, the new-crop catalog expansion.
-      expect(allCrops.length).toBe(12);
+      // 10 original core crops + Brinjal + Okra + Citrus, the new-crop catalog expansion.
+      expect(allCrops.length).toBe(13);
 
       // 10 original + 6 added in the Oct 2026 market-research expansion pass + 4 new Brinjal
-      // conditions + 5 new Okra conditions.
+      // conditions + 5 new Okra conditions + 5 new Citrus conditions.
       const allDiseases = getAllSupportedDiseases();
-      expect(allDiseases.length).toBeGreaterThanOrEqual(25);
+      expect(allDiseases.length).toBeGreaterThanOrEqual(30);
 
       // Rice is the first crop expanded beyond a single condition. This previously asserted
       // exactly one rice disease, which was the assumption the whole UI inherited.
@@ -548,8 +549,8 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
     it('returns full offline reference catalog synchronously', () => {
       const offlineCatalog = getOfflineReferenceCatalog();
       expect(offlineCatalog.version).toBe('1.0.0');
-      expect(Object.keys(offlineCatalog.crops).length).toBe(12);
-      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(25);
+      expect(Object.keys(offlineCatalog.crops).length).toBe(13);
+      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(30);
     });
   });
 

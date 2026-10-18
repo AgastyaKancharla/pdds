@@ -154,6 +154,22 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'disease-okra-phyllostictaleafspot',
       ],
     },
+    'crop-citrus': {
+      id: 'crop-citrus',
+      name_en: 'Citrus (Sweet Orange / Lime)',
+      name_te: 'సిట్రస్ (బత్తాయి / నిమ్మ)',
+      scientificName: 'Citrus spp. (e.g. Citrus sinensis — sweet orange, Citrus aurantiifolia — acid lime)',
+      category: 'Fruit',
+      apMajorDistricts: ['Anantapur', 'Kadapa', 'Nellore', 'Chittoor'],
+      growingSeasons: ['Year-round (2-3 flowering flushes per year)'],
+      commonDiseaseIds: [
+        'disease-citrus-greening',
+        'disease-citrus-canker',
+        'disease-citrus-blackspot',
+        'disease-citrus-melanose',
+        'disease-citrus-scab',
+      ],
+    },
   },
   diseases: {
     'disease-rice-blast': {
@@ -4418,6 +4434,559 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-citrus-greening': {
+      id: 'disease-citrus-greening',
+      cropId: 'crop-citrus',
+      name_en: 'Citrus Greening (Huanglongbing / HLB)',
+      name_te: 'సిట్రస్ గ్రీనింగ్ (హువాంగ్లాంగ్‌బింగ్ / HLB)',
+      conditionCategory: 'disease',
+      pathogenOrVector_en:
+        'Bacterium: Candidatus Liberibacter asiaticus (most common form in Asia), transmitted by the Asian citrus psyllid, Diaphorina citri',
+      pathogenOrVector_te:
+        'బ్యాక్టీరియా: కాండిడేటస్ లైబెరిబాక్టర్ ఆసియాటికస్ (ఆసియాలో సాధారణంగా కనిపించే రూపం), ఆసియన్ సిట్రస్ సైల్లిడ్ (డయాఫొరినా సిట్రి) ద్వారా వ్యాపిస్తుంది',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Blotchy, asymmetric yellow mottling on leaves — the pattern does NOT mirror across the midrib/leaf center, unlike most nutrient deficiencies.',
+        'Yellowing often appears sector-by-sector on the tree (one or a few branches affected while others look normal), sometimes called "yellow shoot" symptoms.',
+        'Fruit from infected branches are small, lopsided/asymmetric, stay partly green at the bottom even when ripe, taste bitter or salty, and often contain dark, aborted seeds; premature fruit drop and twig dieback follow over time.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులపై అసమాన పసుపు మచ్చలు (బ్లాచీ మొటిల్) కనిపిస్తాయి — చాలా పోషక లోపాల మాదిరిగా ఈ నమూనా ఆకు మధ్య ఈనెకు ఇరువైపులా సమానంగా ఉండదు.',
+        'చెట్టుపై కొన్ని కొమ్మలు మాత్రమే పసుపు రంగులోకి మారి, మిగతా కొమ్మలు సాధారణంగా కనిపించడం ("పసుపు చిగురు" లక్షణాలు) తరచుగా కనిపిస్తుంది.',
+        'సోకిన కొమ్మల కాయలు చిన్నవిగా, అసమానంగా, పండినా కింది భాగం ఆకుపచ్చగానే ఉండి, చేదు లేదా ఉప్పు రుచిగా ఉండి, లోపల ముదురు రంగు, ఎదగని గింజలు కలిగి ఉంటాయి; కాలక్రమేణా కాయలు ముందుగా రాలి, కొమ్మలు ఎండిపోతాయి.',
+      ],
+      affectedParts: ['Leaves', 'Shoots', 'Fruits', 'Whole Tree'],
+      similarConditions: [
+        {
+          id: 'citrus-greening-vs-nutrient',
+          name_en: 'Zinc / Manganese Deficiency',
+          name_te: 'జింక్ / మాంగనీస్ లోపం',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Nutrient-deficiency mottling is usually symmetric on both sides of the leaf midrib and affects most leaves evenly across the tree; HLB mottling is blotchy and asymmetric (does not mirror across the midrib) and typically appears on only some branches/sectors of the tree while others stay green.',
+          differentiatingFactors_te:
+            'పోషక లోప మచ్చలు సాధారణంగా ఆకు మధ్య ఈనెకు ఇరువైపులా సమానంగా ఉండి, చెట్టు మొత్తం ఆకులపై సమానంగా కనిపిస్తాయి; HLB మచ్చలు అసమానంగా ఉండి, సాధారణంగా చెట్టులోని కొన్ని కొమ్మలు/భాగాలలో మాత్రమే కనిపిస్తాయి, మిగతా భాగాలు పచ్చగానే ఉంటాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High Asian citrus psyllid (Diaphorina citri) populations nearby, especially on new flush growth where the psyllid prefers to feed and breed.',
+        'Infected nursery plants or budwood brought in from an affected area.',
+        'Neighboring infected trees or abandoned/untended citrus groves acting as a disease reservoir with no vector management.',
+      ],
+      environmentalRiskFactors_te: [
+        'దగ్గరలో ఆసియన్ సిట్రస్ సైల్లిడ్ (డయాఫొరినా సిట్రి) సంఖ్య ఎక్కువగా ఉండటం, ముఖ్యంగా ఈ పురుగు ఇష్టపడే కొత్త చిగురుపై.',
+        'తెగులు సోకిన ప్రాంతం నుండి తెచ్చిన నారు మొక్కలు లేదా అంటు కణజాలం.',
+        'దగ్గరలో తెగులు సోకిన చెట్లు లేదా నిర్వహణ లేని సిట్రస్ తోటలు — వాహక నియంత్రణ లేకుండా తెగులుకు మూలంగా పనిచేస్తాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Use only certified disease-free nursery plants and budwood from a known, inspected source — never propagate from an unknown or symptomatic tree. There is no cure once a tree is infected, so keeping the disease out is the only real control.',
+          practice_te:
+            'ధృవీకరించిన, తెగులు లేని నారుమడి మొక్కలు, అంటు కణజాలాన్ని మాత్రమే తెలిసిన, తనిఖీ చేసిన మూలం నుండి వాడండి — తెలియని లేదా లక్షణాలు కనిపించే చెట్టు నుండి అంటు కట్టవద్దు. ఒకసారి తెగులు సోకితే నయం చేయలేము కాబట్టి, తెగులును దూరంగా ఉంచడమే నిజమైన నియంత్రణ.',
+          targetTiming: 'At planting / before bringing in new material',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Monitor new flush growth regularly for the Asian citrus psyllid and manage its population through the season — the vector, not the bacterium itself, is what can realistically be targeted in the field.',
+          practice_te:
+            'కొత్త చిగురు కోసం ఆసియన్ సిట్రస్ సైల్లిడ్‌ను క్రమం తప్పకుండా పరిశీలించి, సీజన్ అంతా దాని సంఖ్యను అదుపులో ఉంచండి — బ్యాక్టీరియాను కాదు, వాహకాన్నే పొలంలో నిజంగా లక్ష్యంగా చేసుకోగలరు.',
+          targetTiming: 'Throughout the year, especially during flush periods',
+        },
+        {
+          stepNumber: 3,
+          practice_en:
+            'Rogue out (uproot and destroy) a confirmed HLB-positive tree promptly — a single infected tree is a continuing source of infection for the whole grove through the psyllid vector.',
+          practice_te:
+            'HLB తెగులు నిర్ధారణ అయిన చెట్టును వెంటనే పీకి నాశనం చేయండి — ఒక్క సోకిన చెట్టు కూడా సైల్లిడ్ వాహకం ద్వారా మొత్తం తోటకు తెగులు మూలంగా ఉంటుంది.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-citrus-hlb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'There is no organic or chemical cure for a tree already infected with HLB. Neem-oil-based sprays are sometimes used to suppress Asian citrus psyllid populations on healthy trees nearby, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'ఇప్పటికే HLB సోకిన చెట్టుకు సేంద్రియమైనా, రసాయనమైనా ఏ చికిత్స లేదు. దగ్గరలోని ఆరోగ్యకరమైన చెట్లపై ఆసియన్ సిట్రస్ సైల్లిడ్ సంఖ్యను తగ్గించడానికి కొన్నిసార్లు వేప నూనె పిచికారీ వాడతారు, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Neem oil (organic, vector suppression only, dose unverified)',
+          activeIngredient_te: 'వేప నూనె (సేంద్రియ, వాహక నియంత్రణ మాత్రమే, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'No spray reverses HLB infection inside an already-affected tree — every treatment here only protects neighboring healthy trees by targeting the psyllid vector.',
+          safetyCaution_te: 'ఇప్పటికే సోకిన చెట్టులో HLB తెగులును ఏ పిచికారీ మందు తిప్పికొట్టదు — ఇక్కడి చికిత్సలన్నీ సైల్లిడ్ వాహకాన్ని లక్ష్యంగా చేసుకుని పక్కనున్న ఆరోగ్యకరమైన చెట్లను మాత్రమే కాపాడతాయి.',
+        },
+        {
+          id: 't-citrus-hlb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Systemic insecticides such as Imidacloprid or Thiamethoxam are commonly used in area-wide Asian citrus psyllid management programs, but a specific dose for this crop/region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory, and report any suspected HLB-positive tree to your VAA/RBK/Horticulture Officer, since this is treated as a serious quarantine-relevant disease.',
+          instruction_te:
+            'ప్రాంతవ్యాప్త ఆసియన్ సిట్రస్ సైల్లిడ్ నిర్వహణ కార్యక్రమాలలో ఇమిడాక్లోప్రిడ్ లేదా థయామిథాక్సామ్ వంటి సిస్టమిక్ పురుగుమందులు సాధారణంగా వాడతారు, కానీ ఈ పంట/ప్రాంతానికి మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు; HLB అనుమానం ఉన్న ఏ చెట్టునైనా మీ VAA/RBK/హార్టికల్చర్ అధికారికి తెలియజేయండి — ఇది తీవ్రమైన నిర్బంధిత తెగులుగా పరిగణించబడుతుంది.',
+          activeIngredient_en: 'Imidacloprid / Thiamethoxam (vector control, dose suppressed)',
+          activeIngredient_te: 'ఇమిడాక్లోప్రిడ్ / థయామిథాక్సామ్ (వాహక నియంత్రణ, మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK/Horticulture Officer and check your container label before spraying. Area-wide, coordinated vector control across neighboring groves is far more effective than one farmer spraying alone.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK/హార్టికల్చర్ అధికారి వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి. ఒక్క రైతు మాత్రమే పిచికారీ చేయడం కంటే పరిసర తోటలన్నింటిలో సమన్వయంతో వాహక నియంత్రణ చేయడం చాలా ఎక్కువ ప్రభావవంతంగా ఉంటుంది.',
+        },
+      ],
+      escalationThreshold_en:
+        'Report any tree with suspected HLB symptoms (asymmetric blotchy mottle, lopsided bitter fruit) to your VAA/RBK or Horticulture Officer promptly, even before you are fully sure — this disease is incurable per-tree and spreads through the grove via the psyllid vector, so early reporting and removal of confirmed cases matters far more than waiting to confirm severity.',
+      escalationThreshold_te:
+        'HLB అనుమానం ఉన్న ఏ చెట్టునైనా (అసమాన పసుపు మచ్చలు, అసమాన చేదు కాయలు) పూర్తి నిర్ధారణకు ముందే మీ VAA/RBK లేదా హార్టికల్చర్ అధికారికి వెంటనే తెలియజేయండి — ఈ తెగులు చెట్టుకు నయం కాదు, సైల్లిడ్ వాహకం ద్వారా తోట అంతటికీ వ్యాపిస్తుంది కాబట్టి, తీవ్రతను నిర్ధారించుకునే వరకు వేచి ఉండటం కంటే ముందుగా తెలియజేసి నిర్ధారణ అయిన చెట్లను తొలగించడం చాలా ముఖ్యం.',
+      sources: [
+        {
+          title: 'Package of Practices for Fruit Crops — Citrus Greening (HLB) Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-citrus-canker': {
+      id: 'disease-citrus-canker',
+      cropId: 'crop-citrus',
+      name_en: 'Citrus Canker',
+      name_te: 'సిట్రస్ కాంకర్ (పుండు తెగులు)',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Bacterium: Xanthomonas citri subsp. citri',
+      pathogenOrVector_te: 'బ్యాక్టీరియా: జాంథోమోనాస్ సిట్రి ఉపజాతి సిట్రి',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Raised, corky, crater-like ("volcano-shaped") lesions on leaves, twigs, and fruit, each typically surrounded by a yellow, water-soaked-looking halo (ring) — most visible on young, actively growing tissue.',
+        'Lesions often cluster along leaf margins and areas prone to wind/thorn injury, where the bacteria enter through wounds or natural openings.',
+        'Severe infection causes leaf and fruit drop, twig dieback, and heavily blemished fruit that is rejected for the fresh market even when the inner fruit is unaffected.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులు, కొమ్మలు, కాయలపై పైకి లేచిన, గట్టిగా, బిలం వంటి ("అగ్నిపర్వతం" ఆకారంలో) మచ్చలు కనిపిస్తాయి; ప్రతి మచ్చ చుట్టూ పసుపు, నీటిలో నానినట్లు కనిపించే వలయం ఉంటుంది — లేత, చురుగ్గా పెరుగుతున్న భాగాలపై బాగా కనిపిస్తుంది.',
+        'గాలి/ముళ్ల గాయాలు ఎక్కువగా జరిగే ఆకు అంచుల వద్ద, ప్రాంతాలలో మచ్చలు గుంపులుగా కనిపిస్తాయి — ఇక్కడ బ్యాక్టీరియా గాయాలు లేదా సహజ రంధ్రాల ద్వారా ప్రవేశిస్తుంది.',
+        'తీవ్రమైన తెగులు వల్ల ఆకులు, కాయలు రాలడం, కొమ్మలు ఎండిపోవడం జరుగుతుంది; లోపలి కాయ బాగానే ఉన్నా, మచ్చలు ఎక్కువగా ఉన్న కాయలను తాజా మార్కెట్‌కు తిరస్కరిస్తారు.',
+      ],
+      affectedParts: ['Leaves', 'Twigs', 'Fruits'],
+      similarConditions: [
+        {
+          id: 'citrus-canker-vs-scab',
+          name_en: 'Citrus Scab',
+          name_te: 'సిట్రస్ గజ్జి తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Canker lesions are flatter craters with a distinct yellow water-soaked halo around each spot; scab lesions are more pointed, wart-like, corky outgrowths without that yellow halo, mainly on very young flush tissue.',
+          differentiatingFactors_te:
+            'కాంకర్ మచ్చలు చదునైన బిలం ఆకారంలో ఉండి, ప్రతి మచ్చ చుట్టూ స్పష్టమైన పసుపు, నీటిలో నానినట్లు కనిపించే వలయం ఉంటుంది; గజ్జి మచ్చలు మొనదేలిన, మొటిమల వంటి, గట్టి పెరుగుదలలుగా ఉండి ఆ పసుపు వలయం ఉండదు, ఎక్కువగా చాలా లేత చిగురుపై కనిపిస్తాయి.',
+        },
+        {
+          id: 'citrus-canker-vs-melanose',
+          name_en: 'Melanose',
+          name_te: 'మెలనోజ్ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Canker lesions are larger, crater-like, with a yellow halo and often cause leaf/fruit drop; melanose lesions are small, raised, sandpaper-textured brown pustules without a yellow halo, sometimes forming tear-streak patterns on fruit.',
+          differentiatingFactors_te:
+            'కాంకర్ మచ్చలు పెద్దవిగా, బిలం ఆకారంలో, పసుపు వలయంతో ఉండి తరచుగా ఆకులు/కాయలు రాలడానికి కారణమవుతాయి; మెలనోజ్ మచ్చలు చిన్నవిగా, పైకి లేచిన, ఇసుక కాగితం వంటి ఆకృతి గల గోధుమ రంగు మొటిమలుగా ఉండి పసుపు వలయం ఉండదు, కాయలపై కన్నీటి చారల వంటి నమూనా కొన్నిసార్లు ఏర్పడుతుంది.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Wind-driven rain, which spreads the bacteria over distance and forces it into leaf stomata and wounds — canker typically spreads fastest after storms.',
+        'Any leaf/fruit injury: thorn scratches, leaf-miner tunnels, hail damage, or pruning wounds, all of which give the bacterium an easy entry point.',
+        'Working in a grove or handling tools/equipment while foliage is wet, which can spread bacteria-laden moisture between trees.',
+      ],
+      environmentalRiskFactors_te: [
+        'గాలితో కూడిన వర్షం బ్యాక్టీరియాను దూరం వరకు వ్యాపింపజేసి, ఆకు రంధ్రాలు, గాయాల్లోకి బలవంతంగా చేరుస్తుంది — తుఫానుల తర్వాత కాంకర్ వేగంగా వ్యాపిస్తుంది.',
+        'ఏదైనా ఆకు/కాయ గాయం: ముళ్ల గీతలు, లీఫ్-మైనర్ సొరంగాలు, వడగళ్ల నష్టం, లేదా కత్తిరింపు గాయాలు — ఇవన్నీ బ్యాక్టీరియాకు సులభమైన ప్రవేశ మార్గాన్ని ఇస్తాయి.',
+        'ఆకులు తడిగా ఉన్నప్పుడు తోటలో పనిచేయడం లేదా పనిముట్లు వాడటం వల్ల బ్యాక్టీరియాతో కూడిన తేమ చెట్ల మధ్య వ్యాపించవచ్చు.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Plant windbreaks around the grove to reduce wind-driven rain and leaf injury, which are the main way this bacterium spreads and enters new tissue.',
+          practice_te: 'గాలితో కూడిన వర్షం, ఆకు గాయాలను తగ్గించడానికి తోట చుట్టూ గాలి అడ్డంకులను (విండ్‌బ్రేక్) పెంచండి — ఇవే ఈ బ్యాక్టీరియా వ్యాపించడానికి, కొత్త కణజాలంలోకి ప్రవేశించడానికి ప్రధాన మార్గం.',
+          targetTiming: 'At grove establishment, or retrofit with fast-growing hedges',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid working in the grove or pruning while foliage is wet, and disinfect pruning tools between trees to avoid spreading bacteria mechanically.',
+          practice_te: 'ఆకులు తడిగా ఉన్నప్పుడు తోటలో పనిచేయడం, కత్తిరించడం మానండి; యాంత్రికంగా బ్యాక్టీరియా వ్యాపించకుండా చెట్ల మధ్య కత్తిరింపు పరికరాలను శుభ్రం చేసుకోండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Prune and destroy severely infected twigs and control leaf-miner insects, since their tunnels are a common entry wound for this bacterium.',
+          practice_te: 'తీవ్రంగా సోకిన కొమ్మలను కత్తిరించి నాశనం చేయండి; లీఫ్-మైనర్ పురుగులను అదుపులో ఉంచండి — వాటి సొరంగాలు ఈ బ్యాక్టీరియాకు సాధారణ ప్రవేశ గాయం.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-citrus-canker-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Copper-based sprays (e.g. copper oxychloride, copper hydroxide) are the standard field approach against citrus canker and are accepted in both organic and conventional programs, but a specific concentration/schedule for this region is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'సిట్రస్ కాంకర్‌కు రాగి ఆధారిత పిచికారీలు (ఉదా. కాపర్ ఆక్సీక్లోరైడ్, కాపర్ హైడ్రాక్సైడ్) ప్రామాణిక పొలం పద్ధతి, సేంద్రియ, సంప్రదాయ పద్ధతుల్లో రెండింటిలోనూ ఆమోదయోగ్యం, కానీ ఈ ప్రాంతానికి ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride / Copper hydroxide (dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ / కాపర్ హైడ్రాక్సైడ్ (మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Copper sprays protect new growth from fresh infection but do not cure tissue already bearing canker lesions — sanitation (removing infected twigs) is still needed alongside spraying.',
+          safetyCaution_te: 'రాగి పిచికారీలు కొత్త పెరుగుదలను కొత్త తెగులు నుండి కాపాడతాయి కానీ ఇప్పటికే కాంకర్ మచ్చలున్న కణజాలాన్ని నయం చేయవు — పిచికారీతో పాటు పరిశుభ్రత (సోకిన కొమ్మలు తీసివేయడం) కూడా అవసరం.',
+        },
+        {
+          id: 't-citrus-canker-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Streptocycline (a streptomycin-based bactericide) combined with copper spray is sometimes used against severe bacterial outbreaks in citrus, but a specific dose for this crop/region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'తీవ్రమైన బ్యాక్టీరియా వ్యాప్తికి వ్యతిరేకంగా సిట్రస్‌లో కొన్నిసార్లు స్ట్రెప్టోసైక్లిన్ (స్ట్రెప్టోమైసిన్ ఆధారిత బాక్టీరిసైడ్)ను రాగి పిచికారీతో కలిపి వాడతారు, కానీ ఈ పంట/ప్రాంతానికి మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Streptocycline + Copper oxychloride (dose suppressed)',
+          activeIngredient_te: 'స్ట్రెప్టోసైక్లిన్ + కాపర్ ఆక్సీక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying. Citrus canker is treated as a quarantine-relevant disease in several states — report a serious outbreak to your Horticulture Officer.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి. సిట్రస్ కాంకర్‌ను అనేక రాష్ట్రాల్లో నిర్బంధిత తెగులుగా పరిగణిస్తారు — తీవ్రమైన వ్యాప్తిని మీ హార్టికల్చర్ అధికారికి తెలియజేయండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If canker affects more than about 15-20% of leaf/fruit surface across the grove despite windbreaks and sanitation, or spreads rapidly after a storm, consult your VAA/RBK/Horticulture Officer for a tailored spray program.',
+      escalationThreshold_te:
+        'గాలి అడ్డంకులు, పరిశుభ్రత చర్యలు తీసుకున్నా తోటలో 15-20% కంటే ఎక్కువ ఆకు/కాయ ఉపరితలానికి కాంకర్ సోకినా, లేదా తుఫాను తర్వాత వేగంగా వ్యాపిస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK/హార్టికల్చర్ అధికారిని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Fruit Crops — Citrus Canker Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-citrus-blackspot': {
+      id: 'disease-citrus-blackspot',
+      cropId: 'crop-citrus',
+      name_en: 'Citrus Black Spot',
+      name_te: 'సిట్రస్ నల్ల మచ్చ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Phyllosticta citricarpa (sexual stage: Guignardia citricarpa)',
+      pathogenOrVector_te: 'శిలీంద్రం: ఫిల్లోస్టిక్టా సిట్రికార్పా (లైంగిక దశ: గిగ్నార్డియా సిట్రికార్పా)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        '"Hard spot" on mature fruit: small, circular lesions with a grey-brown necrotic center and a dark margin, often with tiny black dots (pycnidia) visible in the center.',
+        '"Virulent/false melanose spot" on still-green fruit: irregular, spreading dark lesions that can cover a larger area of the rind.',
+        'Mainly a cosmetic/fruit-quality disease — causes little leaf damage, but spotted fruit are downgraded or rejected for the fresh market even though the inner fruit is usually unaffected.',
+      ],
+      observableSymptoms_te: [
+        'పండిన కాయలపై "గట్టి మచ్చ": చిన్న, గుండ్రని మచ్చలు, బూడిద-గోధుమ రంగు చనిపోయిన కేంద్రం, ముదురు అంచుతో కనిపిస్తాయి; తరచుగా కేంద్రంలో చిన్న నల్లని బిందువులు (బీజకోశాలు) కనిపిస్తాయి.',
+        'ఇంకా ఆకుపచ్చగా ఉన్న కాయలపై "తీవ్ర/తప్పుడు మెలనోజ్ మచ్చ": క్రమరహిత, వ్యాపించే ముదురు మచ్చలు కాయ తొక్కపై పెద్ద ప్రాంతాన్ని కప్పేయవచ్చు.',
+        'ఇది ఎక్కువగా కాయ రూపం/నాణ్యతకు సంబంధించిన తెగులు — ఆకులకు పెద్దగా నష్టం కలిగించదు, కానీ మచ్చలున్న కాయలను తాజా మార్కెట్‌లో తక్కువ ధరకు అమ్మాల్సి వస్తుంది లేదా తిరస్కరిస్తారు, లోపలి కాయ సాధారణంగా బాగానే ఉంటుంది.',
+      ],
+      affectedParts: ['Fruits', 'Leaves (less commonly)'],
+      similarConditions: [
+        {
+          id: 'citrus-blackspot-vs-melanose',
+          name_en: 'Melanose',
+          name_te: 'మెలనోజ్ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Black spot lesions are flat to slightly sunken with a distinct dark margin and visible black pycnidial dots in a grey center; melanose lesions are raised, sandpaper-textured brown pustules, often in tear-streak patterns from rain runoff, without the sunken grey-centered look.',
+          differentiatingFactors_te:
+            'నల్ల మచ్చ గాయాలు చదునుగా లేదా కొద్దిగా లోతుగా ఉండి, స్పష్టమైన ముదురు అంచు, బూడిద కేంద్రంలో కనిపించే నల్లని బీజకోశపు బిందువులతో ఉంటాయి; మెలనోజ్ గాయాలు పైకి లేచి, ఇసుక కాగితం వంటి ఆకృతి గల గోధుమ రంగు మొటిమలుగా, తరచుగా వర్షపు నీటి ప్రవాహం వల్ల కన్నీటి చారల నమూనాలో ఉండి, లోతైన బూడిద కేంద్రం ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, wet weather during fruit development, which favors spore release and infection.',
+        'Fallen leaves and fruit left on the orchard floor, where the fungus overwinters and produces the next season\'s spores.',
+        'Dense canopy with poor air circulation, which keeps fruit and leaf surfaces wet longer.',
+      ],
+      environmentalRiskFactors_te: [
+        'కాయ పెరిగే దశలో వెచ్చని, తడి వాతావరణం బీజాలు విడుదల కావడానికి, తెగులు సోకడానికి అనుకూలంగా ఉంటుంది.',
+        'తోట నేలపై పడి ఉన్న ఆకులు, కాయలు — ఇక్కడ శిలీంద్రం శీతాకాలం గడిపి తదుపరి సీజన్‌కు బీజాలను ఉత్పత్తి చేస్తుంది.',
+        'దట్టమైన ఆకుల పందిరి, సరైన గాలి ప్రసరణ లేకపోవడం వల్ల కాయ, ఆకు ఉపరితలాలు ఎక్కువసేపు తడిగా ఉంటాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Collect and remove fallen leaves and fruit from the orchard floor regularly, since this is the fungus\'s main overwintering source.',
+          practice_te: 'తోట నేలపై పడిన ఆకులు, కాయలను క్రమం తప్పకుండా సేకరించి తీసివేయండి — ఇదే శిలీంద్రం శీతాకాలం గడిపే ప్రధాన మూలం.',
+          targetTiming: 'Throughout season, especially post-harvest',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Prune to open up the canopy for better air circulation and light penetration, reducing how long fruit surfaces stay wet.',
+          practice_te: 'మంచి గాలి ప్రసరణ, వెలుతురు కోసం ఆకుల పందిరిని తెరుచుకునేలా కత్తిరించండి — దీనివల్ల కాయ ఉపరితలాలు తడిగా ఉండే సమయం తగ్గుతుంది.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Time protective fungicide sprays to petal fall and early fruit development where the disease is known to be active in your area — ask your VAA/RBK for the current local spray calendar.',
+          practice_te: 'మీ ప్రాంతంలో ఈ తెగులు చురుగ్గా ఉన్నట్లు తెలిస్తే, పూత రాలే సమయం, కాయ తొలిదశలో రక్షణాత్మక శిలీంద్రనాశక పిచికారీని ప్లాన్ చేయండి — ప్రస్తుత స్థానిక పిచికారీ క్యాలెండర్ కోసం మీ VAA/RBK ను అడగండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-citrus-cbs-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Orchard sanitation (removing fallen leaves/fruit) is the single most effective organic-compatible control, since it removes the fungus\'s main inoculum source; a copper-based spray is sometimes added, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'పొలం పరిశుభ్రత (పడిన ఆకులు/కాయలు తీసివేయడం) అత్యంత ప్రభావవంతమైన సేంద్రియ-అనుకూల నియంత్రణ — ఇది శిలీంద్రానికి ప్రధాన బీజ మూలాన్ని తొలగిస్తుంది; కొన్నిసార్లు రాగి ఆధారిత పిచికారీ కూడా జోడిస్తారు, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (ఐచ్ఛికం, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-citrus-cbs-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Strobilurin fungicides (e.g. Azoxystrobin) are commonly used against citrus black spot internationally, but a specific dose for this region is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'సిట్రస్ నల్ల మచ్చ తెగులుకు అంతర్జాతీయంగా స్ట్రోబిలురిన్ శిలీంద్రనాశకాలు (ఉదా. అజాక్సిస్ట్రోబిన్) సాధారణంగా వాడతారు, కానీ ఈ ప్రాంతానికి మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Azoxystrobin (dose suppressed)',
+          activeIngredient_te: 'అజాక్సిస్ట్రోబిన్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 10-15% of fruit show spotting despite sanitation, or the orchard supplies a market with strict cosmetic/export grading, consult your VAA/RBK/Horticulture Officer for a tailored spray program.',
+      escalationThreshold_te:
+        'పరిశుభ్రత చర్యలు తీసుకున్నా 10-15% కంటే ఎక్కువ కాయలకు మచ్చలు కనిపిస్తే, లేదా తోట ఖచ్చితమైన రూపం/ఎగుమతి ప్రమాణాలు ఉన్న మార్కెట్‌కు సరఫరా చేస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK/హార్టికల్చర్ అధికారిని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Fruit Crops — Citrus Black Spot Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-citrus-melanose': {
+      id: 'disease-citrus-melanose',
+      cropId: 'crop-citrus',
+      name_en: 'Melanose',
+      name_te: 'మెలనోజ్ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Diaporthe citri (asexual stage: Phomopsis citri)',
+      pathogenOrVector_te: 'శిలీంద్రం: డయాపోర్తె సిట్రి (అలైంగిక దశ: ఫోమోప్సిస్ సిట్రి)',
+      urgencyLevel: 'Low',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Small, raised, corky brown pustules with a rough, "sandpaper"-like texture on leaves, twigs, and fruit rind — usually more a cosmetic issue than a threat to tree health.',
+        'On fruit, rain-splashed spores running down the surface can leave a distinctive "tear-streak" or "mudcake" pattern of raised brown specks.',
+        'Severe infection on young twigs can occasionally cause dieback, since the fungus lives and multiplies mainly on dead wood.',
+      ],
+      observableSymptoms_te: [
+        'ఆకులు, కొమ్మలు, కాయ తొక్కపై చిన్న, పైకి లేచిన, గట్టి గోధుమ రంగు మొటిమలు, ఇసుక కాగితం వంటి కరుకైన ఆకృతితో కనిపిస్తాయి — సాధారణంగా చెట్టు ఆరోగ్యానికి ముప్పు కంటే రూపానికి సంబంధించిన సమస్య.',
+        'కాయలపై వర్షపు నీటితో చిందిన బీజాలు కాయ ఉపరితలంపై కిందికి కారి, పైకి లేచిన గోధుమ రంగు చుక్కల "కన్నీటి చారలు" లేదా "బురద అట్ట" వంటి ప్రత్యేక నమూనాను వదలవచ్చు.',
+        'లేత కొమ్మలపై తీవ్రమైన తెగులు అప్పుడప్పుడు కొమ్మలు ఎండిపోవడానికి కారణం కావచ్చు — ఈ శిలీంద్రం ప్రధానంగా చనిపోయిన కలపలో జీవించి వృద్ధి చెందుతుంది.',
+      ],
+      affectedParts: ['Leaves', 'Twigs', 'Fruits'],
+      similarConditions: [
+        {
+          id: 'citrus-melanose-vs-scab',
+          name_en: 'Citrus Scab',
+          name_te: 'సిట్రస్ గజ్జి తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Melanose pustules are flatter, sandpaper-textured, and appear on tissue of any age near dead wood; scab lesions are more pointed, wart-like, corky outgrowths mainly on very young flush tissue, often distorting the leaf.',
+          differentiatingFactors_te:
+            'మెలనోజ్ మొటిమలు చదునుగా, ఇసుక కాగితం వంటి ఆకృతితో, చనిపోయిన కలప దగ్గర ఏ వయసు కణజాలంపైనైనా కనిపిస్తాయి; గజ్జి గాయాలు మొనదేలిన, మొటిమల వంటి, గట్టి పెరుగుదలలుగా ప్రధానంగా చాలా లేత చిగురుపై కనిపించి తరచుగా ఆకును వంకరగా మారుస్తాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Dead twigs and wood left in the canopy, which is where this fungus mainly lives and produces spores.',
+        'Frequent rain or overhead irrigation, which splashes spores from dead wood onto new growth and fruit.',
+        'Young, actively growing flush tissue is more susceptible than older, hardened growth.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఆకుల పందిరిలో మిగిలిన చనిపోయిన కొమ్మలు, కలప — ఇక్కడే ఈ శిలీంద్రం ప్రధానంగా జీవించి బీజాలను ఉత్పత్తి చేస్తుంది.',
+        'తరచుగా వర్షం లేదా పైనుండి తడిపే నీటిపారుదల చనిపోయిన కలప నుండి బీజాలను కొత్త పెరుగుదల, కాయలపైకి చిందిస్తుంది.',
+        'లేత, చురుగ్గా పెరుగుతున్న చిగురు కణజాలం ముదురు, గట్టిపడిన పెరుగుదల కంటే ఎక్కువగా తెగులుకు గురవుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Prune out and remove dead twigs and deadwood from the canopy regularly — this is the single most effective control, since it removes the fungus\'s main source of spores.',
+          practice_te: 'ఆకుల పందిరి నుండి చనిపోయిన కొమ్మలు, కలపను క్రమం తప్పకుండా కత్తిరించి తీసివేయండి — ఇదే అత్యంత ప్రభావవంతమైన నియంత్రణ, ఎందుకంటే ఇది శిలీంద్రానికి ప్రధాన బీజ మూలాన్ని తొలగిస్తుంది.',
+          targetTiming: 'Annually, especially after any storm/hail damage',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid overhead irrigation that splashes water from deadwood areas onto new growth and fruit.',
+          practice_te: 'చనిపోయిన కలప ప్రాంతాల నుండి నీటిని కొత్త పెరుగుదల, కాయలపైకి చిందించే పైనుండి తడిపే నీటిపారుదల మానండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-citrus-mel-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Since melanose mainly lives on dead wood, pruning out deadwood is usually sufficient on its own and is the organic-compatible first step; a copper-based spray at early fruit set is sometimes added in nurseries/young plantings, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK if you choose to spray.',
+          instruction_te:
+            'మెలనోజ్ ప్రధానంగా చనిపోయిన కలపలో జీవిస్తుంది కాబట్టి, కలపను కత్తిరించి తీసివేయడం సాధారణంగా సరిపోతుంది, ఇది సేంద్రియ-అనుకూల మొదటి చర్య; నారుమడి/లేత తోటల్లో కాయ తొలిదశలో కొన్నిసార్లు రాగి ఆధారిత పిచికారీ కూడా జోడిస్తారు, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — పిచికారీ చేయదలిస్తే VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (ఐచ్ఛికం, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-citrus-mel-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'A copper-based fungicide or Mancozeb spray at early fruit set is sometimes used where melanose has caused significant fruit blemishing in previous seasons, but a specific dose for this region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'మునుపటి సీజన్లలో మెలనోజ్ వల్ల గణనీయమైన కాయ మచ్చలు వచ్చిన చోట కాయ తొలిదశలో కొన్నిసార్లు రాగి ఆధారిత శిలీంద్రనాశకం లేదా మాంకోజెబ్ పిచికారీ వాడతారు, కానీ ఈ ప్రాంతానికి మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Copper oxychloride / Mancozeb (dose suppressed)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ / మాంకోజెబ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'Melanose is usually a cosmetic issue; if it nonetheless causes dieback on multiple young twigs or heavy fruit blemishing despite deadwood pruning, consult your VAA/RBK.',
+      escalationThreshold_te:
+        'మెలనోజ్ సాధారణంగా రూపానికి సంబంధించిన సమస్యే; అయినా కలప కత్తిరింపు చేసినా అనేక లేత కొమ్మలు ఎండిపోతున్నా లేదా కాయలపై ఎక్కువ మచ్చలు కనిపిస్తే, VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Fruit Crops — Citrus Melanose Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-citrus-scab': {
+      id: 'disease-citrus-scab',
+      cropId: 'crop-citrus',
+      name_en: 'Citrus Scab',
+      name_te: 'సిట్రస్ గజ్జి తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Elsinoe fawcettii (sour orange scab) / Elsinoe australis (sweet orange scab)',
+      pathogenOrVector_te: 'శిలీంద్రం: ఎల్సినో ఫాసెట్టి (పులుపు నారింజ గజ్జి) / ఎల్సినో ఆస్ట్రాలిస్ (తీపి నారింజ గజ్జి)',
+      urgencyLevel: 'Low',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Wart-like, raised, irregular corky scabby outgrowths on young leaves, twigs, and fruit, often pointed or conical rather than flat.',
+        'Mainly affects very young, actively growing (flush) tissue; heavily affected young leaves can become twisted or distorted as they expand around the lesions.',
+        'Mostly a cosmetic/fruit-grading issue on fruit rind; rarely threatens overall tree health.',
+      ],
+      observableSymptoms_te: [
+        'లేత ఆకులు, కొమ్మలు, కాయలపై మొటిమల వంటి, పైకి లేచిన, క్రమరహిత, గట్టి గజ్జి పెరుగుదలలు కనిపిస్తాయి; ఇవి చదునుగా కాకుండా మొనదేలి లేదా శంకు ఆకారంలో ఉంటాయి.',
+        'ప్రధానంగా చాలా లేత, చురుగ్గా పెరుగుతున్న (చిగురు) కణజాలాన్ని ఆశిస్తుంది; ఎక్కువగా సోకిన లేత ఆకులు మచ్చల చుట్టూ పెరుగుతూ వంకరగా, వికృతంగా మారవచ్చు.',
+        'ఎక్కువగా కాయ తొక్కపై రూపం/గ్రేడింగ్‌కు సంబంధించిన సమస్య; చెట్టు మొత్తం ఆరోగ్యానికి అరుదుగానే ముప్పు కలిగిస్తుంది.',
+      ],
+      affectedParts: ['Leaves', 'Twigs', 'Fruits'],
+      similarConditions: [
+        {
+          id: 'citrus-scab-vs-canker',
+          name_en: 'Citrus Canker',
+          name_te: 'సిట్రస్ కాంకర్ (పుండు తెగులు)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Scab lesions are pointed, wart-like outgrowths without a yellow water-soaked halo, mainly on very young flush tissue; canker lesions are flatter craters with a distinct yellow halo and can appear on tissue of various ages, often causing more leaf/fruit drop.',
+          differentiatingFactors_te:
+            'గజ్జి గాయాలు మొనదేలిన, మొటిమల వంటి పెరుగుదలలుగా ఉండి పసుపు, నీటిలో నానినట్లు కనిపించే వలయం ఉండదు, ప్రధానంగా చాలా లేత చిగురుపై కనిపిస్తాయి; కాంకర్ గాయాలు చదునైన బిలం ఆకారంలో, స్పష్టమైన పసుపు వలయంతో ఉండి వివిధ వయసుల కణజాలంపై కనిపించి, ఎక్కువగా ఆకులు/కాయలు రాలడానికి కారణమవుతాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Frequent rain or overhead irrigation during new flush growth, which spreads spores onto susceptible young tissue.',
+        'Dense canopy with poor air circulation that keeps young growth wet longer.',
+        'Certain citrus varieties (e.g. some lemon and mandarin types) are more susceptible than others.',
+      ],
+      environmentalRiskFactors_te: [
+        'కొత్త చిగురు పెరిగే సమయంలో తరచుగా వర్షం లేదా పైనుండి తడిపే నీటిపారుదల వల్ల బీజాలు సున్నితమైన లేత కణజాలంపైకి వ్యాపిస్తాయి.',
+        'దట్టమైన ఆకుల పందిరి, సరైన గాలి ప్రసరణ లేకపోవడం వల్ల లేత పెరుగుదల ఎక్కువసేపు తడిగా ఉంటుంది.',
+        'కొన్ని సిట్రస్ రకాలు (ఉదా. కొన్ని నిమ్మ, కమలా రకాలు) ఇతరుల కంటే ఎక్కువగా తెగులుకు గురవుతాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Avoid overhead irrigation during periods of new flush growth; water at the base of the tree instead where feasible.',
+          practice_te: 'కొత్త చిగురు పెరిగే సమయంలో పైనుండి తడిపే నీటిపారుదల మానండి; వీలైతే చెట్టు మొదలు వద్ద నీరు పెట్టండి.',
+          targetTiming: 'During each new flush period',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Prune to open up the canopy for better air circulation, reducing how long young growth stays wet.',
+          practice_te: 'మంచి గాలి ప్రసరణ కోసం ఆకుల పందిరిని తెరుచుకునేలా కత్తిరించండి — దీనివల్ల లేత పెరుగుదల తడిగా ఉండే సమయం తగ్గుతుంది.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-citrus-scab-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A copper-based spray timed to new flush emergence is a commonly documented organic-compatible approach, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'కొత్త చిగురు వచ్చే సమయానికి రాగి ఆధారిత పిచికారీని ప్లాన్ చేయడం సాధారణంగా వాడే సేంద్రియ-అనుకూల పద్ధతి, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Copper oxychloride (organic, dose unverified)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-citrus-scab-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Copper-based fungicides remain the standard chemical option for citrus scab where sanitation/irrigation changes are not enough, but a specific dose for this region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'పరిశుభ్రత/నీటిపారుదల మార్పులు సరిపోనప్పుడు సిట్రస్ గజ్జి తెగులుకు రాగి ఆధారిత శిలీంద్రనాశకాలే ప్రామాణిక రసాయన ఎంపిక, కానీ ఈ ప్రాంతానికి మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Copper oxychloride (dose suppressed)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'Scab is usually a minor cosmetic issue; if it nonetheless distorts a large share of new flush leaves or affects more than about 15% of fruit despite irrigation changes, consult your VAA/RBK.',
+      escalationThreshold_te:
+        'గజ్జి సాధారణంగా చిన్న రూప సమస్యే; అయినా కొత్త చిగురు ఆకుల్లో ఎక్కువ భాగాన్ని వంకరగా మారుస్తున్నా లేదా నీటిపారుదల మార్పులు చేసినా 15% కంటే ఎక్కువ కాయలను ప్రభావితం చేస్తే, VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Fruit Crops — Citrus Scab Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-18',
           geographicScope: 'national',
