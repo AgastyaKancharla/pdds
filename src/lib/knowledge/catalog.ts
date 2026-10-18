@@ -31,6 +31,9 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'disease-rice-stemborer',
         'disease-rice-gallmidge',
         'disease-rice-zincdeficiency',
+        'disease-rice-bph',
+        'disease-rice-leaffolder',
+        'disease-rice-falsesmut',
       ],
     },
     'crop-chilli': {
@@ -4987,6 +4990,331 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Scab Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-rice-bph': {
+      id: 'disease-rice-bph',
+      cropId: 'crop-rice',
+      name_en: 'Brown Planthopper (Hopperburn)',
+      name_te: 'గోధుమ రంగు దోమ (హాపర్‌బర్న్)',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest: Nilaparvata lugens (brown planthopper), also a vector for Rice Grassy Stunt and Ragged Stunt viruses',
+      pathogenOrVector_te: 'కీటకం: నిలపర్వత లుజెన్స్ (గోధుమ రంగు దోమ), వరి గడ్డి కుంటు మరియు చిరిగిన కుంటు వైరస్‌లకు వాహకం కూడా',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Circular patches of plants turning orange-brown and drying up ("hopperburn"), typically starting at a low-lying spot or where planting is dense, then expanding outward day by day.',
+        'Parting the base of tillers in or near a hopperburn patch reveals clusters of brown, wedge-shaped adult and nymph insects feeding at the stem base just above the waterline.',
+        'Sticky honeydew excreted by the insects coats the lower stems and water surface, often with a black sooty mould growing on it — a useful early sign before plants actually start drying.',
+      ],
+      observableSymptoms_te: [
+        'మొక్కలు గుండ్రని ప్రాంతాలుగా ఎరుపు-గోధుమ రంగులోకి మారి ఎండిపోతాయి ("హాపర్‌బర్న్"), సాధారణంగా పల్లపు ప్రదేశం లేదా దట్టంగా నాటిన చోట మొదలై, రోజురోజుకు విస్తరిస్తుంది.',
+        'హాపర్‌బర్న్ ప్రాంతంలో లేదా దాని దగ్గర పిలకల మొదలును విడదీసి చూస్తే, నీటి మట్టానికి కొద్దిగా పైన కాండం మొదలు వద్ద గోధుమ రంగు, చీలిక ఆకారపు పెద్ద, లేత పురుగుల గుంపులు కనిపిస్తాయి.',
+        'పురుగులు విసర్జించే జిగురు పదార్థం కింది కాండాలు, నీటి ఉపరితలంపై పేరుకుపోయి, తరచుగా దానిపై నల్ల మసి బూజు పెరుగుతుంది — మొక్కలు నిజంగా ఎండిపోవడం మొదలయ్యే ముందు కనిపించే ఉపయోగకరమైన తొలి సంకేతం.',
+      ],
+      affectedParts: ['Stem Base', 'Tillers', 'Whole Plant'],
+      similarConditions: [
+        {
+          id: 'rice-bph-vs-drought',
+          name_en: 'Drought / Water Stress',
+          name_te: 'కరువు / నీటి ఒత్తిడి',
+          isPathological: false,
+          differentiatingFactors_en:
+            'Hopperburn starts as a circular patch at one spot (often a low area or dense planting) and expands outward with live insects visible at the stem base when parted; drought stress tends to affect the crop more uniformly according to elevation/soil type across the field, with no insects present and no honeydew/sooty mould.',
+          differentiatingFactors_te:
+            'హాపర్‌బర్న్ ఒక ప్రదేశంలో (తరచుగా పల్లపు ప్రాంతం లేదా దట్టమైన నాటడం) గుండ్రని మచ్చగా మొదలై బయటికి విస్తరిస్తుంది; కాండం మొదలు విడదీస్తే పురుగులు కనిపిస్తాయి; కరువు ఒత్తిడి పొలం అంతటా ఎత్తు/నేల రకాన్ని బట్టి మరింత సమానంగా ప్రభావితం చేస్తుంది, పురుగులు లేదా జిగురు/మసి బూజు ఉండవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Dense planting, excessive nitrogen use, and continuous flooding, all of which create the warm, humid, shaded microclimate at the stem base that BPH prefers.',
+        'Indiscriminate early-season insecticide spraying that kills the natural predators (spiders, mirid bugs) that normally keep BPH populations in check — a well-documented cause of later BPH outbreaks ("resurgence").',
+        'Continuous rice cropping with little varietal diversity, and warm, cloudy, humid weather in general.',
+      ],
+      environmentalRiskFactors_te: [
+        'దట్టంగా నాటడం, అధిక నత్రజని వాడకం, నిరంతరం నీరు నిల్వ ఉంచడం — ఇవన్నీ BPH ఇష్టపడే వెచ్చని, తేమతో కూడిన, నీడ ఉన్న కాండం మొదలు వాతావరణాన్ని సృష్టిస్తాయి.',
+        'సీజన్ తొలిదశలో విచక్షణారహితంగా పురుగుమందుల పిచికారీ చేయడం వల్ల సాధారణంగా BPH సంఖ్యను అదుపులో ఉంచే సహజ శత్రువులు (సాలెపురుగులు, మిరిడ్ బగ్స్) చనిపోతాయి — దీని వల్ల తర్వాత BPH ఉధృతి ("రిసర్జెన్స్") పెరగడం బాగా నమోదైన విషయం.',
+        'ఎక్కువ రకాల వైవిధ్యం లేకుండా నిరంతరం వరి పండించడం, సాధారణంగా వెచ్చని, మేఘావృతమైన, తేమతో కూడిన వాతావరణం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Avoid excessive nitrogen and dense planting; alternate wetting and drying (draining the field periodically) rather than continuous flooding discourages BPH buildup at the stem base.',
+          practice_te: 'అధిక నత్రజని, దట్టంగా నాటడం మానండి; నిరంతరం నీరు నిల్వ ఉంచడం కంటే అడపాదడపా నీరు తీసివేయడం (ఆరుతడి పద్ధతి) వల్ల కాండం మొదలు వద్ద BPH పెరుగుదల తగ్గుతుంది.',
+          targetTiming: 'Throughout the season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Avoid routine, calendar-based insecticide spraying early in the season — this is a well-documented way outbreaks get worse, since it removes the natural predators that keep BPH in check. Scout fields regularly instead and act only when hopper numbers justify it.',
+          practice_te: 'సీజన్ తొలిదశలో క్యాలెండర్ ఆధారంగా రొటీన్‌గా పురుగుమందులు పిచికారీ చేయడం మానండి — ఇది ఉధృతిని మరింత పెంచే బాగా తెలిసిన కారణం, ఎందుకంటే ఇది BPH ని అదుపులో ఉంచే సహజ శత్రువులను తొలగిస్తుంది. బదులుగా పొలాన్ని క్రమం తప్పకుండా పరిశీలించి, దోమల సంఖ్య సమర్థించినప్పుడే చర్య తీసుకోండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Where available, grow a locally recommended BPH-resistant/tolerant variety, especially in fields with a history of repeated outbreaks.',
+          practice_te: 'అందుబాటులో ఉంటే, ముఖ్యంగా పదేపదే ఉధృతి వచ్చిన పొలాల్లో, స్థానికంగా సిఫారసు చేసిన BPH తట్టుకునే రకాన్ని వేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-rice-bph-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Conserving natural enemies (spiders, mirid bugs, dragonflies) by avoiding unnecessary early sprays is the single most effective non-chemical lever against BPH; a neem-based spray is sometimes used at low hopper densities, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'అనవసర తొలిదశ పిచికారీలను నివారించడం ద్వారా సహజ శత్రువులను (సాలెపురుగులు, మిరిడ్ బగ్స్, డ్రాగన్‌ఫ్లైస్) కాపాడటం BPH కు వ్యతిరేకంగా అత్యంత ప్రభావవంతమైన రసాయనేతర చర్య; తక్కువ దోమల సాంద్రత వద్ద కొన్నిసార్లు వేప ఆధారిత పిచికారీ వాడతారు, కానీ ఖచ్చితమైన గాఢతను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Neem-based spray (organic, dose unverified)',
+          activeIngredient_te: 'వేప ఆధారిత పిచికారీ (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Once hopperburn patches appear, affected tillers rarely recover — treatment at this stage targets stopping the patch from spreading, not reviving plants already dried up.',
+          safetyCaution_te: 'హాపర్‌బర్న్ మచ్చలు కనిపించాక, సోకిన పిలకలు చాలా అరుదుగా కోలుకుంటాయి — ఈ దశలో చికిత్స లక్ష్యం ఇప్పటికే ఎండిన మొక్కలను బతికించడం కాదు, మచ్చ వ్యాపించకుండా ఆపడమే.',
+        },
+        {
+          id: 't-rice-bph-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Selective insecticides such as Pymetrozine, Flonicamid, or Buprofezin are commonly recommended for BPH specifically because they spare natural enemies better than broad-spectrum products, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory, and avoid broad-spectrum insecticides (e.g. synthetic pyrethroids) early in the season, since they are documented to trigger BPH resurgence by killing its natural predators.',
+          instruction_te:
+            'పైమెట్రోజిన్, ఫ్లోనికామిడ్, లేదా బుప్రోఫెజిన్ వంటి ఎంపిక చేసిన పురుగుమందులు BPH కు ప్రత్యేకంగా సిఫారసు చేస్తారు, ఎందుకంటే ఇవి విస్తృత-శ్రేణి మందుల కంటే సహజ శత్రువులను తక్కువగా దెబ్బతీస్తాయి, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు; సీజన్ తొలిదశలో విస్తృత-శ్రేణి పురుగుమందులు (ఉదా. సింథటిక్ పైరెత్రాయిడ్స్) వాడవద్దు — ఇవి సహజ శత్రువులను చంపి BPH ఉధృతిని పెంచుతాయని నమోదైంది.',
+          activeIngredient_en: 'Pymetrozine / Flonicamid / Buprofezin (dose suppressed)',
+          activeIngredient_te: 'పైమెట్రోజిన్ / ఫ్లోనికామిడ్ / బుప్రోఫెజిన్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards. Direct the spray to the stem base/basal zone where BPH actually feeds, not just the leaf canopy.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి. BPH నిజంగా ఆహారం తీసుకునే కాండం మొదలు భాగానికి పిచికారీని లక్ష్యంగా చేసుకోండి, కేవలం ఆకుల పందిరికి కాదు.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If you find more than roughly 5-10 hoppers per tiller at the stem base, or any hopperburn patch has already appeared and is expanding, consult your VAA/RBK immediately — BPH populations can destroy a field within days once they reach outbreak levels.',
+      escalationThreshold_te:
+        'కాండం మొదలు వద్ద ఒక్కో పిలకకు సుమారు 5-10 కంటే ఎక్కువ దోమలు కనిపించినా, లేదా ఇప్పటికే హాపర్‌బర్న్ మచ్చ కనిపించి విస్తరిస్తున్నా, వెంటనే VAA/RBK ను సంప్రదించండి — ఉధృతి స్థాయికి చేరిన BPH కొద్ది రోజుల్లోనే పొలాన్ని నాశనం చేయగలదు.',
+      sources: [
+        {
+          title: 'Package of Practices for Cereal Crops — Rice Brown Planthopper Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-rice-leaffolder': {
+      id: 'disease-rice-leaffolder',
+      cropId: 'crop-rice',
+      name_en: 'Rice Leaf Folder',
+      name_te: 'వరి ఆకు చుట్టు పురుగు',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Insect Pest: Cnaphalocrocis medinalis (rice leaf folder)',
+      pathogenOrVector_te: 'కీటకం: క్నాఫలోక్రోసిస్ మెడినాలిస్ (వరి ఆకు చుట్టు పురుగు)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Leaf blades folded or rolled longitudinally and webbed shut with fine silk threads, forming a tube-like shelter the caterpillar feeds inside.',
+        'Unfolding an affected leaf reveals long, white to transparent parallel streaks where the caterpillar has scraped away the green tissue from inside, leaving the leaf\'s outer skin intact.',
+        'A small green caterpillar with a brown head is usually found inside the folded leaf; severely affected fields show a scorched, whitish appearance from a distance.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు బ్లేడ్లు పొడవుగా ముడుచుకుని లేదా చుట్టుకుని సన్నని పట్టు దారాలతో అంటుకుపోయి, పురుగు లోపల ఆహారం తీసుకునే గొట్టం వంటి ఆశ్రయాన్ని ఏర్పరుస్తాయి.',
+        'సోకిన ఆకును విప్పి చూస్తే, పురుగు లోపలి నుండి పచ్చని కణజాలాన్ని గీకివేయడం వల్ల ఏర్పడిన పొడవైన, తెలుపు నుండి పారదర్శక సమాంతర చారలు కనిపిస్తాయి, ఆకు బయటి పొర చెక్కుచెదరకుండా ఉంటుంది.',
+        'చుట్టిన ఆకు లోపల సాధారణంగా గోధుమ రంగు తలతో చిన్న పచ్చని గొంగళి పురుగు కనిపిస్తుంది; తీవ్రంగా సోకిన పొలాలు దూరం నుండి కాలిపోయినట్లు, తెల్లగా కనిపిస్తాయి.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'rice-leaffolder-vs-blb',
+          name_en: 'Bacterial Leaf Blight',
+          name_te: 'ఎండాకు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Leaf folder damage is confined to the area inside a webbed, folded leaf, with parallel white scraping streaks and a caterpillar usually present inside; bacterial leaf blight shows continuous water-soaked yellow-to-straw stripes starting from the leaf tip/margin on an unfolded, open leaf, with milky bacterial ooze from a cut lesion and no webbing or caterpillar.',
+          differentiatingFactors_te:
+            'ఆకు చుట్టు పురుగు నష్టం పట్టుతో చుట్టిన, ముడుచుకున్న ఆకు లోపలి ప్రాంతానికే పరిమితమై, సమాంతర తెలుపు గీతలు, సాధారణంగా లోపల గొంగళి పురుగుతో ఉంటుంది; ఎండాకు తెగులు విప్పి ఉన్న ఆకుపై కొన ఆకు/అంచు నుండి నిరంతర నీటిలో నానిన పసుపు-గడ్డి చారలుగా కనిపించి, కోసిన మచ్చ నుండి పాల వంటి బ్యాక్టీరియా చీము వస్తుంది, పట్టు లేదా పురుగు ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Dense, shaded canopy with high humidity, especially with excessive nitrogen application promoting lush, succulent leaf growth that the moth prefers for egg-laying.',
+        'Continuous cropping without a break, which lets the pest build up generation after generation.',
+        'Warm, cloudy, humid weather favors moth activity and egg survival.',
+      ],
+      environmentalRiskFactors_te: [
+        'దట్టమైన, నీడ ఉన్న పందిరి, ఎక్కువ తేమ, ముఖ్యంగా అధిక నత్రజని వాడకం వల్ల మొగ్గ పెట్టడానికి శలభం ఇష్టపడే మెత్తని, లేత ఆకు పెరుగుదల.',
+        'విరామం లేకుండా నిరంతరం పంట వేయడం వల్ల పురుగు తరతరాలుగా పెరుగుతుంది.',
+        'వెచ్చని, మేఘావృతమైన, తేమతో కూడిన వాతావరణం శలభం కార్యకలాపాలు, గుడ్ల మనుగడకు అనుకూలం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Avoid excessive nitrogen application, which produces the lush, succulent foliage the moth prefers for egg-laying; apply nitrogen in split doses as recommended rather than all at once.',
+          practice_te: 'శలభం మొగ్గ పెట్టడానికి ఇష్టపడే మెత్తని ఆకు పెరుగుదలను కలిగించే అధిక నత్రజని వాడకం మానండి; సిఫారసు చేసిన విధంగా నత్రజనిని విడతలుగా వేయండి, ఒకేసారి కాదు.',
+          targetTiming: 'Throughout the season, at each nitrogen application',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Conserve natural enemies (parasitic wasps, spiders) by avoiding unnecessary insecticide sprays early in the season — leaf folder damage rarely justifies spraying on its own unless folding is severe near the flowering stage.',
+          practice_te: 'సీజన్ తొలిదశలో అనవసర పురుగుమందుల పిచికారీని నివారించడం ద్వారా సహజ శత్రువులను (పరాన్నజీవి కందిరీగలు, సాలెపురుగులు) కాపాడండి — పూత దశకు దగ్గరగా తీవ్రంగా ముడుచుకోకపోతే, ఆకు చుట్టు పురుగు నష్టం సాధారణంగా పిచికారీని సమర్థించదు.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-rice-lf-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A sprayable Bacillus thuringiensis (Bt) formulation is commonly used against leaf folder caterpillars as a selective, natural-enemy-sparing option, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'ఆకు చుట్టు పురుగు గొంగళి పురుగులకు వ్యతిరేకంగా ఎంపిక చేసిన, సహజ శత్రువులను కాపాడే పిచికారీ చేయదగిన బాసిల్లస్ తురింజియెన్సిస్ (Bt) సాధారణంగా వాడతారు, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Bacillus thuringiensis (Bt) (organic, dose unverified)',
+          activeIngredient_te: 'బాసిల్లస్ తురింజియెన్సిస్ (Bt) (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Rice plants tolerate a fair amount of leaf folding without real yield loss, since the flag leaf (the one just below the panicle) matters most — base the decision to spray on how many leaves are damaged, not on the presence of a few folded leaves alone.',
+          safetyCaution_te: 'నిజమైన దిగుబడి నష్టం లేకుండా వరి మొక్కలు కొంత ఆకు ముడుచుకోవడాన్ని తట్టుకోగలవు, ఎందుకంటే వెన్ను కింద ఉండే చివరి ఆకు (ఫ్లాగ్ లీఫ్) అత్యంత ముఖ్యమైనది — కొన్ని ఆకులు ముడుచుకున్నంత మాత్రాన కాకుండా ఎన్ని ఆకులు దెబ్బతిన్నాయో చూసి పిచికారీ నిర్ణయం తీసుకోండి.',
+        },
+        {
+          id: 't-rice-lf-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Chlorantraniliprole or Cartap hydrochloride are commonly recommended against rice leaf folder when damage is severe, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory, and reserve spraying for cases where new, unfolded leaf damage is heavy near flowering, since leaf folder rarely threatens yield on its own at low levels.',
+          instruction_te:
+            'నష్టం తీవ్రంగా ఉన్నప్పుడు వరి ఆకు చుట్టు పురుగుకు క్లోరాంట్రానిలిప్రోల్ లేదా కార్టాప్ హైడ్రోక్లోరైడ్ సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు; పూత దశకు దగ్గరగా కొత్త, విప్పని ఆకులకు నష్టం ఎక్కువగా ఉన్నప్పుడు మాత్రమే పిచికారీని ఉంచండి, ఎందుకంటే తక్కువ స్థాయిలో ఆకు చుట్టు పురుగు ఒంటరిగా దిగుబడికి అరుదుగానే ముప్పు కలిగిస్తుంది.',
+          activeIngredient_en: 'Chlorantraniliprole / Cartap hydrochloride (dose suppressed)',
+          activeIngredient_te: 'క్లోరాంట్రానిలిప్రోల్ / కార్టాప్ హైడ్రోక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than roughly 10-15% of leaves (especially new, unfolded leaves near the flag-leaf stage) show fresh folding/scraping damage, consult your VAA/RBK about whether spraying is actually justified at your field\'s growth stage.',
+      escalationThreshold_te:
+        'సుమారు 10-15% కంటే ఎక్కువ ఆకులకు (ముఖ్యంగా ఫ్లాగ్ లీఫ్ దశకు దగ్గరగా ఉన్న కొత్త, విప్పని ఆకులకు) తాజా ముడుచుకోవడం/గీకడం నష్టం కనిపిస్తే, మీ పొలం పెరుగుదల దశలో పిచికారీ నిజంగా అవసరమా అని మీ VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Cereal Crops — Rice Leaf Folder Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-rice-falsesmut': {
+      id: 'disease-rice-falsesmut',
+      cropId: 'crop-rice',
+      name_en: 'False Smut',
+      name_te: 'వరి తప్పుడు కణుతు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Ustilaginoidea virens',
+      pathogenOrVector_te: 'శిలీంద్రం: ఉస్టిలాజినాయిడియా విరెన్స్',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Individual grains within the panicle (ear head) are replaced by large velvety spore balls, much bigger than a normal rice grain, ranging from yellow-orange when young to olive-green or black as they mature.',
+        'Spore balls burst through and enlarge beyond the husk, becoming clearly visible after flowering, usually scattered among otherwise normal-looking grains on the same panicle rather than affecting every grain.',
+        'Affected grains are a direct yield loss and a grain-quality/marketability problem; mature spore balls also carry a mild toxin, so affected grain is generally not recommended for food or feed use.',
+      ],
+      observableSymptoms_te: [
+        'వెన్నులోని విడివిడి గింజలు సాధారణ వరి గింజ కంటే చాలా పెద్దగా ఉండే మెత్తని, వెల్వెట్ వంటి బీజ బంతులుగా మారతాయి; ఇవి లేత దశలో పసుపు-నారింజ రంగులో ఉండి ముదిరే కొద్దీ ఆలివ్-ఆకుపచ్చ లేదా నల్ల రంగులోకి మారతాయి.',
+        'బీజ బంతులు పొట్టును చీల్చుకుని పెద్దవై, పూత తర్వాత స్పష్టంగా కనిపిస్తాయి; సాధారణంగా అదే వెన్నులో మిగతా సాధారణ గింజల మధ్య చెదురుమదురుగా కనిపిస్తాయి, ప్రతి గింజను కాదు.',
+        'సోకిన గింజలు ప్రత్యక్ష దిగుబడి నష్టం మరియు గింజ నాణ్యత/అమ్మకానికి సమస్య; ముదిరిన బీజ బంతుల్లో తేలికపాటి విషపదార్థం కూడా ఉంటుంది కాబట్టి, సోకిన గింజలను సాధారణంగా ఆహారం లేదా దాణాగా వాడటం సిఫారసు చేయరు.',
+      ],
+      affectedParts: ['Panicle', 'Grain'],
+      similarConditions: [
+        {
+          id: 'rice-falsesmut-vs-blast',
+          name_en: 'Rice Blast (Neck Blast)',
+          name_te: 'అగ్గి తెగులు (మెడ అగ్గి)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'False smut replaces individual grains with large, round spore balls while the rest of the panicle and neck look normal; neck blast instead causes the neck/panicle base to rot and snap, so the whole panicle above the break turns white/empty (chaffy) rather than showing enlarged spore balls on individual grains.',
+          differentiatingFactors_te:
+            'తప్పుడు కణుతులో విడివిడి గింజలు పెద్ద, గుండ్రని బీజ బంతులుగా మారతాయి, మిగతా వెన్ను, మెడ సాధారణంగానే కనిపిస్తాయి; మెడ అగ్గిలో బదులుగా వెన్ను మెడ/మొదలు కుళ్ళి విరిగిపోయి, విరిగిన చోటుకు పైన ఉన్న వెన్ను మొత్తం తెలుపు/ఖాళీ (తాలు)గా మారుతుంది, విడివిడి గింజలపై బీజ బంతులు కనిపించవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High humidity, intermittent rain, and cloudy weather during the flowering/grain-fill stage, which favors spore germination and infection.',
+        'Excessive nitrogen application, especially late top-dressing close to flowering, which is strongly associated with worse false smut outbreaks.',
+        'Dense planting and continuous rice cropping on the same land, which lets spores carried in soil/straw build up over seasons.',
+      ],
+      environmentalRiskFactors_te: [
+        'పూత/గింజ నిండే దశలో ఎక్కువ తేమ, అడపాదడపా వర్షం, మేఘావృతమైన వాతావరణం బీజాలు మొలకెత్తడానికి, తెగులు సోకడానికి అనుకూలం.',
+        'అధిక నత్రజని వాడకం, ముఖ్యంగా పూతకు దగ్గరగా ఆలస్యంగా వేసే టాప్ డ్రెస్సింగ్ — ఇది తీవ్రమైన తప్పుడు కణుతు ఉధృతితో గట్టిగా ముడిపడి ఉంటుంది.',
+        'దట్టంగా నాటడం, అదే భూమిలో నిరంతరం వరి పండించడం వల్ల నేల/గడ్డిలో ఉండే బీజాలు సీజన్ల తరబడి పేరుకుపోతాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Avoid excessive or late nitrogen application, especially heavy top-dressing close to the flowering stage, since this is strongly linked to worse false smut outbreaks.',
+          practice_te: 'అధిక లేదా ఆలస్యంగా నత్రజని వేయడం మానండి, ముఖ్యంగా పూత దశకు దగ్గరగా భారీ టాప్ డ్రెస్సింగ్ — ఇది తీవ్రమైన తప్పుడు కణుతు ఉధృతితో గట్టిగా ముడిపడి ఉంటుంది.',
+          targetTiming: 'At top-dressing, especially near panicle initiation/flowering',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Use certified, disease-free seed where available, and avoid dense planting that keeps humidity high within the canopy during flowering.',
+          practice_te: 'వీలైతే ధృవీకరించిన, తెగులు లేని విత్తనాన్ని వాడండి; పూత దశలో పందిరి లోపల తేమను ఎక్కువగా ఉంచే దట్టమైన నాటడాన్ని మానండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Collect and destroy severely affected panicles/spore balls at harvest rather than leaving them to shed spores back onto the field for the next season.',
+          practice_te: 'కోత సమయంలో తీవ్రంగా సోకిన వెన్నులు/బీజ బంతులను సేకరించి నాశనం చేయండి — తదుపరి సీజన్‌కు పొలంలోకి బీజాలు తిరిగి రాలకుండా చూడండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-rice-fs-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A Pseudomonas fluorescens or Trichoderma-based seed/soil treatment is sometimes used as a general preventive step against false smut, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'తప్పుడు కణుతుకు వ్యతిరేకంగా సాధారణ నివారణ చర్యగా కొన్నిసార్లు సూడోమోనాస్ ఫ్లోరోసెన్స్ లేదా ట్రైకోడెర్మా ఆధారిత విత్తన/నేల శుద్ధి వాడతారు, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Pseudomonas fluorescens / Trichoderma spp. (organic, dose unverified)',
+          activeIngredient_te: 'సూడోమోనాస్ ఫ్లోరోసెన్స్ / ట్రైకోడెర్మా జాతులు (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Once spore balls have formed on the panicle, no spray reverses the damage to those grains — all treatment here is preventive, aimed at the next flowering/grain-fill window, not a cure for grain already affected.',
+          safetyCaution_te: 'వెన్నుపై బీజ బంతులు ఏర్పడిన తర్వాత, ఏ పిచికారీ ఆ గింజలకు జరిగిన నష్టాన్ని తిప్పికొట్టదు — ఇక్కడి చికిత్స అంతా నివారణాత్మకమే, తదుపరి పూత/గింజ నిండే దశ కోసం ఉద్దేశించినది, ఇప్పటికే సోకిన గింజలకు నివారణ కాదు.',
+        },
+        {
+          id: 't-rice-fs-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'A Propiconazole or Copper oxychloride spray timed around the booting/pre-flowering stage is commonly used against false smut in fields with a history of outbreaks, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory; timing (before the panicle emerges, not after spore balls appear) is critical for this disease.',
+          instruction_te:
+            'ఉధృతి చరిత్ర ఉన్న పొలాల్లో బూటింగ్/పూతకు ముందు దశలో ప్రొపికొనజోల్ లేదా కాపర్ ఆక్సీక్లోరైడ్ పిచికారీ సాధారణంగా తప్పుడు కణుతుకు వ్యతిరేకంగా వాడతారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు; సమయం (వెన్ను బయటకు రాకముందే, బీజ బంతులు కనిపించాక కాదు) ఈ తెగులుకు కీలకం.',
+          activeIngredient_en: 'Propiconazole / Copper oxychloride (dose suppressed)',
+          activeIngredient_te: 'ప్రొపికొనజోల్ / కాపర్ ఆక్సీక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, since correct timing before panicle emergence matters as much as the product choice.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి — వెన్ను బయటకు రాకముందే సరైన సమయం మందు ఎంపిక అంత ముఖ్యమైనది.',
+        },
+      ],
+      escalationThreshold_en:
+        'If false smut balls appear on more than about 5-10% of panicles, or your field has a history of repeated outbreaks, consult your VAA/RBK before the next season\'s flowering stage to plan preventive nitrogen management and timely spraying.',
+      escalationThreshold_te:
+        'సుమారు 5-10% కంటే ఎక్కువ వెన్నులపై తప్పుడు కణుతు బంతులు కనిపిస్తే, లేదా మీ పొలంలో పదేపదే ఉధృతి చరిత్ర ఉంటే, నివారణాత్మక నత్రజని నిర్వహణ, సకాలంలో పిచికారీని ప్లాన్ చేయడానికి తదుపరి సీజన్ పూత దశకు ముందే మీ VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Cereal Crops — Rice False Smut Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-18',
           geographicScope: 'national',
