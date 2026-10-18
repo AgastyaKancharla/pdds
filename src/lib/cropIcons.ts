@@ -11,6 +11,7 @@ export const CROP_ICONS: Record<string, string> = {
   'crop-banana': '🍌',
   'crop-turmeric': '🌿',
   'crop-brinjal': '🍆',
+  'crop-okra': '🫛',
 };
 
 export function getCropIcon(cropId?: string | null): string {

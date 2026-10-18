@@ -138,6 +138,22 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         'disease-brinjal-fruitcracking',
       ],
     },
+    'crop-okra': {
+      id: 'crop-okra',
+      name_en: "Okra / Lady's Finger",
+      name_te: 'బెండకాయ',
+      scientificName: 'Abelmoschus esculentus (L.) Moench',
+      category: 'Vegetable / Malvaceous',
+      apMajorDistricts: ['Krishna', 'Guntur', 'West Godavari', 'Kurnool'],
+      growingSeasons: ['Kharif', 'Rabi', 'Summer (irrigated)'],
+      commonDiseaseIds: [
+        'disease-okra-leafcurlvirus',
+        'disease-okra-downymildew',
+        'disease-okra-alternarialeafspot',
+        'disease-okra-cercosporaleafspot',
+        'disease-okra-phyllostictaleafspot',
+      ],
+    },
   },
   diseases: {
     'disease-rice-blast': {
@@ -3850,6 +3866,558 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Brinjal Fruit Quality and Physiological Disorders',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-okra-leafcurlvirus': {
+      id: 'disease-okra-leafcurlvirus',
+      cropId: 'crop-okra',
+      name_en: 'Yellow Vein Mosaic / Leaf Curl Virus',
+      name_te: 'పసుపు ఈనె మొజాయిక్ / ఆకు ముడుత వైరస్',
+      conditionCategory: 'disease',
+      pathogenOrVector_en:
+        'Virus: Bhendi Yellow Vein Mosaic Virus (BYVMV, a Begomovirus), transmitted by the whitefly Bemisia tabaci',
+      pathogenOrVector_te:
+        'వైరస్: బెండ పసుపు ఈనె మొజాయిక్ వైరస్ (BYVMV, బెగోమోవైరస్), తెల్లదోమ (బెమిసియా టాబాసి) ద్వారా వ్యాపిస్తుంది',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Veins on young leaves turn yellow first, forming a clear yellow network pattern while the tissue between veins stays green (vein-clearing/netting).',
+        'As it progresses, the whole leaf may turn yellow, thicken, and curl upward; plants become visibly stunted with shortened internodes.',
+        'Pods from infected plants are often small, pale, hard, and distorted ("stony"/hairy pods), with sharply reduced marketable yield; early infection (within 3-4 weeks of sowing) causes the worst loss.',
+      ],
+      observableSymptoms_te: [
+        'లేత ఆకులపై ముందుగా ఈనెలు పసుపు రంగులోకి మారి స్పష్టమైన పసుపు వల లాంటి నమూనా ఏర్పడుతుంది; ఈనెల మధ్య భాగం పచ్చగానే ఉంటుంది.',
+        'తెగులు ముదిరే కొద్దీ ఆకు మొత్తం పసుపు రంగులోకి మారి మందంగా, పైకి ముడుచుకుంటుంది; మొక్క కణుపుల మధ్య దూరం తగ్గి గిడసబారుతుంది.',
+        'తెగులు సోకిన మొక్కల కాయలు చిన్నవిగా, లేతరంగులో, గట్టిగా, వంకరగా (రాయిలా గట్టిపడిన/వెంట్రుకలు గల కాయలు) ఉంటాయి; మార్కెట్‌కు పనికొచ్చే దిగుబడి బాగా తగ్గుతుంది; విత్తిన 3-4 వారాల్లోపే తెగులు సోకితే నష్టం ఎక్కువ.',
+      ],
+      affectedParts: ['Leaves', 'Veins', 'Pods', 'Whole Plant'],
+      similarConditions: [
+        {
+          id: 'okra-leafcurl-vs-downymildew',
+          name_en: 'Downy Mildew',
+          name_te: 'బూజు తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Leaf curl virus shows a clear yellow vein network with upward leaf curling and no fungal growth; downy mildew shows angular yellow patches bound by veins with greyish-white fuzzy fungal growth visible on the leaf underside, especially in early morning, and does not curl the leaf upward.',
+          differentiatingFactors_te:
+            'ఆకు ముడుత వైరస్‌లో స్పష్టమైన పసుపు ఈనె వల నమూనా, ఆకు పైకి ముడుచుకోవడం కనిపిస్తాయి, శిలీంద్ర పెరుగుదల ఉండదు; బూజు తెగులులో ఈనెలతో ఆగిన చతురస్ర/కోణాకార పసుపు మచ్చలు ఉండి, ఆకు అడుగు భాగాన (ముఖ్యంగా ఉదయం మంచు వేళ) బూడిద-తెలుపు బూజు పెరుగుదల కనిపిస్తుంది; ఆకు పైకి ముడుచుకోదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High whitefly (Bemisia tabaci) population, especially in warm, dry weather following rain — the vector, not the virus itself, is what a farmer can actually target.',
+        'Nearby infected okra, cotton, or other whitefly-host crops/weeds acting as a virus reservoir.',
+        'Late or staggered sowing that keeps young, highly susceptible plants available to whiteflies over a longer period.',
+      ],
+      environmentalRiskFactors_te: [
+        'వెచ్చని, పొడి వాతావరణంలో (వర్షం తర్వాత) తెల్లదోమ సంఖ్య ఎక్కువగా ఉండటం — వైరస్‌ను కాదు, ఈ వాహకాన్నే రైతు నిజంగా లక్ష్యంగా చేసుకోగలరు.',
+        'దగ్గరలో తెగులు సోకిన బెండ, పత్తి లేదా ఇతర తెల్లదోమ ఆశ్రయించే పంటలు/కలుపు మొక్కలు వైరస్ నిల్వగా పనిచేస్తాయి.',
+        'ఆలస్యంగా లేదా వేర్వేరు సమయాల్లో విత్తడం వల్ల లేత, ఎక్కువ తెగులు సోకే మొక్కలు ఎక్కువ కాలం తెల్లదోమలకు అందుబాటులో ఉంటాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Grow a locally recommended yellow-vein-mosaic-tolerant/resistant okra variety where available — this is the single most effective and lowest-cost control, since the virus itself cannot be cured once a plant is infected.',
+          practice_te: 'అందుబాటులో ఉంటే స్థానికంగా సిఫారసు చేసిన పసుపు ఈనె తెగులును తట్టుకునే/నిరోధక బెండ రకాన్ని వేయండి — మొక్కకు ఒకసారి తెగులు సోకితే వైరస్‌ను నయం చేయలేము కాబట్టి ఇదే అత్యంత సమర్థవంతమైన, తక్కువ ఖర్చుతో కూడిన నియంత్రణ.',
+          targetTiming: 'At variety selection, before sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Rogue out (uproot and remove) infected plants as soon as symptoms appear, especially within the first month, to reduce the local virus source for whiteflies to pick up and spread further.',
+          practice_te: 'లక్షణాలు కనిపించిన వెంటనే, ముఖ్యంగా మొదటి నెలలో, తెగులు సోకిన మొక్కలను పీకి తీసివేయండి — దీనివల్ల తెల్లదోమలు మరింత వ్యాప్తి చేసే వైరస్ మూలం తగ్గుతుంది.',
+          targetTiming: 'Throughout the first 4-6 weeks after sowing',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Install yellow sticky traps to monitor and reduce whitefly numbers, and avoid planting okra next to or right after cotton or other whitefly-prone crops.',
+          practice_te: 'తెల్లదోమల సంఖ్యను గమనించడానికి, తగ్గించడానికి పసుపు రంగు జిగురు అట్టలను అమర్చండి; పత్తి లేదా ఇతర తెల్లదోమ ఎక్కువగా ఉండే పంటలకు పక్కనే లేదా వెంటనే బెండ వేయకండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-okra-yvmv-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Neem oil or neem seed kernel extract sprays are commonly used to discourage whitefly feeding and egg-laying (the vector, not the virus), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'తెల్లదోమ (వైరస్ వాహకం) తినడం, గుడ్లు పెట్టడం తగ్గించడానికి వేప నూనె లేదా వేప గింజల కషాయం పిచికారీ సాధారణంగా వాడతారు, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
+          activeIngredient_te: 'వేప నూనె / వేప గింజల కషాయం (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'No spray, organic or chemical, cures a plant already infected with the virus — treatment targets only the whitefly vector to protect still-healthy plants.',
+          safetyCaution_te: 'ఇప్పటికే వైరస్ సోకిన మొక్కను ఏ పిచికారీ (సేంద్రియమైనా, రసాయనమైనా) నయం చేయదు — చికిత్స లక్ష్యం ఆరోగ్యంగా ఉన్న మొక్కలను కాపాడటానికి తెల్లదోమ వాహకాన్ని అదుపులో ఉంచడమే.',
+        },
+        {
+          id: 't-okra-yvmv-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Systemic insecticides such as Diafenthiuron, Thiamethoxam, or Flonicamid are commonly used against whitefly vectors in okra, but a specific dose for this crop is suppressed here — this session could not confirm a current CIBRC-registered figure, and okra is harvested every 2-3 days, so a wrong waiting period is a real risk. Do not spray from memory.',
+          instruction_te:
+            'బెండలో తెల్లదోమ వాహకాన్ని అదుపు చేయడానికి డయాఫెంతియురాన్, థయామిథాక్సామ్, ఫ్లోనికామిడ్ వంటి సిస్టమిక్ పురుగుమందులు సాధారణంగా వాడతారు, కానీ ఈ పంటకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది, బెండను ప్రతి 2-3 రోజులకు కోస్తారు కాబట్టి తప్పు నిరీక్షణ వ్యవధి నిజమైన ప్రమాదం. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Diafenthiuron / Thiamethoxam / Flonicamid (dose suppressed)',
+          activeIngredient_te: 'డయాఫెంతియురాన్ / థయామిథాక్సామ్ / ఫ్లోనికామిడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent 2-3 day harvest cycle.',
+          regulatoryNotice_te:
+            'బెండను 2-3 రోజులకోసారి కోస్తారు కాబట్టి, పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 20-25% of plants show symptoms, or symptoms appear widely within the first month after sowing, consult your VAA/RBK promptly about resistant varieties for the next planting and an area-wide whitefly management plan.',
+      escalationThreshold_te:
+        '20-25% కంటే ఎక్కువ మొక్కలకు లక్షణాలు కనిపించినా, లేదా విత్తిన మొదటి నెలలోనే విస్తృతంగా లక్షణాలు కనిపించినా, తదుపరి పంటకు నిరోధక రకాలు మరియు ప్రాంతవ్యాప్త తెల్లదోమ నియంత్రణ ప్రణాళిక గురించి వెంటనే VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Okra Virus Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-okra-downymildew': {
+      id: 'disease-okra-downymildew',
+      cropId: 'crop-okra',
+      name_en: 'Downy Mildew',
+      name_te: 'బూజు తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en:
+        'Oomycete pathogen (downy mildew group, Peronosporales) — the exact species for okra is not confirmed from a primary source this session',
+      pathogenOrVector_te:
+        'ఓమైసిట్ వర్గ శిలీంద్రం (బూజు తెగులు సమూహం, పెరోనోస్పొరేల్స్) — బెండకు ఖచ్చితమైన జాతిని ఈ సెషన్ ధృవీకరించలేదు',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Pale yellow, angular patches on the upper leaf surface, bounded by the leaf veins (a checkerboard-like pattern).',
+        'A greyish-white to faintly purplish, fuzzy (downy) fungal growth appears on the corresponding underside of the leaf, most visible in early morning while dew is still present.',
+        'Severely affected leaves turn brown, dry up, and drop early, starting from the lower/older leaves.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు పై ఉపరితలంపై ఈనెలతో ఆగిన లేత పసుపు రంగు చతురస్ర/కోణాకార మచ్చలు (చదరంగం నమూనా వలె) కనిపిస్తాయి.',
+        'ఆ మచ్చలకు సరిగ్గా అడుగున బూడిద-తెలుపు నుండి లేత ఊదా రంగు మెత్తని (బూజు వంటి) శిలీంద్ర పెరుగుదల కనిపిస్తుంది; ఉదయం మంచు ఉన్నప్పుడు బాగా కనిపిస్తుంది.',
+        'తీవ్రంగా సోకిన ఆకులు గోధుమ రంగులోకి మారి ఎండి, కింది/ముదురు ఆకుల నుండి మొదలై ముందుగా రాలిపోతాయి.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'okra-downymildew-vs-cercospora',
+          name_en: 'Cercospora Leaf Spot',
+          name_te: 'సెర్కోస్పోరా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Downy mildew lesions are angular and vein-bound with fuzzy downy growth visible on the leaf underside; Cercospora spots are more rounded with a distinct reddish-brown margin and a dry, grainy texture, with no fuzzy growth.',
+          differentiatingFactors_te:
+            'బూజు తెగులు మచ్చలు ఈనెలతో ఆగి కోణాకారంగా ఉండి, ఆకు అడుగున మెత్తని బూజు పెరుగుదల కనిపిస్తుంది; సెర్కోస్పోరా మచ్చలు గుండ్రంగా, స్పష్టమైన ఎరుపు-గోధుమ అంచుతో, పొడి, కణిక రూపంలో ఉంటాయి, బూజు పెరుగుదల ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Cool nights with heavy dew or morning fog followed by warm days — classic downy-mildew-favoring weather.',
+        'Dense planting and poor air circulation that keeps leaf surfaces wet longer.',
+        'Overhead irrigation late in the day, which keeps foliage wet overnight.',
+      ],
+      environmentalRiskFactors_te: [
+        'రాత్రిపూట చల్లగా ఉండి ఎక్కువ మంచు లేదా పొగమంచు పడి, పగలు వెచ్చగా ఉండే వాతావరణం — ఇది బూజు తెగులుకు అనుకూలం.',
+        'దట్టంగా నాటడం, గాలి ప్రసరణ సరిగా లేకపోవడం వల్ల ఆకు ఉపరితలం ఎక్కువసేపు తడిగా ఉంటుంది.',
+        'రోజులో ఆలస్యంగా పైనుండి తడిపే నీటిపారుదల చేయడం వల్ల రాత్రంతా ఆకులు తడిగా ఉంటాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Avoid overhead irrigation in the late afternoon/evening; water early in the day so foliage can dry before nightfall.',
+          practice_te: 'మధ్యాహ్నం/సాయంత్రం పైనుండి తడిపే నీటిపారుదల చేయవద్దు; రోజు మొదట్లోనే నీరు పెట్టండి, తద్వారా చీకటి పడేలోపు ఆకులు ఆరిపోతాయి.',
+          targetTiming: 'Throughout the growing season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Maintain recommended plant spacing and avoid excessive nitrogen, both of which improve air movement through the canopy and reduce leaf wetness duration.',
+          practice_te: 'సిఫారసు చేసిన మొక్కల మధ్య దూరం పాటించండి, నత్రజని ఎరువును ఎక్కువగా వేయవద్దు — ఇవి రెండూ ఆకుల మధ్య గాలి ప్రసరణను మెరుగుపరచి తడి ఉండే సమయాన్ని తగ్గిస్తాయి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Remove and destroy heavily infected lower leaves and field debris at the end of the season rather than leaving them to carry the pathogen over.',
+          practice_te: 'తీవ్రంగా సోకిన కింది ఆకులను, పంట అవశేషాలను సీజన్ చివర్లో తీసివేసి నాశనం చేయండి — తెగులు తదుపరి సీజన్‌కు మిగలకుండా చూడండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-okra-dm-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'A dilute buttermilk/sour-milk spray or Trichoderma-based foliar application is sometimes used as a general phyllosphere management step against downy-mildew-type pathogens, but no specific product or rate is confirmed for okra from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'బూజు తెగులు వంటి శిలీంద్రాలకు వ్యతిరేకంగా పలుచటి మజ్జిగ/పులిసిన పాల పిచికారీ లేదా ట్రైకోడెర్మా ఆధారిత పిచికారీ కొన్నిసార్లు సాధారణ ఆకు-ఉపరితల నిర్వహణగా వాడతారు, కానీ బెండకు ఖచ్చితమైన ఉత్పత్తి లేదా మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Buttermilk spray / Trichoderma (organic, dose unverified)',
+          activeIngredient_te: 'మజ్జిగ పిచికారీ / ట్రైకోడెర్మా (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-okra-dm-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Copper-based fungicides (e.g. copper oxychloride) or Metalaxyl-Mancozeb combinations are commonly used against downy mildew in vegetable crops generally, but a specific dose for okra is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'కూరగాయ పంటల్లో బూజు తెగులుకు సాధారణంగా రాగి ఆధారిత శిలీంద్రనాశకాలు (ఉదా. కాపర్ ఆక్సీక్లోరైడ్) లేదా మెటాలాక్సిల్-మాంకోజెబ్ కలయిక వాడతారు, కానీ బెండకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Copper oxychloride / Metalaxyl-Mancozeb (dose suppressed)',
+          activeIngredient_te: 'కాపర్ ఆక్సీక్లోరైడ్ / మెటాలాక్సిల్-మాంకోజెబ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'బెండను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 15-20% of leaf area across the field shows downy mildew symptoms despite irrigation and spacing adjustments, consult your VAA/RBK for a tailored spray program.',
+      escalationThreshold_te:
+        'నీటిపారుదల, మొక్కల దూరం సర్దుబాటు చేసినా పొలంలో 15-20% కంటే ఎక్కువ ఆకు వైశాల్యానికి బూజు తెగులు లక్షణాలు కనిపిస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-okra-alternarialeafspot': {
+      id: 'disease-okra-alternarialeafspot',
+      cropId: 'crop-okra',
+      name_en: 'Alternaria Leaf Spot',
+      name_te: 'ఆల్టర్నేరియా ఆకు మచ్చ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Alternaria spp. (e.g. Alternaria alternata / A. hibisci)',
+      pathogenOrVector_te: 'శిలీంద్రం: ఆల్టర్నేరియా జాతులు (ఉదా. ఆల్టర్నేరియా ఆల్టర్నేటా / A. హిబిస్కి)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Circular to irregular brown spots, often with visible concentric rings ("target" or "bullseye" pattern), surrounded by a yellow halo.',
+        'Spots are typically larger (up to 1-2 cm) than other okra leaf spots and start on the older, lower leaves first.',
+        'In severe cases, spots merge, causing large areas of leaf blight and premature leaf drop, which can also affect pod quality indirectly through reduced plant vigor.',
+      ],
+      observableSymptoms_te: [
+        'గుండ్రని లేదా క్రమరహిత గోధుమ రంగు మచ్చలు, తరచుగా స్పష్టమైన వలయాకారపు గీతలతో ("లక్ష్యం" వంటి నమూనా), చుట్టూ పసుపు వలయంతో కనిపిస్తాయి.',
+        'ఇతర బెండ ఆకు మచ్చల కంటే ఈ మచ్చలు సాధారణంగా పెద్దవిగా (1-2 సెం.మీ వరకు) ఉండి, మొదట ముదురు/కింది ఆకులపై కనిపిస్తాయి.',
+        'తీవ్రమైన సందర్భాల్లో మచ్చలు కలిసిపోయి పెద్ద ఆకు ఎండు ప్రాంతాలుగా మారి, ఆకులు ముందుగా రాలతాయి; దీనివల్ల మొక్క శక్తి తగ్గి కాయ నాణ్యతపై పరోక్షంగా ప్రభావం పడుతుంది.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'okra-alternaria-vs-cercospora',
+          name_en: 'Cercospora Leaf Spot',
+          name_te: 'సెర్కోస్పోరా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Alternaria spots are larger, show clear concentric target-like rings, and have a broad yellow halo; Cercospora spots are smaller, more angular/irregular in shape without concentric rings, and have a narrower reddish-brown margin.',
+          differentiatingFactors_te:
+            'ఆల్టర్నేరియా మచ్చలు పెద్దవిగా, స్పష్టమైన వలయాకారపు "లక్ష్యం" వంటి గీతలతో, విశాలమైన పసుపు వలయంతో ఉంటాయి; సెర్కోస్పోరా మచ్చలు చిన్నవిగా, కోణాకారంగా, వలయాలు లేకుండా, ఇరుకైన ఎరుపు-గోధుమ అంచుతో ఉంటాయి.',
+        },
+        {
+          id: 'okra-alternaria-vs-phyllosticta',
+          name_en: 'Phyllosticta Leaf Spot',
+          name_te: 'ఫిల్లోస్టిక్టా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Alternaria spots are larger with a target-ring pattern; Phyllosticta spots are small (pinhead to 5mm), with a grayish-white center and a sharp dark-brown margin, often with tiny black dots (pycnidia) visible in the center under close inspection.',
+          differentiatingFactors_te:
+            'ఆల్టర్నేరియా మచ్చలు పెద్దవిగా, వలయాకారపు నమూనాతో ఉంటాయి; ఫిల్లోస్టిక్టా మచ్చలు చిన్నవిగా (సూది తల నుండి 5 మి.మీ వరకు), బూడిద-తెలుపు కేంద్రంతో, పదునైన ముదురు-గోధుమ అంచుతో ఉండి, దగ్గరగా చూస్తే కేంద్రంలో చిన్న నల్లని బిందువులు (బీజకోశాలు) కనిపించవచ్చు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm temperatures (around 25-30°C) combined with high humidity, rain, or heavy dew.',
+        'Plant stress from nutrient deficiency or water stress, which makes foliage more susceptible.',
+        'Infected crop debris left in the field between seasons, and continuous okra cultivation without rotation.',
+      ],
+      environmentalRiskFactors_te: [
+        'వెచ్చని ఉష్ణోగ్రత (సుమారు 25-30°C), ఎక్కువ తేమ, వర్షం లేదా భారీ మంచుతో కలిసి ఉండటం.',
+        'పోషక లోపం లేదా నీటి ఒత్తిడి వల్ల మొక్క బలహీనపడి ఆకులు ఎక్కువగా తెగులుకు గురవుతాయి.',
+        'సీజన్ల మధ్య పొలంలో మిగిలిన తెగులు సోకిన పంట అవశేషాలు, పంట మార్పిడి లేకుండా పదేపదే బెండ వేయడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain balanced nutrition (avoid both nitrogen excess and deficiency) and consistent irrigation to reduce plant stress.',
+          practice_te: 'మొక్క ఒత్తిడిని తగ్గించడానికి సమతుల్య పోషకాలను (నత్రజని ఎక్కువ లేదా తక్కువ కాకుండా) అందించి, స్థిరమైన నీటిపారుదల పాటించండి.',
+          targetTiming: 'Throughout the growing season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy severely spotted lower leaves and field debris at the end of the season.',
+          practice_te: 'తీవ్రంగా మచ్చలు సోకిన కింది ఆకులను, పంట అవశేషాలను సీజన్ చివర్లో తీసి నాశనం చేయండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Rotate with a non-Malvaceous crop (not cotton or other okra-family crops) for at least one season where field layout allows.',
+          practice_te: 'వీలైతే కనీసం ఒక సీజన్ మాల్వేసి కుటుంబానికి చెందని పంటలతో (పత్తి లేదా ఇతర బెండ కుటుంబ పంటలు కాకుండా) పంట మార్పిడి చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-okra-alt-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'ఆకు మచ్చ శిలీంద్రాలకు వ్యతిరేకంగా ట్రైకోడెర్మా విరిడి లేదా సూడోమోనాస్ ఫ్లోరోసెన్స్ ఆధారిత పిచికారీలు సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతులు, కానీ ఈ తెగులు/పంటకు ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (organic, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి / సూడోమోనాస్ ఫ్లోరోసెన్స్ (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-okra-alt-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Mancozeb or Chlorothalonil foliar sprays are widely documented for Alternaria leaf spot management in vegetable crops, but a specific dose for okra is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'కూరగాయ పంటల్లో ఆల్టర్నేరియా ఆకు మచ్చ తెగులుకు మాంకోజెబ్ లేదా క్లోరోథలోనిల్ పిచికారీలు విస్తృతంగా వాడతారు, కానీ బెండకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Mancozeb / Chlorothalonil (dose suppressed)',
+          activeIngredient_te: 'మాంకోజెబ్ / క్లోరోథలోనిల్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'బెండను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 15-20% of leaf area across the field shows spotting or blighting despite nutrition and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+      escalationThreshold_te:
+        'పోషక, పరిశుభ్రత చర్యలు తీసుకున్నా పొలంలో 15-20% కంటే ఎక్కువ ఆకు వైశాల్యానికి మచ్చలు లేదా ఎండు తెగులు కనిపిస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-okra-cercosporaleafspot': {
+      id: 'disease-okra-cercosporaleafspot',
+      cropId: 'crop-okra',
+      name_en: 'Cercospora Leaf Spot',
+      name_te: 'సెర్కోస్పోరా ఆకు మచ్చ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Cercospora spp. (e.g. Cercospora abelmoschi / C. malayensis)',
+      pathogenOrVector_te: 'శిలీంద్రం: సెర్కోస్పోరా జాతులు (ఉదా. సెర్కోస్పోరా అబెల్మోష్కి / C. మలేయెన్సిస్)',
+      urgencyLevel: 'Medium',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Small to medium, roughly circular to angular grayish-brown spots on both leaf surfaces, often bound by the leaf veins.',
+        'Spots have a distinct reddish-brown to purplish margin and a dry, slightly grainy-looking center, without the concentric rings seen in Alternaria spot.',
+        'Heavily spotted leaves yellow and drop prematurely, reducing plant vigor and pod set over time.',
+      ],
+      observableSymptoms_te: [
+        'ఆకు రెండు ఉపరితలాలపై చిన్న నుండి మధ్యస్థ, గుండ్రని లేదా కోణాకార బూడిద-గోధుమ రంగు మచ్చలు కనిపిస్తాయి; తరచుగా ఈనెలతో ఆగి ఉంటాయి.',
+        'మచ్చలకు స్పష్టమైన ఎరుపు-గోధుమ నుండి ఊదా రంగు అంచు, పొడిగా, కొద్దిగా కణిక రూపంలో కేంద్రం ఉంటుంది; ఆల్టర్నేరియా మచ్చలో కనిపించే వలయాలు ఉండవు.',
+        'ఎక్కువగా మచ్చలు సోకిన ఆకులు పసుపు రంగులోకి మారి ముందుగా రాలతాయి; కాలక్రమేణా మొక్క శక్తి, కాయ కాపు తగ్గుతుంది.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'okra-cercospora-vs-alternaria',
+          name_en: 'Alternaria Leaf Spot',
+          name_te: 'ఆల్టర్నేరియా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Cercospora spots are smaller and angular with a narrow reddish-brown margin and no rings; Alternaria spots are larger, rounder, and show visible concentric target-like rings with a broad yellow halo.',
+          differentiatingFactors_te:
+            'సెర్కోస్పోరా మచ్చలు చిన్నవిగా, కోణాకారంగా, ఇరుకైన ఎరుపు-గోధుమ అంచుతో, వలయాలు లేకుండా ఉంటాయి; ఆల్టర్నేరియా మచ్చలు పెద్దవిగా, గుండ్రంగా, స్పష్టమైన వలయాకారపు నమూనాతో, విశాలమైన పసుపు వలయంతో ఉంటాయి.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid weather with frequent rain or dew, similar to other okra leaf-spot fungi.',
+        'Dense canopy with poor air circulation.',
+        'Infected crop debris carried over between seasons on the same field.',
+      ],
+      environmentalRiskFactors_te: [
+        'తరచుగా వర్షం లేదా మంచుతో వెచ్చని, తేమతో కూడిన వాతావరణం — ఇతర బెండ ఆకు మచ్చ శిలీంద్రాల మాదిరిగానే.',
+        'దట్టమైన ఆకుల పందిరి, సరైన గాలి ప్రసరణ లేకపోవడం.',
+        'అదే పొలంలో సీజన్ల మధ్య మిగిలిన తెగులు సోకిన పంట అవశేషాలు.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain recommended plant spacing for good air circulation, and avoid overhead irrigation late in the day.',
+          practice_te: 'మంచి గాలి ప్రసరణ కోసం సిఫారసు చేసిన మొక్కల దూరం పాటించండి; రోజులో ఆలస్యంగా పైనుండి తడిపే నీటిపారుదల చేయవద్దు.',
+          targetTiming: 'Throughout the growing season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy heavily spotted leaves and field debris at the end of the season.',
+          practice_te: 'ఎక్కువగా మచ్చలు సోకిన ఆకులను, పంట అవశేషాలను సీజన్ చివర్లో తీసి నాశనం చేయండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Rotate with a non-Malvaceous crop for at least one season where field layout allows.',
+          practice_te: 'వీలైతే కనీసం ఒక సీజన్ మాల్వేసి కుటుంబానికి చెందని పంటలతో పంట మార్పిడి చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-okra-cls-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'ఆకు మచ్చ శిలీంద్రాలకు వ్యతిరేకంగా ట్రైకోడెర్మా విరిడి లేదా సూడోమోనాస్ ఫ్లోరోసెన్స్ ఆధారిత పిచికారీలు సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతులు, కానీ ఈ తెగులు/పంటకు ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (organic, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి / సూడోమోనాస్ ఫ్లోరోసెన్స్ (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-okra-cls-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Mancozeb-based foliar sprays are widely documented for Cercospora leaf spot management in vegetable crops, but a specific dose for okra is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop. Do not spray from memory.',
+          instruction_te:
+            'కూరగాయ పంటల్లో సెర్కోస్పోరా ఆకు మచ్చ తెగులుకు మాంకోజెబ్ ఆధారిత పిచికారీలు విస్తృతంగా వాడతారు, కానీ బెండకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Mancozeb (dose suppressed)',
+          activeIngredient_te: 'మాంకోజెబ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'బెండను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 15-20% of leaf area across the field shows spotting despite spacing and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+      escalationThreshold_te:
+        'దూరం, పరిశుభ్రత చర్యలు తీసుకున్నా పొలంలో 15-20% కంటే ఎక్కువ ఆకు వైశాల్యానికి మచ్చలు కనిపిస్తే, తగిన పిచికారీ ప్రణాళిక కోసం VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-18',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-18',
+    },
+    'disease-okra-phyllostictaleafspot': {
+      id: 'disease-okra-phyllostictaleafspot',
+      cropId: 'crop-okra',
+      name_en: 'Phyllosticta Leaf Spot',
+      name_te: 'ఫిల్లోస్టిక్టా ఆకు మచ్చ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Phyllosticta spp.',
+      pathogenOrVector_te: 'శిలీంద్రం: ఫిల్లోస్టిక్టా జాతులు',
+      urgencyLevel: 'Low',
+      urgencyColor: 'yellow',
+      observableSymptoms_en: [
+        'Small (pinhead to about 5mm) circular spots with a pale grayish-white center and a sharply defined dark brown margin.',
+        'Under close inspection, tiny black dots (pycnidia, the fungus\'s fruiting bodies) are often visible scattered within the pale center of older spots.',
+        'Usually causes scattered, relatively mild leaf spotting rather than the large blighted patches seen with Alternaria or heavy Cercospora infection.',
+      ],
+      observableSymptoms_te: [
+        'సూది తల నుండి సుమారు 5 మి.మీ వరకు ఉండే చిన్న గుండ్రని మచ్చలు, లేత బూడిద-తెలుపు కేంద్రం, పదునైన ముదురు గోధుమ అంచుతో కనిపిస్తాయి.',
+        'దగ్గరగా చూస్తే, ముదిరిన మచ్చల లేత కేంద్రంలో చిన్న నల్లని బిందువులు (బీజకోశాలు) చెల్లాచెదురుగా కనిపించవచ్చు.',
+        'సాధారణంగా ఆల్టర్నేరియా లేదా తీవ్రమైన సెర్కోస్పోరా తెగులులో కనిపించే పెద్ద ఎండు ప్రాంతాల కంటే చెదురుమదురుగా, తేలికపాటి ఆకు మచ్చలను మాత్రమే కలిగిస్తుంది.',
+      ],
+      affectedParts: ['Leaves'],
+      similarConditions: [
+        {
+          id: 'okra-phyllosticta-vs-alternaria',
+          name_en: 'Alternaria Leaf Spot',
+          name_te: 'ఆల్టర్నేరియా ఆకు మచ్చ తెగులు',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Phyllosticta spots are small, pale-centered with tiny visible black pycnidia and a sharp dark margin; Alternaria spots are larger, with visible concentric target-rings and a broad yellow halo, and no pycnidia.',
+          differentiatingFactors_te:
+            'ఫిల్లోస్టిక్టా మచ్చలు చిన్నవిగా, లేత కేంద్రంతో, చిన్న నల్లని బీజకోశాలు కనిపించేలా, పదునైన ముదురు అంచుతో ఉంటాయి; ఆల్టర్నేరియా మచ్చలు పెద్దవిగా, స్పష్టమైన వలయాకారపు నమూనాతో, విశాలమైన పసుపు వలయంతో ఉండి, బీజకోశాలు ఉండవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Warm, humid conditions with frequent rain or heavy dew, similar to other okra leaf-spot fungi.',
+        'Older, more mature leaves tend to show lesions first.',
+        'Infected crop debris carried over between seasons on the same field.',
+      ],
+      environmentalRiskFactors_te: [
+        'తరచుగా వర్షం లేదా భారీ మంచుతో వెచ్చని, తేమతో కూడిన వాతావరణం — ఇతర బెండ ఆకు మచ్చ శిలీంద్రాల మాదిరిగానే.',
+        'ముదురు, పెద్ద ఆకులపై మచ్చలు ముందుగా కనిపిస్తాయి.',
+        'అదే పొలంలో సీజన్ల మధ్య మిగిలిన తెగులు సోకిన పంట అవశేషాలు.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Maintain recommended plant spacing for good air circulation and avoid overhead irrigation late in the day.',
+          practice_te: 'మంచి గాలి ప్రసరణ కోసం సిఫారసు చేసిన మొక్కల దూరం పాటించండి; రోజులో ఆలస్యంగా పైనుండి తడిపే నీటిపారుదల చేయవద్దు.',
+          targetTiming: 'Throughout the growing season',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Remove and destroy heavily spotted older leaves and field debris at the end of the season.',
+          practice_te: 'ఎక్కువగా మచ్చలు సోకిన ముదురు ఆకులను, పంట అవశేషాలను సీజన్ చివర్లో తీసి నాశనం చేయండి.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-okra-pls-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Because this spot is usually mild and scattered, sanitation (removing affected leaves/debris) is often sufficient on its own; a Trichoderma viride or Pseudomonas fluorescens-based spray is sometimes added as a general preventive step, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK if you choose to spray.',
+          instruction_te:
+            'ఈ మచ్చ సాధారణంగా తేలికగా, చెదురుమదురుగా ఉంటుంది కాబట్టి పరిశుభ్రత (సోకిన ఆకులు/అవశేషాలు తీసివేయడం) సాధారణంగా సరిపోతుంది; సాధారణ నివారణ చర్యగా కొన్నిసార్లు ట్రైకోడెర్మా విరిడి లేదా సూడోమోనాస్ ఫ్లోరోసెన్స్ పిచికారీ కూడా జోడిస్తారు, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — పిచికారీ చేయదలిస్తే VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (optional, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి / సూడోమోనాస్ ఫ్లోరోసెన్స్ (ఐచ్ఛికం, మోతాదు ధృవీకరించబడలేదు)',
+        },
+        {
+          id: 't-okra-pls-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'A Mancozeb spray is sometimes used if spotting becomes widespread, but a specific dose for okra is suppressed here — this session could not confirm a current CIBRC-registered figure for this crop, and spraying is rarely needed for this particular spot unless it is unusually severe. Do not spray from memory.',
+          instruction_te:
+            'మచ్చలు విస్తృతంగా వ్యాపిస్తే కొన్నిసార్లు మాంకోజెబ్ పిచికారీ వాడతారు, కానీ బెండకు మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ పంటకు ప్రస్తుత CIBRC నమోదైన అంకెను ఈ సెషన్ ధృవీకరించలేకపోయింది, అసాధారణంగా తీవ్రంగా ఉంటే తప్ప ఈ మచ్చకు పిచికారీ అరుదుగానే అవసరం. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Mancozeb (dose suppressed)',
+          activeIngredient_te: 'మాంకోజెబ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'మందు కలిపేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+          regulatoryNotice_te:
+            'బెండను తరచుగా కోస్తారు కాబట్టి, పిచికారీకి ముందు మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'This spot is usually mild; if it nonetheless spreads to more than about 20% of leaf area or appears alongside other leaf spots making field diagnosis difficult, consult your VAA/RBK.',
+      escalationThreshold_te:
+        'ఈ మచ్చ సాధారణంగా తేలికపాటిదే; అయినా 20% కంటే ఎక్కువ ఆకు వైశాల్యానికి వ్యాపించినా, లేదా ఇతర ఆకు మచ్చలతో కలిసి గుర్తించడం కష్టంగా ఉన్నా, VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-18',
           geographicScope: 'national',
