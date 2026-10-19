@@ -79,7 +79,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Cereal / Feed',
       apMajorDistricts: ['Guntur', 'West Godavari', 'Prakasam'],
       growingSeasons: ['Kharif', 'Rabi'],
-      commonDiseaseIds: ['disease-maize-armyworm', 'disease-maize-turcicumblight'],
+      commonDiseaseIds: [
+        'disease-maize-armyworm',
+        'disease-maize-turcicumblight',
+        'disease-maize-stemborer',
+        'disease-maize-blsb',
+      ],
     },
     'crop-sugarcane': {
       id: 'crop-sugarcane',
@@ -5967,6 +5972,240 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       sources: [
         {
           title: 'Package of Practices for Oilseed Crops — Groundnut Bud Necrosis Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-19',
+    },
+    'disease-maize-stemborer': {
+      id: 'disease-maize-stemborer',
+      cropId: 'crop-maize',
+      name_en: 'Spotted Stem Borer',
+      name_te: 'కాండం తొలుచు పురుగు',
+      conditionCategory: 'pest',
+      pathogenOrVector_en: 'Pest: Chilo partellus (Swinhoe)',
+      pathogenOrVector_te: 'కీటకం: చిలో పార్టెల్లస్',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Rows of small, neat pinhole perforations across young leaves as the newly hatched larva feeds while still on the leaf surface before boring in.',
+        'Larvae bore into the central shoot/stem, producing a "deadheart" — the central whorl turns brown, dries up, and can be pulled out easily with a rotten smell, while outer leaves stay green.',
+        'In older plants, visible round entry/exit holes on the stem with larval tunnels (galleries) inside when the stem is split open; weakened stems may lodge (fall over) in wind.',
+      ],
+      observableSymptoms_te: [
+        'కొత్తగా పొదిగిన పురుగు ఆకు ఉపరితలంపైనే తింటూ, కాండంలోకి తొలిచే ముందు లేత ఆకులపై వరుసగా చిన్న, శుభ్రమైన గుండుసూది రంధ్రాలు ఏర్పడతాయి.',
+        'పురుగులు మధ్య మొవ్వు/కాండంలోకి తొలుచుకుంటాయి, దీనితో "డెడ్‌హార్ట్" (మొవ్వు ఎండుట) ఏర్పడుతుంది — మధ్య సుడి గోధుమ రంగులోకి మారి ఎండిపోయి, కుళ్ళిన వాసనతో సులభంగా లాగితే వస్తుంది, బయటి ఆకులు మాత్రం ఆకుపచ్చగా ఉంటాయి.',
+        'పెద్ద మొక్కల్లో, కాండంపై గుండ్రని ప్రవేశ/నిష్క్రమణ రంధ్రాలు కనిపిస్తాయి; కాండం చీల్చినపుడు లోపల పురుగు తొలిచిన సొరంగాలు ఉంటాయి; బలహీనమైన కాండం గాలికి వంగి పడిపోవచ్చు.',
+      ],
+      affectedParts: ['Whorl', 'Stem', 'Leaves'],
+      similarConditions: [
+        {
+          id: 'maize-stemborer-vs-fallarmyworm',
+          name_en: 'Fall Armyworm (Spodoptera frugiperda / Pest)',
+          name_te: 'కత్తెర పురుగు (స్పోడోప్టెరా ఫ్రూగిపెర్డా)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Spotted Stem Borer bores deep into the stem itself, leaving neat round entry/exit holes and a dried, rotten-smelling deadheart when the whorl is pulled; Fall Armyworm stays concealed inside the whorl without boring into the stem, causing large ragged windowpane leaf tearing with heavy sawdust-like fecal frass but no deadheart or stem tunnels.',
+          differentiatingFactors_te:
+            'కాండం తొలుచు పురుగు కాండంలోకి లోతుగా తొలుచుకుంటుంది, శుభ్రమైన గుండ్రని ప్రవేశ/నిష్క్రమణ రంధ్రాలు వదిలి, సుడిని లాగితే ఎండిన, కుళ్ళిన వాసనతో డెడ్‌హార్ట్ ఏర్పడుతుంది; కత్తెర పురుగు కాండంలోకి తొలుచుకోకుండా సుడి లోపలే ఉండి, భారీ రంపపు రంధ్రాల వంటి ఆకు నష్టం, రంపపు పొట్టు వంటి విసర్జితాలను మిగులుస్తుంది కానీ డెడ్‌హార్ట్ లేదా కాండం సొరంగాలు ఉండవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'Continuous monocropping of maize without crop rotation, which lets larval populations build up season after season in crop residue.',
+        'Warm, humid weather during the vegetative (whorl) stage favours egg-laying and larval survival.',
+      ],
+      environmentalRiskFactors_te: [
+        'పంట మార్పిడి లేకుండా మొక్కజొన్నను పదేపదే వేయడం వల్ల పంట అవశేషాల్లో పురుగు సంఖ్య సీజన్ తర్వాత సీజన్ పెరుగుతుంది.',
+        'పెరుగుదల (సుడి) దశలో వెచ్చని, తేమతో కూడిన వాతావరణం గుడ్లు పెట్టడానికి, పిల్ల పురుగుల జీవించడానికి అనుకూలంగా ఉంటుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Destroy or plough in crop residue (stubble) immediately after harvest to remove overwintering larvae/pupae before the next season.',
+          practice_te:
+            'తదుపరి సీజన్‌కు ముందు శీతాకాల విశ్రాంతి పురుగులు/కోశస్థ దశను తొలగించడానికి కోత తర్వాత వెంటనే పంట అవశేషాలను నాశనం చేయండి లేదా దుక్కిలో కలియదున్నండి.',
+          targetTiming: 'Immediately after harvest',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Install pheromone traps @ 5/acre from the third week after sowing to monitor and trap adult moths before egg-laying peaks.',
+          practice_te:
+            'గుడ్లు పెట్టే ముందు మగ పురుగులను గమనించి పట్టుకోవడానికి విత్తిన మూడో వారం నుండి ఎకరానికి 5 లింగాకర్షక బుట్టలు అమర్చండి.',
+          targetTiming: '3rd week after sowing',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-maize-sb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Release Trichogramma chilonis egg parasitoid cards @ 5 cards/acre at weekly intervals from the whorl stage, a commonly documented biological-control approach; a specific release schedule beyond this is not confirmed from a primary source this session.',
+          instruction_te:
+            'సుడి దశ నుండి వారానికి ఎకరానికి 5 కార్డుల ట్రైకోగ్రామా చిలోనిస్ గుడ్డు పరాన్నజీవులను వదలడం సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతి; దీనికి మించిన ఖచ్చితమైన షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు.',
+          activeIngredient_en: 'Trichogramma chilonis (egg parasitoid, biological control)',
+          activeIngredient_te: 'ట్రైకోగ్రామా చిలోనిస్ (గుడ్డు పరాన్నజీవి, జీవ నియంత్రణ)',
+          safetyCaution_en:
+            'Once the central whorl has already dried into a deadheart, that plant cannot be saved — biological control here targets protecting still-healthy plants and the next generation of larvae, not reversing existing damage.',
+          safetyCaution_te:
+            'మధ్య సుడి ఇప్పటికే ఎండి డెడ్‌హార్ట్‌గా మారిన తర్వాత ఆ మొక్కను కాపాడలేము — ఇక్కడి జీవ నియంత్రణ లక్ష్యం ఇంకా ఆరోగ్యంగా ఉన్న మొక్కలను, తదుపరి తరం పురుగులను కాపాడటమే, ఇప్పటికే జరిగిన నష్టాన్ని తిప్పికొట్టడం కాదు.',
+        },
+        {
+          id: 't-maize-sb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Whorl application of Chlorantraniliprole or Cartap Hydrochloride granules is commonly recommended against stem borer once deadhearts appear, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not apply from memory.',
+          instruction_te:
+            'డెడ్‌హార్ట్‌లు కనిపించిన తర్వాత కాండం తొలుచు పురుగుకు వ్యతిరేకంగా సుడిలో క్లోరాంట్రానిలిప్రోల్ లేదా కార్టాప్ హైడ్రోక్లోరైడ్ గుళికలు వేయడం సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా వేయవద్దు.',
+          activeIngredient_en: 'Chlorantraniliprole / Cartap Hydrochloride (dose suppressed)',
+          activeIngredient_te: 'క్లోరాంట్రానిలిప్రోల్ / కార్టాప్ హైడ్రోక్లోరైడ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves while applying granules into the whorl, avoid inhaling dust, and wash hands thoroughly afterwards.',
+          safetyCaution_te:
+            'సుడిలో గుళికలు వేసేటప్పుడు చేతి తొడుగులు ధరించండి, పొడిని పీల్చకుండా జాగ్రత్త పడండి; తరువాత చేతులను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product and dose with your VAA/RBK and check your container label before application.',
+          regulatoryNotice_te:
+            'వేయడానికి ముందు ఖచ్చితమైన మందు, మోతాదును VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than 10% of plants show deadheart symptoms during the whorl stage, or visible stem tunnels/exit holes are found on a field scouting walk, consult your VAA/RBK promptly about whorl-application timing.',
+      escalationThreshold_te:
+        'సుడి దశలో 10% కంటే ఎక్కువ మొక్కలకు డెడ్‌హార్ట్ లక్షణాలు కనిపించినా, పొలం పరిశీలనలో కాండం సొరంగాలు/నిష్క్రమణ రంధ్రాలు కనిపించినా, సుడిలో మందు వేసే సమయం గురించి వెంటనే మీ VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'ICAR - Indian Institute of Maize Research (IIMR) Spotted Stem Borer Management Advisory',
+          organization: 'ICAR - IIMR, Ludhiana',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+        {
+          title: 'Package of Practices for Cereal Crops — Maize Stem Borer Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-19',
+    },
+    'disease-maize-blsb': {
+      id: 'disease-maize-blsb',
+      cropId: 'crop-maize',
+      name_en: 'Banded Leaf and Sheath Blight',
+      name_te: 'ఆకు-తొడుగు పట్టీ తెగులు',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Rhizoctonia solani f. sp. sasakii',
+      pathogenOrVector_te: 'శిలీంద్రం: రైజోక్టోనియా సొలానై (sasakii)',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Irregular, water-soaked, grayish-brown lesions with a concentric banded (zonate) pattern appear first on the leaf sheath near the base, then spread upward onto leaves.',
+        'Lesions coalesce into large necrotic patches that can girdle the leaf sheath and stalk, causing affected leaves to dry up starting from lower leaves upward.',
+        'In severe cases, small brown-to-black sclerotia (resting bodies of the fungus) form on the sheath surface, and the weakened stalk/ear shank may rot and lodge (fall over) before harvest.',
+      ],
+      observableSymptoms_te: [
+        'మొదట కాండం దగ్గర ఆకు తొడుగుపై క్రమరహిత, నీటితో తడిసినట్లు, బూడిద-గోధుమ రంగు మచ్చలు కేంద్రీకృత పట్టీల (వలయాల) నమూనాలో ఏర్పడి, తరువాత ఆకులపైకి వ్యాపిస్తాయి.',
+        'మచ్చలు కలిసి పెద్ద చనిపోయిన భాగాలుగా మారి ఆకు తొడుగును, కాండాన్ని చుట్టుముట్టి, దిగువ ఆకుల నుండి మొదలుకొని ఆకులు ఎండిపోతాయి.',
+        'తీవ్రమైన సందర్భాల్లో, తొడుగు ఉపరితలంపై చిన్న గోధుమ-నలుపు రంగు స్క్లెరోషియా (శిలీంద్ర విశ్రాంత దశలు) ఏర్పడతాయి; బలహీనమైన కాండం/కండె కాడ కుళ్ళి కోతకు ముందే నేలకొరుగుతుంది.',
+      ],
+      affectedParts: ['Leaf Sheath', 'Leaves', 'Stalk', 'Ear'],
+      similarConditions: [
+        {
+          id: 'maize-blsb-vs-turcicumblight',
+          name_en: 'Turcicum Leaf Blight (Exserohilum turcicum / Pathogen)',
+          name_te: 'టర్సికం ఆకు మచ్చ తెగులు (ఎక్సెరోహిలం టర్సికం)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Banded Leaf and Sheath Blight starts at the leaf sheath/stalk base with water-soaked, concentric zonate banding and can carry visible sclerotia; Turcicum Leaf Blight instead produces long, cigar-shaped, grayish-green to tan lesions scattered on the leaf blade itself, starting on lower leaves, without any banded sheath pattern or sclerotia.',
+          differentiatingFactors_te:
+            'ఆకు-తొడుగు పట్టీ తెగులు ఆకు తొడుగు/కాండం మొదలు నుండి నీటితో తడిసినట్లు, వలయాకార పట్టీలతో మొదలై, కనిపించే స్క్లెరోషియాను కూడా కలిగి ఉండవచ్చు; టర్సికం ఆకు మచ్చ తెగులు బదులుగా ఆకుపై పొడవైన, సిగార్ ఆకారపు, బూడిద-ఆకుపచ్చ నుండి గోధుమ రంగు మచ్చలను దిగువ ఆకుల నుండి మొదలుపెట్టి వెదజల్లుతుంది, పట్టీ నమూనా లేదా స్క్లెరోషియా ఉండవు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High humidity combined with close plant spacing and dense canopy that restricts airflow, typical of the Kharif season.',
+        'Continuous rice-maize or maize-maize cropping sequences, which let the soil-borne fungus (which also infects rice sheaths) build up in the field over seasons.',
+        'Excessive nitrogen application leading to lush, dense vegetative growth that favours disease spread.',
+      ],
+      environmentalRiskFactors_te: [
+        'ఖరీఫ్ సీజన్‌లో సాధారణంగా ఉండే, గాలి ప్రసరణను తగ్గించే దగ్గరి మొక్కల అంతరం, దట్టమైన కాపు తో కలిపిన అధిక తేమ.',
+        'నిరంతర వరి-మొక్కజొన్న లేదా మొక్కజొన్న-మొక్కజొన్న పంట వరుసలు, దీనివల్ల నేలలో ఉండే ఈ శిలీంద్రం (వరి తొడుగులను కూడా సోకుతుంది) సీజన్ల వారీగా పొలంలో పేరుకుపోతుంది.',
+        'అధిక నత్రజని వాడకం వల్ల దట్టమైన, పెరుగుదల వృద్ధి చెంది, తెగులు వ్యాప్తికి అనుకూలంగా మారుతుంది.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en:
+            'Avoid continuous rice-maize or maize-maize rotation in the same field where feasible; rotate with a non-host crop like pulses to break the soil-borne fungal cycle.',
+          practice_te:
+            'సాధ్యమైనంత వరకు అదే పొలంలో నిరంతర వరి-మొక్కజొన్న లేదా మొక్కజొన్న-మొక్కజొన్న పంట మార్పిడిని నివారించండి; నేలలో ఉండే శిలీంద్ర చక్రాన్ని విచ్ఛిన్నం చేయడానికి పప్పుధాన్యాల వంటి ఆశ్రయం కాని పంటతో మార్పిడి చేయండి.',
+          targetTiming: 'At crop planning, before sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en:
+            'Avoid excessive nitrogen and maintain recommended plant spacing to keep the canopy open and reduce humidity build-up around the stalk base.',
+          practice_te:
+            'కాండం మొదలు దగ్గర తేమ పేరుకుపోకుండా కాపును వదులుగా ఉంచడానికి అధిక నత్రజనిని నివారించి, సిఫారసు చేసిన మొక్కల అంతరాన్ని పాటించండి.',
+          targetTiming: 'During crop growth / fertilizer scheduling',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-maize-blsb-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Soil/seed application of Trichoderma viride-based bio-fungicide is a commonly documented biological approach against Rhizoctonia-complex sheath blights, but a specific application rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'రైజోక్టోనియా-సంబంధిత తొడుగు తెగుళ్లకు వ్యతిరేకంగా ట్రైకోడెర్మా విరిడి ఆధారిత జీవ-శిలీంద్రనాశకాన్ని నేల/విత్తనానికి వాడటం సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతి, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en:
+            'Remove and destroy severely banded/rotted lower leaves and sheaths where feasible to reduce the local sclerotia source, rather than leaving infected residue in the field.',
+          safetyCaution_te:
+            'స్థానిక స్క్లెరోషియా మూలాన్ని తగ్గించడానికి, సోకిన అవశేషాలను పొలంలో వదలకుండా, సాధ్యమైనంత వరకు తీవ్రంగా పట్టీలు పడిన/కుళ్ళిన దిగువ ఆకులు, తొడుగులను తీసివేసి నాశనం చేయండి.',
+        },
+        {
+          id: 't-maize-blsb-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Foliar spray of Validamycin or Propiconazole directed at the lower stalk and sheath region is commonly recommended against banded leaf and sheath blight, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory.',
+          instruction_te:
+            'ఆకు-తొడుగు పట్టీ తెగులుకు వ్యతిరేకంగా దిగువ కాండం, తొడుగు భాగాన్ని లక్ష్యంగా చేసుకుని వాలిడమైసిన్ లేదా ప్రోపికొనాజోల్ ఆకు పిచికారీ సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Validamycin / Propiconazole (dose suppressed)',
+          activeIngredient_te: 'వాలిడమైసిన్ / ప్రోపికొనాజోల్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray preparation, direct spray at the lower stalk/sheath region rather than broadcast overhead, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'పిచికారీ తయారీ సమయంలో చేతి తొడుగులు, మాస్క్ ధరించండి; పైనుంచి కాకుండా దిగువ కాండం/తొడుగు భాగం వైపు పిచికారీ చేయండి; తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+          regulatoryNotice_te:
+            'పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If banded lesions are found on the lower stalk/sheath of more than 10-15% of plants, or any plant shows stalk rot/lodging risk, consult your VAA/RBK promptly, especially before continuing a rice-maize rotation on the same field next season.',
+      escalationThreshold_te:
+        'దిగువ కాండం/తొడుగుపై 10-15% కంటే ఎక్కువ మొక్కలకు పట్టీ మచ్చలు కనిపించినా, లేదా ఏ మొక్కకైనా కాండం కుళ్ళు/నేలకొరిగే ప్రమాదం కనిపించినా, ముఖ్యంగా తదుపరి సీజన్‌లో అదే పొలంలో వరి-మొక్కజొన్న మార్పిడిని కొనసాగించే ముందు, వెంటనే మీ VAA/RBKని సంప్రదించండి.',
+      sources: [
+        {
+          title: 'ICAR - Indian Institute of Maize Research (IIMR) Banded Leaf and Sheath Blight Advisory',
+          organization: 'ICAR - IIMR, Ludhiana',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+        {
+          title: 'Package of Practices for Cereal Crops — Maize Banded Leaf and Sheath Blight Management',
           organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
           reviewDate: '2026-10-19',
           geographicScope: 'national',
