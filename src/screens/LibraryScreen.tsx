@@ -55,12 +55,22 @@ export const LibraryScreen: React.FC<LibraryScreenProps> = ({ onSelectCondition 
         </button>
 
         <div className="library-crop-detail-header">
-          <div className="library-crop-detail-icon">{getCropIcon(crop.id)}</div>
+          {crop.imageUrl ? (
+            <img src={crop.imageUrl} alt="" className="library-crop-detail-photo" />
+          ) : (
+            <div className="library-crop-detail-icon">{getCropIcon(crop.id)}</div>
+          )}
           <div>
             <div className="library-crop-detail-name">{language === 'en' ? crop.name_en : crop.name_te}</div>
             <div className="library-crop-detail-sci">{crop.scientificName}</div>
           </div>
         </div>
+        {crop.imageUrl && crop.imageAttribution && (
+          <p className="library-image-credit">
+            {language === 'en' ? 'Photo' : 'ఫోటో'}: {crop.imageAttribution.organization} (
+            {crop.imageAttribution.license})
+          </p>
+        )}
 
         <div className="library-condition-list">
           {conditions.length === 0 ? (
@@ -77,10 +87,14 @@ export const LibraryScreen: React.FC<LibraryScreenProps> = ({ onSelectCondition 
                   type="button"
                   className="library-condition-row"
                   onClick={() => onSelectCondition(crop.id, entry.id)}>
-                  <span
-                    className="library-condition-dot"
-                    style={{ backgroundColor: URGENCY_DOT[entry.urgencyColor] }}
-                  />
+                  {entry.imageUrl ? (
+                    <img src={entry.imageUrl} alt="" className="library-condition-photo" />
+                  ) : (
+                    <span
+                      className="library-condition-dot"
+                      style={{ backgroundColor: URGENCY_DOT[entry.urgencyColor] }}
+                    />
+                  )}
                   <span className="library-condition-text">
                     <span className="library-condition-name">
                       {language === 'en' ? entry.name_en : entry.name_te}
@@ -113,7 +127,11 @@ export const LibraryScreen: React.FC<LibraryScreenProps> = ({ onSelectCondition 
               type="button"
               className="library-crop-card"
               onClick={() => navigate(`/library/${crop.id}`)}>
-              <span className="library-crop-icon">{getCropIcon(crop.id)}</span>
+              {crop.imageUrl ? (
+                <img src={crop.imageUrl} alt="" className="library-crop-card-photo" />
+              ) : (
+                <span className="library-crop-icon">{getCropIcon(crop.id)}</span>
+              )}
               <span className="library-crop-name">{language === 'en' ? crop.name_en : crop.name_te}</span>
               <span className="library-crop-count">
                 {count} {language === 'en' ? (count === 1 ? 'condition' : 'conditions') : 'సమస్యలు'}
