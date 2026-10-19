@@ -501,10 +501,10 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // 10 original + 6 added in the Oct 2026 market-research expansion pass + 4 new Brinjal
       // conditions + 5 new Okra conditions + 5 new Citrus conditions + 3 new Rice conditions
       // (BPH, Leaf Folder, False Smut) + 2 new Cotton conditions (Jassids, Bacterial Blight)
-      // + 2 new Chilli conditions (Anthracnose, Powdery Mildew) from the Priority 3
-      // existing-crop expansion.
+      // + 2 new Chilli conditions (Anthracnose, Powdery Mildew) + 2 new Groundnut conditions
+      // (Collar Rot, Bud Necrosis Disease) from the Priority 3 existing-crop expansion.
       const allDiseases = getAllSupportedDiseases();
-      expect(allDiseases.length).toBeGreaterThanOrEqual(37);
+      expect(allDiseases.length).toBeGreaterThanOrEqual(39);
 
       // Rice is the first crop expanded beyond a single condition. This previously asserted
       // exactly one rice disease, which was the assumption the whole UI inherited.
@@ -556,7 +556,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const offlineCatalog = getOfflineReferenceCatalog();
       expect(offlineCatalog.version).toBe('1.0.0');
       expect(Object.keys(offlineCatalog.crops).length).toBe(13);
-      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(37);
+      expect(Object.keys(offlineCatalog.diseases).length).toBeGreaterThanOrEqual(39);
     });
   });
 

@@ -64,7 +64,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       category: 'Oilseed / Legume',
       apMajorDistricts: ['Anantapur', 'Sri Sathya Sai', 'Kurnool', 'Chittoor'],
       growingSeasons: ['Kharif (Rainfed)', 'Rabi (Irrigated)'],
-      commonDiseaseIds: ['disease-groundnut-tikka', 'disease-groundnut-rust'],
+      commonDiseaseIds: [
+        'disease-groundnut-tikka',
+        'disease-groundnut-rust',
+        'disease-groundnut-collarrot',
+        'disease-groundnut-budnecrosis',
+      ],
     },
     'crop-maize': {
       id: 'crop-maize',
@@ -5753,6 +5758,222 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
       ],
       evidenceStatus: 'unverified',
       lastUpdated: '2026-10-18',
+    },
+    'disease-groundnut-collarrot': {
+      id: 'disease-groundnut-collarrot',
+      cropId: 'crop-groundnut',
+      name_en: 'Collar Rot (Seedling Blight)',
+      name_te: 'మెడ కుళ్ళు తెగులు (నారు ఎండు తెగులు)',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Fungus: Aspergillus niger',
+      pathogenOrVector_te: 'శిలీంద్రం: ఆస్పర్జిల్లస్ నైగర్',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'Young seedlings wilt and collapse within 2-3 weeks of sowing, often before or just after emergence.',
+        'A girdling lesion forms at the collar region (stem base, right at the soil line); peeling back the soil there reveals a sooty black, powdery fungal growth coating the affected tissue — a distinctive sign for this disease.',
+        'Affected seedlings pull out of the soil easily, with a rotted stem base and collar; in severe cases, seed may fail to germinate at all (pre-emergence rot), leaving visible gaps in the row.',
+      ],
+      observableSymptoms_te: [
+        'విత్తిన 2-3 వారాల్లోపే, మొలకెత్తే ముందు లేదా వెంటనే లేత మొలకలు వాడిపోయి కుప్పకూలిపోతాయి.',
+        'మెడ ప్రాంతంలో (కాండం మొదలు, నేల మట్టానికి సరిగ్గా దగ్గర) చుట్టుముట్టే గాయం ఏర్పడుతుంది; అక్కడ నేలను తొలగించి చూస్తే మసి లాంటి నల్లని, పొడి శిలీంద్ర పెరుగుదల కనిపిస్తుంది — ఇది ఈ తెగులుకు ప్రత్యేక గుర్తు.',
+        'సోకిన మొలకలు సులభంగా నేల నుండి ఊడివస్తాయి, కాండం మొదలు, మెడ భాగం కుళ్ళిపోయి ఉంటాయి; తీవ్రమైన సందర్భాల్లో విత్తనం మొలకెత్తకుండానే కుళ్ళిపోవచ్చు (మొలకెత్తక ముందే కుళ్ళు), వరుసలో ఖాళీలు కనిపిస్తాయి.',
+      ],
+      affectedParts: ['Seedlings', 'Collar Region', 'Stem Base', 'Roots'],
+      similarConditions: [
+        {
+          id: 'groundnut-collarrot-vs-termite',
+          name_en: 'Termite Damage',
+          name_te: 'చెదపురుగు నష్టం',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Collar rot shows a rotted, sooty-black fungal coating at the collar with the seedling pulling out mushy/decayed; termite damage instead shows the stem cleanly hollowed out or cut with soil particles and earthen tunnels/galleries stuck to the plant, and no black fungal growth.',
+          differentiatingFactors_te:
+            'మెడ కుళ్ళులో మెడ ప్రాంతంలో కుళ్ళిన, మసి-నల్లని శిలీంద్ర పూత ఉండి మొలక మెత్తగా, కుళ్ళినట్లు ఊడివస్తుంది; చెదపురుగు నష్టంలో బదులుగా కాండం శుభ్రంగా బోలుగా లేదా కోసినట్లు ఉండి, మొక్కకు అంటుకున్న మట్టి కణాలు, మట్టి సొరంగాలు కనిపిస్తాయి, నల్లని శిలీంద్ర పెరుగుదల ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High soil temperature combined with dry soil conditions at and after sowing — this fungus thrives in hot, dry topsoil, unlike most seedling-rot fungi that prefer wet conditions.',
+        'Poor-quality, mechanically damaged, or cracked-seed-coat seed, which gives the fungus an easy entry point.',
+        'Shallow sowing depth and sowing during an unusually hot, dry spell.',
+      ],
+      environmentalRiskFactors_te: [
+        'విత్తిన సమయంలో, ఆ తర్వాత నేల వేడిగా, పొడిగా ఉండటం — చాలా నారు కుళ్ళు శిలీంద్రాలు తడి పరిస్థితులను ఇష్టపడటానికి భిన్నంగా, ఈ శిలీంద్రం వేడి, పొడి పై నేలలో బాగా వృద్ధి చెందుతుంది.',
+        'నాణ్యత లేని, యాంత్రికంగా దెబ్బతిన్న, లేదా పగిలిన పొట్టు గల విత్తనం శిలీంద్రానికి సులభమైన ప్రవేశ మార్గాన్ని ఇస్తుంది.',
+        'నిస్సారంగా విత్తడం, అసాధారణంగా వేడి, పొడి వాతావరణంలో విత్తడం.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Use bold, undamaged, high-quality seed from a trusted source, and avoid mechanically damaged or cracked-coat seed.',
+          practice_te: 'నమ్మకమైన మూలం నుండి లావుగా, దెబ్బతినని, నాణ్యమైన విత్తనాన్ని వాడండి; యాంత్రికంగా దెబ్బతిన్న లేదా పగిలిన పొట్టు గల విత్తనాన్ని నివారించండి.',
+          targetTiming: 'At seed selection, before sowing',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Treat seed with Trichoderma viride or a recommended fungicide before sowing, and sow at the recommended depth with adequate soil moisture rather than into very hot, dry topsoil.',
+          practice_te: 'విత్తేముందు ట్రైకోడెర్మా విరిడి లేదా సిఫారసు చేసిన శిలీంద్రనాశకంతో విత్తన శుద్ధి చేయండి; చాలా వేడి, పొడి పై నేలలోకి కాకుండా సిఫారసు చేసిన లోతులో, తగిన నేల తేమతో విత్తండి.',
+          targetTiming: 'At sowing',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-groundnut-cr-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Trichoderma viride-based seed treatment is a commonly documented biological approach against collar rot, but a specific application rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'మెడ కుళ్ళు తెగులుకు వ్యతిరేకంగా ట్రైకోడెర్మా విరిడి ఆధారిత విత్తన శుద్ధి సాధారణంగా వాడే జీవ నియంత్రణ పద్ధతి, కానీ ఖచ్చితమైన మోతాదును ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
+          activeIngredient_te: 'ట్రైకోడెర్మా విరిడి (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'Once a seedling has already collapsed, it cannot be saved — all treatment here is a pre-sowing seed/soil measure, aimed at the next sowing, not a cure for a seedling already wilting.',
+          safetyCaution_te: 'ఒకసారి మొలక కుప్పకూలిన తర్వాత దాన్ని కాపాడలేము — ఇక్కడి చికిత్స అంతా విత్తే ముందు తీసుకునే విత్తన/నేల చర్య, తదుపరి విత్తనానికి ఉద్దేశించినది, ఇప్పటికే వాడిపోతున్న మొలకకు నివారణ కాదు.',
+        },
+        {
+          id: 't-groundnut-cr-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Thiram or Carbendazim seed treatment is commonly recommended against collar rot/seedling blight in groundnut, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not treat seed from memory.',
+          instruction_te:
+            'వేరుశనగలో మెడ కుళ్ళు/నారు ఎండు తెగులుకు థైరమ్ లేదా కార్బెండజిమ్ విత్తన శుద్ధి సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా విత్తన శుద్ధి చేయవద్దు.',
+          activeIngredient_en: 'Thiram / Carbendazim (dose suppressed)',
+          activeIngredient_te: 'థైరమ్ / కార్బెండజిమ్ (మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask while treating seed, and wash hands thoroughly afterwards.',
+          safetyCaution_te:
+            'విత్తన శుద్ధి చేసేటప్పుడు చేతి తొడుగులు, మాస్క్ ధరించండి; తరువాత చేతులను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product and dose with your VAA/RBK and check your container label before treating seed.',
+          regulatoryNotice_te:
+            'విత్తన శుద్ధికి ముందు ఖచ్చితమైన మందు, మోతాదును VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 10-15% of seedlings show collar rot/wilting across the field within the first month, consult your VAA/RBK before the next sowing to plan seed treatment and sowing-time adjustments.',
+      escalationThreshold_te:
+        'విత్తిన మొదటి నెలలో పొలంలో 10-15% కంటే ఎక్కువ మొలకలకు మెడ కుళ్ళు/వాడిపోవడం కనిపిస్తే, తదుపరి విత్తనానికి విత్తన శుద్ధి, విత్తే సమయం సర్దుబాటు ప్లాన్ చేయడానికి మీ VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Oilseed Crops — Groundnut Collar Rot Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-19',
+    },
+    'disease-groundnut-budnecrosis': {
+      id: 'disease-groundnut-budnecrosis',
+      cropId: 'crop-groundnut',
+      name_en: 'Bud Necrosis Disease (PBNV)',
+      name_te: 'మొగ్గ చివర ఎండు తెగులు (PBNV)',
+      conditionCategory: 'disease',
+      pathogenOrVector_en: 'Virus: Peanut Bud Necrosis Virus (a Tospovirus), transmitted by thrips (e.g. Thrips palmi, Frankliniella schultzei)',
+      pathogenOrVector_te: 'వైరస్: పీనట్ బడ్ నెక్రోసిస్ వైరస్ (టోస్పోవైరస్), తామర పురుగుల (థ్రిప్స్ పామి, ఫ్రాంక్లినియెల్లా షుల్ట్జీ వంటివి) ద్వారా వ్యాపిస్తుంది',
+      urgencyLevel: 'High',
+      urgencyColor: 'red',
+      observableSymptoms_en: [
+        'The central growing point (terminal bud) turns brown-black and dies — the symptom that gives this disease its name.',
+        'Young leaves show chlorotic and necrotic ring spots or mottled patterns before the bud dies.',
+        'With the main growing point dead, the plant loses apical dominance and develops a stunted, bushy cluster of side branches; affected plants set few or no pods, and any pods that do form are often small or malformed.',
+      ],
+      observableSymptoms_te: [
+        'మొక్క మధ్య పెరుగుదల భాగం (మొగ్గ చివర) గోధుమ-నలుపు రంగులోకి మారి చనిపోతుంది — దీని నుండే ఈ తెగులు పేరు వచ్చింది.',
+        'మొగ్గ చనిపోయేముందు లేత ఆకులపై పసుపు, చనిపోయిన వలయాకార మచ్చలు లేదా చారల నమూనా కనిపిస్తుంది.',
+        'ప్రధాన పెరుగుదల భాగం చనిపోవడంతో మొక్క శిఖర ఆధిపత్యాన్ని కోల్పోయి, గిడసబారిన, పొదలా పక్క కొమ్మల గుత్తిగా మారుతుంది; సోకిన మొక్కలు తక్కువ కాయలు లేదా కాయలు పెట్టవు, ఏర్పడిన కాయలు కూడా తరచుగా చిన్నవిగా లేదా వికృతంగా ఉంటాయి.',
+      ],
+      affectedParts: ['Terminal Bud', 'Growing Point', 'Leaves', 'Pods'],
+      similarConditions: [
+        {
+          id: 'groundnut-budnecrosis-vs-suckingpest',
+          name_en: 'General Sucking Pest Damage (Aphids/Jassids)',
+          name_te: 'సాధారణ రసం పీల్చే పురుగుల నష్టం (నల్లి/జాసిడ్స్)',
+          isPathological: true,
+          differentiatingFactors_en:
+            'Bud necrosis causes the entire terminal bud to die outright, with distinctive chlorotic/necrotic ring spots on nearby young leaves and a bushy proliferation of side branches afterward; ordinary sucking-pest damage causes generalized yellowing or curling of leaves without killing the whole growing point or producing the ring-spot pattern.',
+          differentiatingFactors_te:
+            'మొగ్గ చివర ఎండు తెగులులో మొత్తం మొగ్గ చివర పూర్తిగా చనిపోయి, దగ్గరలోని లేత ఆకులపై ప్రత్యేకమైన పసుపు/చనిపోయిన వలయాకార మచ్చలు కనిపించి, తరువాత పక్క కొమ్మలు పొదలా పెరుగుతాయి; సాధారణ రసం పీల్చే పురుగుల నష్టంలో ఆకులు సాధారణంగా పసుపు రంగులోకి మారడం లేదా ముడుచుకోవడం కనిపిస్తుంది, మొత్తం పెరుగుదల భాగం చనిపోదు, వలయాకార మచ్చల నమూనా ఉండదు.',
+        },
+      ],
+      environmentalRiskFactors_en: [
+        'High thrips vector populations, typically building up in hot, dry weather following rain.',
+        'Early-season infection (within the first 30-40 days) causes the most severe yield loss; later infection is comparatively less damaging.',
+        'Nearby alternate host crops or weeds (e.g. tobacco, tomato, chilli can also carry Tospoviruses) acting as a virus reservoir for thrips to pick up and spread.',
+      ],
+      environmentalRiskFactors_te: [
+        'వర్షం తర్వాత వేడి, పొడి వాతావరణంలో సాధారణంగా పెరిగే అధిక తామర పురుగు వాహక సంఖ్య.',
+        'సీజన్ తొలిదశలో (మొదటి 30-40 రోజుల్లో) తెగులు సోకితే అత్యధిక దిగుబడి నష్టం జరుగుతుంది; ఆలస్యంగా సోకితే నష్టం తక్కువగా ఉంటుంది.',
+        'దగ్గరలోని ప్రత్యామ్నాయ ఆశ్రయ పంటలు లేదా కలుపు మొక్కలు (ఉదా. పొగాకు, టమాట, మిరప కూడా టోస్పోవైరస్‌లను మోయగలవు) వైరస్ నిల్వగా పనిచేసి తామర పురుగులు దాన్ని తీసుకెళ్లి వ్యాపింపజేస్తాయి.',
+      ],
+      preventionGuidance: [
+        {
+          stepNumber: 1,
+          practice_en: 'Sow as early as possible within the recommended window for your area — early sowing lets the crop pass its most vulnerable young stage before thrips populations peak.',
+          practice_te: 'మీ ప్రాంతానికి సిఫారసు చేసిన సమయంలో వీలైనంత త్వరగా విత్తండి — తామర పురుగుల సంఖ్య గరిష్టానికి చేరేలోపు పంట అత్యంత సున్నితమైన లేత దశను దాటిపోతుంది.',
+          targetTiming: 'At sowing, as early as the recommended window allows',
+        },
+        {
+          stepNumber: 2,
+          practice_en: 'Where available, grow a locally recommended bud-necrosis-tolerant variety, especially in fields/areas with a history of repeated outbreaks.',
+          practice_te: 'అందుబాటులో ఉంటే, ముఖ్యంగా పదేపదే ఉధృతి వచ్చిన పొలాలు/ప్రాంతాల్లో, మొగ్గ చివర ఎండు తెగులును తట్టుకునే స్థానికంగా సిఫారసు చేసిన రకాన్ని వేయండి.',
+        },
+        {
+          stepNumber: 3,
+          practice_en: 'Rogue out and remove severely affected plants early in the season to reduce the local virus source for thrips to spread further, since there is no cure once a plant is infected.',
+          practice_te: 'మొక్కకు ఒకసారి తెగులు సోకితే నయం చేయలేము కాబట్టి, సీజన్ తొలిదశలోనే తీవ్రంగా సోకిన మొక్కలను పీకి తీసివేయండి — దీనివల్ల తామర పురుగులు మరింత వ్యాప్తి చేసే వైరస్ మూలం తగ్గుతుంది.',
+        },
+      ],
+      treatments: [
+        {
+          id: 't-groundnut-bn-org-1',
+          stepNumber: 1,
+          category: 'organic',
+          instruction_en:
+            'Neem oil or Neem Seed Kernel Extract sprays are commonly used to discourage thrips feeding and egg-laying (the vector, not the virus itself), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+          instruction_te:
+            'తామర పురుగు (వైరస్ వాహకం) తినడం, గుడ్లు పెట్టడం తగ్గించడానికి వేప నూనె లేదా వేప గింజల కషాయం పిచికారీ సాధారణంగా వాడతారు, కానీ ఖచ్చితమైన గాఢత/షెడ్యూల్‌ను ఈ సెషన్ ధృవీకరించలేదు — VAA/RBK వద్ద నిర్ధారించుకోండి.',
+          activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
+          activeIngredient_te: 'వేప నూనె / వేప గింజల కషాయం (సేంద్రియ, మోతాదు ధృవీకరించబడలేదు)',
+          safetyCaution_en: 'No spray, organic or chemical, cures a plant once its bud has already died — treatment targets only the thrips vector to protect still-healthy plants nearby.',
+          safetyCaution_te: 'మొగ్గ ఇప్పటికే చనిపోయిన మొక్కను ఏ పిచికారీ (సేంద్రియమైనా, రసాయనమైనా) నయం చేయదు — చికిత్స లక్ష్యం దగ్గరలోని ఆరోగ్యకరమైన మొక్కలను కాపాడటానికి తామర పురుగు వాహకాన్ని అదుపులో ఉంచడమే.',
+        },
+        {
+          id: 't-groundnut-bn-chem-1',
+          stepNumber: 2,
+          category: 'chemical',
+          instruction_en:
+            'Systemic insecticides such as Fipronil or Thiamethoxam seed treatment, followed by foliar sprays of Fipronil or Imidacloprid if thrips pressure remains high, are commonly recommended against the thrips vector, but a specific dose is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not treat seed or spray from memory.',
+          instruction_te:
+            'తామర పురుగు వాహకానికి వ్యతిరేకంగా ఫిప్రోనిల్ లేదా థయామిథాక్సామ్ విత్తన శుద్ధి, ఆ తర్వాత తామర ఒత్తిడి ఎక్కువగా ఉంటే ఫిప్రోనిల్ లేదా ఇమిడాక్లోప్రిడ్ పిచికారీలు సాధారణంగా సిఫారసు చేస్తారు, కానీ మోతాదు ఇక్కడ నిలిపివేయబడింది — ఈ సెషన్ ప్రస్తుత CIBRC నమోదైన అంకెను ధృవీకరించలేకపోయింది. గుర్తు ఆధారంగా విత్తన శుద్ధి లేదా పిచికారీ చేయవద్దు.',
+          activeIngredient_en: 'Fipronil / Thiamethoxam / Imidacloprid (vector control, dose suppressed)',
+          activeIngredient_te: 'ఫిప్రోనిల్ / థయామిథాక్సామ్ / ఇమిడాక్లోప్రిడ్ (వాహక నియంత్రణ, మోతాదు నిలిపివేయబడింది)',
+          safetyCaution_en:
+            'Wear protective gloves and a mask during spray/seed-treatment preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
+          safetyCaution_te:
+            'పిచికారీ/విత్తన శుద్ధి తయారీ సమయంలో చేతి తొడుగులు, మాస్క్ ధరించండి; గాలికి ఎదురుగా పిచికారీ చేయవద్దు; పని ముగిసిన తరువాత చేతులను, పరికరాలను బాగా శుభ్రం చేసుకోండి.',
+          regulatoryNotice_en:
+            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before treating seed or spraying.',
+          regulatoryNotice_te:
+            'విత్తన శుద్ధి లేదా పిచికారీకి ముందు ఖచ్చితమైన మందు, మోతాదు, ప్రస్తుత నిరీక్షణ వ్యవధిని VAA/RBK వద్ద నిర్ధారించుకుని, మందు డబ్బా లేబుల్‌ను కూడా చూసుకోండి.',
+        },
+      ],
+      escalationThreshold_en:
+        'If more than about 5-10% of plants show bud necrosis within the first 30-40 days after sowing, or thrips numbers on young leaves are high, consult your VAA/RBK promptly about vector management and resistant varieties for the next season.',
+      escalationThreshold_te:
+        'విత్తిన మొదటి 30-40 రోజుల్లోనే 5-10% కంటే ఎక్కువ మొక్కలకు మొగ్గ చివర ఎండు తెగులు కనిపించినా, లేదా లేత ఆకులపై తామర పురుగుల సంఖ్య ఎక్కువగా ఉన్నా, వాహక నిర్వహణ, తదుపరి సీజన్‌కు నిరోధక రకాల గురించి వెంటనే మీ VAA/RBK ను సంప్రదించండి.',
+      sources: [
+        {
+          title: 'Package of Practices for Oilseed Crops — Groundnut Bud Necrosis Disease Management',
+          organization: 'ANGRAU (Acharya N.G. Ranga Agricultural University)',
+          reviewDate: '2026-10-19',
+          geographicScope: 'national',
+        },
+      ],
+      evidenceStatus: 'unverified',
+      lastUpdated: '2026-10-19',
     },
   },
 };
