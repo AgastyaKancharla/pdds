@@ -347,6 +347,13 @@ Rules:
 
     if (!upstreamResponse.ok) {
       const status = upstreamResponse.status;
+      let upstreamBodyText = '';
+      try {
+        upstreamBodyText = await upstreamResponse.text();
+      } catch {
+        upstreamBodyText = '(could not read upstream body)';
+      }
+      console.error(`[detect-crop] Upstream OpenRouter error. status=${status} body=${upstreamBodyText.slice(0, 1000)}`);
       // No diagnosis was produced, so the slot goes back.
       await refundSlot();
       return new Response(
@@ -406,6 +413,9 @@ Rules:
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     const isTimeout = err instanceof Error && err.name === 'AbortError';
+    console.error(
+      `[detect-crop] Upstream fetch threw. isTimeout=${isTimeout} name=${err instanceof Error ? err.name : typeof err} message=${err instanceof Error ? err.message : String(err)}`
+    );
     await refundSlot();
 
     return new Response(
