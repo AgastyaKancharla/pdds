@@ -11,7 +11,19 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
-const DEFAULT_MODEL = 'nvidia/nemotron-3.5-super-vl:free';
+/**
+ * Vision models, in preference order. OpenRouter's free tier serves these from a shared
+ * upstream pool, so any single one returns 429 "temporarily rate-limited upstream" at
+ * unpredictable times (observed live on both Gemma variants). Passing the whole list as
+ * `models` lets OpenRouter fall through to the next one itself, which is the difference
+ * between an outage and a slower answer.
+ */
+const MODEL_CHAIN = [
+  'nvidia/nemotron-3.5-super-vl:free',
+  'minimax/minimax-m3.1-flash:free',
+  'dots-studio/dots-3-note-preview:free',
+];
+const DEFAULT_MODEL = MODEL_CHAIN[0];
 const MAX_IMAGE_PAYLOAD_BYTES = 4 * 1024 * 1024; // 4 MB base64 payload limit
 
 /**
@@ -314,11 +326,18 @@ Rules:
 
   // 5. Invoke OpenRouter Free Vision API with bounded timeout
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout -- lowered from 18s after
-  // observing unexplained opaque platform-level 502s (EDGE_FUNCTION_ERROR, no console output
-  // reached) on real calls taking 11-16s, well under the old 18s mark -- something between this
-  // function and OpenRouter is being cut off by a shorter limit than our own AbortController, so
-  // this fires our own clean, loggable timeout path first instead of hitting that opaque kill.
+  /**
+   * The abort must stay armed until the response BODY has been fully read, not just until
+   * headers arrive. The previous version cleared it the moment `fetch` resolved -- which is
+   * when headers land (~200ms) -- leaving the body download, where the model actually spends
+   * its time, completely unbounded. A slow generation then ran until the Supabase edge
+   * runtime killed the isolate outright, which is why nothing was ever logged and the caller
+   * only ever saw an opaque platform 502. Free-tier generation measured ~15s end to end, and
+   * the platform kill was seen at ~32s, so 25s leaves real headroom while still failing
+   * cleanly on our own terms first.
+   */
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
+  const startedAt = Date.now();
 
   try {
     const upstreamResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -332,6 +351,7 @@ Rules:
       signal: controller.signal,
       body: JSON.stringify({
         model: openRouterModel,
+        models: MODEL_CHAIN,
         messages: [
           {
             role: 'user',
@@ -342,22 +362,34 @@ Rules:
           },
         ],
         temperature: 0.1,
+        // The diagnosis JSON needs a few hundred tokens at most. Free-tier throughput is
+        // only a handful of tokens/sec, so a generous cap is not free -- it is the worst
+        // case this call can take before the timeout above has to kill it.
         max_tokens: 800,
+        /**
+         * Without this, a reasoning-capable model (the free vision tier is full of them)
+         * spends its whole token budget in the `reasoning` field, returns `content: null`
+         * and `finish_reason: "length"`, and never answers at all. Verified live.
+         */
+        reasoning: { exclude: true, effort: 'low' },
         response_format: { type: 'json_object' },
       }),
     });
 
-    clearTimeout(timeoutId);
+    console.error(`[detect-crop] upstream headers status=${upstreamResponse.status} after ${Date.now() - startedAt}ms`);
+
+    // Read the body while the abort is still armed, so a stalled download fails cleanly.
+    let upstreamBodyText: string;
+    try {
+      upstreamBodyText = await upstreamResponse.text();
+    } finally {
+      clearTimeout(timeoutId);
+    }
+    console.error(`[detect-crop] upstream body read after ${Date.now() - startedAt}ms len=${upstreamBodyText.length}`);
 
     if (!upstreamResponse.ok) {
       const status = upstreamResponse.status;
-      let upstreamBodyText = '';
-      try {
-        upstreamBodyText = await upstreamResponse.text();
-      } catch {
-        upstreamBodyText = '(could not read upstream body)';
-      }
-      console.error(`[detect-crop] Upstream OpenRouter error. status=${status} body=${upstreamBodyText.slice(0, 1000)}`);
+      console.error(`[detect-crop] Upstream OpenRouter error. status=${status} body=${upstreamBodyText.slice(0, 600)}`);
       // No diagnosis was produced, so the slot goes back.
       await refundSlot();
       return new Response(
@@ -372,10 +404,21 @@ Rules:
       );
     }
 
-    const data = await upstreamResponse.json();
-    const content = data?.choices?.[0]?.message?.content;
+    let data: Record<string, unknown> | null = null;
+    try {
+      data = JSON.parse(upstreamBodyText);
+    } catch {
+      data = null;
+    }
 
-    if (!content) {
+    const message = (data as unknown as { choices?: { message?: { content?: string; reasoning?: string } }[] })
+      ?.choices?.[0]?.message;
+    // Some models put the answer in `reasoning` even when asked not to reason; prefer real
+    // content, but don't throw away a usable answer that merely arrived in the other field.
+    const rawContent = message?.content || message?.reasoning || '';
+
+    if (!rawContent) {
+      console.error(`[detect-crop] Empty content. upstream=${upstreamBodyText.slice(0, 600)}`);
       await refundSlot();
       return new Response(
         JSON.stringify({ error: 'EmptyResponse', message: 'Provider returned empty response.' }),
@@ -383,16 +426,24 @@ Rules:
       );
     }
 
+    // Models routinely wrap JSON in ```json fences despite response_format; unwrap before parsing.
+    const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+    const firstBrace = unfenced.indexOf('{');
+    const lastBrace = unfenced.lastIndexOf('}');
+    const jsonSlice = firstBrace >= 0 && lastBrace > firstBrace ? unfenced.slice(firstBrace, lastBrace + 1) : unfenced;
+
     let parsedResult: unknown;
     try {
-      parsedResult = JSON.parse(content);
+      parsedResult = JSON.parse(jsonSlice);
     } catch {
+      console.error(`[detect-crop] Unparseable model output: ${rawContent.slice(0, 600)}`);
       await refundSlot();
       return new Response(
         JSON.stringify({ error: 'MalformedOutput', message: 'Failed to parse model output as JSON.' }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    console.error(`[detect-crop] SUCCESS after ${Date.now() - startedAt}ms`);
 
     // Return structured payload with model metadata.
     // `quota` lets the client show the farmer how many scans remain today, so hitting the
