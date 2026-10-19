@@ -314,7 +314,11 @@ Rules:
 
   // 5. Invoke OpenRouter Free Vision API with bounded timeout
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 18000); // 18s timeout
+  const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout -- lowered from 18s after
+  // observing unexplained opaque platform-level 502s (EDGE_FUNCTION_ERROR, no console output
+  // reached) on real calls taking 11-16s, well under the old 18s mark -- something between this
+  // function and OpenRouter is being cut off by a shorter limit than our own AbortController, so
+  // this fires our own clean, loggable timeout path first instead of hitting that opaque kill.
 
   try {
     const upstreamResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
