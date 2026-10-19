@@ -9,6 +9,7 @@ import {
 import { SAMPLE_CROP_IMAGE } from '../mockData';
 import { supabase } from '../supabase';
 import { translate } from '../i18n';
+import * as onDeviceRegistry from '../ai/onDeviceRegistry';
 
 vi.mock('../supabase', () => ({
   supabase: {
@@ -18,16 +19,23 @@ vi.mock('../supabase', () => ({
   },
 }));
 
+vi.mock('../ai/onDeviceRegistry', () => ({
+  hasOnDeviceModel: vi.fn(() => false),
+  classifyWithOnDeviceModel: vi.fn(),
+}));
+
 describe('Detection Layer & Removal of Fabricated Outcomes', () => {
-  // The real app runs with live AI diagnosis paused (see detection.ts) — there's no AI
-  // budget and the general-LLM engine's accuracy has never been measured. Tests that need
-  // to exercise the actual gateway-dispatch/response-mapping logic opt back in explicitly
-  // and reset to the real default afterward, so that default is never silently left on.
+  // 2026-10-18: the cloud gateway was turned on for real (a funded OPENROUTER_API_KEY was
+  // configured) -- see detection.ts's doc comment on aiLiveDiagnosisEnabled. Tests reset to
+  // that real default here, and the small number that specifically exercise the "paused"
+  // killswitch opt out of it explicitly and restore it afterward via the test-only seam.
   beforeEach(() => {
-    __setAiLiveDiagnosisEnabledForTests(false);
+    __setAiLiveDiagnosisEnabledForTests(true);
+    vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(false);
+    vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockReset();
   });
   afterEach(() => {
-    __setAiLiveDiagnosisEnabledForTests(false);
+    __setAiLiveDiagnosisEnabledForTests(true);
   });
 
   it('explicitly identifies sample crop tests as demonstration samples with diagnosticTier', async () => {
@@ -46,7 +54,6 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
   });
 
   it('correctly maps abiotic stress response from gateway', async () => {
-    __setAiLiveDiagnosisEnabledForTests(true); // exercising gateway-dispatch logic directly
     vi.mocked(supabase!.functions.invoke).mockResolvedValueOnce({
       data: {
         success: true,
@@ -186,18 +193,18 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
     }
   });
 
-  describe('Live AI diagnosis paused (current production default)', () => {
-    it('exposes the paused state via the read-only UI getter, with no way to flip it except the test-only seam', () => {
-      // ScanScreen reads this to warn the farmer BEFORE they take a photo, rather than
-      // after they wait through the "analyzing" spinner only to get the paused message.
-      expect(isAiLiveDiagnosisEnabled()).toBe(false);
-      __setAiLiveDiagnosisEnabledForTests(true);
+  describe('Live AI diagnosis enabled (current production default)', () => {
+    it('exposes the enabled state via the read-only UI getter, and the killswitch still works via the test-only seam', () => {
+      // ScanScreen reads this to warn the farmer BEFORE they take a photo if it's ever
+      // disabled again, rather than after they wait through the "analyzing" spinner.
       expect(isAiLiveDiagnosisEnabled()).toBe(true);
       __setAiLiveDiagnosisEnabledForTests(false);
       expect(isAiLiveDiagnosisEnabled()).toBe(false);
+      __setAiLiveDiagnosisEnabledForTests(true);
+      expect(isAiLiveDiagnosisEnabled()).toBe(true);
     });
 
-    it('has a real, non-empty bilingual banner string for the Scan screen to render', () => {
+    it('has a real, non-empty bilingual banner string ready for the Scan screen to render if paused again', () => {
       const en = translate('aiScanningPausedBanner', 'en');
       const te = translate('aiScanningPausedBanner', 'te');
       expect(en.toLowerCase()).toContain('paused');
@@ -206,10 +213,20 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       expect(en).not.toBe(te);
     });
 
-    it('refuses a real (non-demo) scan without ever calling the gateway, and never spends a network call', async () => {
-      // This is the actual behavior real users see right now: no AI budget, no measured
-      // accuracy baseline, so live photo diagnosis is paused at the source rather than
-      // best-effort. The demo/sample path (tested above) is completely unaffected.
+    it('does call the gateway for a real (non-demo) scan now that the cloud path is enabled', async () => {
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockResolvedValueOnce({
+        data: { success: false },
+        error: null,
+      });
+
+      await detectDisease('data:image/jpeg;base64,realImagePayload', 'realImagePayload');
+
+      expect(invokeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('still refuses a scan without calling the gateway when explicitly paused via the killswitch', async () => {
+      __setAiLiveDiagnosisEnabledForTests(false);
       const invokeSpy = vi.mocked(supabase!.functions.invoke);
       invokeSpy.mockClear();
 
@@ -226,20 +243,116 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       }
     });
 
-    it('still honestly rejects an obviously unusable image client-side before the pause check', async () => {
-      // The free, zero-cost pixel pre-filter must keep working even while AI is paused —
-      // "paused" should not silently relabel "this isn't a photo at all" as "AI paused".
+    it('still honestly rejects an obviously unusable image client-side regardless of the flag', async () => {
+      // The free, zero-cost pixel pre-filter must keep working whatever the cloud flag's
+      // state — "enabled"/"paused" should never relabel "this isn't a photo at all".
       const blank = new Uint8ClampedArray(64 * 64 * 4).fill(255);
       const evalResult = evaluatePixelBuffer(blank, 64, 64);
       expect(evalResult.isCrop).toBe(false);
     });
 
-    it('leaves the demo/sample path fully unaffected by the pause', async () => {
+    it('leaves the demo/sample path fully unaffected by the flag', async () => {
       const result = await detectDisease(SAMPLE_CROP_IMAGE, undefined, { isDemoSample: true });
       expect(result.detected).toBe(true);
       if (result.detected) {
         expect(result.isDemoSample).toBe(true);
       }
+    });
+  });
+
+  describe('On-device classification (runs before the cloud gateway)', () => {
+    it('returns a disease match from the on-device model without ever calling the cloud gateway', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'helminthosporium_leaf_blight', confidence: 0.92, mapping: { modelLabel: 'helminthosporium_leaf_blight', diseaseId: 'disease-maize-turcicumblight' } },
+      ]);
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockClear();
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {
+        selectedCropId: 'crop-maize',
+      });
+
+      expect(invokeSpy).not.toHaveBeenCalled();
+      expect(result.detected).toBe(true);
+      if (result.detected) {
+        expect(result.cropId).toBe('crop-maize');
+        expect(result.diseaseId).toBe('disease-maize-turcicumblight');
+        expect(result.diagnosticTier).toBe('ai_preliminary_hypothesis');
+      }
+    });
+
+    it('reports healthy from the on-device model without fabricating a disease', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'healthy', confidence: 0.88, mapping: { modelLabel: 'healthy', diseaseId: null, status: 'healthy' } },
+      ]);
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {
+        selectedCropId: 'crop-maize',
+      });
+
+      expect(result.detected).toBe(false);
+      if (!result.detected) {
+        expect(result.reason).toBe('healthy');
+      }
+    });
+
+    it('honestly reports an unmapped class instead of fabricating guidance or silently falling back', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'zonocerus_variegatus', confidence: 0.75, mapping: { modelLabel: 'zonocerus_variegatus', diseaseId: null } },
+      ]);
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockClear();
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {
+        selectedCropId: 'crop-maize',
+      });
+
+      expect(invokeSpy).not.toHaveBeenCalled();
+      expect(result.detected).toBe(false);
+      if (!result.detected) {
+        expect(result.reason).toBe('unclear');
+        expect(result.messageEn).toContain('zonocerus variegatus');
+      }
+    });
+
+    it('falls through to the cloud gateway when the on-device prediction is not confident enough', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'helminthosporium_leaf_blight', confidence: 0.2, mapping: { modelLabel: 'helminthosporium_leaf_blight', diseaseId: 'disease-maize-turcicumblight' } },
+      ]);
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockResolvedValueOnce({ data: { success: false }, error: null });
+
+      await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', { selectedCropId: 'crop-maize' });
+
+      expect(invokeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls through to the cloud gateway when no crop was selected at all', async () => {
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockResolvedValueOnce({ data: { success: false }, error: null });
+
+      await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {});
+
+      expect(onDeviceRegistry.classifyWithOnDeviceModel).not.toHaveBeenCalled();
+      expect(invokeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls through to the cloud gateway, unaffected, when the on-device classifier itself throws', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockRejectedValue(new Error('WASM assets failed to load'));
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockResolvedValueOnce({ data: { success: false }, error: null });
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {
+        selectedCropId: 'crop-maize',
+      });
+
+      expect(invokeSpy).toHaveBeenCalledTimes(1);
+      expect(result.detected).toBe(false);
     });
   });
 });

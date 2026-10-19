@@ -5,6 +5,9 @@ import { SAMPLE_CROP_IMAGE } from '../lib/mockData';
 import { compressImage, validateImageFile } from '../lib/imageUtils';
 import type { DetectionFailureReason } from '../types/database';
 import type { DiagnosticTier, NormalizedDiagnosis } from '../lib/ai/types';
+import { getAllSupportedCrops } from '../lib/knowledge';
+import { CROP_ICONS } from '../lib/cropIcons';
+import { hasOnDeviceModel } from '../lib/ai/onDeviceRegistry';
 
 export interface ScanResultData {
   imageUri: string;
@@ -36,6 +39,12 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
   const [busy, setBusy] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  // Crop selection happens before image capture: on-device classifiers are per-crop and
+  // can't guess which crop a photo shows, so the farmer picking one (or explicitly skipping)
+  // is what decides whether the free/offline on-device model or the cloud gateway handles it.
+  const [cropPicked, setCropPicked] = useState(false);
+  const [selectedCropId, setSelectedCropId] = useState<string | undefined>(undefined);
+  const allCrops = getAllSupportedCrops();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -89,7 +98,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
     setBusy(true);
     stopCameraStream();
     try {
-      const result: DetectionResult = await detectDisease(imageUri, base64, { isDemoSample });
+      const result: DetectionResult = await detectDisease(imageUri, base64, { isDemoSample, selectedCropId });
       const tier =
         result.diagnosticTier ||
         result.normalizedDiagnosis?.provenance?.tier ||
@@ -251,15 +260,85 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
             </button>
           </div>
         </div>
+      ) : !cropPicked ? (
+        <div className="scan-options-card">
+          <div className="scan-icon-circle">🌾</div>
+          <h3 className="scan-card-heading">
+            {language === 'en' ? 'Which crop is this?' : 'ఇది ఏ పంట?'}
+          </h3>
+          <p className="scan-card-desc">
+            {language === 'en'
+              ? 'Picking your crop lets the app use a free, offline AI model trained for it, when one is available.'
+              : 'మీ పంటను ఎంచుకుంటే, అందుబాటులో ఉంటే దాని కోసం శిక్షణ పొందిన ఉచిత, ఆఫ్‌లైన్ AI మోడల్‌ను యాప్ ఉపయోగిస్తుంది.'}
+          </p>
+          <div className="crop-switch-chips" style={{ marginTop: '12px', justifyContent: 'center' }}>
+            {allCrops.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                className="crop-switch-chip"
+                onClick={() => {
+                  setSelectedCropId(c.id);
+                  setCropPicked(true);
+                }}>
+                {(CROP_ICONS[c.id] || '🌱') + ' '}
+                {language === 'en' ? c.name_en : c.name_te}
+                {hasOnDeviceModel(c.id) ? ' ⚡' : ''}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="scan-btn sample-btn"
+            style={{ marginTop: '16px' }}
+            onClick={() => {
+              setSelectedCropId(undefined);
+              setCropPicked(true);
+            }}>
+            <span className="btn-icon">❓</span>
+            <div>
+              <strong>{language === 'en' ? 'Not Sure / Skip' : 'తెలియదు / దాటవేయి'}</strong>
+              <span className="btn-subtext">
+                {language === 'en' ? 'Use general AI photo analysis instead' : 'బదులుగా సాధారణ AI ఫోటో విశ్లేషణ వాడండి'}
+              </span>
+            </div>
+          </button>
+        </div>
       ) : (
         <div className="scan-options-card">
           <div className="scan-icon-circle">🌿</div>
           <h3 className="scan-card-heading">
             {language === 'en' ? 'Choose Image Source' : 'చిత్ర ఎంపిక మార్గం'}
           </h3>
+
+          <p style={{ fontSize: 12, color: '#557257', marginBottom: 8 }}>
+            {selectedCropId
+              ? (language === 'en' ? 'Scanning: ' : 'స్కాన్ చేస్తున్నది: ') +
+                (language === 'en'
+                  ? allCrops.find((c) => c.id === selectedCropId)?.name_en
+                  : allCrops.find((c) => c.id === selectedCropId)?.name_te)
+              : language === 'en'
+              ? 'General scan (no crop selected)'
+              : 'సాధారణ స్కాన్ (పంట ఎంపిక చేయలేదు)'}{' '}
+            <button
+              type="button"
+              onClick={() => setCropPicked(false)}
+              style={{
+                textDecoration: 'underline',
+                background: 'none',
+                border: 'none',
+                color: '#2d6a4f',
+                cursor: 'pointer',
+                fontSize: 12,
+                padding: 0,
+              }}>
+              {language === 'en' ? 'Change' : 'మార్చు'}
+            </button>
+          </p>
+
           <p className="scan-card-desc">{t('cameraUnavailableDesc')}</p>
 
-          {!isAiLiveDiagnosisEnabled() && (
+          {!isAiLiveDiagnosisEnabled() && !hasOnDeviceModel(selectedCropId) && (
             <div className="offline-notice-banner ai-paused-banner">⏸️ {t('aiScanningPausedBanner')}</div>
           )}
 
