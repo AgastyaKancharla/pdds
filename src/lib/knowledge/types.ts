@@ -260,6 +260,28 @@ export interface DiseaseKnowledgeEntry {
   sources: KnowledgeSource[];
   evidenceStatus: EvidenceStatus;
   lastUpdated: string;
+  /**
+   * Path to a real representative photo of this specific condition (e.g.
+   * '/images/diseases/disease-rice-blast.jpg'), self-hosted under public/images/ -- never a
+   * hotlinked external URL. Omit entirely when no verified real photo is available yet; the
+   * UI falls back to the urgency-color dot rather than show nothing or a fabricated image.
+   */
+  imageUrl?: string;
+  imageAttribution?: ImageAttribution;
+}
+
+/**
+ * Credits a real photo back to its source. Required alongside every `imageUrl` -- a CC-BY
+ * licensed dataset photo (the only kind this catalog uses, per its evidence-integrity rules)
+ * is not compliant without attribution, and a photo with no known source must never be added
+ * here in the first place. `license` is the exact license string (e.g. "CC-BY-4.0"), never
+ * assumed or abbreviated past what the source actually states.
+ */
+export interface ImageAttribution {
+  title: string;
+  organization: string;
+  license: string;
+  sourceUrl?: string;
 }
 
 export interface CropKnowledgeEntry {
@@ -271,6 +293,14 @@ export interface CropKnowledgeEntry {
   apMajorDistricts: string[];
   growingSeasons: string[];
   commonDiseaseIds: string[];
+  /**
+   * Path to a real representative photo of this crop (e.g. '/images/crops/crop-rice.jpg'),
+   * self-hosted under public/images/ -- never a hotlinked external URL, so it keeps working
+   * offline like the rest of this catalog. Omit entirely when no verified real photo is
+   * available yet; the UI falls back to the crop's emoji icon rather than show nothing.
+   */
+  imageUrl?: string;
+  imageAttribution?: ImageAttribution;
 }
 
 export interface AgriculturalKnowledgeCatalog {
