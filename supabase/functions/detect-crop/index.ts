@@ -11,7 +11,7 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
-const DEFAULT_MODEL = 'google/gemini-2.0-flash-exp:free';
+const DEFAULT_MODEL = 'nvidia/nemotron-3.5-super-vl:free';
 const MAX_IMAGE_PAYLOAD_BYTES = 4 * 1024 * 1024; // 4 MB base64 payload limit
 
 /**
