@@ -11,7 +11,7 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
-const DEFAULT_MODEL = 'dots-studio/dots-3-note-preview:free';
+const DEFAULT_MODEL = 'google/gemini-2.0-flash-exp:free';
 const MAX_IMAGE_PAYLOAD_BYTES = 4 * 1024 * 1024; // 4 MB base64 payload limit
 
 /**
