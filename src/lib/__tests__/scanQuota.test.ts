@@ -237,7 +237,10 @@ describe('Per-user daily AI scan quota', () => {
       expect(result.detected).toBe(false);
       if (!result.detected) {
         expect(result.reason).toBe('provider_unavailable');
-        expect(result.messageEn).toMatch(/unavailable/i);
+        // The cloud gateway failing (and the on-device fallback sweep finding nothing either,
+        // in this unmocked environment) yields an honest "could not identify this image"
+        // message rather than a connectivity complaint -- see detection.ts step 4.
+        expect(result.messageEn).toMatch(/could not identify this image/i);
       }
     });
 

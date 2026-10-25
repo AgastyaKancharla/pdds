@@ -3,7 +3,7 @@ import { supabase } from './supabase';
 import type { UrgencyColor, DetectionFailureReason } from '../types/database';
 import type { DiagnosticTier, NormalizedDiagnosis } from './ai/types';
 import { validateAndNormalizeAiResponse, createFallbackDiagnosis } from './ai/validator';
-import { hasOnDeviceModel, classifyWithOnDeviceModel } from './ai/onDeviceRegistry';
+import { hasOnDeviceModel, classifyWithOnDeviceModel, getOnDeviceCropIds } from './ai/onDeviceRegistry';
 import { getCropKnowledge } from './knowledge';
 
 export interface DetectionSuccess {
@@ -294,6 +294,31 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
   }
 }
 
+/**
+ * Last-resort local fallback, tried only after the cloud gateway has been attempted and
+ * failed to produce a usable diagnosis (network error, every model in the server's chain
+ * failing, or an unrecognized response shape). Sweeps every crop with a registered on-device
+ * model -- not just a crop the farmer may have selected -- since this exists specifically for
+ * the "Not Sure / Skip" flow where no crop was chosen and on-device classification in step 1b
+ * never ran at all. `excludeCropId` skips a crop already tried at step 1b, so a selected-crop
+ * scan that already ran its on-device model doesn't redundantly run it again here.
+ *
+ * Tries crops in registry order and returns the first confident match; this is a safety net
+ * for when the cloud is unavailable; it isn't trying to find the single best match across
+ * crops the way a real multi-crop classifier would. Never throws.
+ */
+async function runOnDeviceFallbackSweep(
+  imageUri: string,
+  excludeCropId?: string
+): Promise<DetectionResult | null> {
+  for (const cropId of getOnDeviceCropIds()) {
+    if (cropId === excludeCropId) continue;
+    const result = await runOnDeviceDetection(cropId, imageUri);
+    if (result) return result;
+  }
+  return null;
+}
+
 export async function detectDisease(
   imageUri: string,
   base64?: string,
@@ -561,11 +586,26 @@ export async function detectDisease(
     }
   }
 
-  // 4. Safe offline / unavailable fallback (No fake diagnosis invented)
-  const unavailableDiag = createFallbackDiagnosis('provider_unavailable', {
-    provider: 'gateway',
-    model: 'edge_function',
-  });
+  // 3b. Cloud gateway unavailable or failed to produce a usable diagnosis. Before giving up,
+  // sweep the on-device trained models for every crop (not just a selected one) -- this is
+  // what actually gives the "Not Sure / Skip" flow a second opinion, since no crop was known
+  // at step 1b for it to use. Skips re-running a crop already tried there.
+  const sweepResult = await runOnDeviceFallbackSweep(imageUri, options?.selectedCropId);
+  if (sweepResult) return sweepResult;
+
+  // 4. Nothing worked: the cloud gateway failed and no on-device model recognized the photo
+  // confidently either. Say so plainly -- this is an honest "we could not read this image",
+  // not a connectivity problem, so the message must not send the farmer chasing their network.
+  const unavailableDiag = createFallbackDiagnosis(
+    'provider_unavailable',
+    { provider: 'gateway', model: 'edge_function' },
+    {
+      messageEn:
+        "We could not identify this image, even after trying our on-device models as a backup. Please retake a clear, close-up photo of the affected leaf in good daylight, or browse your crop's guide below.",
+      messageTe:
+        'బ్యాకప్‌గా మా పరికరంలోని మోడళ్లను కూడా ప్రయత్నించినా, ఈ చిత్రాన్ని గుర్తించలేకపోయాము. దయచేసి మంచి వెలుతురులో ప్రభావిత ఆకు యొక్క స్పష్టమైన క్లోజ్-అప్ ఫోటోను మళ్లీ తీయండి, లేదా క్రింద మీ పంట గైడ్‌ను చూడండి.',
+    }
+  );
 
   return {
     detected: false,
