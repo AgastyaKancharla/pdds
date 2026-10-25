@@ -17,8 +17,8 @@ const corsHeaders = {
  * input and list 'response_format' in supported_parameters (needed for json_object mode).
  * minimax/minimax-m3.1-flash:free was dropped: verified live to return 404 -- "The free launch
  * period ... ended on Oct 22, 2026. The :free variant has been retired." Every free vision
- * model currently on OpenRouter is a reasoning model (see REASONING_CONFIG below for why that
- * matters); there is no non-reasoning model to prefer instead.
+ * model currently on OpenRouter is a reasoning model (see REASONING_TOKENS_MAX below for why
+ * that matters); there is no non-reasoning model to prefer instead.
  */
 const MODEL_CHAIN = [
   'nvidia/nemotron-3.5-super-vl:free',
