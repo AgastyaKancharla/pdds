@@ -324,162 +324,176 @@ Rules:
    If crop itself is NOT in catalog above:
    {"status": "unsupported_crop", "cropNameEn": "[Crop]", "userFacingMessageEn": "Crop not currently supported in database."}`;
 
-  // 5. Invoke OpenRouter Free Vision API with bounded timeout
-  const controller = new AbortController();
-  /**
-   * The abort must stay armed until the response BODY has been fully read, not just until
-   * headers arrive. The previous version cleared it the moment `fetch` resolved -- which is
-   * when headers land (~200ms) -- leaving the body download, where the model actually spends
-   * its time, completely unbounded. A slow generation then ran until the Supabase edge
-   * runtime killed the isolate outright, which is why nothing was ever logged and the caller
-   * only ever saw an opaque platform 502. Free-tier generation measured ~15s end to end, and
-   * the platform kill was seen at ~32s, so 25s leaves real headroom while still failing
-   * cleanly on our own terms first.
-   */
-  const timeoutId = setTimeout(() => controller.abort(), 25000);
+  // 5. Invoke OpenRouter Free Vision API, trying each model in MODEL_CHAIN in turn.
+  //
+  // Passing `models: MODEL_CHAIN` lets OpenRouter itself fail over to the next model, but
+  // only when the first one errors outright. Verified live: nvidia/nemotron-3.5-super-vl:free
+  // can respond HTTP 200 with `content: null` and `finish_reason: "length"` because it spent
+  // its entire token budget on internal reasoning before writing any visible answer -- that
+  // looks like success to OpenRouter, so no fallback happens there. This loop is our own
+  // fallback for exactly that case, on top of whatever OpenRouter itself attempts.
+  const attemptOrder = [openRouterModel, ...MODEL_CHAIN.filter((m) => m !== openRouterModel)];
   const startedAt = Date.now();
+  let lastFailure: { status: number; error: string; message: string; retryable: boolean } | null = null;
 
-  try {
-    const upstreamResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${openRouterApiKey}`,
-        'HTTP-Referer': 'https://herefornature.agastyaone.org',
-        'X-Title': 'AgastyaOne Agriculture PDDs Gateway',
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        model: openRouterModel,
-        models: MODEL_CHAIN,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: dataUri } },
-            ],
-          },
-        ],
-        temperature: 0.1,
-        // The diagnosis JSON needs a few hundred tokens at most. Free-tier throughput is
-        // only a handful of tokens/sec, so a generous cap is not free -- it is the worst
-        // case this call can take before the timeout above has to kill it.
-        max_tokens: 800,
-        /**
-         * Without this, a reasoning-capable model (the free vision tier is full of them)
-         * spends its whole token budget in the `reasoning` field, returns `content: null`
-         * and `finish_reason: "length"`, and never answers at all. Verified live.
-         */
-        reasoning: { exclude: true, effort: 'low' },
-        response_format: { type: 'json_object' },
-      }),
-    });
+  for (const currentModel of attemptOrder) {
+    const controller = new AbortController();
+    /**
+     * The abort must stay armed until the response BODY has been fully read, not just until
+     * headers arrive. Clearing it the moment `fetch` resolves -- which is when headers land
+     * (~200ms) -- leaves the body download, where the model actually spends its time,
+     * completely unbounded. A slow generation then runs until the Supabase edge runtime
+     * kills the isolate outright, which is why nothing gets logged and the caller only ever
+     * sees an opaque platform 502. Free-tier generation measured ~15s end to end, and the
+     * platform kill was seen at ~32s, so 25s per model leaves real headroom while still
+     * failing cleanly on our own terms first.
+     */
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-    console.error(`[detect-crop] upstream headers status=${upstreamResponse.status} after ${Date.now() - startedAt}ms`);
-
-    // Read the body while the abort is still armed, so a stalled download fails cleanly.
-    let upstreamBodyText: string;
     try {
-      upstreamBodyText = await upstreamResponse.text();
-    } finally {
-      clearTimeout(timeoutId);
-    }
-    console.error(`[detect-crop] upstream body read after ${Date.now() - startedAt}ms len=${upstreamBodyText.length}`);
+      const upstreamResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openRouterApiKey}`,
+          'HTTP-Referer': 'https://herefornature.agastyaone.org',
+          'X-Title': 'AgastyaOne Agriculture PDDs Gateway',
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: currentModel,
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: prompt },
+                { type: 'image_url', image_url: { url: dataUri } },
+              ],
+            },
+          ],
+          temperature: 0.1,
+          // Raised from 800 after nemotron was observed hitting exactly 800 completion_tokens
+          // with finish_reason "length" and content: null -- it spent the whole budget on
+          // internal reasoning before ever writing the JSON answer. This caps worst-case
+          // latency per model attempt, not expected spend.
+          max_tokens: 1536,
+          /**
+           * Without this, a reasoning-capable model (the free vision tier is full of them)
+           * spends its whole token budget in the `reasoning` field, returns `content: null`
+           * and `finish_reason: "length"`, and never answers at all. Verified live.
+           */
+          reasoning: { exclude: true, effort: 'low' },
+          response_format: { type: 'json_object' },
+        }),
+      });
 
-    if (!upstreamResponse.ok) {
-      const status = upstreamResponse.status;
-      console.error(`[detect-crop] Upstream OpenRouter error. status=${status} body=${upstreamBodyText.slice(0, 600)}`);
-      // No diagnosis was produced, so the slot goes back.
-      await refundSlot();
-      return new Response(
-        JSON.stringify({
+      console.error(`[detect-crop] model=${currentModel} headers status=${upstreamResponse.status} after ${Date.now() - startedAt}ms`);
+
+      // Read the body while the abort is still armed, so a stalled download fails cleanly.
+      let upstreamBodyText: string;
+      try {
+        upstreamBodyText = await upstreamResponse.text();
+      } finally {
+        clearTimeout(timeoutId);
+      }
+      console.error(`[detect-crop] model=${currentModel} body read after ${Date.now() - startedAt}ms len=${upstreamBodyText.length}`);
+
+      if (!upstreamResponse.ok) {
+        const status = upstreamResponse.status;
+        console.error(`[detect-crop] model=${currentModel} upstream error. status=${status} body=${upstreamBodyText.slice(0, 600)}`);
+        lastFailure = {
+          status: status === 429 ? 429 : 502,
           error: status === 429 ? 'RateLimitExceeded' : 'UpstreamProviderError',
           message: status === 429
             ? 'OpenRouter free-tier rate limit reached. Please retry in a moment.'
             : `AI service provider returned error (${status}).`,
           retryable: true,
+        };
+        continue; // try the next model in the chain
+      }
+
+      let data: Record<string, unknown> | null = null;
+      try {
+        data = JSON.parse(upstreamBodyText);
+      } catch {
+        data = null;
+      }
+
+      const message = (data as unknown as { choices?: { message?: { content?: string; reasoning?: string } }[] })
+        ?.choices?.[0]?.message;
+      // Some models put the answer in `reasoning` even when asked not to reason; prefer real
+      // content, but don't throw away a usable answer that merely arrived in the other field.
+      const rawContent = message?.content || message?.reasoning || '';
+
+      if (!rawContent) {
+        console.error(`[detect-crop] model=${currentModel} empty content. upstream=${upstreamBodyText.slice(0, 600)}`);
+        lastFailure = { status: 502, error: 'EmptyResponse', message: 'Provider returned empty response.', retryable: true };
+        continue; // try the next model in the chain
+      }
+
+      // Models routinely wrap JSON in ```json fences despite response_format; unwrap before parsing.
+      const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+      const firstBrace = unfenced.indexOf('{');
+      const lastBrace = unfenced.lastIndexOf('}');
+      const jsonSlice = firstBrace >= 0 && lastBrace > firstBrace ? unfenced.slice(firstBrace, lastBrace + 1) : unfenced;
+
+      let parsedResult: unknown;
+      try {
+        parsedResult = JSON.parse(jsonSlice);
+      } catch {
+        console.error(`[detect-crop] model=${currentModel} unparseable output: ${rawContent.slice(0, 600)}`);
+        lastFailure = { status: 502, error: 'MalformedOutput', message: 'Failed to parse model output as JSON.', retryable: true };
+        continue; // try the next model in the chain
+      }
+      console.error(`[detect-crop] model=${currentModel} SUCCESS after ${Date.now() - startedAt}ms`);
+
+      // Return structured payload with model metadata.
+      // `quota` lets the client show the farmer how many scans remain today, so hitting the
+      // cap is never a surprise.
+      return new Response(
+        JSON.stringify({
+          success: true,
+          rawResult: parsedResult,
+          quota: {
+            scansUsedToday: quota.scans_used,
+            dailyLimit: quota.daily_limit,
+            scansRemainingToday: quota.scans_remaining,
+          },
+          metadata: {
+            provider: 'openrouter',
+            model: currentModel,
+            timestamp: new Date().toISOString(),
+          },
         }),
-        { status: status === 429 ? 429 : 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
-    }
-
-    let data: Record<string, unknown> | null = null;
-    try {
-      data = JSON.parse(upstreamBodyText);
-    } catch {
-      data = null;
-    }
-
-    const message = (data as unknown as { choices?: { message?: { content?: string; reasoning?: string } }[] })
-      ?.choices?.[0]?.message;
-    // Some models put the answer in `reasoning` even when asked not to reason; prefer real
-    // content, but don't throw away a usable answer that merely arrived in the other field.
-    const rawContent = message?.content || message?.reasoning || '';
-
-    if (!rawContent) {
-      console.error(`[detect-crop] Empty content. upstream=${upstreamBodyText.slice(0, 600)}`);
-      await refundSlot();
-      return new Response(
-        JSON.stringify({ error: 'EmptyResponse', message: 'Provider returned empty response.' }),
-        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      const isTimeout = err instanceof Error && err.name === 'AbortError';
+      console.error(
+        `[detect-crop] model=${currentModel} fetch threw. isTimeout=${isTimeout} name=${err instanceof Error ? err.name : typeof err} message=${err instanceof Error ? err.message : String(err)}`
       );
-    }
-
-    // Models routinely wrap JSON in ```json fences despite response_format; unwrap before parsing.
-    const unfenced = rawContent.replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
-    const firstBrace = unfenced.indexOf('{');
-    const lastBrace = unfenced.lastIndexOf('}');
-    const jsonSlice = firstBrace >= 0 && lastBrace > firstBrace ? unfenced.slice(firstBrace, lastBrace + 1) : unfenced;
-
-    let parsedResult: unknown;
-    try {
-      parsedResult = JSON.parse(jsonSlice);
-    } catch {
-      console.error(`[detect-crop] Unparseable model output: ${rawContent.slice(0, 600)}`);
-      await refundSlot();
-      return new Response(
-        JSON.stringify({ error: 'MalformedOutput', message: 'Failed to parse model output as JSON.' }),
-        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-    console.error(`[detect-crop] SUCCESS after ${Date.now() - startedAt}ms`);
-
-    // Return structured payload with model metadata.
-    // `quota` lets the client show the farmer how many scans remain today, so hitting the
-    // cap is never a surprise.
-    return new Response(
-      JSON.stringify({
-        success: true,
-        rawResult: parsedResult,
-        quota: {
-          scansUsedToday: quota.scans_used,
-          dailyLimit: quota.daily_limit,
-          scansRemainingToday: quota.scans_remaining,
-        },
-        metadata: {
-          provider: 'openrouter',
-          model: openRouterModel,
-          timestamp: new Date().toISOString(),
-        },
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
-  } catch (err: unknown) {
-    clearTimeout(timeoutId);
-    const isTimeout = err instanceof Error && err.name === 'AbortError';
-    console.error(
-      `[detect-crop] Upstream fetch threw. isTimeout=${isTimeout} name=${err instanceof Error ? err.name : typeof err} message=${err instanceof Error ? err.message : String(err)}`
-    );
-    await refundSlot();
-
-    return new Response(
-      JSON.stringify({
+      lastFailure = {
+        status: isTimeout ? 504 : 502,
         error: isTimeout ? 'GatewayTimeout' : 'NetworkError',
         message: isTimeout ? 'AI gateway timed out.' : 'Failed to connect to AI provider.',
         retryable: true,
-      }),
-      { status: isTimeout ? 504 : 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+      };
+      // try the next model in the chain
+    }
   }
+
+  // Every model in the chain failed (error, timeout, empty content, or malformed output).
+  // No diagnosis was produced, so the slot goes back.
+  await refundSlot();
+  const fallback = lastFailure ?? {
+    status: 502,
+    error: 'UpstreamProviderError',
+    message: 'AI service provider returned error.',
+    retryable: true,
+  };
+  return new Response(
+    JSON.stringify({ error: fallback.error, message: fallback.message, retryable: fallback.retryable }),
+    { status: fallback.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  );
 });
