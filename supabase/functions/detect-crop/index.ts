@@ -12,17 +12,38 @@ const corsHeaders = {
 };
 
 /**
- * Vision models, in preference order. OpenRouter's free tier serves these from a shared
- * upstream pool, so any single one returns 429 "temporarily rate-limited upstream" at
- * unpredictable times (observed live on both Gemma variants). Passing the whole list as
- * `models` lets OpenRouter fall through to the next one itself, which is the difference
- * between an outage and a slower answer.
+ * Vision models, in preference order. Pulled live from GET https://openrouter.ai/api/v1/models
+ * on 2026-10-25 and filtered to currently-live (non-retired) ':free' models that accept image
+ * input and list 'response_format' in supported_parameters (needed for json_object mode).
+ * minimax/minimax-m3.1-flash:free was dropped: verified live to return 404 -- "The free launch
+ * period ... ended on Oct 22, 2026. The :free variant has been retired." Every free vision
+ * model currently on OpenRouter is a reasoning model (see REASONING_CONFIG below for why that
+ * matters); there is no non-reasoning model to prefer instead.
  */
 const MODEL_CHAIN = [
   'nvidia/nemotron-3.5-super-vl:free',
-  'minimax/minimax-m3.1-flash:free',
+  'google/gemma-4-31b-it:free',
+  'google/gemma-4-26b-a4b-it:free',
   'dots-studio/dots-3-note-preview:free',
 ];
+
+/**
+ * Verified live against the real failure: nemotron and dots-studio both burned their ENTIRE
+ * completion budget (800, then 1536 after raising it) on invisible reasoning and returned
+ * content: null with finish_reason "length" -- twice each, on real user photos that need
+ * careful differential diagnosis (this prompt's own RICE/OTHER-CROP DIFFERENTIAL DISCIPLINE
+ * rules invite exactly that). `reasoning: { effort: 'low' }` did not curb this at all: effort
+ * is a soft hint some providers translate into a token percentage, and these two ignored it
+ * completely, reasoning until hard-stopped by max_tokens regardless of its value. Raising
+ * max_tokens further only gave a runaway reasoner more rope, which is the wrong direction.
+ * `reasoning.max_tokens` is OpenRouter's direct token-budget control (its docs: "the budget is
+ * max_tokens, and it is meant for models that accept direct token allocation"; OpenRouter
+ * converts it to an equivalent effort for models that only accept effort levels) -- a hard cap
+ * forces the model to stop reasoning and emit the JSON answer while REASONING_TOKENS_MAX tokens
+ * of this request's MAX_TOKENS budget remain, rather than letting it deliberate indefinitely.
+ */
+const REASONING_TOKENS_MAX = 350;
+const MAX_TOKENS = 1100;
 const DEFAULT_MODEL = MODEL_CHAIN[0];
 const MAX_IMAGE_PAYLOAD_BYTES = 4 * 1024 * 1024; // 4 MB base64 payload limit
 
@@ -372,17 +393,11 @@ Rules:
             },
           ],
           temperature: 0.1,
-          // Raised from 800 after nemotron was observed hitting exactly 800 completion_tokens
-          // with finish_reason "length" and content: null -- it spent the whole budget on
-          // internal reasoning before ever writing the JSON answer. This caps worst-case
-          // latency per model attempt, not expected spend.
-          max_tokens: 1536,
-          /**
-           * Without this, a reasoning-capable model (the free vision tier is full of them)
-           * spends its whole token budget in the `reasoning` field, returns `content: null`
-           * and `finish_reason: "length"`, and never answers at all. Verified live.
-           */
-          reasoning: { exclude: true, effort: 'low' },
+          max_tokens: MAX_TOKENS,
+          // See REASONING_TOKENS_MAX above: a hard token cap on reasoning, not a soft effort
+          // hint, is what actually stops a runaway reasoner from spending the whole budget
+          // and returning content: null.
+          reasoning: { exclude: true, max_tokens: REASONING_TOKENS_MAX },
           response_format: { type: 'json_object' },
         }),
       });
