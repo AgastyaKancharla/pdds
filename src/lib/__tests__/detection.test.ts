@@ -22,6 +22,7 @@ vi.mock('../supabase', () => ({
 vi.mock('../ai/onDeviceRegistry', () => ({
   hasOnDeviceModel: vi.fn(() => false),
   classifyWithOnDeviceModel: vi.fn(),
+  getOnDeviceCropIds: vi.fn(() => []),
 }));
 
 describe('Detection Layer & Removal of Fabricated Outcomes', () => {
@@ -33,6 +34,7 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
     __setAiLiveDiagnosisEnabledForTests(true);
     vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(false);
     vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockReset();
+    vi.mocked(onDeviceRegistry.getOnDeviceCropIds).mockReturnValue([]);
   });
   afterEach(() => {
     __setAiLiveDiagnosisEnabledForTests(true);
@@ -188,7 +190,10 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
     expect(result.detected).toBe(false);
     if (!result.detected) {
       expect(result.reason).toBe('provider_unavailable');
-      expect(result.messageEn).toContain('unavailable');
+      // The message is an honest "could not identify this image" -- not a connectivity
+      // complaint -- since by this point both the cloud gateway AND the on-device fallback
+      // sweep (see below) have already been tried and failed.
+      expect(result.messageEn.toLowerCase()).toContain('could not identify this image');
       expect(result.messageTe).toBeTruthy();
     }
   });
@@ -353,6 +358,72 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
 
       expect(invokeSpy).toHaveBeenCalledTimes(1);
       expect(result.detected).toBe(false);
+    });
+  });
+
+  describe('On-device fallback sweep (last resort, after the cloud gateway fails)', () => {
+    it('finds a confident match from the on-device trained models when the "Not Sure" flow has no selected crop and the cloud gateway fails', async () => {
+      // No selectedCropId at all -- this is the "Not Sure / Skip" universal scanner flow,
+      // which has no single crop to run on-device classification against at step 1b.
+      vi.mocked(onDeviceRegistry.getOnDeviceCropIds).mockReturnValue(['crop-groundnut', 'crop-maize']);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockImplementation(async (cropId: string) => {
+        if (cropId === 'crop-maize') {
+          return [
+            {
+              modelLabel: 'helminthosporium_leaf_blight',
+              confidence: 0.91,
+              mapping: { modelLabel: 'helminthosporium_leaf_blight', diseaseId: 'disease-maize-turcicumblight' },
+            },
+          ];
+        }
+        return [{ modelLabel: 'healthy', confidence: 0.1, mapping: { modelLabel: 'healthy', diseaseId: null } }];
+      });
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockRejectedValueOnce(new Error('simulated cloud outage'));
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {});
+
+      expect(invokeSpy).toHaveBeenCalledTimes(1);
+      expect(result.detected).toBe(true);
+      if (result.detected) {
+        expect(result.cropId).toBe('crop-maize');
+        expect(result.diseaseId).toBe('disease-maize-turcicumblight');
+      }
+    });
+
+    it('does not re-run the already-tried selected crop during the fallback sweep', async () => {
+      vi.mocked(onDeviceRegistry.hasOnDeviceModel).mockReturnValue(true);
+      vi.mocked(onDeviceRegistry.getOnDeviceCropIds).mockReturnValue(['crop-maize']);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'helminthosporium_leaf_blight', confidence: 0.2, mapping: { modelLabel: 'helminthosporium_leaf_blight', diseaseId: 'disease-maize-turcicumblight' } },
+      ]);
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockResolvedValueOnce({ data: { success: false }, error: null });
+
+      await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', { selectedCropId: 'crop-maize' });
+
+      // Called once at step 1b (low confidence, falls through) -- the sweep must skip
+      // crop-maize since it was already tried, not call it a second time.
+      expect(onDeviceRegistry.classifyWithOnDeviceModel).toHaveBeenCalledTimes(1);
+    });
+
+    it('gives an honest "could not identify this image" message, not a connectivity complaint, when both the cloud gateway and every on-device model fail', async () => {
+      vi.mocked(onDeviceRegistry.getOnDeviceCropIds).mockReturnValue(['crop-groundnut', 'crop-banana']);
+      vi.mocked(onDeviceRegistry.classifyWithOnDeviceModel).mockResolvedValue([
+        { modelLabel: 'healthy', confidence: 0.1, mapping: { modelLabel: 'healthy', diseaseId: null } },
+      ]);
+      const invokeSpy = vi.mocked(supabase!.functions.invoke);
+      invokeSpy.mockRejectedValueOnce(new Error('simulated cloud outage'));
+
+      const result = await detectDisease('data:image/jpeg;base64,leafPhoto', 'leafPhoto', {});
+
+      expect(result.detected).toBe(false);
+      if (!result.detected) {
+        expect(result.reason).toBe('provider_unavailable');
+        expect(result.messageEn.toLowerCase()).toContain('could not identify this image');
+        expect(result.messageEn.toLowerCase()).not.toContain('connectivity');
+        expect(result.messageTe).toBeTruthy();
+      }
     });
   });
 });

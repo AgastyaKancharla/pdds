@@ -81,13 +81,29 @@ describe('Per-user daily AI scan quota', () => {
       // The upstream free tier is rate-limited and intermittently unavailable. A farmer must
       // not lose part of their daily allowance for a diagnosis they never received.
       expect(edgeFn, 'refundSlot helper must be defined').toMatch(/const refundSlot = async \(\) =>/);
-      // Four failure paths call it: non-2xx, empty body, unparseable body, and the
-      // network/timeout catch.
+
+      // Each model attempt loops through four failure modes -- non-2xx, empty body,
+      // unparseable body, and the network/timeout catch -- recording the failure and moving
+      // to the next model rather than calling refundSlot() per path. refundSlot() is called
+      // exactly once, after every model in the chain has been exhausted, which every failure
+      // mode converges on regardless of which one(s) fired.
       const refundCallCount = (edgeFn.match(/await refundSlot\(\)/g) || []).length;
-      expect(refundCallCount).toBeGreaterThanOrEqual(4);
+      expect(refundCallCount).toBe(1);
+
+      const loopEnd = edgeFn.lastIndexOf('}\n\n  // Every model in the chain failed');
+      const refundAt = edgeFn.indexOf('await refundSlot()');
+      expect(loopEnd, 'the retry loop over attemptOrder must exist').toBeGreaterThan(-1);
+      expect(refundAt, 'refundSlot() must run after the retry loop, not inside a single attempt')
+        .toBeGreaterThan(loopEnd);
 
       for (const failurePath of ['UpstreamProviderError', 'EmptyResponse', 'MalformedOutput', 'GatewayTimeout']) {
         expect(edgeFn, `${failurePath} path must exist`).toContain(failurePath);
+        // Every failure mode must record itself via lastFailure so the single refundSlot()
+        // call after the loop is reached no matter which one(s) fired.
+        const pathAt = edgeFn.indexOf(failurePath);
+        const sliceAroundPath = edgeFn.slice(Math.max(0, pathAt - 400), pathAt + 50);
+        expect(sliceAroundPath, `${failurePath} must set lastFailure before continuing to the next model`)
+          .toMatch(/lastFailure = \{/);
       }
       expect(edgeFn).toContain('release_ai_scan_slot');
     });
@@ -221,7 +237,10 @@ describe('Per-user daily AI scan quota', () => {
       expect(result.detected).toBe(false);
       if (!result.detected) {
         expect(result.reason).toBe('provider_unavailable');
-        expect(result.messageEn).toMatch(/unavailable/i);
+        // The cloud gateway failing (and the on-device fallback sweep finding nothing either,
+        // in this unmocked environment) yields an honest "could not identify this image"
+        // message rather than a connectivity complaint -- see detection.ts step 4.
+        expect(result.messageEn).toMatch(/could not identify this image/i);
       }
     });
 
