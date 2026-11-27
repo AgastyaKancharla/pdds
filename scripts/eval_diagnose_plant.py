@@ -1,10 +1,11 @@
 """Runs the test photo set through the live diagnose-plant function and scores it.
-Usage: python3 run_eval.py <set_dir> <out.json>"""
+Usage: SUPABASE_ANON_KEY=... python3 scripts/eval_diagnose_plant.py <set_dir> <out.json>"""
 import base64, json, subprocess, sys, time, urllib.request
 
 SET, OUT = sys.argv[1], sys.argv[2]
-URL = 'https://magxfdmhnanomqpxwzjv.supabase.co'
-ANON = open('/tmp/anon.txt').read().strip()
+import os
+URL = os.environ.get('SUPABASE_URL', 'https://magxfdmhnanomqpxwzjv.supabase.co')
+ANON = os.environ['SUPABASE_ANON_KEY']  # the public anon key, never a service-role key
 
 def post(path, body, token=None):
     req = urllib.request.Request(URL + path, data=json.dumps(body).encode(), method='POST',
