@@ -211,7 +211,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         {
           stepNumber: 1,
           practice_en:
-            'Treat seed with biological agent Trichoderma asperellum @ 10g/kg seed prior to nursery sowing. Carbendazim 50% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5A): it has not been verified against a current, authoritative Indian pesticide registration/label source. Do not use any chemical seed-treatment dose as an instruction from PDDS — confirm the currently approved product and dose with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before treating seed with any chemical.',
+            'Treat seed with biological agent Trichoderma asperellum @ 10g/kg seed prior to nursery sowing. Carbendazim 50% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5A): it has not been verified against a current, authoritative Indian pesticide registration/label source. Do not use any chemical seed-treatment dose as an instruction from PDDS — confirm the currently approved product and dose with your local agriculture extension office before treating seed with any chemical.',
           targetTiming: 'Pre-sowing',
         },
         {
@@ -238,7 +238,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Eco-friendly biocontrol; avoid mixing with synthetic chemical bactericides, which can kill the biological agent.',
           regulatoryNotice_en:
-            'Biopesticides are regulated under the Insecticides Act, 1968 and require proper dosing. Confirm the rate with your Village Agriculture Assistant / Rythu Bharosa Kendra (RBK).',
+            'Biopesticides are regulated under the Insecticides Act, 1968 and require proper dosing. Confirm the rate with your local agriculture extension office.',
         },
         {
           id: 't-rice-blast-chem-1',
@@ -260,7 +260,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
             'Isoprothiolane 40% EC is registered for rice blast at 750 ml of formulation per hectare in 500-1000 litres of water, and is commonly used as a rotational option for neck blast at the boot leaf stage. Its waiting period is 60 days.',
           activeIngredient_en: 'Isoprothiolane 40% EC (300 g a.i./ha)',
           safetyCaution_en:
-            'The 60-day waiting period is long — this product is unsuitable if harvest is less than two months away. Choose Tricyclazole or consult your RBK in that case.',
+            'The 60-day waiting period is long — this product is unsuitable if harvest is less than two months away. Choose Tricyclazole or consult your local agriculture extension office in that case.',
           regulatoryNotice_en:
             'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / blast entry. Rotate chemical classes between sprays to prevent fungal resistance developing.',
         },
@@ -274,7 +274,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
       ],
       escalationThreshold_en:
-        'If leaf blast expands rapidly to more than 10% of field hills, or if lesions appear at the panicle neck junction (neck blast) at boot leaf stage, immediately alert the Village Agriculture Assistant (VAA) at your Rythu Bharosa Kendra (RBK).',
+        'If leaf blast expands rapidly to more than 10% of field hills, or if lesions appear at the panicle neck junction (neck blast) at boot leaf stage, immediately alert the local agriculture extension office.',
       captureGuidance: {
         instruction_en:
           'Photograph an affected leaf held flat against a plain background, close enough that the pointed ends and the pale centre of individual lesions are sharp. If panicles have emerged, also photograph the neck where each panicle joins the stem.',
@@ -319,7 +319,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'severe',
           threshold_en: 'Over 10% of hills affected, or any blackening at the panicle neck.',
           action_en:
-            'Alert your RBK the same day. Neck blast directly destroys grain filling and the window for useful action is short.',
+            'Alert your local agriculture extension office the same day. Neck blast directly destroys grain filling and the window for useful action is short.',
         },
       ],
       sources: [
@@ -445,7 +445,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear gloves and a mask while mixing. Observe the full 21-day pre-harvest interval. Copper can scorch foliage if sprayed in peak afternoon heat — spray in the early morning or late afternoon.',
           regulatoryNotice_en:
-            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / bacterial leaf blight entry. Verify the figure on your own product container label before mixing, and confirm with your Rythu Bharosa Kendra (RBK).',
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / bacterial leaf blight entry. Verify the figure on your own product container label before mixing, and confirm with your local agriculture extension office.',
         },
         {
           id: 'rice-blb-chem-2',
@@ -455,7 +455,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
             'Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP (commonly called streptocycline) is registered for rice bacterial leaf blight as a 100-150 ppm spray at the early root stage, with a second spray before grain set if the disease continues. It is also registered as a 40 ppm seed soak for 12 hours and a 40-100 ppm seedling dip.',
           activeIngredient_en: 'Streptomycin Sulphate 90% + Tetracycline Hydrochloride 10% SP',
           safetyCaution_en:
-            'The registry gives this product in ppm concentration, not as a per-hectare quantity, so the amount you need depends on your spray volume — ask your RBK or Village Agriculture Assistant to work out the quantity for your tank rather than guessing. No pre-harvest waiting period is stated in the registry entry, so follow the waiting period printed on your product label.',
+            'The registry gives this product in ppm concentration, not as a per-hectare quantity, so the amount you need depends on your spray volume — ask your local agriculture extension office to work out the quantity for your tank rather than guessing. No pre-harvest waiting period is stated in the registry entry, so follow the waiting period printed on your product label.',
           regulatoryNotice_en:
             'Concentrations confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / bacterial leaf blight entry. Antibiotic sprays should be used sparingly and never as a routine calendar spray, to limit resistance development.',
         },
@@ -497,17 +497,17 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'moderate',
           threshold_en: 'Stripes on 5-25% of leaf area and spreading to new plants across several days.',
           action_en:
-            'Cultural steps plus a registered copper spray is justified at this level. Confirm the product and dose with your RBK first.',
+            'Cultural steps plus a registered copper spray is justified at this level. Confirm the product and dose with your local agriculture extension office first.',
         },
         {
           level: 'severe',
           threshold_en: 'Over 25% of leaf area affected, or seedlings wilting and dying (kresek) soon after transplanting.',
           action_en:
-            'Report to your RBK or Agriculture Officer the same day. At this stage yield loss is already occurring and the field needs direct inspection, not only a spray decision.',
+            'Report to your local agriculture extension office the same day. At this stage yield loss is already occurring and the field needs direct inspection, not only a spray decision.',
         },
       ],
       escalationThreshold_en:
-        'Contact your Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer immediately if seedlings are wilting within two weeks of transplanting (kresek), if more than a quarter of the leaf area is affected, or if stripes keep spreading after draining the field and stopping nitrogen. Bacterial blight has no curative chemical — once it is widespread, management decisions need a physical field inspection.',
+        'Contact your local agriculture extension office immediately if seedlings are wilting within two weeks of transplanting (kresek), if more than a quarter of the leaf area is affected, or if stripes keep spreading after draining the field and stopping nitrogen. Bacterial blight has no curative chemical — once it is widespread, management decisions need a physical field inspection.',
       claimEvidence: [
         {
           claimId: 'rice-blb-copper-dose',
@@ -623,7 +623,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           instruction_en:
             'Correct the underlying nutrition first. Apply the nitrogen and potassium shortfall indicated by your soil test, and use well-decomposed farmyard manure or compost to rebuild soil health in degraded or sandy fields.',
           safetyCaution_en:
-            'Have the quantity worked out from an actual soil test result by your RBK — over-applying nitrogen invites Blast and Bacterial Leaf Blight instead.',
+            'Have the quantity worked out from an actual soil test result by your local agriculture extension office — over-applying nitrogen invites Blast and Bacterial Leaf Blight instead.',
         },
         {
           id: 'rice-brownspot-chem-1',
@@ -635,7 +635,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Treated seed is poisonous and must never be eaten or fed to animals. Mix in the open wearing gloves and a mask, and keep treated seed in clearly marked bags away from food grain. The registry states no waiting period for this seed-treatment entry.',
           regulatoryNotice_en:
-            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice entry listing brown spot, blast and sheath blight. Verify against your product container label and confirm with your RBK.',
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice entry listing brown spot, blast and sheath blight. Verify against your product container label and confirm with your local agriculture extension office.',
         },
         {
           id: 'rice-brownspot-chem-2',
@@ -647,7 +647,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear gloves and a mask while mixing and spraying, and do not spray against the wind. Observe the full 34-day pre-harvest interval. Spraying without also correcting soil fertility will not stop the problem returning.',
           regulatoryNotice_en:
-            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice crop section. Verify against your own product container label before mixing and confirm with your RBK. Rotate fungicide classes across sprays to limit resistance.',
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice crop section. Verify against your own product container label before mixing and confirm with your local agriculture extension office. Rotate fungicide classes across sprays to limit resistance.',
         },
       ],
       captureGuidance: {
@@ -699,11 +699,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'severe',
           threshold_en: 'Over 20% of leaf area affected, or dark blotches already appearing on the grain husk.',
           action_en:
-            'Consult your RBK. Grain discolouration directly reduces the price you get, and the field likely has a fertility problem that needs a soil test, not just another spray.',
+            'Consult your local agriculture extension office. Grain discolouration directly reduces the price you get, and the field likely has a fertility problem that needs a soil test, not just another spray.',
         },
       ],
       escalationThreshold_en:
-        'Consult your Rythu Bharosa Kendra (RBK) if spots cover more than a fifth of the leaf area, if dark blotches appear on the grain husk, or if the problem recurs season after season in the same field. Recurring Brown Spot is a soil fertility problem that a soil test should settle, and historically severe outbreaks of this disease have followed widespread soil nutrient exhaustion rather than any failure of spraying.',
+        'Consult your local agriculture extension office if spots cover more than a fifth of the leaf area, if dark blotches appear on the grain husk, or if the problem recurs season after season in the same field. Recurring Brown Spot is a soil fertility problem that a soil test should settle, and historically severe outbreaks of this disease have followed widespread soil nutrient exhaustion rather than any failure of spraying.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
@@ -809,7 +809,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Direct the spray at the lower sheath region where the lesions actually are, not just over the top of the canopy. Wear gloves and a mask. Observe the 14-day pre-harvest interval.',
           regulatoryNotice_en:
-            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / sheath blight entry. The registry notes no residues on grain or straw when applied 14 days before harvest. Verify against your own product container label before mixing and confirm with your RBK.',
+            'Dose confirmed against the CIBRC Major Uses of Pesticides (Fungicides) registry, rice / sheath blight entry. The registry notes no residues on grain or straw when applied 14 days before harvest. Verify against your own product container label before mixing and confirm with your local agriculture extension office.',
         },
         {
           id: 'rice-sheathblight-chem-2',
@@ -866,11 +866,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'severe',
           threshold_en: 'Lesions above half the plant height, reaching the flag leaf, or tillers already lodging.',
           action_en:
-            'Contact your RBK the same day. Once the fungus reaches the flag leaf, grain filling is directly at risk and spray timing becomes critical.',
+            'Contact your local agriculture extension office the same day. Once the fungus reaches the flag leaf, grain filling is directly at risk and spray timing becomes critical.',
         },
       ],
       escalationThreshold_en:
-        'Contact your Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer if lesions climb past half the plant height, reach the flag leaf, or if tillers begin to lodge. Sheath Blight at the flag leaf stage threatens grain filling directly, and the choice of fungicide then depends on how many days remain to harvest — a decision worth confirming in person.',
+        'Contact your local agriculture extension office if lesions climb past half the plant height, reach the flag leaf, or if tillers begin to lodge. Sheath Blight at the flag leaf stage threatens grain filling directly, and the choice of fungicide then depends on how many days remain to harvest — a decision worth confirming in person.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Pathology & Integrated Disease Management',
@@ -888,7 +888,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
             'Rice crop entries, target "Sheath blight" — Validamycin 3% L (2000 g/ha, 750 L, 14 days), Hexaconazole 5% EC (1000 ml/ha, 500 L, 40 days), Propiconazole 25% EC (500 g/ha, 750 L, 30 days).',
         },
         {
-          title: 'Sheath blight severity survey, Nellore and Chittoor districts, AP, rabi 2020-21 (severity 6.11%-13.44%)',
+          title: 'Sheath blight severity survey, Nellore and Chittoor districts, Andhra Pradesh, India, rabi 2020-21 (severity 6.11%-13.44%)',
           organization: 'South Asian Journal of Applied Sciences (sasapjas.org)',
           reviewDate: '2023-09-01',
           url: 'https://sasapjas.org/wp-content/uploads/2023/09/09-Kalavathi.pdf',
@@ -1006,7 +1006,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Waiting periods differ sharply — 21, 47 and 30 days. Chlorantraniliprole at 47 days is unsuitable close to harvest. Spray only when the economic threshold is reached, not on a calendar: once larvae are inside the stem, spraying cannot reach them and only kills the natural enemies that would have helped you.',
           regulatoryNotice_en:
-            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice / stem borer entries. Rotate between chemical groups across sprays, as stem borer develops resistance readily. Verify against your container label and confirm with your RBK.',
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice / stem borer entries. Rotate between chemical groups across sprays, as stem borer develops resistance readily. Verify against your container label and confirm with your local agriculture extension office.',
         },
       ],
       captureGuidance: {
@@ -1062,11 +1062,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'severe',
           threshold_en: 'Over 10% dead hearts, or white ears appearing at the panicle stage.',
           action_en:
-            'Consult your RBK. White ears mean that grain is already lost on those tillers and no spray will recover them — the decision is about protecting the rest of the crop and the next season.',
+            'Consult your local agriculture extension office. White ears mean that grain is already lost on those tillers and no spray will recover them — the decision is about protecting the rest of the crop and the next season.',
         },
       ],
       escalationThreshold_en:
-        'Contact your Rythu Bharosa Kendra (RBK) if dead hearts exceed roughly one tiller in ten, if white ears appear at panicle stage, or if damage continues after a correctly timed spray — continuing damage usually means either resistance or that the spray was applied after larvae were already inside the stem. Confirm whether white panicles are stem borer or neck blast before buying any product, because the two need completely different chemicals.',
+        'Contact your local agriculture extension office if dead hearts exceed roughly one tiller in ten, if white ears appear at panicle stage, or if damage continues after a correctly timed spray — continuing damage usually means either resistance or that the spray was applied after larvae were already inside the stem. Confirm whether white panicles are stem borer or neck blast before buying any product, because the two need completely different chemicals.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Entomology & Integrated Pest Management',
@@ -1183,7 +1183,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Treatment only protects tillers that have not yet been attacked, so it is worth applying early in tillering and pointless once silver shoots are widespread. Waiting periods differ — 32, 14 and 15 days. Wear gloves and a mask, and do not spray against the wind.',
           regulatoryNotice_en:
-            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice entries listing gall midge among the target pests. Carbofuran-based granules also appear in the registry for this pest but are not surfaced here, as carbofuran is acutely toxic and its use is under regulatory review in several jurisdictions — discuss it with your RBK rather than treating it as a default.',
+            'Doses confirmed against the CIBRC Major Uses of Pesticides (Insecticides) registry, rice entries listing gall midge among the target pests. Carbofuran-based granules also appear in the registry for this pest but are not surfaced here, as carbofuran is acutely toxic and its use is under regulatory review in several jurisdictions — discuss it with your local agriculture extension office rather than treating it as a default.',
         },
       ],
       captureGuidance: {
@@ -1221,17 +1221,17 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'moderate',
           threshold_en: '5-10% of tillers with silver shoots, during active tillering.',
           action_en:
-            'Consider a registered treatment only if tillering is still in progress and there are tillers left to protect. Confirm the count with your RBK first.',
+            'Consider a registered treatment only if tillering is still in progress and there are tillers left to protect. Confirm the count with your local agriculture extension office first.',
         },
         {
           level: 'severe',
           threshold_en: 'Over 10% of tillers affected, or silver shoots still appearing after tillering has finished.',
           action_en:
-            'Consult your RBK, and plan a resistant variety for next season. After tillering ends the plant can no longer compensate, and spraying then cannot recover the lost tillers.',
+            'Consult your local agriculture extension office, and plan a resistant variety for next season. After tillering ends the plant can no longer compensate, and spraying then cannot recover the lost tillers.',
         },
       ],
       escalationThreshold_en:
-        'Contact your Rythu Bharosa Kendra (RBK) if more than one tiller in ten shows silver shoots, or if new silver shoots keep appearing after the tillering stage has ended. Because the maggot is protected inside the shoot and already-formed silver shoots can never produce a panicle, the useful conversation with an officer is about variety choice and planting date for next season, not only about which product to spray now.',
+        'Contact your local agriculture extension office if more than one tiller in ten shows silver shoots, or if new silver shoots keep appearing after the tillering stage has ended. Because the maggot is protected inside the shoot and already-formed silver shoots can never produce a panicle, the useful conversation with an officer is about variety choice and planting date for next season, not only about which product to spray now.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Rice Entomology & Integrated Pest Management',
@@ -1322,7 +1322,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         {
           stepNumber: 4,
           practice_en:
-            'In fields with a known history of khaira, dip seedling roots in a zinc oxide suspension before transplanting — ask your RBK for the preparation used locally.',
+            'In fields with a known history of khaira, dip seedling roots in a zinc oxide suspension before transplanting — ask your local agriculture extension office for the preparation used locally.',
           targetTiming: 'At transplanting',
         },
       ],
@@ -1334,7 +1334,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           instruction_en:
             'This is a nutrient disorder, so the correction is zinc, not a pesticide. Zinc sulphate is the standard correction, applied either to the soil at land preparation or as a foliar spray on a standing crop. A specific quantity is deliberately not stated here — see the caution below.',
           safetyCaution_en:
-            'No quantity is given here because the correct zinc rate depends on your soil test reading, soil pH and whether you are applying to soil or foliage, and it varies widely between fields. Zinc sulphate is a fertiliser, not a pesticide, so it does not appear in the CIBRC registry that this app verifies doses against. Ask your Rythu Bharosa Kendra (RBK) or Village Agriculture Assistant for the rate matched to your soil test.',
+            'No quantity is given here because the correct zinc rate depends on your soil test reading, soil pH and whether you are applying to soil or foliage, and it varies widely between fields. Zinc sulphate is a fertiliser, not a pesticide, so it does not appear in the CIBRC registry that this app verifies doses against. Ask your local agriculture extension office for the rate matched to your soil test.',
           regulatoryNotice_en:
             'Do not apply any fungicide or insecticide for this condition. Zinc deficiency is not caused by a pest or pathogen, so a spray cannot correct it — it only adds cost and can scorch already-stressed foliage.',
         },
@@ -1393,17 +1393,17 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           level: 'moderate',
           threshold_en: 'Clear rust-brown blotching with visible stunting across distinct patches of the field.',
           action_en:
-            'Apply the zinc correction at the rate your RBK gives for your soil test, and drain. Expect recovery to show in new leaves within one to two weeks.',
+            'Apply the zinc correction at the rate your local agriculture extension office gives for your soil test, and drain. Expect recovery to show in new leaves within one to two weeks.',
         },
         {
           level: 'severe',
           threshold_en: 'Large patches badly stunted with very poor tillering, and maturity visibly delayed against the rest of the field.',
           action_en:
-            'Consult your RBK promptly. At this level yield is already affected, and the field needs a soil test to plan correction for next season as well as a rescue application now.',
+            'Consult your local agriculture extension office promptly. At this level yield is already affected, and the field needs a soil test to plan correction for next season as well as a rescue application now.',
         },
       ],
       escalationThreshold_en:
-        'Consult your Rythu Bharosa Kendra (RBK) or Village Agriculture Assistant for the zinc rate matched to your soil test, and promptly if patches are badly stunted or maturity is clearly delayed. Importantly, if someone advises a fungicide for these symptoms, ask them to rule out zinc deficiency first — khaira is routinely mistaken for Brown Spot, and a fungicide spent on it is money lost with the crop still declining.',
+        'Consult your local agriculture extension office for the zinc rate matched to your soil test, and promptly if patches are badly stunted or maturity is clearly delayed. Importantly, if someone advises a fungicide for these symptoms, ask them to rule out zinc deficiency first — khaira is routinely mistaken for Brown Spot, and a fungicide spent on it is money lost with the crop still declining.',
       claimEvidence: [
         {
           claimId: 'rice-zinc-no-dose',
@@ -1411,7 +1411,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           verificationStatus: 'unsupported',
           locator: undefined,
           limitation_en:
-            'No application rate is stated for zinc sulphate. Zinc sulphate is a fertiliser rather than a pesticide, so it is outside the scope of the CIBRC registries this catalog verifies doses against, and no primary ANGRAU or ICAR document giving a rate was accessible from this tool. A rate must come from your own soil test via your RBK.',
+            'No application rate is stated for zinc sulphate. Zinc sulphate is a fertiliser rather than a pesticide, so it is outside the scope of the CIBRC registries this catalog verifies doses against, and no primary ANGRAU or ICAR document giving a rate was accessible from this tool. A rate must come from your own soil test via your local agriculture extension office.',
         },
       ],
       sources: [
@@ -1493,19 +1493,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS OR ORGANIC SPRAYS. Cold-pressed Neem Oil and NSKE sprays are commonly used organic practices to deter whitefly vector (Bemisia tabaci) feeding and oviposition — they have no viricidal action, only vector-suppression value — but a specific dose is suppressed — Phase 5.4 evidence verification could not confirm an exact figure against a primary reference accessible from this tool. Synthetic insecticides (e.g. Diafenthiuron 50% WP, Acetamiprid 20% SP) are also commonly discussed for suppressing this vector once it exceeds economic threshold (5-10 whiteflies per plant), but a specific product and dose for either is likewise suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli (one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the label, not just the active ingredient). Do not apply any insecticide, organic or synthetic, if whitefly vectors are absent, and consult local RBK for current guidance before using any option.',
+            'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS OR ORGANIC SPRAYS. Cold-pressed Neem Oil and NSKE sprays are commonly used organic practices to deter whitefly vector (Bemisia tabaci) feeding and oviposition — they have no viricidal action, only vector-suppression value — but a specific dose is suppressed — Phase 5.4 evidence verification could not confirm an exact figure against a primary reference accessible from this tool. Synthetic insecticides (e.g. Diafenthiuron 50% WP, Acetamiprid 20% SP) are also commonly discussed for suppressing this vector once it exceeds economic threshold (5-10 whiteflies per plant), but a specific product and dose for either is likewise suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli (one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the label, not just the active ingredient). Do not apply any insecticide, organic or synthetic, if whitefly vectors are absent, and consult your local agriculture extension office for current guidance before using any option.',
           activeIngredient_en:
             'Neem Oil / Azadirachtin (organic, dose suppressed); Diafenthiuron 50% WP / Acetamiprid 20% SP (synthetic vector management, targets Bemisia tabaci only — not the virus; product/dose suppressed, possible chilli-whitefly label mismatch found in secondary sources)',
           safetyCaution_en:
             'If using any insecticide once confirmed: rotate chemistry, do not repeat the same class consecutively to prevent vector resistance, observe the mandatory pre-harvest interval on the approved container label, and wear protective mask and gloves.',
           regulatoryNotice_en:
-            'Statutory Warning: Insecticides (organic or synthetic) manage the whitefly vector only; they have no viricidal action. Actionable synthetic product and dose are suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment, and a secondary source suggested Diafenthiuron may be labeled for chilli mites rather than whitefly). Strictly adhere to approved CIBRC container label directions once confirmed with RBK.',
+            'Statutory Warning: Insecticides (organic or synthetic) manage the whitefly vector only; they have no viricidal action. Actionable synthetic product and dose are suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment, and a secondary source suggested Diafenthiuron may be labeled for chilli mites rather than whitefly). Strictly adhere to approved CIBRC container label directions once confirmed with your local agriculture extension office.',
         },
       ],
       escalationThreshold_en:
-        'If whitefly counts exceed 15-20 per plant and leaf curling advances rapidly across the main field despite barrier cropping, consult your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) for area-wide vector suppression advisories.',
+        'If whitefly counts exceed 15-20 per plant and leaf curling advances rapidly across the main field despite barrier cropping, consult your local agriculture extension office for area-wide vector suppression advisories.',
       chemicalTabDetail_en:
-        'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS. Synthetic insecticides such as Diafenthiuron 50% WP and Acetamiprid 20% SP are sometimes discussed for suppressing the whitefly vector (Bemisia tabaci) once it exceeds economic threshold (5-10 whiteflies per plant) — they have no viricidal action, only vector-suppression value. A specific product and dose are suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli. IMPORTANT TARGET-PEST WARNING: one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the approved label, not just the active ingredient name, before any use. See the Organic tab for full safety caution and regulatory guidance; consult your local RBK.',
+        'VIRAL INFECTION CANNOT BE CURED BY CHEMICALS. Synthetic insecticides such as Diafenthiuron 50% WP and Acetamiprid 20% SP are sometimes discussed for suppressing the whitefly vector (Bemisia tabaci) once it exceeds economic threshold (5-10 whiteflies per plant) — they have no viricidal action, only vector-suppression value. A specific product and dose are suppressed: no primary CIBRC label was accessible from this tool to confirm either as a standalone product labeled for whitefly on chilli. IMPORTANT TARGET-PEST WARNING: one secondary source listed Diafenthiuron 50% WP as labeled only for mites on chilli, not whitefly — verify the target pest on the approved label, not just the active ingredient name, before any use. See the Organic tab for full safety caution and regulatory guidance; consult your local agriculture extension office.',
       sources: [
         {
           title: 'Vyavasaya Panchangam — Chilli Crop Protection & Vector Management',
@@ -1583,19 +1583,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Release egg parasitoid Trichogramma bactrae @ 60,000 eggs/acre at weekly intervals from flower initiation. When moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%, Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are also commonly discussed insecticide classes for cotton bollworm, but a specific dose for either is suppressed: Phase 5.4 evidence verification found several differing commercial dose figures (secondary sources ranged roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. Consult local RBK before using any chemical option.',
+            'Release egg parasitoid Trichogramma bactrae @ 60,000 eggs/acre at weekly intervals from flower initiation. When moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%, Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are also commonly discussed insecticide classes for cotton bollworm, but a specific dose for either is suppressed: Phase 5.4 evidence verification found several differing commercial dose figures (secondary sources ranged roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. Consult your local agriculture extension office before using any chemical option.',
           activeIngredient_en:
             'Trichogramma bactrae (organic bio-control); Chlorantraniliprole 18.5% SC / Emamectin Benzoate 5% SG (chemical classes, exact dose suppressed — conflicting secondary-source figures, no primary CIBRC label accessible)',
           safetyCaution_en:
             'If using any chemical insecticide once a dose is confirmed: avoid broad-spectrum pyrethroid overuse (accelerates resistance) and follow the container label pre-harvest waiting period.',
           regulatoryNotice_en:
-            'Spray any chemical option strictly based on ETL monitoring once a specific product and dose are confirmed. Actionable chemical dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Consult local RBK for the currently approved formulation and dose.',
+            'Spray any chemical option strictly based on ETL monitoring once a specific product and dose are confirmed. Actionable chemical dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Consult your local agriculture extension office for the currently approved formulation and dose.',
         },
       ],
       escalationThreshold_en:
-        'When rosette flowers exceed 15% or trap catch surges above 15 moths/night, immediately consult your local RBK Agriculture Officer for community-level mass trapping and coordinated spray schedules.',
+        'When rosette flowers exceed 15% or trap catch surges above 15 moths/night, immediately consult your local agriculture officer for community-level mass trapping and coordinated spray schedules.',
       chemicalTabDetail_en:
-        'Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are commonly discussed insecticide classes for cotton bollworm once moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%. A specific dose for either is suppressed: secondary sources gave differing commercial figures (roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. See the Organic tab for full safety caution and regulatory guidance; consult your local RBK before spraying anything.',
+        'Chlorantraniliprole 18.5% SC and Emamectin Benzoate 5% SG are commonly discussed insecticide classes for cotton bollworm once moth trap catches exceed ETL (8 moths/trap/night for 3 consecutive days) or rosette flowers exceed 10%. A specific dose for either is suppressed: secondary sources gave differing commercial figures (roughly 0.3-0.4 ml/L for Chlorantraniliprole and 0.4-0.5 g/L for Emamectin Benzoate) with no primary CIBRC label accessible from this tool to confirm an exact figure. See the Organic tab for full safety caution and regulatory guidance; consult your local agriculture extension office before spraying anything.',
       sources: [
         {
           title: 'Pink Bollworm Management Strategy in Cotton',
@@ -1663,7 +1663,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         {
           stepNumber: 2,
           practice_en:
-            'Seed treatment with bio-agent Trichoderma viride @ 10g/kg seed before sowing. Mancozeb 75% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5C): it has not been verified against a current, authoritative Indian pesticide registration/label applicable to groundnut seed treatment. Do not rely on PDDS for any chemical seed-treatment dose — confirm the currently approved product and dose with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before treating seed with any chemical.',
+            'Seed treatment with bio-agent Trichoderma viride @ 10g/kg seed before sowing. Mancozeb 75% WP is sometimes used as a chemical seed-treatment alternative, but the specific dose previously listed here is suppressed (Phase 5.5C): it has not been verified against a current, authoritative Indian pesticide registration/label applicable to groundnut seed treatment. Do not rely on PDDS for any chemical seed-treatment dose — confirm the currently approved product and dose with your local agriculture extension office before treating seed with any chemical.',
           targetTiming: 'Pre-sowing',
         },
       ],
@@ -1673,12 +1673,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A Rajasthan trial (ICAR, published on epubs.icar.org.in) found that NSKE (Neem Seed Kernel Extract) combined with a Trichoderma + Pseudomonas fluorescens bio-agent treatment reduced Tikka leaf spot incidence by 60.54% compared to untreated plots. This is real, cited evidence of effectiveness — but it is from Rajasthan, not Andhra Pradesh (geographicScope: other_state below), and the specific NSKE concentration and application interval used in that trial are suppressed here pending confirmation against a current university/CIBRC label. Do not infer an exact spray strength from the 60.54% figure — it describes an outcome, not a label rate. Consult your local RBK/VAA for the current recommended NSKE concentration and bio-agent dose for groundnut tikka in your district.',
-          activeIngredient_en: 'NSKE (Neem Seed Kernel Extract) + Trichoderma / Pseudomonas fluorescens (concentration suppressed — Rajasthan trial outcome cited, not an AP-confirmed label rate)',
+            'A Rajasthan trial (ICAR, published on epubs.icar.org.in) found that NSKE (Neem Seed Kernel Extract) combined with a Trichoderma + Pseudomonas fluorescens bio-agent treatment reduced Tikka leaf spot incidence by 60.54% compared to untreated plots. This is real, cited evidence of effectiveness — but it is from Rajasthan, not Andhra Pradesh (geographicScope: other_state below), and the specific NSKE concentration and application interval used in that trial are suppressed here pending confirmation against a current university/CIBRC label. Do not infer an exact spray strength from the 60.54% figure — it describes an outcome, not a label rate. Consult your local agriculture extension office for the current recommended NSKE concentration and bio-agent dose for groundnut tikka in your district.',
+          activeIngredient_en: 'NSKE (Neem Seed Kernel Extract) + Trichoderma / Pseudomonas fluorescens (concentration suppressed — Rajasthan trial outcome cited, not an Andhra Pradesh-confirmed label rate)',
           safetyCaution_en:
             'Eco-friendly biocontrol combination; avoid mixing with synthetic chemical fungicides in the same spray tank. Wear basic gloves during preparation and application.',
           regulatoryNotice_en:
-            'The 60.54% reduction figure is a real ICAR-published trial result from Rajasthan, not Andhra Pradesh — treat it as supporting evidence that this organic combination can work, not as an AP-specific or dose-confirmed recommendation. Confirm the current recommended concentration with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+            'The 60.54% reduction figure is a real ICAR-published trial result from Rajasthan, not Andhra Pradesh — treat it as supporting evidence that this organic combination can work, not as an Andhra Pradesh-specific or dose-confirmed recommendation. Confirm the current recommended concentration with your local agriculture extension office.',
         },
         {
           id: 't-groundnut-chem-1',
@@ -1688,13 +1688,13 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
             'At initial spot appearance, Mancozeb 75% WP and Tebuconazole 25.9% EC are commonly used fungicide classes for groundnut leaf spot (tikka), but a specific dose is suppressed: Phase 5.4 evidence verification found a university extension source citing Mancozeb 75% WP @ 3g/L (differing from an earlier, uncorroborated 2.5g/L figure) and found no confirming source at all for a Tebuconazole 25.9% EC dose on this crop, with no primary CIBRC label accessible from this tool.',
           activeIngredient_en: 'Mancozeb 75% WP / Tebuconazole 25.9% EC (exact dose suppressed — conflicting/absent secondary-source figures, no primary CIBRC label accessible)',
           safetyCaution_en:
-            'Avoid spraying during strong midday sunshine. Maintain recommended water volume (200 L/acre). Follow approved container label waiting period (PHI) before harvest; verify with local RBK.',
+            'Avoid spraying during strong midday sunshine. Maintain recommended water volume (200 L/acre). Follow approved container label waiting period (PHI) before harvest; verify with your local agriculture extension office.',
           regulatoryNotice_en:
-            'Statutory Safety Notice: Check approved product label. Actionable dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Verify dosage and pre-harvest interval with Village Agriculture Assistant / RBK.',
+            'Statutory Safety Notice: Check approved product label. Actionable dose suppressed pending primary CIBRC label verification (Phase 5.4 — ppqs.gov.in was not accessible from the verifying environment). Verify dosage and pre-harvest interval with your local agriculture extension office.',
         },
       ],
       escalationThreshold_en:
-        'If defoliation begins before pod filling stage, seek advice at your local Rythu Bharosa Kendra (RBK) to prevent severe yield loss.',
+        'If defoliation begins before pod filling stage, seek advice at your local agriculture extension office to prevent severe yield loss.',
       claimEvidence: [
         {
           claimId: 't-groundnut-chem-1-safety-caution',
@@ -1702,7 +1702,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           verificationStatus: 'unsupported',
           sourceIndexes: [0, 1, 2],
           limitation_en:
-            'The spray water volume figure (200 L/acre) is a general spray-carrier convention seen in secondary agricultural sources — it is not confirmed against the current Mancozeb 75% WP / Tebuconazole 25.9% EC product label for this crop and pest (all three sources above link only to an organization homepage, not this specific figure). Confirm the current label directions with your local Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before spraying.',
+            'The spray water volume figure (200 L/acre) is a general spray-carrier convention seen in secondary agricultural sources — it is not confirmed against the current Mancozeb 75% WP / Tebuconazole 25.9% EC product label for this crop and pest (all three sources above link only to an organization homepage, not this specific figure). Confirm the current label directions with your local agriculture extension office before spraying.',
         },
         {
           claimId: 't-groundnut-tikka-org-nske-1-reduction-figure',
@@ -1711,7 +1711,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           sourceIndexes: [3],
           locator: 'epubs.icar.org.in — Rajasthan field trial, NSKE + Trichoderma/P. fluorescens vs. untreated control (60.54% incidence reduction)',
           limitation_en:
-            'The 60.54% reduction figure is a real ICAR-published trial result, reached via a research subagent\'s search/fetch rather than a direct page read by this session, and the trial location was Rajasthan, not Andhra Pradesh. Marked provisional (not verified) because the exact NSKE concentration used in that trial was not independently confirmed, and the result has not been shown to replicate under AP growing conditions. Confirm current local guidance with RBK/VAA.',
+            'The 60.54% reduction figure is a real ICAR-published trial result, reached via a research subagent\'s search/fetch rather than a direct page read by this session, and the trial location was Rajasthan, not Andhra Pradesh. Marked provisional (not verified) because the exact NSKE concentration used in that trial was not independently confirmed, and the result has not been shown to replicate under Andhra Pradesh growing conditions. Confirm current local guidance with your local agriculture extension office.',
         },
       ],
       sources: [
@@ -1793,10 +1793,10 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective dust mask and gloves while preparing and applying lime mixture to avoid skin/eye irritation.',
           regulatoryNotice_en:
-            'Actionable synthetic chemical pesticide recommendations are suppressed pending primary CIBRC registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK).',
+            'Actionable synthetic chemical pesticide recommendations are suppressed pending primary CIBRC registration excerpt verification. Consult your local agriculture extension office.',
         },
       ],
-      escalationThreshold_en: 'Escalate to RBK if more than 10% of seedling plants show central whorl damage.',
+      escalationThreshold_en: 'Escalate to your local agriculture extension office if more than 10% of seedling plants show central whorl damage.',
       sources: [
         {
           title: 'ANGRAU Special Advisory on Fall Armyworm in Maize',
@@ -1862,10 +1862,10 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves when uprooting and handling diseased clumps; wash hands thoroughly afterward. Burn or bury removed material away from irrigation channels.',
           regulatoryNotice_en:
-            'Red rot is internal and systemic; it cannot be cured by standing foliar chemical sprays. Actionable synthetic fungicide sett-dip dosage is suppressed until verified directly against a primary CIBRC registration label for sugarcane red rot. Consult local Rythu Bharosa Kendra (RBK) or sugarcane factory agriculture officer for the current approved sett-treatment product and dose.',
+            'Red rot is internal and systemic; it cannot be cured by standing foliar chemical sprays. Actionable synthetic fungicide sett-dip dosage is suppressed until verified directly against a primary CIBRC registration label for sugarcane red rot. Consult your local agriculture extension office or sugarcane factory agriculture officer for the current approved sett-treatment product and dose.',
         },
       ],
-      escalationThreshold_en: 'Report red rot outbreaks to local sugarcane factory agriculture officers and RBK.',
+      escalationThreshold_en: 'Report red rot outbreaks to local sugarcane factory agriculture officers and your local agriculture extension office.',
       sources: [
         {
           title: 'Sugarcane Research Station Technical Guidelines — Red Rot Management',
@@ -1926,15 +1926,15 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Neem-based biopesticide formulations and bio-agent Trichoderma viride are commonly used against early leaf spotting, but a specific dose is suppressed pending primary CIBRC/university label verification. Chemical fungicide spray recipes are likewise suppressed pending primary CIBRC label verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer for the currently approved product and dose.',
+            'Neem-based biopesticide formulations and bio-agent Trichoderma viride are commonly used against early leaf spotting, but a specific dose is suppressed pending primary CIBRC/university label verification. Chemical fungicide spray recipes are likewise suppressed pending primary CIBRC label verification. Consult your local agriculture extension office or Horticulture Officer for the currently approved product and dose.',
           activeIngredient_en: 'Neem-based biopesticide / Trichoderma viride (dose suppressed pending verification; chemical sprays suppressed)',
           safetyCaution_en:
             'Avoid spraying during high winds or midday heat. Wear basic protective mask.',
           regulatoryNotice_en:
-            'Both the biopesticide dose and the chemical fungicide recommendations for tomato early blight are suppressed until verified directly against a primary CIBRC/university registration label. Consult local Rythu Bharosa Kendra (RBK).',
+            'Both the biopesticide dose and the chemical fungicide recommendations for tomato early blight are suppressed until verified directly against a primary CIBRC/university registration label. Consult your local agriculture extension office.',
         },
       ],
-      escalationThreshold_en: 'Consult RBK if blighting reaches upper leaves and fruit clusters.',
+      escalationThreshold_en: 'Consult your local agriculture extension office if blighting reaches upper leaves and fruit clusters.',
       sources: [
         {
           title: 'Horticultural Advisory on Tomato Diseases & Integrated Management',
@@ -1995,12 +1995,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Bordeaux mixture (copper sulphate + lime) is a traditional pre-bloom spray used on pruned branch cuts against anthracnose, but a specific concentration/dose is suppressed pending primary CIBRC/university label verification. Synthetic chemical fungicide recipes are likewise suppressed pending primary CIBRC registration label validation. Consult local RBK or Horticulture Officer for the currently approved concentration and timing.',
+            'Bordeaux mixture (copper sulphate + lime) is a traditional pre-bloom spray used on pruned branch cuts against anthracnose, but a specific concentration/dose is suppressed pending primary CIBRC/university label verification. Synthetic chemical fungicide recipes are likewise suppressed pending primary CIBRC registration label validation. Consult your local agriculture extension office or Horticulture Officer for the currently approved concentration and timing.',
           activeIngredient_en: 'Bordeaux Mixture: Copper Sulphate + Lime (concentration suppressed pending verification; synthetic chemical sprays suppressed)',
           safetyCaution_en:
             'Do not spray during full bloom / peak pollinator bee activity to avoid bee mortality. Wear eye protection and gloves.',
           regulatoryNotice_en:
-            'Both the Bordeaux mixture concentration and any synthetic chemical pesticide recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+            'Both the Bordeaux mixture concentration and any synthetic chemical pesticide recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult your local agriculture extension office or Horticulture Officer.',
         },
       ],
       escalationThreshold_en: 'Seek advice if blossom blight exceeds 20% across orchard trees.',
@@ -2064,7 +2064,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Trichoderma viride / T. reesei enriched neem cake incorporated at planting is commonly used to promote competitive rhizosphere bio-suppression, but a specific dose (e.g. quantity per pit) is suppressed pending primary CIBRC/university label verification — consult local RBK or Horticulture Officer for the currently recommended quantity. This remains secondary to biosecurity: chemical fungicide drenches (e.g. Carbendazim) are scientifically ineffective against Fusarium TR4 and are strictly suppressed regardless of dose.',
+            'Trichoderma viride / T. reesei enriched neem cake incorporated at planting is commonly used to promote competitive rhizosphere bio-suppression, but a specific dose (e.g. quantity per pit) is suppressed pending primary CIBRC/university label verification — consult your local agriculture extension office or Horticulture Officer for the currently recommended quantity. This remains secondary to biosecurity: chemical fungicide drenches (e.g. Carbendazim) are scientifically ineffective against Fusarium TR4 and are strictly suppressed regardless of dose.',
           activeIngredient_en: 'Trichoderma viride Bio-agent + Neem Cake (dose suppressed pending verification; chemical drenching suppressed as scientifically ineffective)',
           safetyCaution_en:
             'Biocontrol amendment; handle with clean gloves. Never transport soil, tools, or water from infected mats to healthy banana blocks.',
@@ -2073,7 +2073,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
       ],
       escalationThreshold_en:
-        'FUNGICIDES CANNOT CURE PANAMA WILT (TR4). Chemical claims are disproven. Immediately isolate infested plot, rogue infected clumps, apply 1-2 kg agricultural lime per pit, and consult RBK for biosecurity boundary enforcement.',
+        'FUNGICIDES CANNOT CURE PANAMA WILT (TR4). Chemical claims are disproven. Immediately isolate infested plot, rogue infected clumps, apply 1-2 kg agricultural lime per pit, and consult your local agriculture extension office for biosecurity boundary enforcement.',
       claimEvidence: [
         {
           claimId: 'disease-banana-panamawilt-escalation-threshold',
@@ -2081,7 +2081,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           verificationStatus: 'unsupported',
           sourceIndexes: [0],
           limitation_en:
-            'The quarantine practice of roguing infected plants and treating the pit is not in dispute, but the exact lime quantity (1-2 kg per pit) is not confirmed against a specific page/section of the cited ICAR-NRCB technical guideline — only the organization homepage is linked. Confirm the exact quantity with your local RBK or Horticulture Officer.',
+            'The quarantine practice of roguing infected plants and treating the pit is not in dispute, but the exact lime quantity (1-2 kg per pit) is not confirmed against a specific page/section of the cited ICAR-NRCB technical guideline — only the organization homepage is linked. Confirm the exact quantity with your local agriculture extension office or Horticulture Officer.',
         },
       ],
       sources: [
@@ -2138,12 +2138,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Bio-agent Trichoderma asperellum seed-rhizome coating and neem cake soil incorporation are commonly used against rhizome rot, but specific doses are suppressed pending primary CIBRC/university label verification. Chemical fungicide drench recipes are likewise suppressed pending primary CIBRC registration label validation. Consult local RBK or Horticulture Officer for currently approved products and doses.',
+            'Bio-agent Trichoderma asperellum seed-rhizome coating and neem cake soil incorporation are commonly used against rhizome rot, but specific doses are suppressed pending primary CIBRC/university label verification. Chemical fungicide drench recipes are likewise suppressed pending primary CIBRC registration label validation. Consult your local agriculture extension office or Horticulture Officer for currently approved products and doses.',
           activeIngredient_en: 'Trichoderma asperellum + Neem Cake (doses suppressed pending verification; chemical drenching suppressed)',
           safetyCaution_en:
             'Eco-friendly biocontrol treatment; wear basic gloves during rhizome coating.',
           regulatoryNotice_en:
-            'Both the bio-agent/neem cake doses and any synthetic chemical drenching recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+            'Both the bio-agent/neem cake doses and any synthetic chemical drenching recommendation are suppressed pending primary CIBRC/university registration excerpt verification. Consult your local agriculture extension office or Horticulture Officer.',
         },
       ],
       escalationThreshold_en: 'Contact local Horticultural Officer if rot patches appear in more than 5% of beds.',
@@ -2219,19 +2219,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'chemical',
           instruction_en:
-            'A 2024 ANGRAU/ICRISAT-linked demonstration in Nellore district (AP) recorded rust severity at 16% under farmer practice versus 5% in fungicide-treated demonstration plots — showing that timely fungicide spraying is effective, but the source summary available to this tool did not name the specific fungicide product or its dose used in that demonstration. Mancozeb and Tebuconazole-class fungicides, already listed on the Tikka leaf spot entry for this same crop, are also commonly discussed for combined leaf-spot-and-rust control, but their dose remains suppressed there for the same reason. Do not infer a dose from the 16%-vs-5% figure — it describes an outcome, not a label rate. Consult your local RBK/VAA for the current approved product and dose before spraying.',
+            'A 2024 ANGRAU/ICRISAT-linked demonstration in Nellore district (Andhra Pradesh, India) recorded rust severity at 16% under farmer practice versus 5% in fungicide-treated demonstration plots — showing that timely fungicide spraying is effective, but the source summary available to this tool did not name the specific fungicide product or its dose used in that demonstration. Mancozeb and Tebuconazole-class fungicides, already listed on the Tikka leaf spot entry for this same crop, are also commonly discussed for combined leaf-spot-and-rust control, but their dose remains suppressed there for the same reason. Do not infer a dose from the 16%-vs-5% figure — it describes an outcome, not a label rate. Consult your local agriculture extension office for the current approved product and dose before spraying.',
           activeIngredient_en: 'Mancozeb / Tebuconazole-class fungicides (same classes as Tikka leaf spot; dose suppressed — outcome data found, not a label rate)',
           safetyCaution_en:
-            'Avoid spraying during peak midday heat or strong wind. Wear mask and gloves during spray preparation and application. Follow the pre-harvest interval stated on the approved product label; verify with local RBK.',
+            'Avoid spraying during peak midday heat or strong wind. Wear mask and gloves during spray preparation and application. Follow the pre-harvest interval stated on the approved product label; verify with your local agriculture extension office.',
           regulatoryNotice_en:
-            'Statutory Warning: Read the approved product label before use. The 16%-vs-5% demonstration figure describes a result, not a dose — do not treat it as a spray rate. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+            'Statutory Warning: Read the approved product label before use. The 16%-vs-5% demonstration figure describes a result, not a dose — do not treat it as a spray rate. Confirm the current approved product and dose with your local agriculture extension office.',
         },
       ],
       escalationThreshold_en:
-        'If rust pustules spread to the upper canopy leaves or combine with heavy Tikka leaf spot defoliation before pod-filling, contact your local Rythu Bharosa Kendra (RBK) promptly.',
+        'If rust pustules spread to the upper canopy leaves or combine with heavy Tikka leaf spot defoliation before pod-filling, contact your local agriculture extension office promptly.',
       sources: [
         {
-          title: 'Groundnut foliar disease demonstration trial (rust severity, farmer practice vs. fungicide-treated plots), Nellore district, AP, 2024',
+          title: 'Groundnut foliar disease demonstration trial (rust severity, farmer practice vs. fungicide-treated plots), Nellore district, Andhra Pradesh, India, 2024',
           organization: 'ICRISAT (International Crops Research Institute for the Semi-Arid Tropics) — open access repository',
           reviewDate: '2024-01-01',
           url: 'https://oar.icrisat.org/411/1/58373.pdf',
@@ -2301,19 +2301,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A Krishna district (AP) IPM field study reported thrips/Murda incidence falling from 16.0% to 9.5% under an integrated management approach (combining practices such as traps, border crops, and timed sprays), and a January 2023 NBAIR survey independently documented this thrips species across Telangana and Andhra Pradesh fields. Neither source available to this tool specified the exact spray product or dose used to achieve that reduction. Neem-based (Azadirachtin) sprays are a commonly used organic option against thrips, but a specific dose is suppressed pending primary CIBRC/university label verification. Consult local RBK for the current recommended product and dose.',
+            'A Krishna district (Andhra Pradesh, India) IPM field study reported thrips/Murda incidence falling from 16.0% to 9.5% under an integrated management approach (combining practices such as traps, border crops, and timed sprays), and a January 2023 NBAIR survey independently documented this thrips species across Telangana and Andhra Pradesh fields. Neither source available to this tool specified the exact spray product or dose used to achieve that reduction. Neem-based (Azadirachtin) sprays are a commonly used organic option against thrips, but a specific dose is suppressed pending primary CIBRC/university label verification. Consult your local agriculture extension office for the current recommended product and dose.',
           activeIngredient_en: 'Neem-based Azadirachtin sprays (dose suppressed); IPM-combination outcome documented (16.0%→9.5%) without a named product/dose',
           safetyCaution_en:
             'Spray during early morning or late evening when thrips are most active on exposed surfaces. Wear mask and gloves. Rotate insecticide classes if synthetic options are later confirmed, to slow resistance development (thrips build resistance quickly).',
           regulatoryNotice_en:
-            'Statutory Warning: Read the approved product label before use. The cited 16.0%→9.5% field outcome and the NBAIR survey both confirm thrips/Murda as a real, documented AP-region problem, but neither names an actionable spray product or dose. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK).',
+            'Statutory Warning: Read the approved product label before use. The cited 16.0%→9.5% field outcome and the NBAIR survey both confirm thrips/Murda as a real, documented Andhra Pradesh-region problem, but neither names an actionable spray product or dose. Confirm the current approved product and dose with your local agriculture extension office.',
         },
       ],
       escalationThreshold_en:
-        'If new-growth distortion ("Murda") spreads to more than 20% of plants, or flower/fruit drop becomes heavy, consult your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK).',
+        'If new-growth distortion ("Murda") spreads to more than 20% of plants, or flower/fruit drop becomes heavy, consult your local agriculture extension office.',
       sources: [
         {
-          title: 'IPM field study on chilli thrips/Murda complex, Krishna district, AP (incidence 16.0% → 9.5% under integrated management)',
+          title: 'IPM field study on chilli thrips/Murda complex, Krishna district, Andhra Pradesh (incidence 16.0% → 9.5% under integrated management)',
           organization: 'Published in The Pharma Innovation Journal (phytojournal.com)',
           reviewDate: '2019-01-01',
           url: 'https://www.phytojournal.com/archives/2019/vol8issue4/PartAY/8-4-584-112.pdf',
@@ -2362,13 +2362,13 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
       ],
       environmentalRiskFactors_en: [
-        'Hot, dry weather, especially August-September, favoring rapid whitefly population buildup — matching a 2023-24 Nandyal/Kurnool (AP) district survey finding.',
+        'Hot, dry weather, especially August-September, favoring rapid whitefly population buildup — matching a 2023-24 Nandyal/Kurnool (Andhra Pradesh, India) district survey finding.',
         'Overuse of broad-spectrum synthetic pyrethroids, which can trigger whitefly population flare-ups by killing natural predators.',
       ],
       preventionGuidance: [
         {
           stepNumber: 1,
-          practice_en: 'Monitor regularly: a 2023-24 ANGRAU survey in Nandyal/Kurnool (AP) recorded whitefly counts crossing the economic threshold level (ETL) at 6.66 whitefly per 3 leaves in August — begin close monitoring from July onward in similar districts.',
+          practice_en: 'Monitor regularly: a 2023-24 ANGRAU survey in Nandyal/Kurnool (Andhra Pradesh, India) recorded whitefly counts crossing the economic threshold level (ETL) at 6.66 whitefly per 3 leaves in August — begin close monitoring from July onward in similar districts.',
           targetTiming: 'July onward (pre-ETL monitoring)',
         },
         {
@@ -2383,19 +2383,19 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'chemical',
           instruction_en:
-            'The same 2023-24 Nandyal/Kurnool (AP) survey that documented whitefly crossing ETL, and a CICR (Central Institute for Cotton Research) advisory describing whitefly as a vector of multiple viral diseases with 15-30% yield loss potential, both establish whitefly as a serious, AP-confirmed threat — but neither source available to this tool named a specific insecticide product or dose for this crop/pest combination. Diafenthiuron and Pyriproxyfen-class insecticides are commonly discussed for whitefly management once ETL is crossed, but a specific dose is suppressed pending primary CIBRC label verification. Consult local RBK for the current approved product and dose.',
-          activeIngredient_en: 'Diafenthiuron / Pyriproxyfen-class insecticides (dose suppressed — AP-confirmed ETL-crossing threat, no named product/dose in sources)',
+            'The same 2023-24 Nandyal/Kurnool (Andhra Pradesh, India) survey that documented whitefly crossing ETL, and a CICR (Central Institute for Cotton Research) advisory describing whitefly as a vector of multiple viral diseases with 15-30% yield loss potential, both establish whitefly as a serious, Andhra Pradesh-confirmed threat — but neither source available to this tool named a specific insecticide product or dose for this crop/pest combination. Diafenthiuron and Pyriproxyfen-class insecticides are commonly discussed for whitefly management once ETL is crossed, but a specific dose is suppressed pending primary CIBRC label verification. Consult your local agriculture extension office for the current approved product and dose.',
+          activeIngredient_en: 'Diafenthiuron / Pyriproxyfen-class insecticides (dose suppressed — Andhra Pradesh-confirmed ETL-crossing threat, no named product/dose in sources)',
           safetyCaution_en:
             'Spray only after confirming ETL is crossed (avoid prophylactic spraying, which accelerates resistance). Avoid repeated use of the same insecticide class consecutively. Wear mask and gloves; follow the pre-harvest interval on the approved label.',
           regulatoryNotice_en:
-            'Statutory Warning: Read the approved product label before use. Spray strictly based on ETL monitoring (6.66 whitefly/3 leaves was the AP survey\'s crossing point, but confirm the currently applicable ETL for your area with RBK, as it can vary by season and advisory). Actionable product and dose are suppressed pending primary CIBRC label verification.',
+            'Statutory Warning: Read the approved product label before use. Spray strictly based on ETL monitoring (6.66 whitefly/3 leaves was the Andhra Pradesh survey\'s crossing point, but confirm the currently applicable ETL for your area with your local agriculture extension office, as it can vary by season and advisory). Actionable product and dose are suppressed pending primary CIBRC label verification.',
         },
       ],
       escalationThreshold_en:
-        'If whitefly counts exceed the locally confirmed ETL (the AP survey observed crossing at 6.66/3 leaves) or sooty mould coverage becomes heavy, contact your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) for area-wide management advice.',
+        'If whitefly counts exceed the locally confirmed ETL (the Andhra Pradesh survey observed crossing at 6.66/3 leaves) or sooty mould coverage becomes heavy, contact your local agriculture extension office for area-wide management advice.',
       sources: [
         {
-          title: 'Whitefly and pink bollworm incidence survey, Nandyal/Kurnool districts, AP, 2023-24 (6.66 whitefly/3 leaves at Dornipadu mandal in August, crossing ETL)',
+          title: 'Whitefly and pink bollworm incidence survey, Nandyal/Kurnool districts, Andhra Pradesh, India, 2023-24 (6.66 whitefly/3 leaves at Dornipadu mandal in August, crossing ETL)',
           organization: 'South Asian Journal of Applied Sciences (sasapjas.org)',
           reviewDate: '2024-01-01',
           url: 'https://sasapjas.org/?p=5691',
@@ -2465,12 +2465,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'No AP-specific survey or trial data for this particular leaf spot (Colletotrichum capsici, as distinct from the leaf blotch and rhizome rot already catalogued for this crop) was found during this research pass — this entry is sourced only to general ANGRAU/ICAR-IISR turmeric plant-protection guidance, in the same manner as the original catalog baseline. Bio-agent Trichoderma-based foliar sprays and neem-based options are commonly discussed for turmeric foliar diseases generally, but a specific dose is suppressed pending primary CIBRC/university label verification specific to this disease. Consult local RBK or Horticulture Officer for current guidance.',
-          activeIngredient_en: 'Trichoderma-based foliar spray / Neem-based options (dose suppressed; no AP-specific source found for this particular disease)',
+            'No Andhra Pradesh-specific survey or trial data for this particular leaf spot (Colletotrichum capsici, as distinct from the leaf blotch and rhizome rot already catalogued for this crop) was found during this research pass — this entry is sourced only to general ANGRAU/ICAR-IISR turmeric plant-protection guidance, in the same manner as the original catalog baseline. Bio-agent Trichoderma-based foliar sprays and neem-based options are commonly discussed for turmeric foliar diseases generally, but a specific dose is suppressed pending primary CIBRC/university label verification specific to this disease. Consult your local agriculture extension office or Horticulture Officer for current guidance.',
+          activeIngredient_en: 'Trichoderma-based foliar spray / Neem-based options (dose suppressed; no Andhra Pradesh-specific source found for this particular disease)',
           safetyCaution_en:
             'Eco-friendly biocontrol option; avoid mixing with synthetic chemical fungicides. Wear basic gloves during preparation.',
           regulatoryNotice_en:
-            'Both the bio-agent dose and any chemical fungicide recommendation for this specific leaf spot are suppressed pending primary CIBRC/university registration verification — this is a weaker evidence base than most other entries in this catalog (no disease-specific AP survey was found), so treat all guidance here as general good practice, not a confirmed protocol. Consult local Rythu Bharosa Kendra (RBK) or Horticulture Officer.',
+            'Both the bio-agent dose and any chemical fungicide recommendation for this specific leaf spot are suppressed pending primary CIBRC/university registration verification — this is a weaker evidence base than most other entries in this catalog (no disease-specific Andhra Pradesh survey was found), so treat all guidance here as general good practice, not a confirmed protocol. Consult your local agriculture extension office or Horticulture Officer.',
         },
       ],
       escalationThreshold_en: 'Consult your local Horticulture Officer if leaf spot coverage exceeds roughly 20% of canopy leaf area or spots begin coalescing rapidly.',
@@ -2544,16 +2544,16 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'chemical',
           instruction_en:
-            'ICAR - Indian Institute of Maize Research (IIMR) publishes a spray schedule for this disease naming Mancozeb 75% WP @ 2.5-3 g/litre at 7-10 day intervals starting from the knee-high growth stage. This is a cleaner, single-institution figure than some other entries in this catalog, but per this catalog\'s house standard, no chemical dose is ever shown as unconditionally actionable here — even a clean ICAR-IIMR institutional figure has not been independently cross-checked by this tool against a current CIBRC product label, and label-approved rates can be revised over time. Treat the 2.5-3 g/litre figure as a starting reference point only, and confirm the current approved product, concentration, and spray interval for your district with your local RBK/VAA before mixing or spraying anything.',
-          activeIngredient_en: 'Mancozeb 75% WP @ 2.5-3 g/L, 7-10 day intervals from knee-high stage (ICAR-IIMR institutional figure — treat as a reference point, not an unconditional instruction; confirm with RBK/VAA)',
+            'ICAR - Indian Institute of Maize Research (IIMR) publishes a spray schedule for this disease naming Mancozeb 75% WP @ 2.5-3 g/litre at 7-10 day intervals starting from the knee-high growth stage. This is a cleaner, single-institution figure than some other entries in this catalog, but per this catalog\'s house standard, no chemical dose is ever shown as unconditionally actionable here — even a clean ICAR-IIMR institutional figure has not been independently cross-checked by this tool against a current CIBRC product label, and label-approved rates can be revised over time. Treat the 2.5-3 g/litre figure as a starting reference point only, and confirm the current approved product, concentration, and spray interval for your district with your local agriculture extension office before mixing or spraying anything.',
+          activeIngredient_en: 'Mancozeb 75% WP @ 2.5-3 g/L, 7-10 day intervals from knee-high stage (ICAR-IIMR institutional figure — treat as a reference point, not an unconditional instruction; confirm with your local agriculture extension office)',
           safetyCaution_en:
-            'Wear protective mask and gloves during mixing and spraying. Avoid spraying during strong wind or peak midday heat. Follow the pre-harvest interval stated on the currently approved product container label; verify with local RBK before relying on the 2.5-3 g/L figure above.',
+            'Wear protective mask and gloves during mixing and spraying. Avoid spraying during strong wind or peak midday heat. Follow the pre-harvest interval stated on the currently approved product container label; verify with your local agriculture extension office before relying on the 2.5-3 g/L figure above.',
           regulatoryNotice_en:
-            'Statutory Warning: Read the currently approved product label before use. The Mancozeb figure above comes from an ICAR-IIMR institutional source, which is stronger sourcing than a secondary/blog source, but it is still not independently cross-checked here against a current CIBRC registration label, and this catalog never presents any chemical dose as unconditionally actionable regardless of source strength. Confirm the current approved product and dose with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before use.',
+            'Statutory Warning: Read the currently approved product label before use. The Mancozeb figure above comes from an ICAR-IIMR institutional source, which is stronger sourcing than a secondary/blog source, but it is still not independently cross-checked here against a current CIBRC registration label, and this catalog never presents any chemical dose as unconditionally actionable regardless of source strength. Confirm the current approved product and dose with your local agriculture extension office before use.',
         },
       ],
       escalationThreshold_en:
-        'If lesions spread above the ear leaf before tasseling, or overall leaf blighting exceeds 25-30% of total leaf area, contact your Village Agriculture Assistant (VAA) at the Rythu Bharosa Kendra (RBK) promptly, as grain fill can be significantly affected.',
+        'If lesions spread above the ear leaf before tasseling, or overall leaf blighting exceeds 25-30% of total leaf area, contact your local agriculture extension office promptly, as grain fill can be significantly affected.',
       claimEvidence: [
         {
           claimId: 't-maize-turcicum-chem-1-dose',
@@ -2562,7 +2562,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           sourceIndexes: [0],
           locator: 'aicrpmaize.icar.gov.in/?p=1163 — ICAR-IIMR Turcicum leaf blight management page (Mancozeb spray schedule)',
           limitation_en:
-            'This is a real institutional (ICAR-IIMR) figure, not a secondary/blog estimate — a stronger starting point than several other suppressed doses in this catalog. It is marked provisional rather than verified because this tool could not independently cross-check it against a current CIBRC product registration/label, and the page was reached via a research subagent\'s fetch/search rather than a direct page-and-section read by this session. Confirm with your local RBK/VAA before relying on it.',
+            'This is a real institutional (ICAR-IIMR) figure, not a secondary/blog estimate — a stronger starting point than several other suppressed doses in this catalog. It is marked provisional rather than verified because this tool could not independently cross-check it against a current CIBRC product registration/label, and the page was reached via a research subagent\'s fetch/search rather than a direct page-and-section read by this session. Confirm with your local agriculture extension office before relying on it.',
         },
       ],
       sources: [
@@ -2630,7 +2630,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Neem seed kernel extract (NSKE) or neem oil sprays are commonly used against early-instar larvae before they bore in, but a specific concentration/dose is not confirmed against a primary label from this session — confirm the rate with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) before spraying.',
+            'Neem seed kernel extract (NSKE) or neem oil sprays are commonly used against early-instar larvae before they bore in, but a specific concentration/dose is not confirmed against a primary label from this session — confirm the rate with your local agriculture extension office before spraying.',
           activeIngredient_en: 'Azadirachtin (organic, dose unverified)',
           safetyCaution_en: 'Once a larva has bored into a shoot or fruit, no spray can reach it — hand-picking is the only way to remove it at that stage.',
         },
@@ -2644,11 +2644,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your Village Agriculture Assistant (VAA) / Rythu Bharosa Kendra (RBK) and check your product container label before spraying — brinjal is often picked every 3-5 days, so a product with a long waiting period may force skipping a harvest round.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your product container label before spraying — brinjal is often picked every 3-5 days, so a product with a long waiting period may force skipping a harvest round.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 10% of shoots or fruits show borer damage despite regular hand-picking and trapping, or pheromone trap catches stay high week over week, consult your VAA/RBK for a tailored spray program.',
+        'If more than about 10% of shoots or fruits show borer damage despite regular hand-picking and trapping, or pheromone trap catches stay high week over week, consult your local agriculture extension office for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Brinjal Pest Management',
@@ -2710,7 +2710,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Trichoderma viride applied to soil/root zone is a commonly documented biological approach against soil-borne Phomopsis inoculum, but a specific application rate is not confirmed from a primary source in this session — confirm with your VAA/RBK.',
+            'Trichoderma viride applied to soil/root zone is a commonly documented biological approach against soil-borne Phomopsis inoculum, but a specific application rate is not confirmed from a primary source in this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
         },
         {
@@ -2723,11 +2723,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given brinjal\'s frequent harvest cycle.',
+            'Confirm product, dose, and the current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given brinjal\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If fruit rot affects more than about 10-15% of the standing crop, or seedling damping-off appears in the nursery, consult your VAA/RBK promptly.',
+        'If fruit rot affects more than about 10-15% of the standing crop, or seedling damping-off appears in the nursery, consult your local agriculture extension office promptly.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Brinjal Disease Management',
@@ -2787,12 +2787,12 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'preventive',
           instruction_en:
-            'This rot is largely a wound-and-moisture problem rather than a primary infection, so prevention (drainage, staking, prompt harvest, borer control) matters more than any spray. A copper-based fungicide (e.g. copper oxychloride) is sometimes used as a general field sanitation spray, but a specific dose is not confirmed from a primary source here — confirm with your VAA/RBK if you choose to spray.',
+            'This rot is largely a wound-and-moisture problem rather than a primary infection, so prevention (drainage, staking, prompt harvest, borer control) matters more than any spray. A copper-based fungicide (e.g. copper oxychloride) is sometimes used as a general field sanitation spray, but a specific dose is not confirmed from a primary source here — confirm with your local agriculture extension office if you choose to spray.',
           activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
         },
       ],
       escalationThreshold_en:
-        'If rot spreads rapidly through the field or causes more than about 15% fruit loss despite drainage and sanitation steps, consult your VAA/RBK.',
+        'If rot spreads rapidly through the field or causes more than about 15% fruit loss despite drainage and sanitation steps, consult your local agriculture extension office.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Brinjal Post-Harvest and Fruit Rot Management',
@@ -2844,7 +2844,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
         {
           stepNumber: 3,
-          practice_en: 'If cracking persists despite consistent irrigation, have your soil tested for calcium and boron levels through your RBK.',
+          practice_en: 'If cracking persists despite consistent irrigation, have your soil tested for calcium and boron levels through your local agriculture extension office.',
         },
       ],
       treatments: [
@@ -2858,7 +2858,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
       ],
       escalationThreshold_en:
-        'If a large share of fruit (roughly 20% or more) keeps cracking despite consistent irrigation and mulching, ask your VAA/RBK about a soil nutrient test for calcium and boron.',
+        'If a large share of fruit (roughly 20% or more) keeps cracking despite consistent irrigation and mulching, ask your local agriculture extension office about a soil nutrient test for calcium and boron.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Brinjal Fruit Quality and Physiological Disorders',
@@ -2921,7 +2921,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Neem oil or neem seed kernel extract sprays are commonly used to discourage whitefly feeding and egg-laying (the vector, not the virus), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Neem oil or neem seed kernel extract sprays are commonly used to discourage whitefly feeding and egg-laying (the vector, not the virus), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
           safetyCaution_en: 'No spray, organic or chemical, cures a plant already infected with the virus — treatment targets only the whitefly vector to protect still-healthy plants.',
         },
@@ -2935,11 +2935,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent 2-3 day harvest cycle.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given okra\'s frequent 2-3 day harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 20-25% of plants show symptoms, or symptoms appear widely within the first month after sowing, consult your VAA/RBK promptly about resistant varieties for the next planting and an area-wide whitefly management plan.',
+        'If more than about 20-25% of plants show symptoms, or symptoms appear widely within the first month after sowing, consult your local agriculture extension office promptly about resistant varieties for the next planting and an area-wide whitefly management plan.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Virus Disease Management',
@@ -3001,7 +3001,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A dilute buttermilk/sour-milk spray or Trichoderma-based foliar application is sometimes used as a general phyllosphere management step against downy-mildew-type pathogens, but no specific product or rate is confirmed for okra from a primary source this session — confirm with your VAA/RBK.',
+            'A dilute buttermilk/sour-milk spray or Trichoderma-based foliar application is sometimes used as a general phyllosphere management step against downy-mildew-type pathogens, but no specific product or rate is confirmed for okra from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Buttermilk spray / Trichoderma (organic, dose unverified)',
         },
         {
@@ -3014,11 +3014,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+            'Confirm product, dose, and the current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given okra\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 15-20% of leaf area across the field shows downy mildew symptoms despite irrigation and spacing adjustments, consult your VAA/RBK for a tailored spray program.',
+        'If more than about 15-20% of leaf area across the field shows downy mildew symptoms despite irrigation and spacing adjustments, consult your local agriculture extension office for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
@@ -3086,7 +3086,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (organic, dose unverified)',
         },
         {
@@ -3099,11 +3099,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+            'Confirm product, dose, and the current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given okra\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 15-20% of leaf area across the field shows spotting or blighting despite nutrition and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+        'If more than about 15-20% of leaf area across the field shows spotting or blighting despite nutrition and sanitation steps, consult your local agriculture extension office for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
@@ -3164,7 +3164,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Trichoderma viride or Pseudomonas fluorescens-based foliar sprays are commonly documented general-purpose biologicals against leaf-spot fungi, but a specific rate for this disease/crop is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (organic, dose unverified)',
         },
         {
@@ -3177,11 +3177,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+            'Confirm product, dose, and the current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given okra\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 15-20% of leaf area across the field shows spotting despite spacing and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+        'If more than about 15-20% of leaf area across the field shows spotting despite spacing and sanitation steps, consult your local agriculture extension office for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
@@ -3238,7 +3238,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Because this spot is usually mild and scattered, sanitation (removing affected leaves/debris) is often sufficient on its own; a Trichoderma viride or Pseudomonas fluorescens-based spray is sometimes added as a general preventive step, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK if you choose to spray.',
+            'Because this spot is usually mild and scattered, sanitation (removing affected leaves/debris) is often sufficient on its own; a Trichoderma viride or Pseudomonas fluorescens-based spray is sometimes added as a general preventive step, but a specific rate is not confirmed from a primary source this session — confirm with your local agriculture extension office if you choose to spray.',
           activeIngredient_en: 'Trichoderma viride / Pseudomonas fluorescens (optional, dose unverified)',
         },
         {
@@ -3251,11 +3251,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and the current pre-harvest interval with your VAA/RBK and check your container label before spraying, given okra\'s frequent harvest cycle.',
+            'Confirm product, dose, and the current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given okra\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'This spot is usually mild; if it nonetheless spreads to more than about 20% of leaf area or appears alongside other leaf spots making field diagnosis difficult, consult your VAA/RBK.',
+        'This spot is usually mild; if it nonetheless spreads to more than about 20% of leaf area or appears alongside other leaf spots making field diagnosis difficult, consult your local agriculture extension office.',
       sources: [
         {
           title: 'Package of Practices for Vegetable Crops — Okra Disease Management',
@@ -3321,7 +3321,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'There is no organic or chemical cure for a tree already infected with HLB. Neem-oil-based sprays are sometimes used to suppress Asian citrus psyllid populations on healthy trees nearby, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'There is no organic or chemical cure for a tree already infected with HLB. Neem-oil-based sprays are sometimes used to suppress Asian citrus psyllid populations on healthy trees nearby, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Neem oil (organic, vector suppression only, dose unverified)',
           safetyCaution_en: 'No spray reverses HLB infection inside an already-affected tree — every treatment here only protects neighboring healthy trees by targeting the psyllid vector.',
         },
@@ -3330,16 +3330,16 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 2,
           category: 'chemical',
           instruction_en:
-            'Systemic insecticides such as Imidacloprid or Thiamethoxam are commonly used in area-wide Asian citrus psyllid management programs, but a specific dose for this crop/region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory, and report any suspected HLB-positive tree to your VAA/RBK/Horticulture Officer, since this is treated as a serious quarantine-relevant disease.',
+            'Systemic insecticides such as Imidacloprid or Thiamethoxam are commonly used in area-wide Asian citrus psyllid management programs, but a specific dose for this crop/region is suppressed here — this session could not confirm a current CIBRC-registered figure. Do not spray from memory, and report any suspected HLB-positive tree to your local agriculture extension office or Horticulture Officer, since this is treated as a serious quarantine-relevant disease.',
           activeIngredient_en: 'Imidacloprid / Thiamethoxam (vector control, dose suppressed)',
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK/Horticulture Officer and check your container label before spraying. Area-wide, coordinated vector control across neighboring groves is far more effective than one farmer spraying alone.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office or Horticulture Officer and check your container label before spraying. Area-wide, coordinated vector control across neighboring groves is far more effective than one farmer spraying alone.',
         },
       ],
       escalationThreshold_en:
-        'Report any tree with suspected HLB symptoms (asymmetric blotchy mottle, lopsided bitter fruit) to your VAA/RBK or Horticulture Officer promptly, even before you are fully sure — this disease is incurable per-tree and spreads through the grove via the psyllid vector, so early reporting and removal of confirmed cases matters far more than waiting to confirm severity.',
+        'Report any tree with suspected HLB symptoms (asymmetric blotchy mottle, lopsided bitter fruit) to your local agriculture extension office or Horticulture Officer promptly, even before you are fully sure — this disease is incurable per-tree and spreads through the grove via the psyllid vector, so early reporting and removal of confirmed cases matters far more than waiting to confirm severity.',
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Greening (HLB) Management',
@@ -3407,7 +3407,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Copper-based sprays (e.g. copper oxychloride, copper hydroxide) are the standard field approach against citrus canker and are accepted in both organic and conventional programs, but a specific concentration/schedule for this region is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Copper-based sprays (e.g. copper oxychloride, copper hydroxide) are the standard field approach against citrus canker and are accepted in both organic and conventional programs, but a specific concentration/schedule for this region is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Copper oxychloride / Copper hydroxide (dose unverified)',
           safetyCaution_en: 'Copper sprays protect new growth from fresh infection but do not cure tissue already bearing canker lesions — sanitation (removing infected twigs) is still needed alongside spraying.',
         },
@@ -3421,11 +3421,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying. Citrus canker is treated as a quarantine-relevant disease in several states — report a serious outbreak to your Horticulture Officer.',
+            'Confirm product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying. Citrus canker is treated as a quarantine-relevant disease in several states — report a serious outbreak to your Horticulture Officer.',
         },
       ],
       escalationThreshold_en:
-        'If canker affects more than about 15-20% of leaf/fruit surface across the grove despite windbreaks and sanitation, or spreads rapidly after a storm, consult your VAA/RBK/Horticulture Officer for a tailored spray program.',
+        'If canker affects more than about 15-20% of leaf/fruit surface across the grove despite windbreaks and sanitation, or spreads rapidly after a storm, consult your local agriculture extension office or Horticulture Officer for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Canker Management',
@@ -3477,7 +3477,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
         },
         {
           stepNumber: 3,
-          practice_en: 'Time protective fungicide sprays to petal fall and early fruit development where the disease is known to be active in your area — ask your VAA/RBK for the current local spray calendar.',
+          practice_en: 'Time protective fungicide sprays to petal fall and early fruit development where the disease is known to be active in your area — ask your local agriculture extension office for the current local spray calendar.',
         },
       ],
       treatments: [
@@ -3486,7 +3486,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Orchard sanitation (removing fallen leaves/fruit) is the single most effective organic-compatible control, since it removes the fungus\'s main inoculum source; a copper-based spray is sometimes added, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Orchard sanitation (removing fallen leaves/fruit) is the single most effective organic-compatible control, since it removes the fungus\'s main inoculum source; a copper-based spray is sometimes added, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
         },
         {
@@ -3499,11 +3499,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 10-15% of fruit show spotting despite sanitation, or the orchard supplies a market with strict cosmetic/export grading, consult your VAA/RBK/Horticulture Officer for a tailored spray program.',
+        'If more than about 10-15% of fruit show spotting despite sanitation, or the orchard supplies a market with strict cosmetic/export grading, consult your local agriculture extension office or Horticulture Officer for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Black Spot Management',
@@ -3560,7 +3560,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Since melanose mainly lives on dead wood, pruning out deadwood is usually sufficient on its own and is the organic-compatible first step; a copper-based spray at early fruit set is sometimes added in nurseries/young plantings, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK if you choose to spray.',
+            'Since melanose mainly lives on dead wood, pruning out deadwood is usually sufficient on its own and is the organic-compatible first step; a copper-based spray at early fruit set is sometimes added in nurseries/young plantings, but a specific rate is not confirmed from a primary source this session — confirm with your local agriculture extension office if you choose to spray.',
           activeIngredient_en: 'Copper oxychloride (optional, dose unverified)',
         },
         {
@@ -3573,11 +3573,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'Melanose is usually a cosmetic issue; if it nonetheless causes dieback on multiple young twigs or heavy fruit blemishing despite deadwood pruning, consult your VAA/RBK.',
+        'Melanose is usually a cosmetic issue; if it nonetheless causes dieback on multiple young twigs or heavy fruit blemishing despite deadwood pruning, consult your local agriculture extension office.',
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Melanose Management',
@@ -3634,7 +3634,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A copper-based spray timed to new flush emergence is a commonly documented organic-compatible approach, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'A copper-based spray timed to new flush emergence is a commonly documented organic-compatible approach, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Copper oxychloride (organic, dose unverified)',
         },
         {
@@ -3647,11 +3647,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'Scab is usually a minor cosmetic issue; if it nonetheless distorts a large share of new flush leaves or affects more than about 15% of fruit despite irrigation changes, consult your VAA/RBK.',
+        'Scab is usually a minor cosmetic issue; if it nonetheless distorts a large share of new flush leaves or affects more than about 15% of fruit despite irrigation changes, consult your local agriculture extension office.',
       sources: [
         {
           title: 'Package of Practices for Fruit Crops — Citrus Scab Management',
@@ -3712,7 +3712,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Conserving natural enemies (spiders, mirid bugs, dragonflies) by avoiding unnecessary early sprays is the single most effective non-chemical lever against BPH; a neem-based spray is sometimes used at low hopper densities, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Conserving natural enemies (spiders, mirid bugs, dragonflies) by avoiding unnecessary early sprays is the single most effective non-chemical lever against BPH; a neem-based spray is sometimes used at low hopper densities, but a specific concentration is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Neem-based spray (organic, dose unverified)',
           safetyCaution_en: 'Once hopperburn patches appear, affected tillers rarely recover — treatment at this stage targets stopping the patch from spreading, not reviving plants already dried up.',
         },
@@ -3726,11 +3726,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards. Direct the spray to the stem base/basal zone where BPH actually feeds, not just the leaf canopy.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If you find more than roughly 5-10 hoppers per tiller at the stem base, or any hopperburn patch has already appeared and is expanding, consult your VAA/RBK immediately — BPH populations can destroy a field within days once they reach outbreak levels.',
+        'If you find more than roughly 5-10 hoppers per tiller at the stem base, or any hopperburn patch has already appeared and is expanding, consult your local agriculture extension office immediately — BPH populations can destroy a field within days once they reach outbreak levels.',
       sources: [
         {
           title: 'Package of Practices for Cereal Crops — Rice Brown Planthopper Management',
@@ -3787,7 +3787,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A sprayable Bacillus thuringiensis (Bt) formulation is commonly used against leaf folder caterpillars as a selective, natural-enemy-sparing option, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'A sprayable Bacillus thuringiensis (Bt) formulation is commonly used against leaf folder caterpillars as a selective, natural-enemy-sparing option, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Bacillus thuringiensis (Bt) (organic, dose unverified)',
           safetyCaution_en: 'Rice plants tolerate a fair amount of leaf folding without real yield loss, since the flag leaf (the one just below the panicle) matters most — base the decision to spray on how many leaves are damaged, not on the presence of a few folded leaves alone.',
         },
@@ -3801,11 +3801,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If more than roughly 10-15% of leaves (especially new, unfolded leaves near the flag-leaf stage) show fresh folding/scraping damage, consult your VAA/RBK about whether spraying is actually justified at your field\'s growth stage.',
+        'If more than roughly 10-15% of leaves (especially new, unfolded leaves near the flag-leaf stage) show fresh folding/scraping damage, consult your local agriculture extension office about whether spraying is actually justified at your field\'s growth stage.',
       sources: [
         {
           title: 'Package of Practices for Cereal Crops — Rice Leaf Folder Management',
@@ -3866,7 +3866,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A Pseudomonas fluorescens or Trichoderma-based seed/soil treatment is sometimes used as a general preventive step against false smut, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'A Pseudomonas fluorescens or Trichoderma-based seed/soil treatment is sometimes used as a general preventive step against false smut, but a specific rate is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Pseudomonas fluorescens / Trichoderma spp. (organic, dose unverified)',
           safetyCaution_en: 'Once spore balls have formed on the panicle, no spray reverses the damage to those grains — all treatment here is preventive, aimed at the next flowering/grain-fill window, not a cure for grain already affected.',
         },
@@ -3880,11 +3880,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, since correct timing before panicle emergence matters as much as the product choice.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying, since correct timing before panicle emergence matters as much as the product choice.',
         },
       ],
       escalationThreshold_en:
-        'If false smut balls appear on more than about 5-10% of panicles, or your field has a history of repeated outbreaks, consult your VAA/RBK before the next season\'s flowering stage to plan preventive nitrogen management and timely spraying.',
+        'If false smut balls appear on more than about 5-10% of panicles, or your field has a history of repeated outbreaks, consult your local agriculture extension office before the next season\'s flowering stage to plan preventive nitrogen management and timely spraying.',
       sources: [
         {
           title: 'Package of Practices for Cereal Crops — Rice False Smut Management',
@@ -3945,7 +3945,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Neem oil or Neem Seed Kernel Extract (NSKE) sprays are commonly used against jassids at early, low-density infestations, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Neem oil or Neem Seed Kernel Extract (NSKE) sprays are commonly used against jassids at early, low-density infestations, but a specific concentration is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
           safetyCaution_en: 'Once leaves have already turned brittle and bronze-red, that damage does not reverse — treatment at that stage is about protecting the remaining healthy growth, not restoring damaged leaves.',
         },
@@ -3959,11 +3959,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards. Spray coverage of the leaf underside matters, since that is where jassids actually feed.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If downward curling and yellowing/reddening spreads to more than about 2-3 leaves per plant across a large share of the field, or appears early in the season on young plants, consult your VAA/RBK promptly.',
+        'If downward curling and yellowing/reddening spreads to more than about 2-3 leaves per plant across a large share of the field, or appears early in the season on young plants, consult your local agriculture extension office promptly.',
       sources: [
         {
           title: 'Package of Practices for Commercial Crops — Cotton Jassid Management',
@@ -4024,7 +4024,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A copper-based spray (e.g. copper oxychloride) is a commonly documented field approach against bacterial blight and is accepted in both organic and conventional programs, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'A copper-based spray (e.g. copper oxychloride) is a commonly documented field approach against bacterial blight and is accepted in both organic and conventional programs, but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Copper oxychloride (dose unverified)',
           safetyCaution_en: 'Copper sprays protect new growth from fresh infection but do not cure tissue already showing lesions — removing severely infected plant debris alongside spraying matters as much as the spray itself.',
         },
@@ -4038,11 +4038,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If stem streaking/girdling ("black arm") appears on multiple plants, or boll spotting affects more than about 10% of bolls, consult your VAA/RBK promptly, since this disease can spread quickly after wind-driven rain.',
+        'If stem streaking/girdling ("black arm") appears on multiple plants, or boll spotting affects more than about 10% of bolls, consult your local agriculture extension office promptly, since this disease can spread quickly after wind-driven rain.',
       sources: [
         {
           title: 'Package of Practices for Commercial Crops — Cotton Bacterial Blight Management',
@@ -4103,7 +4103,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Pseudomonas fluorescens or Trichoderma viride-based foliar sprays are commonly documented biologicals against anthracnose, but a specific rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Pseudomonas fluorescens or Trichoderma viride-based foliar sprays are commonly documented biologicals against anthracnose, but a specific rate is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Pseudomonas fluorescens / Trichoderma viride (organic, dose unverified)',
         },
         {
@@ -4116,11 +4116,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying, given chilli\'s frequent harvest cycle.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying, given chilli\'s frequent harvest cycle.',
         },
       ],
       escalationThreshold_en:
-        'If fruit rot affects more than about 10-15% of the standing crop despite sanitation and prompt harvest, consult your VAA/RBK promptly.',
+        'If fruit rot affects more than about 10-15% of the standing crop despite sanitation and prompt harvest, consult your local agriculture extension office promptly.',
       sources: [
         {
           title: 'Package of Practices for Commercial Crops — Chilli Anthracnose/Fruit Rot Management',
@@ -4177,7 +4177,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'A dilute wettable sulphur spray or neem oil is commonly used against powdery mildew in vegetable/spice crops generally, but a specific concentration is not confirmed from a primary source this session — confirm with your VAA/RBK, and avoid spraying sulphur during very hot weather since it can scorch leaves.',
+            'A dilute wettable sulphur spray or neem oil is commonly used against powdery mildew in vegetable/spice crops generally, but a specific concentration is not confirmed from a primary source this session — confirm with your local agriculture extension office, and avoid spraying sulphur during very hot weather since it can scorch leaves.',
           activeIngredient_en: 'Wettable Sulphur / Neem oil (organic, dose unverified)',
         },
         {
@@ -4190,11 +4190,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If yellowing and leaf drop spreads to more than about 20% of the plant\'s foliage despite irrigation and sanitation steps, consult your VAA/RBK for a tailored spray program.',
+        'If yellowing and leaf drop spreads to more than about 20% of the plant\'s foliage despite irrigation and sanitation steps, consult your local agriculture extension office for a tailored spray program.',
       sources: [
         {
           title: 'Package of Practices for Commercial Crops — Chilli Powdery Mildew Management',
@@ -4252,7 +4252,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Trichoderma viride-based seed treatment is a commonly documented biological approach against collar rot, but a specific application rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Trichoderma viride-based seed treatment is a commonly documented biological approach against collar rot, but a specific application rate is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
           safetyCaution_en: 'Once a seedling has already collapsed, it cannot be saved — all treatment here is a pre-sowing seed/soil measure, aimed at the next sowing, not a cure for a seedling already wilting.',
         },
@@ -4266,11 +4266,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask while treating seed, and wash hands thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product and dose with your VAA/RBK and check your container label before treating seed.',
+            'Confirm the exact product and dose with your local agriculture extension office and check your container label before treating seed.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 10-15% of seedlings show collar rot/wilting across the field within the first month, consult your VAA/RBK before the next sowing to plan seed treatment and sowing-time adjustments.',
+        'If more than about 10-15% of seedlings show collar rot/wilting across the field within the first month, consult your local agriculture extension office before the next sowing to plan seed treatment and sowing-time adjustments.',
       sources: [
         {
           title: 'Package of Practices for Oilseed Crops — Groundnut Collar Rot Management',
@@ -4331,7 +4331,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Neem oil or Neem Seed Kernel Extract sprays are commonly used to discourage thrips feeding and egg-laying (the vector, not the virus itself), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Neem oil or Neem Seed Kernel Extract sprays are commonly used to discourage thrips feeding and egg-laying (the vector, not the virus itself), but a specific concentration/schedule is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Neem oil / NSKE (organic, dose unverified)',
           safetyCaution_en: 'No spray, organic or chemical, cures a plant once its bud has already died — treatment targets only the thrips vector to protect still-healthy plants nearby.',
         },
@@ -4345,11 +4345,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray/seed-treatment preparation, do not spray against the wind, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before treating seed or spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before treating seed or spraying.',
         },
       ],
       escalationThreshold_en:
-        'If more than about 5-10% of plants show bud necrosis within the first 30-40 days after sowing, or thrips numbers on young leaves are high, consult your VAA/RBK promptly about vector management and resistant varieties for the next season.',
+        'If more than about 5-10% of plants show bud necrosis within the first 30-40 days after sowing, or thrips numbers on young leaves are high, consult your local agriculture extension office promptly about vector management and resistant varieties for the next season.',
       sources: [
         {
           title: 'Package of Practices for Oilseed Crops — Groundnut Bud Necrosis Disease Management',
@@ -4423,11 +4423,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves while applying granules into the whorl, avoid inhaling dust, and wash hands thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product and dose with your VAA/RBK and check your container label before application.',
+            'Confirm the exact product and dose with your local agriculture extension office and check your container label before application.',
         },
       ],
       escalationThreshold_en:
-        'If more than 10% of plants show deadheart symptoms during the whorl stage, or visible stem tunnels/exit holes are found on a field scouting walk, consult your VAA/RBK promptly about whorl-application timing.',
+        'If more than 10% of plants show deadheart symptoms during the whorl stage, or visible stem tunnels/exit holes are found on a field scouting walk, consult your local agriculture extension office promptly about whorl-application timing.',
       sources: [
         {
           title: 'ICAR - Indian Institute of Maize Research (IIMR) Spotted Stem Borer Management Advisory',
@@ -4493,7 +4493,7 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           stepNumber: 1,
           category: 'organic',
           instruction_en:
-            'Soil/seed application of Trichoderma viride-based bio-fungicide is a commonly documented biological approach against Rhizoctonia-complex sheath blights, but a specific application rate is not confirmed from a primary source this session — confirm with your VAA/RBK.',
+            'Soil/seed application of Trichoderma viride-based bio-fungicide is a commonly documented biological approach against Rhizoctonia-complex sheath blights, but a specific application rate is not confirmed from a primary source this session — confirm with your local agriculture extension office.',
           activeIngredient_en: 'Trichoderma viride (organic, dose unverified)',
           safetyCaution_en:
             'Remove and destroy severely banded/rotted lower leaves and sheaths where feasible to reduce the local sclerotia source, rather than leaving infected residue in the field.',
@@ -4508,11 +4508,11 @@ export const AGRICULTURAL_KNOWLEDGE_CATALOG: AgriculturalKnowledgeCatalog = {
           safetyCaution_en:
             'Wear protective gloves and a mask during spray preparation, direct spray at the lower stalk/sheath region rather than broadcast overhead, and wash hands and equipment thoroughly afterwards.',
           regulatoryNotice_en:
-            'Confirm the exact product, dose, and current pre-harvest interval with your VAA/RBK and check your container label before spraying.',
+            'Confirm the exact product, dose, and current pre-harvest interval with your local agriculture extension office and check your container label before spraying.',
         },
       ],
       escalationThreshold_en:
-        'If banded lesions are found on the lower stalk/sheath of more than 10-15% of plants, or any plant shows stalk rot/lodging risk, consult your VAA/RBK promptly, especially before continuing a rice-maize rotation on the same field next season.',
+        'If banded lesions are found on the lower stalk/sheath of more than 10-15% of plants, or any plant shows stalk rot/lodging risk, consult your local agriculture extension office promptly, especially before continuing a rice-maize rotation on the same field next season.',
       sources: [
         {
           title: 'ICAR - Indian Institute of Maize Research (IIMR) Banded Leaf and Sheath Blight Advisory',

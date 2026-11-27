@@ -37,7 +37,7 @@ export type DetectionResult = DetectionSuccess | DetectionFailure;
  * underlying general-purpose vision LLM's accuracy has never been measured against real AP
  * crop photos (see data/evaluation_manifest.json — 400 fixtures specified, 0 verified on
  * disk). Every result from this path is still tagged 'ai_preliminary_hypothesis' and carries
- * the existing "confirm with RBK before spraying" disclaimer -- it is never presented as
+ * the existing "confirm with your local agriculture extension office before spraying" disclaimer -- it is never presented as
  * verified. Revisit turning this back off if real-world results look unreliable.
  *
  * This gates ONLY the cloud photo -> AI gateway call. It does not touch:
@@ -193,7 +193,7 @@ interface GatewayErrorBody {
 /**
  * Reads the JSON body of a failed Edge Function response. supabase-js reports a non-2xx
  * function response as an error whose `context` carries the underlying Response, so the
- * gateway's own explanation (e.g. the daily scan limit, with its reset time and RBK
+ * gateway's own explanation (e.g. the daily scan limit, with its reset time and your local agriculture extension office
  * referral) is only reachable this way. Returns null on anything unexpected — a diagnosis
  * is never derived from here, only an explanatory message, so failing to read it is
  * harmless and must never throw into the caller.
@@ -273,7 +273,7 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
     return {
       detected: false,
       reason: 'unclear',
-      messageEn: `The on-device model detected "${readableLabel}", which doesn't have a treatment guide in this app yet. Please consult your Rythu Bharosa Kendra (RBK).`,
+      messageEn: `The on-device model detected "${readableLabel}", which doesn't have a treatment guide in this app yet. Please consult your local agriculture extension office.`,
       cropId,
       cropNameEn,
     };
@@ -380,7 +380,7 @@ export async function detectDisease(
       { provider: 'gateway', model: 'ai_scanning_paused' },
       {
         messageEn:
-          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.",
+          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your local agriculture extension office for an in-person check.",
       }
     );
     return {

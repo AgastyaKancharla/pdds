@@ -358,9 +358,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         ? ('Legacy Record (Unspecified Provenance)')
         : effectiveTier === 'reference_lookup'
         ? ('Reference Lookup (Not AI-Diagnosed)')
-        : ('Preliminary AI Observation (Confirm with RBK before spraying)');
+        : ('Preliminary AI Observation (Confirm with your local agriculture extension office before spraying)');
     const message =
-      `${t('appName')} - AP Crop Doctor\n` +
+      `${t('appName')} - Crop Doctor\n` +
       `${t('crop')}: ${cropName}\n` +
       `${conditionFieldLabel}: ${diseaseName}\n` +
       `Assessment: ${assessmentLabel}`;
@@ -489,7 +489,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 ⚠️ {'No Pesticides / Fungicides Needed'}
               </h4>
               <p className="card-body" style={{ color: '#5D4037', fontSize: '13px', lineHeight: '1.5' }}>
-                {'This condition is physiological or nutritional, not an infectious fungal or bacterial disease. Chemical pesticide sprays will NOT help and may cause chemical leaf burn or unnecessary financial cost. Consult your local Rythu Bharosa Kendra (RBK) or agricultural extension officer for fertilizer and irrigation management.'}
+                {'This condition is physiological or nutritional, not an infectious fungal or bacterial disease. Chemical pesticide sprays will NOT help and may cause chemical leaf burn or unnecessary financial cost. Consult your local agriculture extension office for fertilizer and irrigation management.'}
               </p>
             </div>
           )}
@@ -502,7 +502,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           {!isHealthy && !isAbiotic && !isNutrient && (
             <div className="card supported-crops-card">
               <h4 className="card-title">
-                🌾 {'Browse Supported AP Crop Guides Offline:'}
+                🌾 {'Browse Supported Crop Guides Offline:'}
               </h4>
               <div className="crop-switch-chips" style={{ marginTop: '8px' }}>
                 {getAllSupportedCrops().map((c) => (
@@ -1051,7 +1051,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </div>
         )}
 
-        {/* AP Specific Tip */}
+        {/* Regional tip (sourced from Indian field studies) */}
         {(disease.ap_specific_tip_en) && (
           <div className="card tip-card">
             <h4 className="card-title">{t('apTip')}</h4>

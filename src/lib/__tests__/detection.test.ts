@@ -206,7 +206,7 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
     it('has a real, non-empty banner string ready for the Scan screen to render if paused again', () => {
       const en = translate('aiScanningPausedBanner', 'en');
       expect(en.toLowerCase()).toContain('paused');
-      expect(en).toContain('Rythu Bharosa Kendra');
+      expect(en).toContain('extension office');
     });
 
     it('does call the gateway for a real (non-demo) scan now that the cloud path is enabled', async () => {
@@ -233,7 +233,7 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       if (!result.detected) {
         expect(result.reason).toBe('provider_unavailable');
         expect(result.messageEn.toLowerCase()).toContain('paused');
-        expect(result.messageEn).toContain('Rythu Bharosa Kendra');
+        expect(result.messageEn).toContain('extension office');
         expect(result.normalizedDiagnosis?.metadata.model).toBe('ai_scanning_paused');
       }
     });

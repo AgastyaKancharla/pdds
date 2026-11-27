@@ -278,7 +278,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
             // source rather than a conflicting/absent secondary figure, so the house decision
             // was to show the real number but explicitly frame it as "a reference point only,
             // never unconditionally actionable" rather than the word "suppressed" — the same
-            // underlying safety guarantee (never actionable without RBK/VAA confirmation),
+            // underlying safety guarantee (never actionable without extension-office confirmation),
             // worded to match why it's being qualified. Both framings satisfy this invariant.
             const hasSuppressionLanguage = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
             const hasReferencePointLanguage =
@@ -838,7 +838,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           // Must direct the farmer to the container label and local agricultural authorities
           const text = `${t.safetyCaution_en} ${t.regulatoryNotice_en}`.toLowerCase();
           const directsToLabel =
-            text.includes('label') || text.includes('container') || text.includes('rbk') || text.includes('officer');
+            text.includes('label') || text.includes('container') || text.includes('extension office') || text.includes('officer');
           expect(
             directsToLabel,
             `Chemical treatment ${t.id} must direct farmer to approved label or local authority`
@@ -1231,7 +1231,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const en = seedStep.practice_en.toLowerCase();
       expect(en).toContain('suppress');
       expect(en).toContain('not been verified');
-      expect(en).toContain('rbk');
+      expect(en).toContain('extension office');
     });
 
     it('does not claim Carbendazim is illegal, ineffective, or universally unsafe — only unverified here', () => {
@@ -1304,7 +1304,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const en = seedStep.practice_en.toLowerCase();
       expect(en).toContain('suppress');
       expect(en).toContain('not been verified');
-      expect(en).toContain('rbk');
+      expect(en).toContain('extension office');
     });
 
     it('does not claim Mancozeb is illegal, ineffective, or universally unsafe — only unverified here', () => {
@@ -1427,7 +1427,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         // from a clean single institutional source (ICAR-IIMR) that is neither registry-verified
         // nor hidden, but shown with explicit "never unconditionally actionable / reference point
         // only" framing plus a claim-level evidence note. The safety guarantee is the same —
-        // nothing here is usable without RBK/VAA confirmation.
+        // nothing here is usable without extension-office confirmation.
         const referencePointOnly =
           /unconditionally actionable/i.test(t.instruction_en) ||
           /unconditionally actionable/i.test(t.regulatoryNotice_en || '');
@@ -1464,13 +1464,13 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(note!.limitation_en.length).toBeGreaterThan(20);
     });
 
-    it('carries the RBK/officer referral in English for both notes (EN/TE parity)', () => {
+    it('carries the extension-office referral in English for both notes', () => {
       for (const [disease, claimId] of [
         [groundnut, 't-groundnut-chem-1-safety-caution'],
         [banana, `${banana.id}-escalation-threshold`],
       ] as const) {
         const note = getClaimEvidenceNote(disease, claimId)!;
-        expect(note.limitation_en.toLowerCase()).toContain('rbk');
+        expect(note.limitation_en.toLowerCase()).toContain('extension office');
         // Neither language claims the figure IS verified/confirmed — only that it is not.
         expect(note.limitation_en.toLowerCase()).not.toMatch(/\bis confirmed\b|\bis verified\b/);
       }
@@ -1673,12 +1673,12 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       }
     });
 
-    it('still directs the farmer to RBK/VAA from every chemical treatment on the new entries', () => {
+    it('still directs the farmer to the extension office from every chemical treatment on the new entries', () => {
       for (const id of newDiseaseIds) {
         const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         for (const t of d.treatments.filter((t) => t.category === 'chemical')) {
           const text = `${t.safetyCaution_en} ${t.regulatoryNotice_en}`.toLowerCase();
-          expect(text.includes('rbk') || text.includes('vaa')).toBe(true);
+          expect(text.includes('extension office')).toBe(true);
         }
       }
     });

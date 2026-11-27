@@ -197,7 +197,7 @@ export const MOCK_DISEASES: Disease[] = [
     urgency_level: 'Medium',
     urgency_color: 'yellow',
     ap_specific_tip_en:
-      'Routinely mistaken for Brown Spot, which wastes a fungicide. Patchy damage with stunting on high-pH or levelled land is a soil problem — ask your RBK for a zinc rate from a soil test.',
+      'Routinely mistaken for Brown Spot, which wastes a fungicide. Patchy damage with stunting on high-pH or levelled land is a soil problem — ask your local agriculture extension office for a zinc rate from a soil test.',
     created_at: new Date().toISOString(),
   },
   {
@@ -317,7 +317,7 @@ export const MOCK_DISEASES: Disease[] = [
     affected_parts: ['Leaves', 'Petioles'],
     urgency_level: 'Medium',
     urgency_color: 'yellow',
-    ap_specific_tip_en: 'A 2024 Nellore district demonstration found rust severity at 16% under farmer practice vs. 5% in fungicide-treated plots — timely spraying matters, but confirm product/dose with RBK.',
+    ap_specific_tip_en: 'A 2024 Nellore district demonstration found rust severity at 16% under farmer practice vs. 5% in fungicide-treated plots — timely spraying matters, but confirm product/dose with your local agriculture extension office.',
     created_at: new Date().toISOString(),
   },
   {
@@ -329,7 +329,7 @@ export const MOCK_DISEASES: Disease[] = [
     affected_parts: ['Young Leaves', 'Growing Tips', 'Flowers'],
     urgency_level: 'High',
     urgency_color: 'red',
-    ap_specific_tip_en: 'A Krishna district IPM study recorded incidence falling from 16.0% to 9.5% under integrated management; NBAIR also surveyed this pest across Telangana and AP fields in Jan 2023.',
+    ap_specific_tip_en: 'A Krishna district IPM study recorded incidence falling from 16.0% to 9.5% under integrated management; NBAIR also surveyed this pest across Telangana and Andhra Pradesh fields in Jan 2023.',
     created_at: new Date().toISOString(),
   },
   {
@@ -353,7 +353,7 @@ export const MOCK_DISEASES: Disease[] = [
     affected_parts: ['Leaves'],
     urgency_level: 'Medium',
     urgency_color: 'yellow',
-    ap_specific_tip_en: 'ICAR-IIMR publishes a Mancozeb spray schedule from the knee-high stage — treat as a reference point and confirm the current product/dose with your local RBK.',
+    ap_specific_tip_en: 'ICAR-IIMR publishes a Mancozeb spray schedule from the knee-high stage — treat as a reference point and confirm the current product/dose with your local agriculture extension office.',
     created_at: new Date().toISOString(),
   },
   {
@@ -365,7 +365,7 @@ export const MOCK_DISEASES: Disease[] = [
     affected_parts: ['Leaves'],
     urgency_level: 'Medium',
     urgency_color: 'yellow',
-    ap_specific_tip_en: 'No AP-specific survey data was found for this particular leaf spot; guidance here is sourced only to general ANGRAU/ICAR-IISR turmeric plant-protection material.',
+    ap_specific_tip_en: 'No Andhra Pradesh-specific survey data was found for this particular leaf spot; guidance here is sourced only to general ANGRAU/ICAR-IISR turmeric plant-protection material.',
     created_at: new Date().toISOString(),
   }
 ];
@@ -502,7 +502,7 @@ export const MOCK_TREATMENTS: Treatment[] = [
     disease_id: 'disease-maize-armyworm',
     type: 'chemical',
     step_number: 1,
-    instruction_en: 'Chemical pesticide spray recipes are suppressed pending primary CIBRC label validation. Apply sand+lime (9:1) into whorl or consult RBK.',
+    instruction_en: 'Chemical pesticide spray recipes are suppressed pending primary CIBRC label validation. Apply sand+lime (9:1) into whorl or consult your local agriculture extension office.',
     product_name: 'Suppressed / Under Review',
     created_at: new Date().toISOString(),
   },
@@ -560,7 +560,7 @@ export const MOCK_TREATMENTS: Treatment[] = [
     disease_id: 'disease-tomato-earlyblight',
     type: 'chemical',
     step_number: 1,
-    instruction_en: 'Chemical pesticide spray recipes are suppressed pending primary CIBRC label validation. Consult local RBK or Agriculture Officer.',
+    instruction_en: 'Chemical pesticide spray recipes are suppressed pending primary CIBRC label validation. Consult your local agriculture extension office.',
     product_name: 'Suppressed / Under Review',
     created_at: new Date().toISOString(),
   },
@@ -589,7 +589,7 @@ export const MOCK_TREATMENTS: Treatment[] = [
     disease_id: 'disease-mango-anthracnose',
     type: 'chemical',
     step_number: 1,
-    instruction_en: 'Synthetic chemical spray recipes are suppressed pending primary CIBRC label validation. Spray 1% Bordeaux mixture pre-bloom or consult RBK.',
+    instruction_en: 'Synthetic chemical spray recipes are suppressed pending primary CIBRC label validation. Spray 1% Bordeaux mixture pre-bloom or consult your local agriculture extension office.',
     product_name: 'Suppressed / Under Review',
     created_at: new Date().toISOString(),
   },

@@ -73,7 +73,7 @@ export class OpenRouterAdapter implements AiProviderAdapter {
     const mimeType = request.mimeType || 'image/jpeg';
     const dataUri = `data:${mimeType};base64,${cleanBase64}`;
 
-    const promptText = `You are HereForNature's AI crop health analyzer for Andhra Pradesh agriculture.
+    const promptText = `You are HereForNature's AI crop health analyzer, helping farmers in any country.
 Analyze this crop image and respond with valid JSON ONLY.
 
 Rules:

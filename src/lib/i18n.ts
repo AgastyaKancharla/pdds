@@ -21,7 +21,7 @@ export const translations = {
   actToday: { en: 'Act Today!' },
   monitor: { en: 'Monitor' },
   healthy: { en: 'Healthy' },
-  apTip: { en: 'AP Farmer Tip' },
+  apTip: { en: 'Regional Note (India)' },
   organic: { en: 'Organic' },
   chemical: { en: 'Chemical' },
   preventive: { en: 'Preventive' },
@@ -46,7 +46,7 @@ export const translations = {
     en: 'No camera? You can still upload a crop picture or test with our sample image instantly.',
   },
   aiScanningPausedBanner: {
-    en: 'Live AI diagnosis is temporarily paused. Taking a photo below will not return a result right now — try the sample scan, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.',
+    en: 'Live AI diagnosis is temporarily paused. Taking a photo below will not return a result right now — try the sample scan, or visit your local agriculture extension office for an in-person check.',
   },
   backToHome: { en: 'Back to Home' },
   privacyAndTerms: { en: 'Privacy & Terms' },
@@ -75,7 +75,7 @@ export const translations = {
     en: 'Only capture real plants. Avoid logos, documents, screens, or non-crop objects.',
   },
   trySampleCrop: { en: 'Test with Sample Crop' },
-  switchCrop: { en: 'Switch AP Crop' },
+  switchCrop: { en: 'Switch Crop' },
   selectCropHint: {
     en: 'Diagnosed another crop? Switch here to view remedies:',
   },
@@ -108,11 +108,11 @@ export const translations = {
   },
   unsupportedCropTitle: { en: 'Crop Not in Database' },
   unsupportedCropDesc: {
-    en: 'We detected this crop, but its disease remedies are not yet cataloged in our AP agricultural database. Please contact your local Rythu Bharosa Kendra (RBK) or agricultural extension officer.',
+    en: 'We detected this crop, but its disease remedies are not yet cataloged in our database. Please contact your local agriculture extension office.',
   },
   disclaimerTitle: { en: 'Agricultural Advisory Disclaimer' },
   disclaimerText: {
-    en: 'HereForNature provides AI-assisted preliminary diagnostics. Please verify dosages and local regulations with your local Rythu Bharosa Kendra (RBK) or Agricultural Extension Officer before chemical spray application.',
+    en: 'HereForNature provides AI-assisted preliminary diagnostics. Please verify dosages and local regulations with your local agriculture extension office before chemical spray application.',
   },
   offlineAiNotice: {
     en: 'Cloud AI diagnosis is currently running in local offline safety mode. Connect to the internet for complete multi-crop pathology analysis.',
@@ -130,7 +130,7 @@ export const translations = {
     en: 'Field Prevention & Cultural Practices',
   },
   escalationTitle: {
-    en: 'Expert Escalation Advice (RBK / Extension)',
+    en: 'Expert Escalation Advice (Extension Office)',
   },
   knowledgeSourceTitle: {
     en: 'Agricultural Authority References',
@@ -157,7 +157,7 @@ export const translations = {
     en: 'You browsed this from the knowledge catalog — no photo was analyzed by AI. Verify against what you actually see in your field before acting.',
   },
   pesticideSafetyWarning: {
-    en: 'Statutory Safety Notice: Check approved product label. Wear personal protective equipment (PPE) and verify dosage and waiting period with Village Agriculture Assistant / RBK.',
+    en: 'Statutory Safety Notice: Check approved product label. Wear personal protective equipment (PPE) and verify dosage and waiting period with your local agriculture extension office.',
   },
   offlineModeBadge: {
     en: 'Offline Reference Guide',
@@ -187,13 +187,13 @@ export const translations = {
     en: 'Evidence Note:',
   },
   noCategoryRecommendation: {
-    en: 'No specific recommendation is currently cataloged for this category. Refer to prevention practices or consult your local agricultural authority / Rythu Bharosa Kendra (RBK).',
+    en: 'No specific recommendation is currently cataloged for this category. Refer to prevention practices or consult your local agriculture extension office.',
   },
   seePreventionPracticesAbove: {
     en: 'See documented Field Prevention & Cultural Practices above.',
   },
   differentialUnderReview: {
-    en: 'Differential diagnostic comparison is currently under review for this condition. Please consult your local Rythu Bharosa Kendra (RBK) or Agricultural Extension Officer for verification.',
+    en: 'Differential diagnostic comparison is currently under review for this condition. Please consult your local agriculture extension office for verification.',
   },
   pestOrganismLabel: {
     en: 'Target Pest / Causative Agent:',
@@ -211,10 +211,10 @@ export const translations = {
     en: 'Demonstration Sample — Illustrative Preview Only. Not a live field diagnosis or certified recommendation.',
   },
   unsupportedTreatmentNotice: {
-    en: 'This condition does not have verified treatment instructions cataloged. Please consult your local Rythu Bharosa Kendra (RBK).',
+    en: 'This condition does not have verified treatment instructions cataloged. Please consult your local agriculture extension office.',
   },
   suppressedChemicalNotice: {
-    en: 'Chemical pesticide recommendations for this condition are suppressed pending primary CIBRC / University label validation. Consult your Village Agriculture Assistant (VAA) at Rythu Bharosa Kendra (RBK).',
+    en: 'Chemical pesticide recommendations for this condition are suppressed pending primary CIBRC / University label validation. Consult your local agriculture extension office.',
   },
   cachedResultBadge: {
     en: 'Cached Diagnosis',
@@ -277,7 +277,7 @@ export const translations = {
     en: 'Nutrient Deficiency Suspected',
   },
   nutrientDeficiencyDesc: {
-    en: 'Leaf symptoms indicate potential mineral or micronutrient deficiency rather than a fungal or bacterial infection. Chemical fungicides will not resolve this condition. Perform a soil or leaf tissue test or consult RBK for fertilizer guidance.',
+    en: 'Leaf symptoms indicate potential mineral or micronutrient deficiency rather than a fungal or bacterial infection. Chemical fungicides will not resolve this condition. Perform a soil or leaf tissue test or consult your local agriculture extension office for fertilizer guidance.',
   },
   aiPreliminaryHypothesisBadge: {
     en: 'Preliminary AI Observation',
@@ -289,7 +289,7 @@ export const translations = {
     en: 'Curated Literature Reference',
   },
   chemicalConsultOfficerWarning: {
-    en: 'Crucial: Never apply chemical pesticides without physical symptom confirmation by your Village Agriculture Assistant (VAA) or Rythu Bharosa Kendra (RBK).',
+    en: 'Crucial: Never apply chemical pesticides without physical symptom confirmation by your local agriculture extension office.',
   },
   visualObservationsTitle: {
     en: 'AI Visual Symptom Observations',

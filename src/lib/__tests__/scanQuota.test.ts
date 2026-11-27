@@ -96,9 +96,9 @@ describe('Per-user daily AI scan quota', () => {
       expect(edgeFn).toContain('DailyScanLimitReached');
       const limitBlock = edgeFn.slice(edgeFn.indexOf('DailyScanLimitReached'));
       expect(limitBlock).toContain('userFacingMessageEn');
-      // Running out of scans must not dead-end: RBK can inspect the crop in person, which
+      // Running out of scans must not dead-end: an extension officer can inspect the crop in person, which
       // is more reliable than any photo diagnosis.
-      expect(limitBlock).toContain('Rythu Bharosa Kendra');
+      expect(limitBlock).toContain('extension office');
       // 429 is the correct status so clients and proxies treat it as rate limiting.
       expect(limitBlock).toContain('429');
     });

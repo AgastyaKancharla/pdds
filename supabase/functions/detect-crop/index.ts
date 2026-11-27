@@ -200,7 +200,7 @@ Deno.serve(async (req: Request) => {
         error: 'DailyScanLimitReached',
         message: `Daily scan limit reached (${quota.scans_used}/${quota.daily_limit}).`,
         quota,
-        userFacingMessageEn: `You have used all ${quota.daily_limit} of today's scans. The limit resets after midnight. For an urgent problem, contact your Rythu Bharosa Kendra (RBK) — they can inspect the crop in person, which is more reliable than any photo diagnosis.`,
+        userFacingMessageEn: `You have used all ${quota.daily_limit} of today's scans. The limit resets after midnight. For an urgent problem, contact your local agriculture extension office — they can inspect the crop in person, which is more reliable than any photo diagnosis.`,
       }),
       { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -221,7 +221,7 @@ Deno.serve(async (req: Request) => {
   };
 
   // 4. Construct prompt for agricultural diagnosis
-  const prompt = `You are HereForNature's AI crop health analyzer for Andhra Pradesh agriculture.
+  const prompt = `You are HereForNature's AI crop health analyzer, helping farmers in any country.
 Analyze this crop photograph and respond strictly with valid JSON.
 
 Rules:

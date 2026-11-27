@@ -78,7 +78,7 @@ const TERMS_SECTIONS: Section[] = [
     heading: { en: 'Always verify before applying any chemical', },
     body: [
       {
-        en: 'Before applying any pesticide or chemical treatment, verify the product, dose, and waiting period with your local Rythu Bharosa Kendra (RBK) or Village Agriculture Assistant (VAA). Chemical doses in this app are suppressed or explicitly marked as reference-only unless backed by a verified regulatory label.',
+        en: 'Before applying any pesticide or chemical treatment, verify the product, dose, and waiting period with your local agriculture extension office. Chemical doses in this app are suppressed or explicitly marked as reference-only unless backed by a verified regulatory label.',
       },
     ],
   },

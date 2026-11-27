@@ -154,7 +154,7 @@ export function validateAndNormalizeAiResponse(
     ? data.recommendedActions.map(String)
     : [
         'Inspect surrounding crop rows for similar foliar patterns.',
-        'Consult with your local Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer prior to chemical application.',
+        'Consult with your local agriculture extension office prior to chemical application.',
       ];
 
   const userFacingMessageEn = data.userFacingMessageEn || getDefaultMessageEn(status, matchedCrop?.name_en);
