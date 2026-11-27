@@ -42,11 +42,9 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Erro
             gap: '12px',
           }}>
           <span style={{ fontSize: '40px' }}>🌿</span>
-          <h2 style={{ margin: 0 }}>Something went wrong. / ఏదో తప్పు జరిగింది.</h2>
+          <h2 style={{ margin: 0 }}>Something went wrong.</h2>
           <p style={{ color: '#495057', maxWidth: '320px' }}>
-            Please reload the app. If this keeps happening, visit your Rythu Bharosa Kendra (RBK).
-            <br />
-            దయచేసి యాప్‌ను రీలోడ్ చేయండి. ఇది కొనసాగితే, మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.
+            Please reload the app. If this keeps happening, contact your local agriculture extension office.
           </p>
           <button
             type="button"
@@ -60,7 +58,7 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Erro
               fontWeight: 600,
               cursor: 'pointer',
             }}>
-            Reload / రీలోడ్ చేయండి
+            Reload
           </button>
         </div>
       );

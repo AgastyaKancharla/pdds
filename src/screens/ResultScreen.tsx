@@ -67,9 +67,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     diseaseId,
     failureReason = 'not_crop',
     messageEn,
-    messageTe,
     cropNameEn,
-    cropNameTe,
     isDemoSample = false,
   } = scanData;
 
@@ -214,10 +212,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       return tabTreatments.map((t) => ({
         id: t.id,
         step_number: t.stepNumber,
-        instruction: language === 'en' ? t.instruction_en : t.instruction_te,
-        active_ingredient: language === 'en' ? t.activeIngredient_en : t.activeIngredient_te,
-        safety_caution: language === 'en' ? t.safetyCaution_en : t.safetyCaution_te,
-        regulatory_notice: language === 'en' ? t.regulatoryNotice_en : t.regulatoryNotice_te,
+        instruction: t.instruction_en,
+        active_ingredient: t.activeIngredient_en,
+        safety_caution: t.safetyCaution_en,
+        regulatory_notice: t.regulatoryNotice_en,
       }));
     }
 
@@ -226,7 +224,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       return treatmentsByTab.map((t) => ({
         id: t.id,
         step_number: t.step_number,
-        instruction: language === 'en' ? t.instruction_en : t.instruction_te,
+        instruction: t.instruction_en,
         active_ingredient: t.product_name,
         safety_caution: undefined,
         regulatory_notice: undefined,
@@ -329,7 +327,6 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         cropId: activeCropId,
         diseaseId: activeDiseaseId,
         cropNameEn,
-        cropNameTe,
         isDemoSample,
         diagnosticTier: effectiveTier,
         normalizedDiagnosis: scanData.normalizedDiagnosis,
@@ -351,17 +348,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
   const handleShareWhatsApp = () => {
     if (!crop || !disease) return;
-    const cropName = language === 'en' ? crop.name_en : crop.name_te;
-    const diseaseName = language === 'en' ? disease.name_en : disease.name_te;
-    const conditionFieldLabel = isPest ? (language === 'en' ? 'Pest' : 'పురుగు') : t('disease');
+    const cropName = crop.name_en;
+    const diseaseName = disease.name_en;
+    const conditionFieldLabel = isPest ? ('Pest') : t('disease');
     const assessmentLabel =
       effectiveTier === 'demonstration_sample'
-        ? (language === 'en' ? 'Demonstration Sample (Illustrative Preview)' : 'నమూనా ప్రదర్శన (సూచనార్థం మాత్రమే)')
+        ? ('Demonstration Sample (Illustrative Preview)')
         : effectiveTier === 'legacy_or_unknown'
-        ? (language === 'en' ? 'Legacy Record (Unspecified Provenance)' : 'పాత రికార్డు (అనిర్దిష్ట మూలం)')
+        ? ('Legacy Record (Unspecified Provenance)')
         : effectiveTier === 'reference_lookup'
-        ? (language === 'en' ? 'Reference Lookup (Not AI-Diagnosed)' : 'సూచన శోధన (AI నిర్ధారణ కాదు)')
-        : (language === 'en' ? 'Preliminary AI Observation (Confirm with RBK before spraying)' : 'ప్రాథమిక AI పరిశీలన (పిచికారీకి ముందు RBK తో ధృవీకరించుకోండి)');
+        ? ('Reference Lookup (Not AI-Diagnosed)')
+        : ('Preliminary AI Observation (Confirm with RBK before spraying)');
     const message =
       `${t('appName')} - AP Crop Doctor\n` +
       `${t('crop')}: ${cropName}\n` +
@@ -400,7 +397,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     // identified crop name) beyond what titleText already says. Always in the farmer's chosen
     // language, never the other one.
     let secondaryTitle: string | null = null;
-    const cropNameInLanguage = language === 'en' ? cropNameEn || cropNameTe : cropNameTe || cropNameEn;
+    const cropNameInLanguage = cropNameEn;
 
     if (isHealthy) {
       badgeClass = 'healthy-badge';
@@ -434,9 +431,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     }
 
     const explanationText =
-      language === 'en'
-        ? messageEn || (isOffline ? t('offlineAiNotice') : isHealthy ? t('healthyCropDesc') : isAbiotic ? t('abioticStressDesc') : isNutrient ? t('nutrientDeficiencyDesc') : isUnsupported ? t('unsupportedCropDesc') : isUnclear ? t('unclearDesc') : t('notCropDesc'))
-        : messageTe || (isOffline ? t('offlineAiNotice') : isHealthy ? t('healthyCropDesc') : isAbiotic ? t('abioticStressDesc') : isNutrient ? t('nutrientDeficiencyDesc') : isUnsupported ? t('unsupportedCropDesc') : isUnclear ? t('unclearDesc') : t('notCropDesc'));
+      messageEn || (isOffline ? t('offlineAiNotice') : isHealthy ? t('healthyCropDesc') : isAbiotic ? t('abioticStressDesc') : isNutrient ? t('nutrientDeficiencyDesc') : isUnsupported ? t('unsupportedCropDesc') : isUnclear ? t('unclearDesc') : t('notCropDesc'));
 
     return (
       <div className="result-container">
@@ -480,7 +475,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           {isHealthy && (
             <div className="card" style={{ borderLeft: '4px solid #43A047', background: '#E8F5E9' }}>
               <h4 className="card-title" style={{ color: '#2E7D32' }}>
-                🌱 {language === 'en' ? 'Visual Foliar Observation Only' : 'దృశ్య ఆకుల పరిశీలన మాత్రమే'}
+                🌱 {'Visual Foliar Observation Only'}
               </h4>
               <p className="card-body" style={{ color: '#1B5E20', fontSize: '13px', lineHeight: '1.5' }}>
                 {t('healthyFoliageObservationNotice')}
@@ -491,12 +486,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           {(isAbiotic || isNutrient) && (
             <div className="card" style={{ borderLeft: '4px solid #F57C00', background: '#FFF8E1' }}>
               <h4 className="card-title" style={{ color: '#E65100' }}>
-                ⚠️ {language === 'en' ? 'No Pesticides / Fungicides Needed' : 'పురుగు లేదా శిలీంద్ర మందులు అవసరం లేదు'}
+                ⚠️ {'No Pesticides / Fungicides Needed'}
               </h4>
               <p className="card-body" style={{ color: '#5D4037', fontSize: '13px', lineHeight: '1.5' }}>
-                {language === 'en'
-                  ? 'This condition is physiological or nutritional, not an infectious fungal or bacterial disease. Chemical pesticide sprays will NOT help and may cause chemical leaf burn or unnecessary financial cost. Consult your local Rythu Bharosa Kendra (RBK) or agricultural extension officer for fertilizer and irrigation management.'
-                  : 'ఈ పరిస్థితి శారీరక లేదా పోషకాహార లోపానికి సంబంధించినది, సంక్రమణ తెగులు కాదు. రసాయన మందుల పిచికారీ ఎటువంటి ప్రయోజనం కలిగించదు, పైగా ఖర్చు పెరుగుతుంది. ఎరువులు మరియు నీటి నిర్వహణ కోసం స్థానిక రైతు భరోసా కేంద్రాన్ని (RBK) సంప్రదించండి.'}
+                {'This condition is physiological or nutritional, not an infectious fungal or bacterial disease. Chemical pesticide sprays will NOT help and may cause chemical leaf burn or unnecessary financial cost. Consult your local Rythu Bharosa Kendra (RBK) or agricultural extension officer for fertilizer and irrigation management.'}
               </p>
             </div>
           )}
@@ -509,7 +502,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           {!isHealthy && !isAbiotic && !isNutrient && (
             <div className="card supported-crops-card">
               <h4 className="card-title">
-                🌾 {language === 'en' ? 'Browse Supported AP Crop Guides Offline:' : 'ఆఫ్‌లైన్ AP పంటల నివారణ మార్గదర్శి:'}
+                🌾 {'Browse Supported AP Crop Guides Offline:'}
               </h4>
               <div className="crop-switch-chips" style={{ marginTop: '8px' }}>
                 {getAllSupportedCrops().map((c) => (
@@ -523,7 +516,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                       setSaveStatus('idle');
                     }}>
                     {(CROP_ICONS[c.id] || '🌱') + ' '}
-                    {language === 'en' ? c.name_en : c.name_te}
+                    {c.name_en}
                   </button>
                 ))}
               </div>
@@ -684,15 +677,15 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           )}
         </div>
 
-        <span className="crop-label">{language === 'en' ? crop.name_en : crop.name_te}</span>
+        <span className="crop-label">{crop.name_en}</span>
         <h2 className="disease-title">
-          {language === 'en' ? disease.name_en : disease.name_te}
+          {disease.name_en}
         </h2>
 
         {diseaseKnowledge && (
           <p className="pathogen-text">
             <strong>{isPest ? t('pestOrganismLabel') : t('pathogenLabel')}</strong>{' '}
-            {language === 'en' ? diseaseKnowledge.pathogenOrVector_en : diseaseKnowledge.pathogenOrVector_te}
+            {diseaseKnowledge.pathogenOrVector_en}
           </p>
         )}
 
@@ -795,7 +788,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     setSaveStatus('idle');
                   }}>
                   {(CROP_ICONS[c.id] || '🌱') + ' '}
-                  {language === 'en' ? c.name_en : c.name_te}
+                  {c.name_en}
                 </button>
               );
             })}
@@ -835,7 +828,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                         backgroundColor: URGENCY_STYLE[entry.urgencyColor].fg,
                       }}
                     />
-                    {language === 'en' ? entry.name_en : entry.name_te}
+                    {entry.name_en}
                     {isNonPathogenic && (
                       <span style={{ fontSize: '10px', opacity: 0.75, marginLeft: '4px' }}>
                         ({t('nonPathogenicChipTag')})
@@ -852,7 +845,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <div className="card">
           <h4 className="card-title">{t('symptoms')}</h4>
           <p className="card-body">
-            {language === 'en' ? disease.symptoms_en : disease.symptoms_te}
+            {disease.symptoms_en}
           </p>
         </div>
 
@@ -889,15 +882,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="card lookalike-card">
             <h4 className="card-title">🔍 {t('lookalikesTitle')}</h4>
             <p className="card-body" style={{ marginBottom: '8px', fontSize: '12px' }}>
-              {language === 'en'
-                ? 'Field symptoms can resemble other pests or nutrient deficiencies. Distinguishing factors provide initial guidance, but visual field inspection alone does not guarantee conclusive identification.'
-                : 'పొలంలో కనిపించే లక్షణాలు ఇతర తెగుళ్లు లేదా పోషక లోపాలతో సమానంగా ఉండవచ్చు. ఈ తేడాలు ప్రాథమిక మార్గదర్శకత్వం మాత్రమే, దృశ్య లక్షణాల ఆధారంగా మాత్రమే ఖచ్చితమైన నిర్ధారణ సాధ్యం కాదు.'}
+              {'Field symptoms can resemble other pests or nutrient deficiencies. Distinguishing factors provide initial guidance, but visual field inspection alone does not guarantee conclusive identification.'}
             </p>
             {diseaseKnowledge.similarConditions.length > 0 ? (
               diseaseKnowledge.similarConditions.map((lookalike) => (
                 <div key={lookalike.id} className="lookalike-item">
                   <div className="lookalike-header">
-                    <span>{language === 'en' ? lookalike.name_en : lookalike.name_te}</span>
+                    <span>{lookalike.name_en}</span>
                     <span
                       className={`lookalike-tag ${
                         lookalike.isPathological ? 'lookalike-tag-pathology' : 'lookalike-tag-abiotic'
@@ -907,7 +898,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   </div>
                   <p className="lookalike-diff">
                     <strong>{t('lookalikeDifferentiatingFactor')}</strong>{' '}
-                    {language === 'en' ? lookalike.differentiatingFactors_en : lookalike.differentiatingFactors_te}
+                    {lookalike.differentiatingFactors_en}
                   </p>
                 </div>
               ))
@@ -928,20 +919,14 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="card" style={{ borderLeft: '4px solid #00897B' }}>
             <h4 className="card-title">📷 {t('captureGuidanceTitle')}</h4>
             <p className="card-body" style={{ fontSize: '13px', lineHeight: 1.55 }}>
-              {language === 'en'
-                ? diseaseKnowledge.captureGuidance.instruction_en
-                : diseaseKnowledge.captureGuidance.instruction_te}
+              {diseaseKnowledge.captureGuidance.instruction_en}
             </p>
-            {(language === 'en'
-              ? diseaseKnowledge.captureGuidance.rationale_en
-              : diseaseKnowledge.captureGuidance.rationale_te) && (
+            {(diseaseKnowledge.captureGuidance.rationale_en) && (
               <p
                 className="card-body"
                 style={{ fontSize: '12px', color: '#00695C', marginTop: '6px', lineHeight: 1.5 }}>
                 <strong>{t('captureGuidanceWhy')}</strong>{' '}
-                {language === 'en'
-                  ? diseaseKnowledge.captureGuidance.rationale_en
-                  : diseaseKnowledge.captureGuidance.rationale_te}
+                {diseaseKnowledge.captureGuidance.rationale_en}
               </p>
             )}
             {diseaseKnowledge.captureGuidance.requiredForConfidence && (
@@ -983,13 +968,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     idx === diseaseKnowledge.fieldFollowUps!.length - 1 ? 'none' : '1px dashed #E1BEE7',
                 }}>
                 <p style={{ fontSize: '13px', fontWeight: 600, color: '#2C3E50', margin: '0 0 5px' }}>
-                  {language === 'en' ? q.question_en : q.question_te}
+                  {q.question_en}
                 </p>
                 <p style={{ fontSize: '12px', color: '#2E7D32', margin: '0 0 3px', lineHeight: 1.45 }}>
-                  <strong>{t('followUpIfYes')}</strong> {language === 'en' ? q.ifYes_en : q.ifYes_te}
+                  <strong>{t('followUpIfYes')}</strong> {q.ifYes_en}
                 </p>
                 <p style={{ fontSize: '12px', color: '#B71C1C', margin: 0, lineHeight: 1.45 }}>
-                  <strong>{t('followUpIfNo')}</strong> {language === 'en' ? q.ifNo_en : q.ifNo_te}
+                  <strong>{t('followUpIfNo')}</strong> {q.ifNo_en}
                 </p>
               </div>
             ))}
@@ -1022,10 +1007,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     {bandStyle.label}
                   </div>
                   <div style={{ fontSize: '12px', color: '#37474F', marginBottom: '4px', lineHeight: 1.45 }}>
-                    {language === 'en' ? band.threshold_en : band.threshold_te}
+                    {band.threshold_en}
                   </div>
                   <div style={{ fontSize: '12px', color: '#263238', fontWeight: 500, lineHeight: 1.45 }}>
-                    → {language === 'en' ? band.action_en : band.action_te}
+                    → {band.action_en}
                   </div>
                 </div>
               );
@@ -1038,7 +1023,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="card">
             <h4 className="card-title">🌦️ {t('riskFactorsTitle')}</h4>
             <ul className="risk-list">
-              {(language === 'en' ? diseaseKnowledge.environmentalRiskFactors_en : diseaseKnowledge.environmentalRiskFactors_te).map(
+              {(diseaseKnowledge.environmentalRiskFactors_en).map(
                 (risk, idx) => (
                   <li key={idx}>{risk}</li>
                 )
@@ -1054,7 +1039,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             <ol className="prevention-list">
               {diseaseKnowledge.preventionGuidance.map((prev) => (
                 <li key={prev.stepNumber}>
-                  {language === 'en' ? prev.practice_en : prev.practice_te}
+                  {prev.practice_en}
                   {prev.targetTiming && (
                     <span style={{ fontSize: '11px', color: '#557257', display: 'block', marginTop: '2px' }}>
                       🕒 {prev.targetTiming}
@@ -1067,11 +1052,11 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         )}
 
         {/* AP Specific Tip */}
-        {(language === 'en' ? disease.ap_specific_tip_en : disease.ap_specific_tip_te) && (
+        {(disease.ap_specific_tip_en) && (
           <div className="card tip-card">
             <h4 className="card-title">{t('apTip')}</h4>
             <p className="card-body">
-              {language === 'en' ? disease.ap_specific_tip_en : disease.ap_specific_tip_te}
+              {disease.ap_specific_tip_en}
             </p>
           </div>
         )}
@@ -1156,7 +1141,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   🚫 {t('nonPathogenicNoChemicalTitle')}
                 </p>
               )}
-              {activeTab === 'chemical' && chemicalControlApplies && hasChemicalTabDetail(diseaseKnowledge, language) && (
+              {activeTab === 'chemical' && chemicalControlApplies && hasChemicalTabDetail(diseaseKnowledge) && (
                 <p
                   style={{
                     marginTop: '10px',
@@ -1170,7 +1155,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     padding: '10px',
                   }}>
                   ⚠️{' '}
-                  {language === 'en' ? diseaseKnowledge?.chemicalTabDetail_en : diseaseKnowledge?.chemicalTabDetail_te}
+                  {diseaseKnowledge?.chemicalTabDetail_en}
                 </p>
               )}
               {diseaseKnowledge && diseaseKnowledge.preventionGuidance.length > 0 && activeTab === 'preventive' && (
@@ -1207,7 +1192,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     return (
                       <div style={{ fontSize: '11px', color: '#8a6d00', marginTop: '4px', lineHeight: '1.4', fontStyle: 'italic' }}>
                         ℹ️ <strong>{t('claimEvidenceLimitationLabel')}</strong>{' '}
-                        {language === 'en' ? note.limitation_en : note.limitation_te}
+                        {note.limitation_en}
                       </div>
                     );
                   })()}
@@ -1221,10 +1206,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             ))
           )}
           {activeTab === 'chemical' &&
-            (displayTreatments.length > 0 || hasChemicalTabDetail(diseaseKnowledge, language)) && (
+            (displayTreatments.length > 0 || hasChemicalTabDetail(diseaseKnowledge)) && (
             <div className="statutory-safety-box">
               <div style={{ marginBottom: '6px' }}>
-                ⚠️ <strong>{language === 'en' ? 'Statutory Warning:' : 'చట్టబద్ధమైన హెచ్చరిక:'}</strong>{' '}
+                ⚠️ <strong>{'Statutory Warning:'}</strong>{' '}
                 {t('pesticideSafetyWarning')}
               </div>
               <div style={{ fontSize: '12px', color: '#B71C1C', fontWeight: 600 }}>
@@ -1239,7 +1224,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="card escalation-card">
             <h4 className="card-title">🏛️ {t('escalationTitle')}</h4>
             <p className="card-body escalation-text">
-              {language === 'en' ? diseaseKnowledge.escalationThreshold_en : diseaseKnowledge.escalationThreshold_te}
+              {diseaseKnowledge.escalationThreshold_en}
             </p>
             {(() => {
               const note = getClaimEvidenceNote(diseaseKnowledge, `${diseaseKnowledge.id}-escalation-threshold`);
@@ -1249,7 +1234,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   className="card-body"
                   style={{ fontSize: '11px', color: '#8a6d00', marginTop: '6px', lineHeight: '1.4', fontStyle: 'italic' }}>
                   ℹ️ <strong>{t('claimEvidenceLimitationLabel')}</strong>{' '}
-                  {language === 'en' ? note.limitation_en : note.limitation_te}
+                  {note.limitation_en}
                 </p>
               );
             })()}

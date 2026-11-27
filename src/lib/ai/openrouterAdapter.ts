@@ -60,12 +60,10 @@ export class OpenRouterAdapter implements AiProviderAdapter {
           latencyMs: 0,
         }, {
           messageEn: 'OpenRouter credentials are not configured on the server.',
-          messageTe: 'సర్వర్‌లో OpenRouter ఆధారాలు కాన్ఫిగర్ చేయబడలేదు.',
         }),
         error: {
           code: 'AUTH_MISSING',
           messageEn: 'Server AI provider credential missing.',
-          messageTe: 'సర్వర్ AI ప్రొవైడర్ ఆధారాలు లేవు.',
           retryable: false,
         },
       };
@@ -81,20 +79,20 @@ Analyze this crop image and respond with valid JSON ONLY.
 Rules:
 1. Image Quality Assessment:
    Assess if image is usable for diagnostic evaluation. If blurry, dark, overexposed, or unidentifiable:
-   {"status": "unusable_image", "reason": "unclear", "imageQuality": {"assessable": false, "issues": ["blurry_or_unclear"]}, "userFacingMessageEn": "Image is unclear or out of focus. Please retake in good lighting.", "userFacingMessageTe": "చిత్రం అస్పష్టంగా ఉంది. మంచి వెలుతురులో మళ్లీ తీయండి."}
+   {"status": "unusable_image", "reason": "unclear", "imageQuality": {"assessable": false, "issues": ["blurry_or_unclear"]}, "userFacingMessageEn": "Image is unclear or out of focus. Please retake in good lighting."}
 
 2. If NOT an agricultural plant/crop (e.g. human, animal, logo, vehicle, paper, furniture):
-   {"status": "not_plant", "reason": "not_crop", "userFacingMessageEn": "Image appears to be non-agricultural or a graphic.", "userFacingMessageTe": "చిత్రం వ్యవసాయ పంట కాదు."}
+   {"status": "not_plant", "reason": "not_crop", "userFacingMessageEn": "Image appears to be non-agricultural or a graphic."}
 
 3. If HEALTHY plant with no visible pathology:
    DO NOT invent disease on healthy green foliage.
-   {"status": "supported_diagnosis", "conditionType": "healthy", "cropId": "crop-rice", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Clean green foliage", "No visible lesions"]}
+   {"status": "supported_diagnosis", "conditionType": "healthy", "cropId": "crop-rice", "cropNameEn": "Paddy / Rice", "visualSymptoms": ["Clean green foliage", "No visible lesions"]}
 
 4. If symptoms indicate NUTRIENT DEFICIENCY (e.g. interveinal chlorosis, uniform chlorosis, marginal scorching):
-   {"status": "nutrient_deficiency", "conditionType": "nutrient_deficiency", "cropNameEn": "[Crop]", "visualSymptoms": ["Interveinal chlorosis"], "userFacingMessageEn": "Symptoms suggest nutrient deficiency rather than infectious pathogen.", "userFacingMessageTe": "లక్షణాలు తెగులు కాకుండా పోషక లోపాన్ని సూచిస్తున్నాయి."}
+   {"status": "nutrient_deficiency", "conditionType": "nutrient_deficiency", "cropNameEn": "[Crop]", "visualSymptoms": ["Interveinal chlorosis"], "userFacingMessageEn": "Symptoms suggest nutrient deficiency rather than infectious pathogen."}
 
 5. If symptoms indicate ABIOTIC / ENVIRONMENTAL STRESS (e.g. sun scald, drought scorch, moisture stress):
-   {"status": "abiotic_stress", "conditionType": "abiotic", "cropNameEn": "[Crop]", "visualSymptoms": ["Sun scald", "Tip burn"], "userFacingMessageEn": "Symptoms indicate environmental stress, not an infectious disease.", "userFacingMessageTe": "లక్షణాలు పర్యావరణ ఒత్తిడిని సూచిస్తున్నాయి."}
+   {"status": "abiotic_stress", "conditionType": "abiotic", "cropNameEn": "[Crop]", "visualSymptoms": ["Sun scald", "Tip burn"], "userFacingMessageEn": "Symptoms indicate environmental stress, not an infectious disease."}
 
 6. If diseased or pest-damaged, map to EXACT catalog IDs where supported:
    Catalog:
@@ -110,10 +108,10 @@ Rules:
    - crop-turmeric: disease-turmeric-rhizomerot (Rhizome Rot)
 
    If recognized crop and disease match one above:
-   {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
+   {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
 
    If crop is recognized but disease is NOT in catalog above:
-   {"status": "unsupported_disease", "cropNameEn": "[Crop]", "cropNameTe": "[Crop Te]", "userFacingMessageEn": "Identified as [Crop], but this specific disease is not in catalog."}
+   {"status": "unsupported_disease", "cropNameEn": "[Crop]", "userFacingMessageEn": "Identified as [Crop], but this specific disease is not in catalog."}
 
    If crop itself is NOT in catalog above:
    {"status": "unsupported_crop", "cropNameEn": "[Crop]", "userFacingMessageEn": "Crop not currently supported in database."}`;
@@ -165,15 +163,11 @@ Rules:
               messageEn: isQuota
                 ? 'AI diagnostic capacity temporarily exceeded. Please retry in a few moments.'
                 : 'AI diagnostic service is currently unavailable. Please check your connectivity and retry.',
-              messageTe: isQuota
-                ? 'AI సామర్థ్యం ప్రస్తుతానికి మించిపోయింది. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.'
-                : 'AI సేవ ప్రస్తుతం అందుబాటులో లేదు. దయచేసి కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.',
             }
           ),
           error: {
             code: isQuota ? 'RATE_LIMIT_EXCEEDED' : `UPSTREAM_HTTP_${errorStatus}`,
             messageEn: isQuota ? 'Rate limit exceeded.' : 'Upstream provider error.',
-            messageTe: isQuota ? 'అభ్యర్థన పరిమితి మించిపోయింది.' : 'సర్వర్ ప్రొవైడర్ లోపం.',
             retryable: isQuota || isUnavailable,
           },
         };
@@ -193,7 +187,6 @@ Rules:
           error: {
             code: 'EMPTY_RESPONSE',
             messageEn: 'Provider returned an empty response.',
-            messageTe: 'AI ప్రొవైడర్ ఖాళీ సమాధానాన్ని ఇచ్చింది.',
             retryable: true,
           },
         };
@@ -213,7 +206,6 @@ Rules:
           error: {
             code: 'JSON_PARSE_ERROR',
             messageEn: 'Unable to parse model JSON output.',
-            messageTe: 'మోడల్ అవుట్‌పుట్‌ను చదవలేకపోయాము.',
             retryable: true,
           },
         };
@@ -244,14 +236,10 @@ Rules:
           messageEn: isAbort
             ? 'AI analysis timed out. Please check network speed and retry.'
             : 'Network connection to AI gateway failed.',
-          messageTe: isAbort
-            ? 'AI విశ్లేషణ సమయం ముగిసింది. దయచేసి మళ్లీ ప్రయత్నించండి.'
-            : 'AI గేట్‌వేకి నెట్‌వర్క్ కనెక్షన్ విఫలమైంది.',
         }),
         error: {
           code: isAbort ? 'TIMEOUT' : 'NETWORK_ERROR',
           messageEn: isAbort ? 'Request timed out.' : 'Network error.',
-          messageTe: isAbort ? 'సమయం ముగిసింది.' : 'నెట్‌వర్క్ లోపం.',
           retryable: true,
         },
       };

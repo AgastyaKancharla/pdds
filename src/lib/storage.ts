@@ -218,9 +218,9 @@ export async function saveScanRecord(params: SaveScanParams): Promise<SaveScanRe
     urgency_color: urgencyColor,
     is_demo_sample: isDemoSample,
     diagnostic_tier: effectiveDiagnosticTier,
-    crops: crop ? { id: crop.id, name_en: crop.name_en, name_te: crop.name_te } : null,
+    crops: crop ? { id: crop.id, name_en: crop.name_en } : null,
     diseases: disease
-      ? { id: disease.id, name_en: disease.name_en, name_te: disease.name_te, urgency_color: urgencyColor }
+      ? { id: disease.id, name_en: disease.name_en, urgency_color: urgencyColor }
       : null,
   };
 

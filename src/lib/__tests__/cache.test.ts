@@ -161,7 +161,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
       const mockCrop = {
         id: 'crop-rice',
         name_en: 'Paddy / Rice',
-        name_te: 'వరి',
         created_at: new Date().toISOString(),
       };
 
@@ -179,7 +178,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
         id: 'disease-rice-blast',
         crop_id: 'crop-rice',
         name_en: 'Rice Blast',
-        name_te: 'అగ్గి తెగులు',
         urgency_color: 'red' as const,
         created_at: new Date().toISOString(),
       };
@@ -339,7 +337,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
         cropId: 'crop-chilli',
         diseaseId: 'disease-chilli-leafcurl',
         cropNameEn: 'Chilli',
-        cropNameTe: 'మిరప',
         isDemoSample: false,
       };
 
@@ -356,7 +353,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
       expect(retrieved?.cropId).toBe('crop-chilli');
       expect(retrieved?.diseaseId).toBe('disease-chilli-leafcurl');
       expect(retrieved?.cropNameEn).toBe('Chilli');
-      expect(retrieved?.cropNameTe).toBe('మిరప');
       expect(retrieved?.isDemoSample).toBe(false);
     });
   });
@@ -489,7 +485,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
         cropId: 'crop-rice',
         diseaseId: 'disease-rice-blast',
         cropNameEn: 'Paddy / Rice',
-        cropNameTe: 'వరి',
         visualSymptoms: ['Spindle-shaped lesions with brown borders'],
       };
 
@@ -531,7 +526,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
         cacheRemoteCrop({
           id: 'crop-paddy',
           name_en: 'Paddy',
-          name_te: 'వరి',
         } as unknown as Crop);
 
         // Populate user A and user B scan caches
@@ -706,7 +700,6 @@ describe('Phase 4: Offline Caching & Resilience', () => {
           cropId: 'crop-rice',
           diseaseId: 'disease-rice-blast',
           cropNameEn: 'Rice',
-          cropNameTe: 'వరి',
         });
 
         expect(success).toBe(true);

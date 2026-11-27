@@ -57,9 +57,7 @@ export function cacheScanResult(
     diseaseId: scanData.diseaseId,
     failureReason: scanData.failureReason,
     messageEn: scanData.messageEn,
-    messageTe: scanData.messageTe,
     cropNameEn: scanData.cropNameEn,
-    cropNameTe: scanData.cropNameTe,
     isDemoSample: scanData.isDemoSample,
     diagnosticTier:
       scanData.diagnosticTier === 'expert_confirmed'

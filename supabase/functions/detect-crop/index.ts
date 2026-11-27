@@ -189,8 +189,6 @@ Deno.serve(async (req: Request) => {
         error: 'QuotaUnavailable',
         message: 'Could not verify your daily scan allowance. Please try again shortly.',
         userFacingMessageEn: 'Could not verify your daily scan allowance. Please try again shortly.',
-        userFacingMessageTe:
-          'మీ రోజువారీ స్కాన్ పరిమితిని ధృవీకరించలేకపోయాము. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.',
       }),
       { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -203,7 +201,6 @@ Deno.serve(async (req: Request) => {
         message: `Daily scan limit reached (${quota.scans_used}/${quota.daily_limit}).`,
         quota,
         userFacingMessageEn: `You have used all ${quota.daily_limit} of today's scans. The limit resets after midnight. For an urgent problem, contact your Rythu Bharosa Kendra (RBK) — they can inspect the crop in person, which is more reliable than any photo diagnosis.`,
-        userFacingMessageTe: `ఈ రోజు మీకు కేటాయించిన ${quota.daily_limit} స్కాన్‌లు పూర్తయ్యాయి. అర్ధరాత్రి తర్వాత పరిమితి మళ్లీ మొదలవుతుంది. అత్యవసరమైతే మీ రైతు భరోసా కేంద్రం (RBK) ను సంప్రదించండి — వారు పంటను ప్రత్యక్షంగా పరిశీలించగలరు, ఇది ఏ ఫోటో నిర్ధారణ కంటే నమ్మదగినది.`,
       }),
       { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -230,20 +227,20 @@ Analyze this crop photograph and respond strictly with valid JSON.
 Rules:
 1. Image Quality Assessment:
    Assess if image is usable for diagnostic evaluation. If blurry, dark, overexposed, or unidentifiable:
-   {"status": "unusable_image", "reason": "unclear", "imageQuality": {"assessable": false, "issues": ["blurry_or_unclear"]}, "userFacingMessageEn": "Image is unclear or out of focus. Please retake in good lighting.", "userFacingMessageTe": "చిత్రం అస్పష్టంగా ఉంది. మంచి వెలుతురులో మళ్లీ తీయండి."}
+   {"status": "unusable_image", "reason": "unclear", "imageQuality": {"assessable": false, "issues": ["blurry_or_unclear"]}, "userFacingMessageEn": "Image is unclear or out of focus. Please retake in good lighting."}
 
 2. If NOT an agricultural crop (person, vehicle, animal, graphic, paper, screen, logo):
-   {"status": "not_plant", "reason": "not_crop", "userFacingMessageEn": "Image appears to be non-agricultural or a graphic.", "userFacingMessageTe": "చిత్రం వ్యవసాయ పంట కాదు."}
+   {"status": "not_plant", "reason": "not_crop", "userFacingMessageEn": "Image appears to be non-agricultural or a graphic."}
 
 3. If HEALTHY plant with no visible pathology:
    DO NOT invent disease on healthy green foliage.
-   {"status": "supported_diagnosis", "conditionType": "healthy", "cropId": "crop-rice", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Clean green foliage", "No visible lesions"]}
+   {"status": "supported_diagnosis", "conditionType": "healthy", "cropId": "crop-rice", "cropNameEn": "Paddy / Rice", "visualSymptoms": ["Clean green foliage", "No visible lesions"]}
 
 4. If symptoms indicate NUTRIENT DEFICIENCY (e.g. interveinal chlorosis, uniform chlorosis, marginal scorching):
-   {"status": "nutrient_deficiency", "conditionType": "nutrient_deficiency", "cropNameEn": "[Crop]", "visualSymptoms": ["Interveinal chlorosis"], "userFacingMessageEn": "Symptoms suggest nutrient deficiency rather than infectious pathogen.", "userFacingMessageTe": "లక్షణాలు తెగులు కాకుండా పోషక లోపాన్ని సూచిస్తున్నాయి."}
+   {"status": "nutrient_deficiency", "conditionType": "nutrient_deficiency", "cropNameEn": "[Crop]", "visualSymptoms": ["Interveinal chlorosis"], "userFacingMessageEn": "Symptoms suggest nutrient deficiency rather than infectious pathogen."}
 
 5. If symptoms indicate ABIOTIC / ENVIRONMENTAL STRESS (e.g. sun scald, drought scorch, moisture stress):
-   {"status": "abiotic_stress", "conditionType": "abiotic", "cropNameEn": "[Crop]", "visualSymptoms": ["Sun scald", "Tip burn"], "userFacingMessageEn": "Symptoms indicate environmental stress, not an infectious disease.", "userFacingMessageTe": "లక్షణాలు పర్యావరణ ఒత్తిడిని సూచిస్తున్నాయి."}
+   {"status": "abiotic_stress", "conditionType": "abiotic", "cropNameEn": "[Crop]", "visualSymptoms": ["Sun scald", "Tip burn"], "userFacingMessageEn": "Symptoms indicate environmental stress, not an infectious disease."}
 
 6. If diseased or pest-damaged, map to EXACT catalog IDs where supported:
    Catalog:
@@ -304,10 +301,10 @@ Rules:
      firm = Leaf Spot; soft foul-smelling decaying rhizomes with collar rot = Rhizome Rot.
 
    If recognized crop and disease match one above:
-   {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "cropNameTe": "వరి", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
+   {"status": "supported_diagnosis", "cropId": "crop-rice", "diseaseId": "disease-rice-blast", "cropNameEn": "Paddy / Rice", "visualSymptoms": ["Spindle lesions", "Brown margins"], "differentialHypotheses": [{"conditionName": "Brown Spot", "likelihood": "moderate", "reasoning": "Lesion margins"}]}
 
    If crop is recognized but disease is NOT in catalog above:
-   {"status": "unsupported_disease", "cropNameEn": "[Crop]", "cropNameTe": "[Crop Te]", "userFacingMessageEn": "Identified as [Crop], but this specific disease is not in catalog."}
+   {"status": "unsupported_disease", "cropNameEn": "[Crop]", "userFacingMessageEn": "Identified as [Crop], but this specific disease is not in catalog."}
 
    If crop itself is NOT in catalog above:
    {"status": "unsupported_crop", "cropNameEn": "[Crop]", "userFacingMessageEn": "Crop not currently supported in database."}`;
