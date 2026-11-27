@@ -13,6 +13,7 @@ import { ensureAnonymousSession } from './lib/auth';
 import { HomeScreen } from './screens/HomeScreen';
 import { type ScanResultData } from './screens/ScanScreen';
 import { ResultScreen } from './screens/ResultScreen';
+import { DiagnosisScreen } from './screens/DiagnosisScreen';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { LibraryScreen } from './screens/LibraryScreen';
 import { PrivacyScreen } from './screens/PrivacyScreen';
@@ -91,6 +92,20 @@ function AppFrame() {
     });
   };
 
+  /** From a Claude diagnosis candidate that matched our catalog: open the verified guide,
+   * keeping the farmer's photo. Pushed (not replaced) so Back returns to the diagnosis. */
+  const handleOpenVerifiedGuide = (cropId: string, diseaseId: string, imageUri: string) => {
+    showResult({
+      imageUri,
+      detected: true,
+      cropId,
+      diseaseId,
+      diagnosticTier: 'ai_preliminary_hypothesis',
+    });
+  };
+
+  const handleBrowseCrop = (cropId?: string) => navigate(cropId ? `/library/${cropId}` : '/library');
+
   // Nav highlighting is derived from the URL, so it stays correct when the farmer uses the
   // device's own back/forward gestures instead of the in-app buttons.
   const onHome = !!useMatch('/');
@@ -129,7 +144,17 @@ function AppFrame() {
           <Route
             path="/result"
             element={
-              scanResult ? (
+              scanResult && (scanResult.plantDiagnosis || scanResult.diagnosisError) ? (
+                <DiagnosisScreen
+                  // Remount per scan so a new result never shows the previous one's retry state.
+                  key={location.key}
+                  scanData={scanResult}
+                  onScanAnother={goHome}
+                  onOpenGuide={handleOpenVerifiedGuide}
+                  onBrowseCrop={handleBrowseCrop}
+                  onTrySample={handleSelectSample}
+                />
+              ) : scanResult ? (
                 <ResultScreen
                   scanData={scanResult}
                   onScanAnother={goHome}

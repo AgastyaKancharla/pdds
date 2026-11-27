@@ -1,0 +1,531 @@
+{
+  "crops": [
+    {
+      "id": "crop-banana",
+      "name": "Banana",
+      "scientificName": "Musa acuminata Colla"
+    },
+    {
+      "id": "crop-brinjal",
+      "name": "Brinjal / Eggplant",
+      "scientificName": "Solanum melongena L."
+    },
+    {
+      "id": "crop-chilli",
+      "name": "Chilli",
+      "scientificName": "Capsicum annuum L."
+    },
+    {
+      "id": "crop-citrus",
+      "name": "Citrus (Sweet Orange / Lime)",
+      "scientificName": "Citrus spp. (e.g. Citrus sinensis — sweet orange, Citrus aurantiifolia — acid lime)"
+    },
+    {
+      "id": "crop-cotton",
+      "name": "Cotton",
+      "scientificName": "Gossypium hirsutum L."
+    },
+    {
+      "id": "crop-groundnut",
+      "name": "Groundnut",
+      "scientificName": "Arachis hypogaea L."
+    },
+    {
+      "id": "crop-maize",
+      "name": "Maize",
+      "scientificName": "Zea mays L."
+    },
+    {
+      "id": "crop-mango",
+      "name": "Mango",
+      "scientificName": "Mangifera indica L."
+    },
+    {
+      "id": "crop-okra",
+      "name": "Okra / Lady's Finger",
+      "scientificName": "Abelmoschus esculentus (L.) Moench"
+    },
+    {
+      "id": "crop-rice",
+      "name": "Paddy / Rice",
+      "scientificName": "Oryza sativa L."
+    },
+    {
+      "id": "crop-sugarcane",
+      "name": "Sugarcane",
+      "scientificName": "Saccharum officinarum L."
+    },
+    {
+      "id": "crop-tomato",
+      "name": "Tomato",
+      "scientificName": "Solanum lycopersicum L."
+    },
+    {
+      "id": "crop-turmeric",
+      "name": "Turmeric",
+      "scientificName": "Curcuma longa L."
+    }
+  ],
+  "conditions": [
+    {
+      "id": "disease-banana-panamawilt",
+      "cropId": "crop-banana",
+      "name": "Panama Wilt / Fusarium Wilt",
+      "category": "disease",
+      "keySymptoms": [
+        "Yellowing of lower leaves starting at the leaf margin and advancing inward.",
+        "Leaves collapse at petiole junction and hang down skirt-like around pseudostem."
+      ]
+    },
+    {
+      "id": "disease-brinjal-fruitcracking",
+      "cropId": "crop-brinjal",
+      "name": "Fruit Cracking (Physiological)",
+      "category": "physiological_disorder",
+      "keySymptoms": [
+        "Irregular cracks or splits on the fruit skin, often radiating outward from near the stalk/calyx end.",
+        "Cracks may heal over with a corky, hardened edge, or stay open and invite secondary soft rot."
+      ]
+    },
+    {
+      "id": "disease-brinjal-phomopsisblight",
+      "cropId": "crop-brinjal",
+      "name": "Phomopsis Blight & Fruit Rot",
+      "category": "disease",
+      "keySymptoms": [
+        "Small circular brown spots with greyish centers on leaves, which can enlarge and merge, causing leaf drop.",
+        "A girdling blight near the soil line can kill young seedlings (damping-off) in the nursery."
+      ]
+    },
+    {
+      "id": "disease-brinjal-shootfruitborer",
+      "cropId": "crop-brinjal",
+      "name": "Shoot and Fruit Borer",
+      "category": "pest",
+      "keySymptoms": [
+        "Young shoots wilt and droop (\"dead heart\") with a small bore hole and larval frass (excreta) visible at the entry point.",
+        "In fruits, a small bore hole plugged with frass is visible on the surface; the fruit shows little external rot but is hollowed and tunneled…"
+      ]
+    },
+    {
+      "id": "disease-brinjal-wetrot",
+      "cropId": "crop-brinjal",
+      "name": "Wet Fruit Rot",
+      "category": "disease",
+      "keySymptoms": [
+        "A soft, watery rot that spreads rapidly across the fruit, often starting where the fruit touches wet soil or has an injury (including an ol…",
+        "The fruit becomes mushy with a distinct foul smell; whitish or grey fungal growth can appear on the surface in advanced stages."
+      ]
+    },
+    {
+      "id": "disease-chilli-anthracnose",
+      "cropId": "crop-chilli",
+      "name": "Anthracnose / Fruit Rot",
+      "category": "disease",
+      "keySymptoms": [
+        "Sunken, circular to oval spots on ripening and ripe fruit, often with visible concentric rings within the lesion.",
+        "As the spot matures, tiny orange-to-pink spore masses appear in the center, especially in humid weather — a distinguishing feature of this…"
+      ]
+    },
+    {
+      "id": "disease-chilli-leaf-curl",
+      "cropId": "crop-chilli",
+      "name": "Chilli Leaf Curl Virus",
+      "category": "disease",
+      "keySymptoms": [
+        "Upward curling, puckering, and crinkling of leaf margins.",
+        "Vein clearing, thickening, and brittle leathery leaves."
+      ]
+    },
+    {
+      "id": "disease-chilli-powderymildew",
+      "cropId": "crop-chilli",
+      "name": "Powdery Mildew",
+      "category": "disease",
+      "keySymptoms": [
+        "Pale yellow, diffuse patches appear on the upper leaf surface, with a fine white to greyish powdery fungal growth visible on the correspond…",
+        "Older, lower leaves are usually affected first, turning yellow, then brown, and dropping prematurely as the disease progresses."
+      ]
+    },
+    {
+      "id": "disease-chilli-thrips",
+      "cropId": "crop-chilli",
+      "name": "Chilli Thrips / Murda Complex",
+      "category": "pest",
+      "keySymptoms": [
+        "Upward curling of young leaves with silvery or bronze streaking and scarring along the undersides, concentrated near growing tips.",
+        "Stunted, bushy, deformed new growth (\"Murda\"/malformation) with shortened internodes."
+      ]
+    },
+    {
+      "id": "disease-citrus-blackspot",
+      "cropId": "crop-citrus",
+      "name": "Citrus Black Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "\"Hard spot\" on mature fruit: small, circular lesions with a grey-brown necrotic center and a dark margin, often with tiny black dots (pycni…",
+        "\"Virulent/false melanose spot\" on still-green fruit: irregular, spreading dark lesions that can cover a larger area of the rind."
+      ]
+    },
+    {
+      "id": "disease-citrus-canker",
+      "cropId": "crop-citrus",
+      "name": "Citrus Canker",
+      "category": "disease",
+      "keySymptoms": [
+        "Raised, corky, crater-like (\"volcano-shaped\") lesions on leaves, twigs, and fruit, each typically surrounded by a yellow, water-soaked-look…",
+        "Lesions often cluster along leaf margins and areas prone to wind/thorn injury, where the bacteria enter through wounds or natural openings."
+      ]
+    },
+    {
+      "id": "disease-citrus-greening",
+      "cropId": "crop-citrus",
+      "name": "Citrus Greening (Huanglongbing / HLB)",
+      "category": "disease",
+      "keySymptoms": [
+        "Blotchy, asymmetric yellow mottling on leaves — the pattern does NOT mirror across the midrib/leaf center, unlike most nutrient deficiencie…",
+        "Yellowing often appears sector-by-sector on the tree (one or a few branches affected while others look normal), sometimes called \"yellow sh…"
+      ]
+    },
+    {
+      "id": "disease-citrus-melanose",
+      "cropId": "crop-citrus",
+      "name": "Melanose",
+      "category": "disease",
+      "keySymptoms": [
+        "Small, raised, corky brown pustules with a rough, \"sandpaper\"-like texture on leaves, twigs, and fruit rind — usually more a cosmetic issue…",
+        "On fruit, rain-splashed spores running down the surface can leave a distinctive \"tear-streak\" or \"mudcake\" pattern of raised brown specks."
+      ]
+    },
+    {
+      "id": "disease-citrus-scab",
+      "cropId": "crop-citrus",
+      "name": "Citrus Scab",
+      "category": "disease",
+      "keySymptoms": [
+        "Wart-like, raised, irregular corky scabby outgrowths on young leaves, twigs, and fruit, often pointed or conical rather than flat.",
+        "Mainly affects very young, actively growing (flush) tissue; heavily affected young leaves can become twisted or distorted as they expand ar…"
+      ]
+    },
+    {
+      "id": "disease-cotton-bacterialblight",
+      "cropId": "crop-cotton",
+      "name": "Bacterial Blight (Angular Leaf Spot / Black Arm)",
+      "category": "disease",
+      "keySymptoms": [
+        "Small, water-soaked, angular lesions on leaves, bound by the leaf veins (giving an \"angular\" shape rather than round), which dry to dark br…",
+        "On stems and branches, elongated black streaks or lesions can appear and, in severe cases, girdle the stem — a phase often called \"black ar…"
+      ]
+    },
+    {
+      "id": "disease-cotton-bollworm",
+      "cropId": "crop-cotton",
+      "name": "Pink Bollworm",
+      "category": "disease",
+      "keySymptoms": [
+        "Rosetted flowers (\"rosette blooms\") that fail to open normally.",
+        "Prematurely opened bolls with stained, poor quality lint."
+      ]
+    },
+    {
+      "id": "disease-cotton-jassids",
+      "cropId": "crop-cotton",
+      "name": "Cotton Jassids (Leafhoppers)",
+      "category": "pest",
+      "keySymptoms": [
+        "Leaf margins turn yellow and curl downward (cupping) early on, usually noticed first on the lower/older leaves.",
+        "As feeding continues, the yellowing progresses to a reddish-bronze discoloration spreading inward from the margins — a symptom pattern ofte…"
+      ]
+    },
+    {
+      "id": "disease-cotton-whitefly",
+      "cropId": "crop-cotton",
+      "name": "Cotton Whitefly",
+      "category": "pest",
+      "keySymptoms": [
+        "Clouds of small white adult insects flying up when the plant canopy is disturbed; nymphs visible as tiny flat scales on leaf undersides.",
+        "Sticky honeydew excretion on leaves leading to black sooty mould growth, reducing photosynthesis."
+      ]
+    },
+    {
+      "id": "disease-groundnut-budnecrosis",
+      "cropId": "crop-groundnut",
+      "name": "Bud Necrosis Disease (PBNV)",
+      "category": "disease",
+      "keySymptoms": [
+        "The central growing point (terminal bud) turns brown-black and dies — the symptom that gives this disease its name.",
+        "Young leaves show chlorotic and necrotic ring spots or mottled patterns before the bud dies."
+      ]
+    },
+    {
+      "id": "disease-groundnut-collarrot",
+      "cropId": "crop-groundnut",
+      "name": "Collar Rot (Seedling Blight)",
+      "category": "disease",
+      "keySymptoms": [
+        "Young seedlings wilt and collapse within 2-3 weeks of sowing, often before or just after emergence.",
+        "A girdling lesion forms at the collar region (stem base, right at the soil line); peeling back the soil there reveals a sooty black, powder…"
+      ]
+    },
+    {
+      "id": "disease-groundnut-rust",
+      "cropId": "crop-groundnut",
+      "name": "Groundnut Rust",
+      "category": "disease",
+      "keySymptoms": [
+        "Small, raised, orange to reddish-brown pustules (uredinia) on the lower leaf surface, which rupture and release a dusty orange spore mass t…",
+        "Corresponding pale yellow spots on the upper leaf surface directly above each pustule."
+      ]
+    },
+    {
+      "id": "disease-groundnut-tikka",
+      "cropId": "crop-groundnut",
+      "name": "Tikka Leaf Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Early leaf spot: Circular reddish-brown to dark brown spots surrounded by a prominent yellow halo on upper leaf surface.",
+        "Late leaf spot: Nearly circular dark black spots mostly on lower leaf surface without a distinct yellow halo."
+      ]
+    },
+    {
+      "id": "disease-maize-armyworm",
+      "cropId": "crop-maize",
+      "name": "Fall Armyworm",
+      "category": "disease",
+      "keySymptoms": [
+        "Pinholes and ragged \"window-pane\" feeding marks on young leaves.",
+        "Heavy sawdust-like fecal frass accumulation inside the leaf whorl."
+      ]
+    },
+    {
+      "id": "disease-maize-blsb",
+      "cropId": "crop-maize",
+      "name": "Banded Leaf and Sheath Blight",
+      "category": "disease",
+      "keySymptoms": [
+        "Irregular, water-soaked, grayish-brown lesions with a concentric banded (zonate) pattern appear first on the leaf sheath near the base, the…",
+        "Lesions coalesce into large necrotic patches that can girdle the leaf sheath and stalk, causing affected leaves to dry up starting from low…"
+      ]
+    },
+    {
+      "id": "disease-maize-stemborer",
+      "cropId": "crop-maize",
+      "name": "Spotted Stem Borer",
+      "category": "pest",
+      "keySymptoms": [
+        "Rows of small, neat pinhole perforations across young leaves as the newly hatched larva feeds while still on the leaf surface before boring…",
+        "Larvae bore into the central shoot/stem, producing a \"deadheart\" — the central whorl turns brown, dries up, and can be pulled out easily wi…"
+      ]
+    },
+    {
+      "id": "disease-maize-turcicumblight",
+      "cropId": "crop-maize",
+      "name": "Turcicum Leaf Blight",
+      "category": "disease",
+      "keySymptoms": [
+        "Long, elliptical, cigar-shaped (boat-shaped) grayish-green to tan lesions on leaves, typically starting on lower leaves first.",
+        "Lesions enlarge and run parallel to leaf veins, often coalescing to blight large sections of the leaf."
+      ]
+    },
+    {
+      "id": "disease-mango-anthracnose",
+      "cropId": "crop-mango",
+      "name": "Anthracnose",
+      "category": "disease",
+      "keySymptoms": [
+        "Dark brown to black speckling on panicles/blossoms causing blossom blight and flower drop.",
+        "Irregular dark brown leaf spots with necrotic centers."
+      ]
+    },
+    {
+      "id": "disease-okra-alternarialeafspot",
+      "cropId": "crop-okra",
+      "name": "Alternaria Leaf Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Circular to irregular brown spots, often with visible concentric rings (\"target\" or \"bullseye\" pattern), surrounded by a yellow halo.",
+        "Spots are typically larger (up to 1-2 cm) than other okra leaf spots and start on the older, lower leaves first."
+      ]
+    },
+    {
+      "id": "disease-okra-cercosporaleafspot",
+      "cropId": "crop-okra",
+      "name": "Cercospora Leaf Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Small to medium, roughly circular to angular grayish-brown spots on both leaf surfaces, often bound by the leaf veins.",
+        "Spots have a distinct reddish-brown to purplish margin and a dry, slightly grainy-looking center, without the concentric rings seen in Alte…"
+      ]
+    },
+    {
+      "id": "disease-okra-downymildew",
+      "cropId": "crop-okra",
+      "name": "Downy Mildew",
+      "category": "disease",
+      "keySymptoms": [
+        "Pale yellow, angular patches on the upper leaf surface, bounded by the leaf veins (a checkerboard-like pattern).",
+        "A greyish-white to faintly purplish, fuzzy (downy) fungal growth appears on the corresponding underside of the leaf, most visible in early…"
+      ]
+    },
+    {
+      "id": "disease-okra-leafcurlvirus",
+      "cropId": "crop-okra",
+      "name": "Yellow Vein Mosaic / Leaf Curl Virus",
+      "category": "disease",
+      "keySymptoms": [
+        "Veins on young leaves turn yellow first, forming a clear yellow network pattern while the tissue between veins stays green (vein-clearing/n…",
+        "As it progresses, the whole leaf may turn yellow, thicken, and curl upward; plants become visibly stunted with shortened internodes."
+      ]
+    },
+    {
+      "id": "disease-okra-phyllostictaleafspot",
+      "cropId": "crop-okra",
+      "name": "Phyllosticta Leaf Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Small (pinhead to about 5mm) circular spots with a pale grayish-white center and a sharply defined dark brown margin.",
+        "Under close inspection, tiny black dots (pycnidia, the fungus's fruiting bodies) are often visible scattered within the pale center of olde…"
+      ]
+    },
+    {
+      "id": "disease-rice-blast",
+      "cropId": "crop-rice",
+      "name": "Rice Blast",
+      "category": "disease",
+      "keySymptoms": [
+        "Spindle-shaped (eye-shaped) lesions on leaf blades with pointed ends.",
+        "Lesion center turns ash-gray or whitish; margins turn dark brown or reddish-brown."
+      ]
+    },
+    {
+      "id": "disease-rice-blb",
+      "cropId": "crop-rice",
+      "name": "Bacterial Leaf Blight",
+      "category": "disease",
+      "keySymptoms": [
+        "Water-soaked pale stripes begin at the leaf tip or along one margin and extend downwards.",
+        "Stripes turn straw-yellow then greyish-white, with a wavy or rippled edge rather than a sharp border."
+      ]
+    },
+    {
+      "id": "disease-rice-bph",
+      "cropId": "crop-rice",
+      "name": "Brown Planthopper (Hopperburn)",
+      "category": "pest",
+      "keySymptoms": [
+        "Circular patches of plants turning orange-brown and drying up (\"hopperburn\"), typically starting at a low-lying spot or where planting is d…",
+        "Parting the base of tillers in or near a hopperburn patch reveals clusters of brown, wedge-shaped adult and nymph insects feeding at the st…"
+      ]
+    },
+    {
+      "id": "disease-rice-brownspot",
+      "cropId": "crop-rice",
+      "name": "Brown Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Many small, separate, circular to oval brown spots scattered evenly over the leaf blade.",
+        "Mature spots have a dark brown margin and a grey or pale tan centre, roughly the size and shape of a sesame seed."
+      ]
+    },
+    {
+      "id": "disease-rice-falsesmut",
+      "cropId": "crop-rice",
+      "name": "False Smut",
+      "category": "disease",
+      "keySymptoms": [
+        "Individual grains within the panicle (ear head) are replaced by large velvety spore balls, much bigger than a normal rice grain, ranging fr…",
+        "Spore balls burst through and enlarge beyond the husk, becoming clearly visible after flowering, usually scattered among otherwise normal-l…"
+      ]
+    },
+    {
+      "id": "disease-rice-gallmidge",
+      "cropId": "crop-rice",
+      "name": "Rice Gall Midge",
+      "category": "pest",
+      "keySymptoms": [
+        "The affected tiller turns into a hollow, silvery-white tube resembling an onion leaf — the characteristic silver shoot or onion shoot.",
+        "The tube is pale, elongated, and produces no panicle at all."
+      ]
+    },
+    {
+      "id": "disease-rice-leaffolder",
+      "cropId": "crop-rice",
+      "name": "Rice Leaf Folder",
+      "category": "pest",
+      "keySymptoms": [
+        "Leaf blades folded or rolled longitudinally and webbed shut with fine silk threads, forming a tube-like shelter the caterpillar feeds insid…",
+        "Unfolding an affected leaf reveals long, white to transparent parallel streaks where the caterpillar has scraped away the green tissue from…"
+      ]
+    },
+    {
+      "id": "disease-rice-sheathblight",
+      "cropId": "crop-rice",
+      "name": "Sheath Blight",
+      "category": "disease",
+      "keySymptoms": [
+        "Oval, greenish-grey water-soaked blotches on the leaf sheath, starting near the water line.",
+        "Lesions dry to a straw-white centre ringed by an irregular purple-brown border, giving a snakeskin pattern."
+      ]
+    },
+    {
+      "id": "disease-rice-stemborer",
+      "cropId": "crop-rice",
+      "name": "Yellow Stem Borer",
+      "category": "pest",
+      "keySymptoms": [
+        "Dead heart in the vegetative stage: the central shoot dries to straw colour while the surrounding leaves stay green, and it pulls out easil…",
+        "White ear in the reproductive stage: the whole panicle emerges white, erect and empty, with no filled grain."
+      ]
+    },
+    {
+      "id": "disease-rice-zincdeficiency",
+      "cropId": "crop-rice",
+      "name": "Zinc Deficiency (Khaira)",
+      "category": "nutrient_deficiency",
+      "keySymptoms": [
+        "Appears two to four weeks after transplanting, usually in distinct patches rather than evenly across the field.",
+        "Dusty rust-brown blotches develop on the lower leaves, starting near the leaf base and midrib."
+      ]
+    },
+    {
+      "id": "disease-sugarcane-redrot",
+      "cropId": "crop-sugarcane",
+      "name": "Red Rot",
+      "category": "disease",
+      "keySymptoms": [
+        "Discoloration and drying of upper leaves/crown.",
+        "Reddening of internal stalk pith with characteristic white cross-bands when cane is split longitudinally."
+      ]
+    },
+    {
+      "id": "disease-tomato-earlyblight",
+      "cropId": "crop-tomato",
+      "name": "Early Blight",
+      "category": "disease",
+      "keySymptoms": [
+        "Concentric dark brown circular rings (target-board appearance) on older lower leaves.",
+        "Yellowing of foliage surrounding concentric lesions followed by leaf drop."
+      ]
+    },
+    {
+      "id": "disease-turmeric-leafspot",
+      "cropId": "crop-turmeric",
+      "name": "Turmeric Leaf Spot",
+      "category": "disease",
+      "keySymptoms": [
+        "Small, oval to irregular dark brown spots with a yellow halo, scattered across the leaf blade (distinct from the many small rectangular spo…",
+        "Spots may enlarge and coalesce under heavy infection, giving leaves a blighted, scorched appearance."
+      ]
+    },
+    {
+      "id": "disease-turmeric-rhizomerot",
+      "cropId": "crop-turmeric",
+      "name": "Rhizome Rot",
+      "category": "disease",
+      "keySymptoms": [
+        "Water-soaked lesions at collar region of pseudostem near ground level.",
+        "Leaves turn pale yellow and dry up from tips downward along margins."
+      ]
+    }
+  ]
+}

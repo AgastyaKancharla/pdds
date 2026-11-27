@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { detectDisease, isAiLiveDiagnosisEnabled, type DetectionResult } from '../lib/detection';
+import { detectDisease, type DetectionResult } from '../lib/detection';
 import { SAMPLE_CROP_IMAGE } from '../lib/mockData';
 import { compressImage, validateImageFile } from '../lib/imageUtils';
 import type { DetectionFailureReason } from '../types/database';
@@ -8,6 +8,7 @@ import type { DiagnosticTier, NormalizedDiagnosis } from '../lib/ai/types';
 import { getAllSupportedCrops } from '../lib/knowledge';
 import { CROP_ICONS } from '../lib/cropIcons';
 import { hasOnDeviceModel } from '../lib/ai/onDeviceRegistry';
+import { diagnosePlant, type DiagnosisErrorKind, type PlantDiagnosis } from '../lib/ai/plantDiagnosis';
 
 export interface ScanResultData {
   imageUri: string;
@@ -22,6 +23,12 @@ export interface ScanResultData {
   cachedAt?: string;
   diagnosticTier?: DiagnosticTier;
   normalizedDiagnosis?: NormalizedDiagnosis;
+  /** Claude photo diagnosis (diagnose-plant). When present, App shows DiagnosisScreen. */
+  plantDiagnosis?: PlantDiagnosis;
+  diagnosisError?: { kind: DiagnosisErrorKind; message: string; retryable: boolean };
+  cropHint?: string;
+  model?: string;
+  scansRemainingToday?: number;
 }
 
 interface ScanScreenProps {
@@ -33,14 +40,13 @@ interface ScanScreenProps {
 }
 
 export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, embedded = false }) => {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const [busy, setBusy] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
-  // Crop selection happens before image capture: on-device classifiers are per-crop and
-  // can't guess which crop a photo shows, so the farmer picking one (or explicitly skipping)
-  // is what decides whether the free/offline on-device model or the cloud gateway handles it.
-  const [cropPicked, setCropPicked] = useState(false);
+  // Optional crop hint. The cloud diagnosis identifies the plant itself, so picking a crop is
+  // never required; when given, it is passed as a hint and enables the offline on-device model
+  // as a fallback for the crops that have one.
   const [selectedCropId, setSelectedCropId] = useState<string | undefined>(undefined);
   const allCrops = getAllSupportedCrops();
 
@@ -90,46 +96,81 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
     }
   };
 
+  /** Legacy path: demo sample and the offline on-device models. */
+  const runLegacyDetection = async (imageUri: string, base64?: string, isDemoSample = false) => {
+    const result: DetectionResult = await detectDisease(imageUri, base64, { isDemoSample, selectedCropId });
+    const tier =
+      result.diagnosticTier ||
+      result.normalizedDiagnosis?.provenance?.tier ||
+      (result.isDemoSample ? 'demonstration_sample' : 'ai_preliminary_hypothesis');
+
+    if (!result.detected) {
+      onScanComplete({
+        imageUri,
+        detected: false,
+        failureReason: result.reason as DetectionFailureReason,
+        messageEn: result.messageEn,
+        cropNameEn: result.cropNameEn,
+        cropId: result.cropId,
+        isDemoSample: result.isDemoSample,
+        diagnosticTier: tier,
+        normalizedDiagnosis: result.normalizedDiagnosis,
+      });
+    } else {
+      onScanComplete({
+        imageUri,
+        detected: true,
+        cropId: result.cropId,
+        diseaseId: result.diseaseId,
+        cropNameEn: result.cropNameEn,
+        isDemoSample: result.isDemoSample,
+        diagnosticTier: tier,
+        normalizedDiagnosis: result.normalizedDiagnosis,
+      });
+    }
+  };
+
   const runDetectionOnImage = async (imageUri: string, base64?: string, isDemoSample = false) => {
     setBusy(true);
     stopCameraStream();
     try {
-      const result: DetectionResult = await detectDisease(imageUri, base64, { isDemoSample, selectedCropId });
-      const tier =
-        result.diagnosticTier ||
-        result.normalizedDiagnosis?.provenance?.tier ||
-        (result.isDemoSample ? 'demonstration_sample' : 'ai_preliminary_hypothesis');
+      if (isDemoSample) {
+        await runLegacyDetection(imageUri, base64, true);
+        return;
+      }
 
-      if (!result.detected) {
-        onScanComplete({
-          imageUri,
-          detected: false,
-          failureReason: result.reason as DetectionFailureReason,
-          messageEn: result.messageEn,
-          cropNameEn: result.cropNameEn,
-          cropId: result.cropId,
-          isDemoSample: result.isDemoSample,
-          diagnosticTier: tier,
-          normalizedDiagnosis: result.normalizedDiagnosis,
-        });
-      } else {
+      const outcome = await diagnosePlant(base64 || imageUri, selectedCropId);
+      if (outcome.ok) {
         onScanComplete({
           imageUri,
           detected: true,
-          cropId: result.cropId,
-          diseaseId: result.diseaseId,
-          cropNameEn: result.cropNameEn,
-          isDemoSample: result.isDemoSample,
-          diagnosticTier: tier,
-          normalizedDiagnosis: result.normalizedDiagnosis,
+          cropHint: selectedCropId,
+          plantDiagnosis: outcome.diagnosis,
+          model: outcome.model,
+          scansRemainingToday: outcome.quota?.scansRemainingToday,
         });
+        return;
       }
+
+      // Offline with a crop that has an on-device model: use it rather than stopping.
+      if (outcome.kind === 'offline' && hasOnDeviceModel(selectedCropId)) {
+        await runLegacyDetection(imageUri, base64, false);
+        return;
+      }
+
+      onScanComplete({
+        imageUri,
+        detected: false,
+        cropHint: selectedCropId,
+        diagnosisError: { kind: outcome.kind, message: outcome.message, retryable: outcome.retryable },
+      });
     } catch (err) {
       console.warn('[HereForNature] Detection error:', err);
       onScanComplete({
         imageUri,
         detected: false,
-        failureReason: 'unclear',
+        cropHint: selectedCropId,
+        diagnosisError: { kind: 'server', message: 'Something went wrong while scanning. Please try again.', retryable: true },
       });
     } finally {
       setBusy(false);
@@ -223,7 +264,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
           <div className="spinner" />
           <h3 className="analyzing-title">{t('analyzing')}</h3>
           <p className="analyzing-subtitle">
-            {'Inspecting leaf structure, colors, and disease symptoms…'}
+            {'Identifying the plant and checking for signs of disease, pests and stress… this takes about 10 seconds.'}
           </p>
         </div>
       ) : cameraActive ? (
@@ -251,81 +292,32 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
             </button>
           </div>
         </div>
-      ) : !cropPicked ? (
-        <div className="scan-options-card">
-          <div className="scan-icon-circle">🌾</div>
-          <h3 className="scan-card-heading">
-            {'Which crop is this?'}
-          </h3>
-          <p className="scan-card-desc">
-            {'Picking your crop lets the app use a free, offline AI model trained for it, when one is available.'}
-          </p>
-          <div className="crop-switch-chips" style={{ marginTop: '12px', justifyContent: 'center' }}>
-            {allCrops.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                className="crop-switch-chip"
-                onClick={() => {
-                  setSelectedCropId(c.id);
-                  setCropPicked(true);
-                }}>
-                {(CROP_ICONS[c.id] || '🌱') + ' '}
-                {c.name_en}
-                {hasOnDeviceModel(c.id) ? ' ⚡' : ''}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            className="scan-btn sample-btn"
-            style={{ marginTop: '16px' }}
-            onClick={() => {
-              setSelectedCropId(undefined);
-              setCropPicked(true);
-            }}>
-            <span className="btn-icon">❓</span>
-            <div>
-              <strong>{'Not Sure / Skip'}</strong>
-              <span className="btn-subtext">
-                {'Use general AI photo analysis instead'}
-              </span>
-            </div>
-          </button>
-        </div>
       ) : (
         <div className="scan-options-card">
           <div className="scan-icon-circle">🌿</div>
-          <h3 className="scan-card-heading">
-            {'Choose Image Source'}
-          </h3>
+          <h3 className="scan-card-heading">Scan a plant</h3>
 
-          <p style={{ fontSize: 12, color: '#557257', marginBottom: 8 }}>
-            {selectedCropId
-              ? ('Scanning: ') +
-                (allCrops.find((c) => c.id === selectedCropId)?.name_en)
-              : 'General scan (no crop selected)'}{' '}
-            <button
-              type="button"
-              onClick={() => setCropPicked(false)}
-              style={{
-                textDecoration: 'underline',
-                background: 'none',
-                border: 'none',
-                color: '#2d6a4f',
-                cursor: 'pointer',
-                fontSize: 12,
-                padding: 0,
-              }}>
-              {'Change'}
-            </button>
-          </p>
+          <div className="scan-tips">
+            <strong>For the best result:</strong> photograph one affected leaf or fruit up close, in daylight,
+            filling most of the frame. Any plant works: crops, vegetables, fruit trees, garden and house plants.
+          </div>
+
+          <label className="crop-hint-label" htmlFor="crop-hint">Crop (optional, helps accuracy)</label>
+          <select
+            id="crop-hint"
+            className="crop-hint-select"
+            value={selectedCropId ?? ''}
+            onChange={(e) => setSelectedCropId(e.target.value || undefined)}>
+            <option value="">I'm not sure / other plant</option>
+            {allCrops.map((c) => (
+              <option key={c.id} value={c.id}>
+                {(CROP_ICONS[c.id] || '🌱') + ' ' + c.name_en}
+                {hasOnDeviceModel(c.id) ? ' (works offline)' : ''}
+              </option>
+            ))}
+          </select>
 
           <p className="scan-card-desc">{t('cameraUnavailableDesc')}</p>
-
-          {!isAiLiveDiagnosisEnabled() && !hasOnDeviceModel(selectedCropId) && (
-            <div className="offline-notice-banner ai-paused-banner">⏸️ {t('aiScanningPausedBanner')}</div>
-          )}
 
           {cameraError && <div className="camera-error-banner">{cameraError}</div>}
 

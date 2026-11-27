@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { isAiLiveDiagnosisEnabled } from '../lib/detection';
+import { getAllSupportedCrops, getAllSupportedDiseases } from '../lib/knowledge';
 import { ScanScreen, type ScanResultData } from './ScanScreen';
 
 interface HomeScreenProps {
@@ -34,7 +34,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onScanComplete, onOpenLi
         <div>
           <strong>Browse the full Crop Library</strong>
           <p>
-            {(isAiLiveDiagnosisEnabled() ? 'All 21 known conditions, with or without a photo' : 'All 21 known conditions — no photo needed')}
+            {`${getAllSupportedDiseases().length} verified conditions across ${getAllSupportedCrops().length} crops — no photo needed`}
           </p>
         </div>
         <span className="library-teaser-arrow">→</span>

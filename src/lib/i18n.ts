@@ -43,7 +43,7 @@ export const translations = {
     en: 'Camera unavailable or permission needed',
   },
   cameraUnavailableDesc: {
-    en: 'No camera? You can still upload a crop picture or test with our sample image instantly.',
+    en: 'No camera? Upload a photo from your gallery, or try our sample to see how results look.',
   },
   aiScanningPausedBanner: {
     en: 'Live AI diagnosis is temporarily paused. Taking a photo below will not return a result right now — try the sample scan, or visit your local agriculture extension office for an in-person check.',

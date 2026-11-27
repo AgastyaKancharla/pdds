@@ -1448,3 +1448,121 @@ body {
   padding: 4px 0;
 }
 
+
+/* ===== Diagnosis screen (Claude photo diagnosis) ===== */
+.dx-headline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+}
+.dx-headline-icon { font-size: 22px; }
+.dx-headline-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 0;
+}
+.dx-tone-good { background: #e3f4e6; color: #1e5631; }
+.dx-tone-alert { background: #fdecea; color: #8a2a1d; }
+.dx-tone-warn { background: #fff4dc; color: #7a5310; }
+
+.dx-plant-row { display: flex; gap: 12px; align-items: center; }
+.dx-plant-icon { font-size: 30px; }
+.dx-plant-name { font-weight: 800; font-size: 16px; color: var(--primary-dark); }
+.dx-plant-sci { font-style: italic; font-size: 13px; color: var(--text-muted); }
+.dx-plant-conf { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+.dx-candidate {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.dx-candidate-top { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.dx-candidate-head { display: flex; gap: 10px; align-items: flex-start; }
+.dx-rank {
+  flex: 0 0 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.dx-candidate-text { flex: 1; min-width: 0; }
+.dx-candidate-name { font-weight: 800; font-size: 15px; color: var(--text-dark); }
+.dx-candidate-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.dx-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+.dx-pill-likely { background: #fdecea; color: #8a2a1d; }
+.dx-pill-possible { background: #fff4dc; color: #7a5310; }
+.dx-pill-verified { background: #e3f4e6; color: #1e5631; }
+.dx-pill-ai { background: #eef0f5; color: #4a5368; }
+.dx-evidence { font-size: 13px; color: #33472f; line-height: 1.45; margin: 10px 0 0; }
+.dx-guide-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.dx-question-card { background: #eef6ff; border-color: #c9defa; }
+.dx-care-list { margin: 0; padding-left: 18px; font-size: 14px; color: #33472f; line-height: 1.55; }
+.dx-care-list li + li { margin-top: 6px; }
+
+.dx-actions { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 8px; }
+.dx-action {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+.dx-action-primary { background: var(--primary); border-color: var(--primary); color: var(--white); }
+
+.scan-tips {
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 4px 0 12px;
+  line-height: 1.5;
+}
+.scan-tips strong { color: var(--primary-dark); }
+.crop-hint-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-size: 14px;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+.crop-hint-label { display: block; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-dim); margin-bottom: 4px; }
