@@ -5,7 +5,6 @@ export type DetectionFailureReason = 'not_crop' | 'unclear' | 'unsupported_crop'
 export interface Crop {
   id: string;
   name_en: string;
-  name_te: string;
   category: string;
   tier: number;
   ap_regions: string[] | null;
@@ -18,15 +17,12 @@ export interface Disease {
   id: string;
   crop_id: string | null;
   name_en: string;
-  name_te: string;
   type: string;
   symptoms_en: string;
-  symptoms_te: string;
   affected_parts: string[] | null;
   urgency_level: string;
   urgency_color: UrgencyColor;
   ap_specific_tip_en: string | null;
-  ap_specific_tip_te: string | null;
   created_at: string;
 }
 
@@ -36,7 +32,6 @@ export interface Treatment {
   type: TreatmentType;
   step_number: number;
   instruction_en: string;
-  instruction_te: string;
   product_name: string | null;
   created_at: string;
 }
@@ -64,6 +59,6 @@ export interface ScanHistoryRow {
 }
 
 export interface ScanHistoryWithDetails extends ScanHistoryRow {
-  crops: Pick<Crop, 'id' | 'name_en' | 'name_te'> | null;
-  diseases: Pick<Disease, 'id' | 'name_en' | 'name_te' | 'urgency_color'> | null;
+  crops: Pick<Crop, 'id' | 'name_en'> | null;
+  diseases: Pick<Disease, 'id' | 'name_en' | 'urgency_color'> | null;
 }

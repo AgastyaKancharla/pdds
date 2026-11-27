@@ -92,15 +92,13 @@ describe('Per-user daily AI scan quota', () => {
       expect(edgeFn).toContain('release_ai_scan_slot');
     });
 
-    it('explains the limit bilingually and points the farmer at a human, not just an error code', () => {
+    it('explains the limit and points the farmer at a human, not just an error code', () => {
       expect(edgeFn).toContain('DailyScanLimitReached');
       const limitBlock = edgeFn.slice(edgeFn.indexOf('DailyScanLimitReached'));
       expect(limitBlock).toContain('userFacingMessageEn');
-      expect(limitBlock).toContain('userFacingMessageTe');
-      // Running out of scans must not dead-end: RBK can inspect the crop in person, which
+      // Running out of scans must not dead-end: an extension officer can inspect the crop in person, which
       // is more reliable than any photo diagnosis.
-      expect(limitBlock).toContain('Rythu Bharosa Kendra');
-      expect(limitBlock).toContain('రైతు భరోసా కేంద్రం');
+      expect(limitBlock).toContain('extension office');
       // 429 is the correct status so clients and proxies treat it as rate limiting.
       expect(limitBlock).toContain('429');
     });
@@ -184,7 +182,6 @@ describe('Per-user daily AI scan quota', () => {
       const quotaBody = {
         error: 'DailyScanLimitReached',
         userFacingMessageEn: "You have used all 15 of today's scans.",
-        userFacingMessageTe: 'ఈ రోజు మీకు కేటాయించిన 15 స్కాన్‌లు పూర్తయ్యాయి.',
       };
 
       invokeMock.mockResolvedValueOnce({
@@ -201,7 +198,6 @@ describe('Per-user daily AI scan quota', () => {
       expect(result.detected, 'a quota refusal must never be reported as a detection').toBe(false);
       if (!result.detected) {
         expect(result.messageEn).toBe(quotaBody.userFacingMessageEn);
-        expect(result.messageTe).toBe(quotaBody.userFacingMessageTe);
       }
     });
 

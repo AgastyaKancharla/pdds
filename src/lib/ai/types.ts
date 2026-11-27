@@ -22,16 +22,13 @@ export interface PlantIdentification {
   identified: boolean;
   cropId?: string;
   cropNameEn?: string;
-  cropNameTe?: string;
   botanicalName?: string;
 }
 
 export interface DifferentialHypothesis {
   conditionName?: string;
   conditionNameEn?: string;
-  conditionNameTe?: string;
   distinguishingFeaturesEn?: string;
-  distinguishingFeaturesTe?: string;
   likelihood?: string;
   reasoning?: string;
   isAbiotic?: boolean;
@@ -46,7 +43,6 @@ export interface ConditionAssessment {
   conditionType: ConditionType;
   diseaseId?: string;
   diseaseNameEn?: string;
-  diseaseNameTe?: string;
   visualSymptoms: string[];
   urgencyColor: 'red' | 'yellow' | 'green';
   differentialHypotheses?: DifferentialHypothesis[];
@@ -97,7 +93,6 @@ export interface NormalizedDiagnosis {
   evidenceReferences: string[];
   metadata: DiagnosticMetadata;
   userFacingMessageEn: string;
-  userFacingMessageTe: string;
 }
 
 export interface AiInferenceRequest {
@@ -113,7 +108,6 @@ export interface AiInferenceResponse {
   error?: {
     code: string;
     messageEn: string;
-    messageTe: string;
     retryable: boolean;
   };
 }

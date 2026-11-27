@@ -80,16 +80,13 @@ export interface ClaimEvidenceNote {
   /** Exact page/section/table/label locator, only when one was actually found — never invented. */
   locator?: string;
   limitation_en: string;
-  limitation_te: string;
 }
 
 export interface LookalikeCondition {
   id: string;
   name_en: string;
-  name_te: string;
   isPathological: boolean; // true = pest/disease, false = nutrient deficiency / abiotic stress / weather
   differentiatingFactors_en: string;
-  differentiatingFactors_te: string;
 }
 
 /**
@@ -121,10 +118,8 @@ export type ConditionCategory =
 export interface CaptureGuidance {
   /** Short imperative instruction, e.g. "Photograph the underside of the affected leaf." */
   instruction_en: string;
-  instruction_te: string;
   /** Why this specific view is required — what evidence it reveals that a canopy shot cannot. */
   rationale_en?: string;
-  rationale_te?: string;
   /**
    * True when the condition genuinely cannot be confirmed from a standard canopy/leaf photo at all
    * (e.g. internal cane discolouration, root galls, larvae inside a boll). Used to cap displayed
@@ -147,12 +142,9 @@ export interface CaptureGuidance {
 export interface FieldFollowUpQuestion {
   id: string;
   question_en: string;
-  question_te: string;
   /** What a "yes" supports — human-readable, paired with `pointsTowardIds` for machine use. */
   ifYes_en: string;
-  ifYes_te: string;
   ifNo_en: string;
-  ifNo_te: string;
   /** Condition IDs a "yes" makes more likely. */
   pointsTowardIds?: string[];
   /** Condition IDs a "yes" makes less likely. */
@@ -169,16 +161,13 @@ export interface SeverityBand {
   level: 'mild' | 'moderate' | 'severe';
   /** Observable threshold, e.g. "Under 10% of leaf area shows lesions". */
   threshold_en: string;
-  threshold_te: string;
   /** What to do at this level, including whether intervention is economically justified. */
   action_en: string;
-  action_te: string;
 }
 
 export interface PreventionStep {
   stepNumber: number;
   practice_en: string;
-  practice_te: string;
   targetTiming?: string;
 }
 
@@ -187,20 +176,15 @@ export interface TreatmentGuidanceStep {
   stepNumber: number;
   category: TreatmentCategory;
   instruction_en: string;
-  instruction_te: string;
   activeIngredient_en?: string;
-  activeIngredient_te?: string;
   safetyCaution_en?: string;
-  safetyCaution_te?: string;
   regulatoryNotice_en?: string;
-  regulatoryNotice_te?: string;
 }
 
 export interface DiseaseKnowledgeEntry {
   id: string; // Stable identifier e.g. 'disease-rice-blast'
   cropId: string; // References CropKnowledgeEntry.id
   name_en: string;
-  name_te: string;
   /**
    * What kind of condition this is. Omitted means 'disease' for backward compatibility with
    * entries written before non-pathogenic conditions were catalogued. Read it through
@@ -210,19 +194,15 @@ export interface DiseaseKnowledgeEntry {
    */
   conditionCategory?: ConditionCategory;
   pathogenOrVector_en: string;
-  pathogenOrVector_te: string;
   urgencyLevel: 'High' | 'Medium' | 'Low';
   urgencyColor: 'red' | 'yellow' | 'green';
   observableSymptoms_en: string[];
-  observableSymptoms_te: string[];
   affectedParts: string[];
   similarConditions: LookalikeCondition[];
   environmentalRiskFactors_en: string[];
-  environmentalRiskFactors_te: string[];
   preventionGuidance: PreventionStep[];
   treatments: TreatmentGuidanceStep[];
   escalationThreshold_en: string;
-  escalationThreshold_te: string;
   /**
    * Disease-specific chemical-suppression disclosure shown on the Chemical tab when this
    * disease has no `treatments[]` entry with `category: 'chemical'` — i.e. when its
@@ -234,7 +214,6 @@ export interface DiseaseKnowledgeEntry {
    * entry (e.g. Groundnut Tikka), where this field would be redundant.
    */
   chemicalTabDetail_en?: string;
-  chemicalTabDetail_te?: string;
   /**
    * Claim-level evidence notes for specific numeric/consequential fields on this entry
    * (e.g. a spray volume, a lime quantity) whose evidence support differs from what the
@@ -287,7 +266,6 @@ export interface ImageAttribution {
 export interface CropKnowledgeEntry {
   id: string; // Stable identifier e.g. 'crop-rice'
   name_en: string;
-  name_te: string;
   scientificName: string;
   category: string;
   apMajorDistricts: string[];

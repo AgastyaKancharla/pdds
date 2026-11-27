@@ -11,7 +11,6 @@ export interface DetectionSuccess {
   cropId: string;
   diseaseId: string;
   cropNameEn?: string;
-  cropNameTe?: string;
   confidence?: number;
   isDemoSample?: boolean;
   diagnosticTier?: DiagnosticTier;
@@ -22,9 +21,7 @@ export interface DetectionFailure {
   detected: false;
   reason: DetectionFailureReason;
   messageEn: string;
-  messageTe: string;
   cropNameEn?: string;
-  cropNameTe?: string;
   cropId?: string;
   isDemoSample?: boolean;
   diagnosticTier?: DiagnosticTier;
@@ -40,7 +37,7 @@ export type DetectionResult = DetectionSuccess | DetectionFailure;
  * underlying general-purpose vision LLM's accuracy has never been measured against real AP
  * crop photos (see data/evaluation_manifest.json — 400 fixtures specified, 0 verified on
  * disk). Every result from this path is still tagged 'ai_preliminary_hypothesis' and carries
- * the existing "confirm with RBK before spraying" disclaimer -- it is never presented as
+ * the existing "confirm with your local agriculture extension office before spraying" disclaimer -- it is never presented as
  * verified. Revisit turning this back off if real-world results look unreliable.
  *
  * This gates ONLY the cloud photo -> AI gateway call. It does not touch:
@@ -191,13 +188,12 @@ function analyzeImageViaCanvas(imageUri: string): Promise<PixelEvaluation> {
 interface GatewayErrorBody {
   error?: string;
   userFacingMessageEn?: string;
-  userFacingMessageTe?: string;
 }
 
 /**
  * Reads the JSON body of a failed Edge Function response. supabase-js reports a non-2xx
  * function response as an error whose `context` carries the underlying Response, so the
- * gateway's own explanation (e.g. the daily scan limit, with its reset time and RBK
+ * gateway's own explanation (e.g. the daily scan limit, with its reset time and your local agriculture extension office
  * referral) is only reachable this way. Returns null on anything unexpected — a diagnosis
  * is never derived from here, only an explanatory message, so failing to read it is
  * harmless and must never throw into the caller.
@@ -246,7 +242,6 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
 
     const crop = getCropKnowledge(cropId);
     const cropNameEn = crop?.name_en;
-    const cropNameTe = crop?.name_te;
 
     if (top.mapping.status === 'healthy') {
       return {
@@ -254,11 +249,8 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
         reason: 'healthy',
         messageEn:
           'Your plant looks healthy — the on-device model found no signs of disease or common pests in this photo.',
-        messageTe:
-          'మీ మొక్క ఆరోగ్యంగా కనిపిస్తోంది — ఈ ఫోటోలో పరికరంలోని మోడల్‌కు తెగులు లేదా సాధారణ పురుగుల సంకేతాలు కనిపించలేదు.',
         cropId,
         cropNameEn,
-        cropNameTe,
         diagnosticTier: 'ai_preliminary_hypothesis',
       };
     }
@@ -269,7 +261,6 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
         cropId,
         diseaseId: top.mapping.diseaseId,
         cropNameEn,
-        cropNameTe,
         confidence: top.confidence,
         diagnosticTier: 'ai_preliminary_hypothesis',
       };
@@ -282,11 +273,9 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
     return {
       detected: false,
       reason: 'unclear',
-      messageEn: `The on-device model detected "${readableLabel}", which doesn't have a treatment guide in this app yet. Please consult your Rythu Bharosa Kendra (RBK).`,
-      messageTe: `పరికరంలోని మోడల్ "${readableLabel}" ను గుర్తించింది, దీనికి ఈ యాప్‌లో ఇంకా చికిత్సా మార్గదర్శకత్వం లేదు. దయచేసి మీ రైతు భరోసా కేంద్రం (RBK) ని సంప్రదించండి.`,
+      messageEn: `The on-device model detected "${readableLabel}", which doesn't have a treatment guide in this app yet. Please consult your local agriculture extension office.`,
       cropId,
       cropNameEn,
-      cropNameTe,
     };
   } catch (err) {
     console.warn('[HereForNature] On-device classification error, falling back to cloud gateway:', err);
@@ -316,13 +305,11 @@ export async function detectDisease(
         identified: true,
         cropId: 'crop-rice',
         cropNameEn: 'Paddy / Rice',
-        cropNameTe: 'వరి',
       },
       conditionAssessment: {
         conditionType: 'disease',
         diseaseId: 'disease-rice-blast',
         diseaseNameEn: matchedDisease?.name_en || 'Rice Blast',
-        diseaseNameTe: matchedDisease?.name_te || 'అగ్గి తెగులు',
         visualSymptoms: [
           'Spindle-shaped lesions with brown borders and ash-gray centers appear on leaf blades and nodes.',
         ],
@@ -344,7 +331,6 @@ export async function detectDisease(
         timestamp: new Date().toISOString(),
       },
       userFacingMessageEn: 'Demonstration sample preview: Rice Blast.',
-      userFacingMessageTe: 'నమూనా ప్రదర్శన ప్రివ్యూ: అగ్గి తెగులు.',
     };
 
     return {
@@ -352,7 +338,6 @@ export async function detectDisease(
       cropId: 'crop-rice',
       diseaseId: 'disease-rice-blast',
       cropNameEn: matchedCrop?.name_en || 'Paddy / Rice',
-      cropNameTe: matchedCrop?.name_te || 'వరి',
       isDemoSample: true,
       normalizedDiagnosis: demoDiagnosis,
     };
@@ -381,7 +366,6 @@ export async function detectDisease(
       detected: false,
       reason: isGraphic ? 'not_crop' : 'unclear',
       messageEn: fallbackDiag.userFacingMessageEn,
-      messageTe: fallbackDiag.userFacingMessageTe,
       normalizedDiagnosis: fallbackDiag,
     };
   }
@@ -396,16 +380,13 @@ export async function detectDisease(
       { provider: 'gateway', model: 'ai_scanning_paused' },
       {
         messageEn:
-          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your Rythu Bharosa Kendra (RBK) for an in-person check.",
-        messageTe:
-          'ప్రత్యక్ష AI ఫోటో నిర్ధారణ తాత్కాలికంగా నిలిపివేయబడింది. క్రింద మీ పంట తెలిసిన పరిస్థితులను చూడండి, లేదా ప్రత్యక్ష తనిఖీ కోసం మీ రైతు భరోసా కేంద్రం (RBK) ని సందర్శించండి.',
+          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your local agriculture extension office for an in-person check.",
       }
     );
     return {
       detected: false,
       reason: 'provider_unavailable',
       messageEn: pausedDiag.userFacingMessageEn,
-      messageTe: pausedDiag.userFacingMessageTe,
       normalizedDiagnosis: pausedDiag,
     };
   }
@@ -422,7 +403,6 @@ export async function detectDisease(
           detected: false,
           reason: 'provider_unavailable',
           messageEn: offlineDiag.userFacingMessageEn,
-          messageTe: offlineDiag.userFacingMessageTe,
           normalizedDiagnosis: offlineDiag,
         };
       }
@@ -455,11 +435,9 @@ export async function detectDisease(
             detected: false,
             reason: 'provider_unavailable',
             messageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
-            messageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
             normalizedDiagnosis: {
               ...quotaDiag,
               userFacingMessageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
-              userFacingMessageTe: gatewayBody.userFacingMessageTe || quotaDiag.userFacingMessageTe,
             },
           };
         }
@@ -477,10 +455,8 @@ export async function detectDisease(
               detected: false,
               reason: 'healthy',
               messageEn: normalized.userFacingMessageEn,
-              messageTe: normalized.userFacingMessageTe,
               cropId: normalized.plantIdentification.cropId,
               cropNameEn: normalized.plantIdentification.cropNameEn,
-              cropNameTe: normalized.plantIdentification.cropNameTe,
               normalizedDiagnosis: normalized,
             };
           }
@@ -491,7 +467,6 @@ export async function detectDisease(
               cropId: normalized.plantIdentification.cropId,
               diseaseId: normalized.conditionAssessment.diseaseId,
               cropNameEn: normalized.plantIdentification.cropNameEn,
-              cropNameTe: normalized.plantIdentification.cropNameTe,
               normalizedDiagnosis: normalized,
             };
           }
@@ -502,7 +477,6 @@ export async function detectDisease(
             detected: false,
             reason: 'not_crop',
             messageEn: normalized.userFacingMessageEn,
-            messageTe: normalized.userFacingMessageTe,
             normalizedDiagnosis: normalized,
           };
         }
@@ -512,7 +486,6 @@ export async function detectDisease(
             detected: false,
             reason: 'unclear',
             messageEn: normalized.userFacingMessageEn,
-            messageTe: normalized.userFacingMessageTe,
             normalizedDiagnosis: normalized,
           };
         }
@@ -522,9 +495,7 @@ export async function detectDisease(
             detected: false,
             reason: 'unsupported_crop',
             messageEn: normalized.userFacingMessageEn,
-            messageTe: normalized.userFacingMessageTe,
             cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropNameTe: normalized.plantIdentification.cropNameTe,
             cropId: normalized.plantIdentification.cropId,
             normalizedDiagnosis: normalized,
           };
@@ -535,9 +506,7 @@ export async function detectDisease(
             detected: false,
             reason: 'abiotic_stress',
             messageEn: normalized.userFacingMessageEn,
-            messageTe: normalized.userFacingMessageTe,
             cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropNameTe: normalized.plantIdentification.cropNameTe,
             cropId: normalized.plantIdentification.cropId,
             normalizedDiagnosis: normalized,
           };
@@ -548,9 +517,7 @@ export async function detectDisease(
             detected: false,
             reason: 'nutrient_deficiency',
             messageEn: normalized.userFacingMessageEn,
-            messageTe: normalized.userFacingMessageTe,
             cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropNameTe: normalized.plantIdentification.cropNameTe,
             cropId: normalized.plantIdentification.cropId,
             normalizedDiagnosis: normalized,
           };
@@ -571,7 +538,6 @@ export async function detectDisease(
     detected: false,
     reason: 'provider_unavailable',
     messageEn: unavailableDiag.userFacingMessageEn,
-    messageTe: unavailableDiag.userFacingMessageTe,
     normalizedDiagnosis: unavailableDiag,
   };
 }

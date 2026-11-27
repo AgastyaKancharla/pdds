@@ -74,7 +74,6 @@ function AppFrame() {
       cropId: 'crop-rice',
       diseaseId: 'disease-rice-blast',
       cropNameEn: 'Paddy / Rice',
-      cropNameTe: 'వరి',
       isDemoSample: true,
     });
   };

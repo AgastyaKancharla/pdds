@@ -63,7 +63,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         const crop = AGRICULTURAL_KNOWLEDGE_CATALOG.crops[id];
         expect(crop, `Missing crop: ${id}`).toBeDefined();
         expect(crop.name_en.trim().length).toBeGreaterThan(0);
-        expect(crop.name_te.trim().length).toBeGreaterThan(0);
         expect(crop.scientificName.trim().length).toBeGreaterThan(0);
         expect(crop.apMajorDistricts.length).toBeGreaterThan(0);
         expect(crop.growingSeasons.length).toBeGreaterThan(0);
@@ -88,19 +87,14 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       for (const disease of diseases) {
         expect(AGRICULTURAL_KNOWLEDGE_CATALOG.crops[disease.cropId], `Invalid cropId ${disease.cropId}`).toBeDefined();
         expect(disease.name_en.trim().length).toBeGreaterThan(0);
-        expect(disease.name_te.trim().length).toBeGreaterThan(0);
         expect(disease.pathogenOrVector_en.trim().length).toBeGreaterThan(0);
-        expect(disease.pathogenOrVector_te.trim().length).toBeGreaterThan(0);
         expect(['High', 'Medium', 'Low']).toContain(disease.urgencyLevel);
         expect(['red', 'yellow', 'green']).toContain(disease.urgencyColor);
         expect(disease.observableSymptoms_en.length).toBeGreaterThan(0);
-        expect(disease.observableSymptoms_te.length).toBeGreaterThan(0);
         expect(disease.environmentalRiskFactors_en.length).toBeGreaterThan(0);
-        expect(disease.environmentalRiskFactors_te.length).toBeGreaterThan(0);
         expect(disease.preventionGuidance.length).toBeGreaterThan(0);
         expect(disease.treatments.length).toBeGreaterThan(0);
         expect(disease.escalationThreshold_en.trim().length).toBeGreaterThan(0);
-        expect(disease.escalationThreshold_te.trim().length).toBeGreaterThan(0);
         expect(disease.sources.length).toBeGreaterThan(0);
       }
     });
@@ -284,7 +278,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
             // source rather than a conflicting/absent secondary figure, so the house decision
             // was to show the real number but explicitly frame it as "a reference point only,
             // never unconditionally actionable" rather than the word "suppressed" — the same
-            // underlying safety guarantee (never actionable without RBK/VAA confirmation),
+            // underlying safety guarantee (never actionable without extension-office confirmation),
             // worded to match why it's being qualified. Both framings satisfy this invariant.
             const hasSuppressionLanguage = /suppress/i.test(t.instruction_en) || /suppress/i.test(t.regulatoryNotice_en || '');
             const hasReferencePointLanguage =
@@ -445,7 +439,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const crop = getCropKnowledge('crop-rice');
       expect(crop).not.toBeNull();
       expect(crop?.name_en).toBe('Paddy / Rice');
-      expect(crop?.name_te).toBe('వరి');
       expect(crop?.scientificName).toBe('Oryza sativa L.');
 
       expect(getCropKnowledge('crop-nonexistent')).toBeNull();
@@ -488,7 +481,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const lookalikes = getLookalikesForDisease('disease-rice-blast');
       expect(lookalikes.length).toBeGreaterThanOrEqual(2);
       expect(lookalikes[0].differentiatingFactors_en).toBeDefined();
-      expect(lookalikes[0].differentiatingFactors_te).toBeDefined();
 
       expect(getLookalikesForDisease('disease-nonexistent')).toEqual([]);
     });
@@ -625,14 +617,11 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       for (const key of phase3Keys) {
         expect(translate(key, 'en')).toBeTruthy();
         expect(translate(key, 'en')).not.toBe(key);
-        expect(translate(key, 'te')).toBeTruthy();
-        expect(translate(key, 'te')).not.toBe(key);
       }
     });
 
     it('falls back gracefully to key or en when unknown key is passed', () => {
       expect(translate('unregistered_key_xyz', 'en')).toBe('unregistered_key_xyz');
-      expect(translate('unregistered_key_xyz', 'te')).toBe('unregistered_key_xyz');
     });
   });
 
@@ -809,13 +798,11 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
           for (const lookalike of disease.similarConditions) {
             expect(lookalike.differentiatingFactors_en.trim().length).toBeGreaterThan(15);
-            expect(lookalike.differentiatingFactors_te.trim().length).toBeGreaterThan(15);
           }
         }
 
         // Translation for entries whose differential diagnosis is under review
         expect(translate('differentialUnderReview', 'en')).toContain('under review');
-        expect(translate('differentialUnderReview', 'te')).toContain('సమీక్షలో');
       });
     });
 
@@ -828,13 +815,9 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         for (const t of chemicalTreatments) {
           expect(t.safetyCaution_en, `Missing safetyCaution_en in treatment ${t.id}`).toBeDefined();
           expect(t.safetyCaution_en!.trim().length).toBeGreaterThan(0);
-          expect(t.safetyCaution_te, `Missing safetyCaution_te in treatment ${t.id}`).toBeDefined();
-          expect(t.safetyCaution_te!.trim().length).toBeGreaterThan(0);
 
           expect(t.regulatoryNotice_en, `Missing regulatoryNotice_en in treatment ${t.id}`).toBeDefined();
           expect(t.regulatoryNotice_en!.trim().length).toBeGreaterThan(0);
-          expect(t.regulatoryNotice_te, `Missing regulatoryNotice_te in treatment ${t.id}`).toBeDefined();
-          expect(t.regulatoryNotice_te!.trim().length).toBeGreaterThan(0);
         }
       });
 
@@ -855,7 +838,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
           // Must direct the farmer to the container label and local agricultural authorities
           const text = `${t.safetyCaution_en} ${t.regulatoryNotice_en}`.toLowerCase();
           const directsToLabel =
-            text.includes('label') || text.includes('container') || text.includes('rbk') || text.includes('officer');
+            text.includes('label') || text.includes('container') || text.includes('extension office') || text.includes('officer');
           expect(
             directsToLabel,
             `Chemical treatment ${t.id} must direct farmer to approved label or local authority`
@@ -872,16 +855,12 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         const chilli = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-chilli-leaf-curl'];
 
         expect(cotton.pathogenOrVector_en.toLowerCase()).toContain('insect pest');
-        expect(cotton.pathogenOrVector_te).toContain('కీటకం');
 
         expect(maize.pathogenOrVector_en.toLowerCase()).toContain('pest');
-        expect(maize.pathogenOrVector_te).toContain('కీటకం');
 
         expect(rice.pathogenOrVector_en.toLowerCase()).toContain('fungus');
-        expect(rice.pathogenOrVector_te).toContain('శిలీంద్రం');
 
         expect(chilli.pathogenOrVector_en.toLowerCase()).toContain('virus');
-        expect(chilli.pathogenOrVector_te).toContain('వైరస్');
       });
     });
 
@@ -902,12 +881,8 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
         for (const key of safetyKeys) {
           const en = translate(key, 'en');
-          const te = translate(key, 'te');
           expect(en).toBeTruthy();
           expect(en).not.toBe(key);
-          expect(te).toBeTruthy();
-          expect(te).not.toBe(key);
-          expect(en).not.toBe(te);
         }
       });
     });
@@ -1062,10 +1037,10 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
     // in Phase 5.6A. ResultScreen.tsx no longer references evidenceStatus for this notice at
     // all (see the fix comment there) — it is now unconditionally true whenever the chemical
     // category is empty for a cataloged disease, so this mirror is updated to match.
-    function resolveChemicalTabRender(diseaseId: string, language: 'en' | 'te') {
+    function resolveChemicalTabRender(diseaseId: string, language: 'en') {
       const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[diseaseId];
       const catResult = getTreatmentsForCategory(diseaseId, 'chemical', language);
-      const detailText = language === 'en' ? disease.chemicalTabDetail_en : disease.chemicalTabDetail_te;
+      const detailText = disease.chemicalTabDetail_en;
       const detailShown = catResult.isEmptyCategory && !!detailText;
       const genericNoticeIsSuppressionVariant = catResult.isEmptyCategory;
       return {
@@ -1092,11 +1067,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         expect(en.detailShown, `${id} must surface disease-specific detail on the Chemical tab`).toBe(true);
         expect(en.detailText!.length).toBeGreaterThan(20);
         expect(/suppress/i.test(en.detailText!), `${id} detail must state suppression explicitly`).toBe(true);
-
-        const te = resolveChemicalTabRender(id, 'te');
-        expect(te.detailShown, `${id} must also surface Telugu detail`).toBe(true);
-        expect(te.detailText).not.toBe(en.detailText);
-        expect(te.detailText!.length).toBeGreaterThan(10);
       }
     });
 
@@ -1111,12 +1081,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(lower).toContain('mite');
       expect(lower).toContain('whitefly');
       expect(lower).toContain('verify the target pest');
-
-      const teDetail = resolveChemicalTabRender('disease-chilli-leaf-curl', 'te').detailText;
-      expect(teDetail).toBeDefined();
-      expect(teDetail).toContain('వైరస్'); // virus
-      expect(teDetail).toContain('నల్లి'); // mite
-      expect(teDetail).toContain('తెల్లదోమ'); // whitefly
     });
 
     it('keeps organic guidance fully available on the Organic tab for all three merged diseases', () => {
@@ -1140,7 +1104,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // its Chemical tab already renders the real, specific entry directly.
       const groundnut = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases['disease-groundnut-tikka'];
       expect(groundnut.chemicalTabDetail_en).toBeUndefined();
-      expect(groundnut.chemicalTabDetail_te).toBeUndefined();
     });
 
     it('never exposes an actionable dose through chemicalTabDetail, for any disease that defines one', () => {
@@ -1194,32 +1157,30 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
     // data-flow/predicate test, not a rendered-DOM test: no component-rendering harness
     // (e.g. @testing-library) is wired into this project, so no claim is made here that the
     // box was visually rendered or browser-tested.
-    function shouldShowChemicalStatutoryBox(diseaseId: string, language: 'en' | 'te'): boolean {
+    function shouldShowChemicalStatutoryBox(diseaseId: string, language: 'en'): boolean {
       const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[diseaseId];
       const treatmentsCount = getTreatmentsForCategory(diseaseId, 'chemical', language).treatments.length;
-      return treatmentsCount > 0 || hasChemicalTabDetail(disease, language);
+      return treatmentsCount > 0 || hasChemicalTabDetail(disease);
     }
 
     it('hasChemicalTabDetail: true only for a non-empty detail string in the requested language', () => {
-      expect(hasChemicalTabDetail({ chemicalTabDetail_en: 'x' }, 'en')).toBe(true);
-      expect(hasChemicalTabDetail({ chemicalTabDetail_en: 'x' }, 'te')).toBe(false); // wrong language
-      expect(hasChemicalTabDetail({ chemicalTabDetail_en: '' }, 'en')).toBe(false); // empty string
-      expect(hasChemicalTabDetail({}, 'en')).toBe(false); // field absent
-      expect(hasChemicalTabDetail(null, 'en')).toBe(false); // no disease at all
-      expect(hasChemicalTabDetail(undefined, 'en')).toBe(false);
+      expect(hasChemicalTabDetail({ chemicalTabDetail_en: 'x' })).toBe(true);
+      expect(hasChemicalTabDetail({ chemicalTabDetail_en: '' })).toBe(false); // empty string
+      expect(hasChemicalTabDetail({})).toBe(false); // field absent
+      expect(hasChemicalTabDetail(null)).toBe(false); // no disease at all
+      expect(hasChemicalTabDetail(undefined)).toBe(false);
     });
 
     it('shows the statutory safety box for Chilli Leaf Curl and Cotton Pink Bollworm via the chemicalTabDetail branch, despite zero Chemical-tab treatment entries', () => {
       for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
         expect(treatmentsCount, `${id} must have zero 'chemical' treatment entries`).toBe(0);
-        expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en')).toBe(true);
+        expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id])).toBe(true);
         expect(
           shouldShowChemicalStatutoryBox(id, 'en'),
           `${id} statutory safety box must render via the chemicalTabDetail branch`
         ).toBe(true);
         // Telugu reaches the same outcome through the same branch.
-        expect(shouldShowChemicalStatutoryBox(id, 'te')).toBe(true);
       }
     });
 
@@ -1228,7 +1189,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
       expect(treatmentsCount, `${id} must have a real 'chemical' treatment entry`).toBeGreaterThan(0);
       expect(
-        hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en'),
+        hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id]),
         `${id} must NOT define chemicalTabDetail — it would be redundant with its real entry`
       ).toBe(false);
       expect(
@@ -1243,9 +1204,8 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       const id = 'disease-maize-armyworm';
       const treatmentsCount = getTreatmentsForCategory(id, 'chemical', 'en').treatments.length;
       expect(treatmentsCount).toBe(0);
-      expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id], 'en')).toBe(false);
+      expect(hasChemicalTabDetail(AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id])).toBe(false);
       expect(shouldShowChemicalStatutoryBox(id, 'en')).toBe(false);
-      expect(shouldShowChemicalStatutoryBox(id, 'te')).toBe(false);
     });
   });
 
@@ -1262,21 +1222,16 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // The specific dosed instruction ("Carbendazim 50% WP @ 2g/kg seed") must be gone;
       // any remaining mention of Carbendazim must be paired with suppression language.
       expect(seedStep.practice_en).not.toContain('Carbendazim 50% WP @ 2g/kg seed');
-      expect(seedStep.practice_te).not.toContain('2 గ్రాముల కార్బెండజిమ్ కలిపి');
       if (/carbendazim/i.test(seedStep.practice_en)) {
         expect(/suppress/i.test(seedStep.practice_en)).toBe(true);
       }
     });
 
-    it('carries the suppression safety disclosure in both English and Telugu', () => {
+    it('carries the suppression safety disclosure in English', () => {
       const en = seedStep.practice_en.toLowerCase();
       expect(en).toContain('suppress');
       expect(en).toContain('not been verified');
-      expect(en).toContain('rbk');
-      const te = seedStep.practice_te;
-      expect(te).toContain('నిలిపివేయబడింది'); // "is suppressed"
-      expect(te).toContain('ధృవీకరించబడలేదు'); // "has not been verified"
-      expect(te).toContain('RBK');
+      expect(en).toContain('extension office');
     });
 
     it('does not claim Carbendazim is illegal, ineffective, or universally unsafe — only unverified here', () => {
@@ -1340,21 +1295,16 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
     it('no longer presents an actionable Mancozeb dose for groundnut seed treatment', () => {
       expect(seedStep.practice_en).not.toContain('Mancozeb 75% WP @ 3g/kg seed');
-      expect(seedStep.practice_te).not.toContain('3 గ్రాముల మాంకోజెబ్ లేదా');
       if (/mancozeb/i.test(seedStep.practice_en)) {
         expect(/suppress/i.test(seedStep.practice_en)).toBe(true);
       }
     });
 
-    it('carries the suppression safety disclosure in both English and Telugu', () => {
+    it('carries the suppression safety disclosure in English', () => {
       const en = seedStep.practice_en.toLowerCase();
       expect(en).toContain('suppress');
       expect(en).toContain('not been verified');
-      expect(en).toContain('rbk');
-      const te = seedStep.practice_te;
-      expect(te).toContain('నిలిపివేయబడింది'); // "is suppressed"
-      expect(te).toContain('ధృవీకరించబడలేదు'); // "has not been verified"
-      expect(te).toContain('RBK');
+      expect(en).toContain('extension office');
     });
 
     it('does not claim Mancozeb is illegal, ineffective, or universally unsafe — only unverified here', () => {
@@ -1364,7 +1314,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
     it('keeps the supported non-chemical Trichoderma seed-treatment instruction actionable at its existing rate', () => {
       expect(seedStep.practice_en).toContain('Trichoderma viride @ 10g/kg seed');
-      expect(seedStep.practice_te).toContain('10 గ్రాముల ట్రైకోడెర్మా');
     });
 
     it('leaves the other Groundnut Tikka prevention step (crop rotation) and catalog-wide invariants untouched', () => {
@@ -1439,8 +1388,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         expect(getTreatmentsForCategory(id, 'chemical', 'en').treatments).toHaveLength(0);
         expect(resolveChemicalEmptyCategoryNotice(true, true)).toBe('suppressedChemicalNotice');
-        expect(hasChemicalTabDetail(disease, 'en')).toBe(true);
-        expect(hasChemicalTabDetail(disease, 'te')).toBe(true);
+        expect(hasChemicalTabDetail(disease)).toBe(true);
       }
     });
 
@@ -1452,7 +1400,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       );
       for (const id of ['disease-chilli-leaf-curl', 'disease-cotton-bollworm']) {
         const disease = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
-        expect(hasChemicalTabDetail(disease, 'en')).toBe(hasChemicalTabDetail(disease, 'te'));
       }
     });
 
@@ -1480,7 +1427,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         // from a clean single institutional source (ICAR-IIMR) that is neither registry-verified
         // nor hidden, but shown with explicit "never unconditionally actionable / reference point
         // only" framing plus a claim-level evidence note. The safety guarantee is the same —
-        // nothing here is usable without RBK/VAA confirmation.
+        // nothing here is usable without extension-office confirmation.
         const referencePointOnly =
           /unconditionally actionable/i.test(t.instruction_en) ||
           /unconditionally actionable/i.test(t.regulatoryNotice_en || '');
@@ -1508,7 +1455,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(note).toBeDefined();
       expect(note!.verificationStatus).toBe('unsupported');
       expect(note!.limitation_en.length).toBeGreaterThan(20);
-      expect(note!.limitation_te.length).toBeGreaterThan(10);
     });
 
     it('finds the Banana Panama Wilt lime-quantity note via the exact claimId the UI constructs', () => {
@@ -1516,17 +1462,15 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(note).toBeDefined();
       expect(note!.verificationStatus).toBe('unsupported');
       expect(note!.limitation_en.length).toBeGreaterThan(20);
-      expect(note!.limitation_te.length).toBeGreaterThan(10);
     });
 
-    it('carries the RBK/officer referral in both English and Telugu for both notes (EN/TE parity)', () => {
+    it('carries the extension-office referral in English for both notes', () => {
       for (const [disease, claimId] of [
         [groundnut, 't-groundnut-chem-1-safety-caution'],
         [banana, `${banana.id}-escalation-threshold`],
       ] as const) {
         const note = getClaimEvidenceNote(disease, claimId)!;
-        expect(note.limitation_en.toLowerCase()).toContain('rbk');
-        expect(note.limitation_te).toContain('RBK');
+        expect(note.limitation_en.toLowerCase()).toContain('extension office');
         // Neither language claims the figure IS verified/confirmed — only that it is not.
         expect(note.limitation_en.toLowerCase()).not.toMatch(/\bis confirmed\b|\bis verified\b/);
       }
@@ -1538,9 +1482,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       // doses, which were suppressed). The original figures must still be present verbatim.
       const groundnutTreatment = groundnut.treatments.find((t) => t.id === 't-groundnut-chem-1')!;
       expect(groundnutTreatment.safetyCaution_en).toContain('200 L/acre');
-      expect(groundnutTreatment.safetyCaution_te).toContain('200 లీటర్ల');
       expect(banana.escalationThreshold_en).toContain('1-2 kg agricultural lime per pit');
-      expect(banana.escalationThreshold_te).toContain('1-2 కిలోల సున్నం');
     });
 
     it('is never auto-created or auto-upgraded by the disease-wide evidenceStatus or sources[]', () => {
@@ -1598,7 +1540,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         for (const note of d.claimEvidence!) {
           expect(note.claimId.trim().length, `${d.id} note has an empty claimId`).toBeGreaterThan(0);
           expect(note.limitation_en.trim().length).toBeGreaterThan(0);
-          expect(note.limitation_te.trim().length).toBeGreaterThan(0);
           if (note.verificationStatus === 'verified') {
             expect(
               note.locator && note.locator.trim().length > 0,
@@ -1616,7 +1557,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       expect(note!.verificationStatus).toBe('provisional');
       expect(note!.locator).toBeDefined();
       expect(note!.limitation_en.length).toBeGreaterThan(20);
-      expect(note!.limitation_te.length).toBeGreaterThan(10);
 
       const groundnutNskeNote = getClaimEvidenceNote(groundnut, 't-groundnut-tikka-org-nske-1-reduction-figure');
       expect(groundnutNskeNote).toBeDefined();
@@ -1654,17 +1594,13 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         expect(d, `Missing disease: ${id}`).toBeDefined();
         expect(d.cropId).toBe(expectedCropIds[id]);
         expect(d.name_en.trim().length).toBeGreaterThan(0);
-        expect(d.name_te.trim().length).toBeGreaterThan(0);
         expect(d.observableSymptoms_en.length).toBeGreaterThan(0);
-        expect(d.observableSymptoms_te.length).toBeGreaterThan(0);
         expect(d.similarConditions.length).toBeGreaterThanOrEqual(2);
         for (const lookalike of d.similarConditions) {
           expect(lookalike.differentiatingFactors_en.trim().length).toBeGreaterThan(15);
-          expect(lookalike.differentiatingFactors_te.trim().length).toBeGreaterThan(15);
         }
         expect(d.sources.length).toBeGreaterThan(0);
         expect(d.escalationThreshold_en.trim().length).toBeGreaterThan(0);
-        expect(d.escalationThreshold_te.trim().length).toBeGreaterThan(0);
       }
 
       // Each new ID is referenced from its crop's commonDiseaseIds.
@@ -1737,12 +1673,12 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
       }
     });
 
-    it('still directs the farmer to RBK/VAA from every chemical treatment on the new entries', () => {
+    it('still directs the farmer to the extension office from every chemical treatment on the new entries', () => {
       for (const id of newDiseaseIds) {
         const d = AGRICULTURAL_KNOWLEDGE_CATALOG.diseases[id];
         for (const t of d.treatments.filter((t) => t.category === 'chemical')) {
           const text = `${t.safetyCaution_en} ${t.regulatoryNotice_en}`.toLowerCase();
-          expect(text.includes('rbk') || text.includes('vaa')).toBe(true);
+          expect(text.includes('extension office')).toBe(true);
         }
       }
     });
@@ -1752,7 +1688,6 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
         const mock = getMockDisease(id);
         expect(mock, `${id} missing from MOCK_DISEASES`).toBeDefined();
         expect(mock!.name_en.trim().length).toBeGreaterThan(0);
-        expect(mock!.name_te.trim().length).toBeGreaterThan(0);
       }
       // Guards against future accidental duplicate IDs in the mock registry.
       const ids = MOCK_DISEASES.map((d) => d.id);

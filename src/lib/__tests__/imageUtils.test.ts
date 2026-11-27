@@ -8,7 +8,6 @@ describe('Image Utilities', () => {
 
     expect(result.valid).toBe(false);
     expect(result.errorEn).toContain('image file');
-    expect(result.errorTe).toBeTruthy();
   });
 
   it('rejects files larger than MAX_FILE_SIZE (10 MB)', () => {
@@ -18,7 +17,6 @@ describe('Image Utilities', () => {
 
     expect(result.valid).toBe(false);
     expect(result.errorEn).toContain('too large');
-    expect(result.errorTe).toBeTruthy();
   });
 
   it('accepts valid JPEG and PNG files under 10 MB', () => {

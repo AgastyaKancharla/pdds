@@ -14,7 +14,6 @@ describe('AI Response Validator & Normalizer', () => {
       cropId: 'crop-rice',
       diseaseId: 'disease-rice-blast',
       cropNameEn: 'Paddy / Rice',
-      cropNameTe: 'వరి',
       visualSymptoms: ['Spindle-shaped spots on leaves'],
     };
 
@@ -110,7 +109,6 @@ describe('AI Response Validator & Normalizer', () => {
 
     expect(fallback.status).toBe('provider_unavailable');
     expect(fallback.userFacingMessageEn).toBeTruthy();
-    expect(fallback.userFacingMessageTe).toBeTruthy();
     expect(fallback.metadata.provider).toBe('openrouter');
   });
 

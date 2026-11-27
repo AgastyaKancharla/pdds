@@ -56,19 +56,17 @@ export function compressImage(
 export const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 /** Validate image file before processing */
-export function validateImageFile(file: File): { valid: boolean; errorEn?: string; errorTe?: string } {
+export function validateImageFile(file: File): { valid: boolean; errorEn?: string; } {
   if (!file.type.startsWith('image/')) {
     return {
       valid: false,
       errorEn: 'Please select an image file (JPG, PNG, etc.).',
-      errorTe: 'దయచేసి చిత్ర ఫైల్‌ను ఎంచుకోండి (JPG, PNG, మొదలైనవి).',
     };
   }
   if (file.size > MAX_FILE_SIZE) {
     return {
       valid: false,
       errorEn: 'Image is too large (max 10 MB). Please use a smaller photo.',
-      errorTe: 'చిత్రం చాలా పెద్దది (గరిష్టం 10 MB). దయచేసి చిన్న ఫోటోను ఉపయోగించండి.',
     };
   }
   return { valid: true };
