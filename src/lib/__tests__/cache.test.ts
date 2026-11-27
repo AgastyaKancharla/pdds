@@ -378,11 +378,9 @@ describe('Phase 4: Offline Caching & Resilience', () => {
       expect(result.detected).toBe(false);
       if (!result.detected) {
         expect(result.reason).toBe('provider_unavailable');
-        // Live AI diagnosis is paused by default (no budget, no measured accuracy — see
-        // detection.ts), so a real scan hits that message before the offline check is ever
-        // reached. Either wording is an honest "no diagnosis happened" result; the
-        // invariant this test actually guards is the one below: nothing was fabricated.
-        expect(result.messageEn.toLowerCase()).toMatch(/unavailable|paused/);
+        // Offline, only the on-device models can run; none recognised this photo. The message
+        // must say so honestly; the invariant guarded below is that nothing was fabricated.
+        expect(result.messageEn.toLowerCase()).toMatch(/could not identify|unavailable/);
         // Ensure no fake crop or disease ID was hallucinated
         expect((result as any).diseaseId).toBeUndefined();
       }

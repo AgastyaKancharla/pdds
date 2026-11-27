@@ -555,7 +555,7 @@ describe('Phase 3 Agricultural Knowledge Base', () => {
 
   describe('Integration with AI Validator', () => {
     const providerMeta = {
-      provider: 'openrouter',
+      provider: 'anthropic',
       model: 'meta-llama/llama-3.2-11b-vision-instruct:free',
       latencyMs: 150,
     };

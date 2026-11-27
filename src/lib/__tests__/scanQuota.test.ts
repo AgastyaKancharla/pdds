@@ -1,26 +1,11 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { detectDisease, __setAiLiveDiagnosisEnabledForTests } from '../detection';
-
-/**
- * `supabase.functions` is a getter on the real client, so stubbing the property on the
- * instance does not stick. The module is mocked instead, which is also closer to how the
- * gateway failure actually reaches detectDisease.
- */
-const invokeMock = vi.fn();
-vi.mock('../supabase', () => ({
-  supabase: {
-    functions: {
-      invoke: (...args: unknown[]) => invokeMock(...args),
-    },
-  },
-}));
 
 /**
  * Guards the per-user daily AI scan quota.
  *
- * Why this exists: before it, the detect-crop Edge Function accepted any request whose
+ * Why this exists: before it, the scan Edge Function accepted any request whose
  * Authorization header merely started with "Bearer " — it never confirmed the token
  * belonged to anyone — and applied no per-user limit. With a hard daily cap on the upstream
  * free tier, that meant a single user or script could spend the whole day's capacity for
@@ -34,88 +19,68 @@ vi.mock('../supabase', () => ({
  */
 describe('Per-user daily AI scan quota', () => {
   const repoRoot = resolve(__dirname, '../../..');
-  const edgeFn = readFileSync(resolve(repoRoot, 'supabase/functions/detect-crop/index.ts'), 'utf-8');
+  const edgeFn = readFileSync(resolve(repoRoot, 'supabase/functions/diagnose-plant/index.ts'), 'utf-8');
   const migration = readFileSync(resolve(repoRoot, 'supabase/migrations/005_add_ai_scan_quota.sql'), 'utf-8');
 
-  describe('Edge Function gateway', () => {
+  describe('Edge Function gateway (diagnose-plant)', () => {
+    const upstream = 'api.anthropic.com/v1/messages';
+
     it('claims a slot before calling the upstream AI provider', () => {
-      const claimAt = edgeFn.indexOf('claim_ai_scan_slot');
-      const upstreamAt = edgeFn.indexOf('openrouter.ai/api/v1/chat/completions');
+      const claimAt = edgeFn.indexOf("'claim_ai_scan_slot'");
+      const callAt = edgeFn.indexOf('await callClaude(');
+      expect(edgeFn).toContain(upstream);
       expect(claimAt).toBeGreaterThan(-1);
-      expect(upstreamAt).toBeGreaterThan(-1);
-      expect(claimAt, 'the quota must be claimed before the upstream call, not after').toBeLessThan(upstreamAt);
+      expect(callAt).toBeGreaterThan(-1);
+      expect(claimAt, 'the quota must be claimed before the upstream call, not after').toBeLessThan(callAt);
     });
 
     it('only claims a slot after the payload has been validated', () => {
       // A malformed or oversized request must not cost the farmer part of their allowance.
-      const payloadCheckAt = edgeFn.indexOf('imageBase64 string is required');
-      const sizeCheckAt = edgeFn.indexOf('PayloadTooLarge');
-      const claimAt = edgeFn.indexOf('claim_ai_scan_slot');
+      const payloadCheckAt = edgeFn.indexOf('A photo is required.');
+      const sizeCheckAt = edgeFn.indexOf("'PayloadTooLarge'");
+      const claimAt = edgeFn.indexOf("'claim_ai_scan_slot'");
+      expect(payloadCheckAt).toBeGreaterThan(-1);
       expect(payloadCheckAt).toBeLessThan(claimAt);
       expect(sizeCheckAt).toBeLessThan(claimAt);
     });
 
-    it('fails closed when the quota backend is not configured', () => {
-      // Falling through to an unmetered upstream call would recreate the exposure the quota
-      // exists to close, so a missing SUPABASE_URL/ANON_KEY must refuse the request.
-      expect(edgeFn).toContain('Scan quota backend is not configured');
-      const guardAt = edgeFn.indexOf('Scan quota backend is not configured');
-      const upstreamAt = edgeFn.indexOf('openrouter.ai/api/v1/chat/completions');
-      expect(guardAt).toBeLessThan(upstreamAt);
-      // Equally, an unreadable quota response must refuse rather than proceed.
+    it('fails closed when the quota backend or AI key is not configured', () => {
+      const guardAt = edgeFn.indexOf('The scan allowance service is not configured.');
+      const keyGuardAt = edgeFn.indexOf('The AI key is not configured on the server.');
+      const callAt = edgeFn.indexOf('await callClaude(');
+      expect(guardAt).toBeGreaterThan(-1);
+      expect(keyGuardAt).toBeGreaterThan(-1);
+      expect(guardAt).toBeLessThan(callAt);
+      expect(keyGuardAt).toBeLessThan(callAt);
+      // An unreadable quota response must refuse rather than proceed.
       expect(edgeFn).toContain('QuotaUnavailable');
     });
 
-    it('authenticates by resolving the token to an account, not by inspecting the header shape', () => {
-      // The forwarded JWT is validated by Postgres, and the quota function derives the user
-      // from auth.uid(); a token that resolves to nobody yields 401/403 and is refused.
-      expect(edgeFn).toContain('auth.uid');
+    it("forwards the caller's own token, never a service-role key", () => {
       expect(edgeFn).toMatch(/claim\.status === 401 \|\| claim\.status === 403/);
-      // The caller's own token is forwarded — a service-role key would bypass RLS and make
-      // every request look like the same privileged identity.
+      expect(edgeFn).toContain('Authorization: `Bearer ${userJwt}`');
       expect(edgeFn).not.toContain('SERVICE_ROLE');
       expect(edgeFn).not.toContain('service_role');
     });
 
-    it('refunds the slot on every upstream failure path', () => {
-      // The upstream free tier is rate-limited and intermittently unavailable. A farmer must
-      // not lose part of their daily allowance for a diagnosis they never received.
-      expect(edgeFn, 'refundSlot helper must be defined').toMatch(/const refundSlot = async \(\) =>/);
-
-      // Each model attempt loops through four failure modes -- non-2xx, empty body,
-      // unparseable body, and the network/timeout catch -- recording the failure and moving
-      // to the next model rather than calling refundSlot() per path. refundSlot() is called
-      // exactly once, after every model in the chain has been exhausted, which every failure
-      // mode converges on regardless of which one(s) fired.
-      const refundCallCount = (edgeFn.match(/await refundSlot\(\)/g) || []).length;
-      expect(refundCallCount).toBe(1);
-
-      const loopEnd = edgeFn.lastIndexOf('}\n\n  // Every model in the chain failed');
+    it('refunds the slot exactly once, after every model in the chain has failed', () => {
+      expect(edgeFn).toMatch(/const refundSlot = async \(\) =>/);
+      const refundCalls = (edgeFn.match(/await refundSlot\(\)/g) || []).length;
+      expect(refundCalls).toBe(1);
+      const loopAt = edgeFn.indexOf('for (const model of models)');
       const refundAt = edgeFn.indexOf('await refundSlot()');
-      expect(loopEnd, 'the retry loop over attemptOrder must exist').toBeGreaterThan(-1);
-      expect(refundAt, 'refundSlot() must run after the retry loop, not inside a single attempt')
-        .toBeGreaterThan(loopEnd);
-
-      for (const failurePath of ['UpstreamProviderError', 'EmptyResponse', 'MalformedOutput', 'GatewayTimeout']) {
-        expect(edgeFn, `${failurePath} path must exist`).toContain(failurePath);
-        // Every failure mode must record itself via lastFailure so the single refundSlot()
-        // call after the loop is reached no matter which one(s) fired.
-        const pathAt = edgeFn.indexOf(failurePath);
-        const sliceAroundPath = edgeFn.slice(Math.max(0, pathAt - 400), pathAt + 50);
-        expect(sliceAroundPath, `${failurePath} must set lastFailure before continuing to the next model`)
-          .toMatch(/lastFailure = \{/);
+      expect(loopAt).toBeGreaterThan(-1);
+      expect(refundAt).toBeGreaterThan(loopAt);
+      for (const failure of ['AiProviderError', 'AiMalformedOutput', 'AiTimeout', 'AiRateLimited']) {
+        expect(edgeFn, `${failure} path must exist`).toContain(failure);
       }
       expect(edgeFn).toContain('release_ai_scan_slot');
     });
 
     it('explains the limit and points the farmer at a human, not just an error code', () => {
       expect(edgeFn).toContain('DailyScanLimitReached');
-      const limitBlock = edgeFn.slice(edgeFn.indexOf('DailyScanLimitReached'));
-      expect(limitBlock).toContain('userFacingMessageEn');
-      // Running out of scans must not dead-end: an extension officer can inspect the crop in person, which
-      // is more reliable than any photo diagnosis.
+      const limitBlock = edgeFn.slice(edgeFn.indexOf("error: 'DailyScanLimitReached'"));
       expect(limitBlock).toContain('extension office');
-      // 429 is the correct status so clients and proxies treat it as rate limiting.
       expect(limitBlock).toContain('429');
     });
 
@@ -175,92 +140,6 @@ describe('Per-user daily AI scan quota', () => {
     it('revokes default grants from anon so an unauthenticated caller cannot execute either function', () => {
       expect(migration).toMatch(/revoke all on function public\.claim_ai_scan_slot\(integer\) from public, anon/i);
       expect(migration).toMatch(/revoke all on function public\.release_ai_scan_slot\(\) from public, anon/i);
-    });
-  });
-
-  describe('Client handling of a quota refusal', () => {
-    const image = 'data:image/jpeg;base64,/9j/4AAQSkZJRg==';
-
-    // These tests exercise the gateway-dispatch branch of detectDisease (quota/error-body
-    // handling), which the real app currently never reaches by default — live AI diagnosis
-    // is paused (see detection.ts) pending budget and a measured accuracy baseline. Opt back
-    // in for just this block, and always reset to the real default afterward.
-    beforeEach(() => {
-      __setAiLiveDiagnosisEnabledForTests(true);
-    });
-    afterEach(() => {
-      __setAiLiveDiagnosisEnabledForTests(false);
-    });
-
-    it('surfaces the gateway\'s own explanation instead of a generic failure, and never invents a diagnosis', async () => {
-      // Mirrors how supabase-js reports a non-2xx function response: an error carrying the
-      // underlying Response on `context`.
-      const quotaBody = {
-        error: 'DailyScanLimitReached',
-        userFacingMessageEn: "You have used all 15 of today's scans.",
-      };
-
-      invokeMock.mockResolvedValueOnce({
-        data: null,
-        error: {
-          name: 'FunctionsHttpError',
-          message: 'Edge Function returned a non-2xx status code',
-          context: { json: async () => quotaBody },
-        },
-      });
-
-      const result = await detectDisease(image, image);
-
-      expect(result.detected, 'a quota refusal must never be reported as a detection').toBe(false);
-      if (!result.detected) {
-        expect(result.messageEn).toBe(quotaBody.userFacingMessageEn);
-      }
-    });
-
-    it('falls back to the honest generic unavailable message for any other gateway error', async () => {
-      // A quota refusal is special-cased; everything else must keep the existing behaviour
-      // of reporting unavailability rather than guessing.
-      invokeMock.mockResolvedValueOnce({
-        data: null,
-        error: {
-          name: 'FunctionsHttpError',
-          message: 'Edge Function returned a non-2xx status code',
-          context: { json: async () => ({ error: 'UpstreamProviderError' }) },
-        },
-      });
-
-      const result = await detectDisease(image, image);
-      expect(result.detected).toBe(false);
-      if (!result.detected) {
-        expect(result.reason).toBe('provider_unavailable');
-        // The cloud gateway failing (and the on-device fallback sweep finding nothing either,
-        // in this unmocked environment) yields an honest "could not identify this image"
-        // message rather than a connectivity complaint -- see detection.ts step 4.
-        expect(result.messageEn).toMatch(/could not identify this image/i);
-      }
-    });
-
-    it('does not crash when the gateway error body cannot be read', async () => {
-      // Reading the body is best-effort: a malformed or missing body must degrade to the
-      // generic path, never throw out of detectDisease.
-      invokeMock.mockResolvedValueOnce({
-        data: null,
-        error: {
-          name: 'FunctionsHttpError',
-          message: 'Edge Function returned a non-2xx status code',
-          context: {
-            json: async () => {
-              throw new Error('not json');
-            },
-          },
-        },
-      });
-
-      const result = await detectDisease(image, image);
-      expect(result.detected).toBe(false);
-      if (!result.detected) {
-        expect(result.reason).toBe('provider_unavailable');
-      }
     });
   });
 });

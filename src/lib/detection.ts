@@ -1,8 +1,7 @@
 import { MOCK_DISEASES, MOCK_CROPS, SAMPLE_CROP_IMAGE } from './mockData';
-import { supabase } from './supabase';
 import type { UrgencyColor, DetectionFailureReason } from '../types/database';
 import type { DiagnosticTier, NormalizedDiagnosis } from './ai/types';
-import { validateAndNormalizeAiResponse, createFallbackDiagnosis } from './ai/validator';
+import { createFallbackDiagnosis } from './ai/validator';
 import { hasOnDeviceModel, classifyWithOnDeviceModel, getOnDeviceCropIds } from './ai/onDeviceRegistry';
 import { getCropKnowledge } from './knowledge';
 
@@ -29,43 +28,6 @@ export interface DetectionFailure {
 }
 
 export type DetectionResult = DetectionSuccess | DetectionFailure;
-
-/**
- * Master switch for the CLOUD photo -> AI gateway call (OpenRouter, via the `detect-crop`
- * Supabase Edge Function). Turned on 2026-10-18 once a funded OPENROUTER_API_KEY was
- * configured as an Edge Function secret -- an explicit, informed decision made knowing the
- * underlying general-purpose vision LLM's accuracy has never been measured against real AP
- * crop photos (see data/evaluation_manifest.json — 400 fixtures specified, 0 verified on
- * disk). Every result from this path is still tagged 'ai_preliminary_hypothesis' and carries
- * the existing "confirm with your local agriculture extension office before spraying" disclaimer -- it is never presented as
- * verified. Revisit turning this back off if real-world results look unreliable.
- *
- * This gates ONLY the cloud photo -> AI gateway call. It does not touch:
- *  - the on-device TFLite classifiers (see onDeviceRegistry.ts -- free, offline, run first
- *    and have their own confidence gate, independent of this flag),
- *  - the 🧪 demo/sample path (pure local mock data, see the isDemoSample branch above),
- *  - the bundled agricultural knowledge catalog (fully browsable offline), or
- *  - scan history / any other feature.
- */
-let aiLiveDiagnosisEnabled = true;
-
-/**
- * Test-only seam for exercising the gateway-dispatch branch below. Never call this from
- * application code — the real app always runs with the module default above.
- */
-export function __setAiLiveDiagnosisEnabledForTests(enabled: boolean): void {
-  aiLiveDiagnosisEnabled = enabled;
-}
-
-/**
- * Read-only check for UI code (e.g. ScanScreen) that wants to warn the farmer BEFORE they
- * take a photo, rather than after they wait through the "analyzing" spinner only to receive
- * the paused message. Intentionally has no corresponding public setter — only
- * __setAiLiveDiagnosisEnabledForTests (test-only) and the module constant above control it.
- */
-export function isAiLiveDiagnosisEnabled(): boolean {
-  return aiLiveDiagnosisEnabled;
-}
 
 /**
  * @deprecated Categorical urgency must be determined by validated disease catalog data, not raw AI confidence scores.
@@ -185,41 +147,15 @@ function analyzeImageViaCanvas(imageUri: string): Promise<PixelEvaluation> {
   });
 }
 
-interface GatewayErrorBody {
-  error?: string;
-  userFacingMessageEn?: string;
-}
-
-/**
- * Reads the JSON body of a failed Edge Function response. supabase-js reports a non-2xx
- * function response as an error whose `context` carries the underlying Response, so the
- * gateway's own explanation (e.g. the daily scan limit, with its reset time and your local agriculture extension office
- * referral) is only reachable this way. Returns null on anything unexpected — a diagnosis
- * is never derived from here, only an explanatory message, so failing to read it is
- * harmless and must never throw into the caller.
- */
-async function readGatewayErrorBody(error: unknown): Promise<GatewayErrorBody | null> {
-  try {
-    const context = (error as { context?: unknown })?.context;
-    if (!context || typeof context !== 'object') return null;
-    const response = context as { json?: () => Promise<unknown> };
-    if (typeof response.json !== 'function') return null;
-    const body = await response.json();
-    if (!body || typeof body !== 'object') return null;
-    return body as GatewayErrorBody;
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Main crop disease detection function.
- * Dispatches request through secure server-side Supabase Edge Function gateway.
- * Zero direct calls to external AI APIs from the client.
+ * Offline/demo detection: the demo sample and the on-device models. The online photo
+ * diagnosis (any plant) is `diagnosePlant()` in ai/plantDiagnosis.ts.
  */
 /**
  * A top on-device prediction below this confidence is treated as "not sure enough" and
- * falls through to the cloud gateway instead. Not a measured threshold -- these models have
+ * falls through to the offline sweep instead. Not a measured threshold -- these models have
  * no accuracy baseline against real AP field photos yet -- just a conservative placeholder
  * above random-chance for their (small, 4-6 class) output spaces. Revisit once real usage
  * data exists.
@@ -228,7 +164,7 @@ const ON_DEVICE_CONFIDENCE_THRESHOLD = 0.5;
 
 /**
  * Runs the crop's on-device TFLite classifier when one exists and the farmer told us which
- * crop this is. Returns null (meaning "fall through to the cloud gateway below") when: no
+ * crop this is. Returns null (meaning "fall through to the offline sweep below") when: no
  * model is registered for this crop, the top prediction isn't confident enough, or the
  * classifier itself throws (e.g. the model/WASM assets failed to load). Never throws.
  */
@@ -268,7 +204,7 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
 
     // The model recognized a real class (e.g. a pest not yet in the catalog) but there is no
     // treatment guide for it -- be honest about what was detected rather than silently
-    // falling back to the cloud gateway or fabricating guidance for an unmapped class.
+    // falling back or fabricating guidance for an unmapped class.
     const readableLabel = top.modelLabel.replace(/_/g, ' ');
     return {
       detected: false,
@@ -278,13 +214,13 @@ async function runOnDeviceDetection(cropId: string, imageUri: string): Promise<D
       cropNameEn,
     };
   } catch (err) {
-    console.warn('[HereForNature] On-device classification error, falling back to cloud gateway:', err);
+    console.warn('[HereForNature] On-device classification error, falling back to the offline sweep:', err);
     return null;
   }
 }
 
 /**
- * Last-resort local fallback, tried only after the cloud gateway has been attempted and
+ * Last-resort local fallback, tried after the selected crop's model (if any) and
  * failed to produce a usable diagnosis (network error, every model in the server's chain
  * failing, or an unrecognized response shape). Sweeps every crop with a registered on-device
  * model -- not just a crop the farmer may have selected -- since this exists specifically for
@@ -370,8 +306,8 @@ export async function detectDisease(
 
   // 1b. On-device classification, when the farmer told us which crop this is and a trained
   // local model exists for it. Runs before the pixel pre-filter and entirely independent of
-  // aiLiveDiagnosisEnabled -- it's free, instant, and works offline regardless of the cloud
-  // gateway's state. Falls through to the cloud gateway below when no model is registered for
+  // network -- it's free, instant, and works offline. Falls through to the offline sweep below
+  // when no model is registered for
   // this crop, the top prediction isn't confident enough, or the farmer skipped crop selection.
   if (options?.selectedCropId && hasOnDeviceModel(options.selectedCropId)) {
     const onDeviceResult = await runOnDeviceDetection(options.selectedCropId, imageUri);
@@ -395,180 +331,20 @@ export async function detectDisease(
     };
   }
 
-  // 2b. Live AI diagnosis is currently paused (see aiLiveDiagnosisEnabled doc comment above).
-  // This is checked AFTER the free client-side pixel pre-filter (so obviously-bad images
-  // still get an honest, immediate rejection) and BEFORE anything that would call the paid
-  // upstream provider.
-  if (!aiLiveDiagnosisEnabled) {
-    const pausedDiag = createFallbackDiagnosis(
-      'provider_unavailable',
-      { provider: 'gateway', model: 'ai_scanning_paused' },
-      {
-        messageEn:
-          "Live AI photo diagnosis is temporarily paused. Browse your crop's known conditions below, or visit your local agriculture extension office for an in-person check.",
-      }
-    );
-    return {
-      detected: false,
-      reason: 'provider_unavailable',
-      messageEn: pausedDiag.userFacingMessageEn,
-      normalizedDiagnosis: pausedDiag,
-    };
-  }
-
-  // 3. Dispatch through Supabase Edge Function Gateway
-  if (base64 && supabase) {
-    try {
-      if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-        const offlineDiag = createFallbackDiagnosis('provider_unavailable', {
-          provider: 'gateway',
-          model: 'offline_detection',
-        });
-        return {
-          detected: false,
-          reason: 'provider_unavailable',
-          messageEn: offlineDiag.userFacingMessageEn,
-          normalizedDiagnosis: offlineDiag,
-        };
-      }
-
-      const cleanBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, '');
-      const mimeType = base64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
-
-      const { data, error } = await supabase.functions.invoke('detect-crop', {
-        body: {
-          imageBase64: cleanBase64,
-          mimeType,
-          // Passed through for when the gateway starts using it; the farmer's own crop
-          // selection (when the on-device path above didn't handle it) is a free, useful hint.
-          cropHint: options?.selectedCropId,
-        },
-      });
-
-      // A non-2xx gateway response surfaces as `error`, with the body reachable through
-      // error.context. Without reading it, a farmer who has used today's scan allowance
-      // would see a generic "service unavailable" and have no idea why or when it resets —
-      // so the gateway's own bilingual explanation is extracted and surfaced here.
-      if (error) {
-        const gatewayBody = await readGatewayErrorBody(error);
-        if (gatewayBody?.error === 'DailyScanLimitReached') {
-          const quotaDiag = createFallbackDiagnosis('provider_unavailable', {
-            provider: 'gateway',
-            model: 'daily_quota',
-          });
-          return {
-            detected: false,
-            reason: 'provider_unavailable',
-            messageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
-            normalizedDiagnosis: {
-              ...quotaDiag,
-              userFacingMessageEn: gatewayBody.userFacingMessageEn || quotaDiag.userFacingMessageEn,
-            },
-          };
-        }
-      }
-
-      if (!error && data && data.success && data.rawResult) {
-        const normalized = validateAndNormalizeAiResponse(data.rawResult, data.metadata || {
-          provider: 'openrouter',
-          model: 'server_gateway',
-        });
-
-        if (normalized.status === 'supported_diagnosis') {
-          if (normalized.conditionAssessment.conditionType === 'healthy') {
-            return {
-              detected: false,
-              reason: 'healthy',
-              messageEn: normalized.userFacingMessageEn,
-              cropId: normalized.plantIdentification.cropId,
-              cropNameEn: normalized.plantIdentification.cropNameEn,
-              normalizedDiagnosis: normalized,
-            };
-          }
-
-          if (normalized.plantIdentification.cropId && normalized.conditionAssessment.diseaseId) {
-            return {
-              detected: true,
-              cropId: normalized.plantIdentification.cropId,
-              diseaseId: normalized.conditionAssessment.diseaseId,
-              cropNameEn: normalized.plantIdentification.cropNameEn,
-              normalizedDiagnosis: normalized,
-            };
-          }
-        }
-
-        if (normalized.status === 'not_plant') {
-          return {
-            detected: false,
-            reason: 'not_crop',
-            messageEn: normalized.userFacingMessageEn,
-            normalizedDiagnosis: normalized,
-          };
-        }
-
-        if (normalized.status === 'unusable_image' || normalized.status === 'uncertain') {
-          return {
-            detected: false,
-            reason: 'unclear',
-            messageEn: normalized.userFacingMessageEn,
-            normalizedDiagnosis: normalized,
-          };
-        }
-
-        if (normalized.status === 'unsupported_crop' || normalized.status === 'unsupported_disease') {
-          return {
-            detected: false,
-            reason: 'unsupported_crop',
-            messageEn: normalized.userFacingMessageEn,
-            cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropId: normalized.plantIdentification.cropId,
-            normalizedDiagnosis: normalized,
-          };
-        }
-
-        if (normalized.status === 'abiotic_stress') {
-          return {
-            detected: false,
-            reason: 'abiotic_stress',
-            messageEn: normalized.userFacingMessageEn,
-            cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropId: normalized.plantIdentification.cropId,
-            normalizedDiagnosis: normalized,
-          };
-        }
-
-        if (normalized.status === 'nutrient_deficiency') {
-          return {
-            detected: false,
-            reason: 'nutrient_deficiency',
-            messageEn: normalized.userFacingMessageEn,
-            cropNameEn: normalized.plantIdentification.cropNameEn,
-            cropId: normalized.plantIdentification.cropId,
-            normalizedDiagnosis: normalized,
-          };
-        }
-      }
-    } catch (gatewayErr) {
-      console.warn('[HereForNature] Gateway invocation error:', gatewayErr);
-    }
-  }
-
-  // 3b. Cloud gateway unavailable or failed to produce a usable diagnosis. Before giving up,
-  // sweep the on-device trained models for every crop (not just a selected one) -- this is
-  // what actually gives the "Not Sure / Skip" flow a second opinion, since no crop was known
-  // at step 1b for it to use. Skips re-running a crop already tried there.
+  // 3. Sweep the on-device trained models for every crop (not just a selected one), skipping
+  // a crop already tried at step 1b. This is the offline path: the online photo diagnosis is
+  // the Claude-powered `diagnose-plant` Edge Function, called from ScanScreen before this.
   const sweepResult = await runOnDeviceFallbackSweep(imageUri, options?.selectedCropId);
   if (sweepResult) return sweepResult;
 
-  // 4. Nothing worked: the cloud gateway failed and no on-device model recognized the photo
-  // confidently either. Say so plainly -- this is an honest "we could not read this image",
-  // not a connectivity problem, so the message must not send the farmer chasing their network.
+  // 4. No on-device model recognized the photo confidently. Say so plainly and point to the
+  // online scan, which identifies any plant.
   const unavailableDiag = createFallbackDiagnosis(
     'provider_unavailable',
-    { provider: 'gateway', model: 'edge_function' },
+    { provider: 'on_device', model: 'offline_sweep' },
     {
       messageEn:
-        "We could not identify this image, even after trying our on-device models as a backup. Please retake a clear, close-up photo of the affected leaf in good daylight, or browse your crop's guide below.",
+        "We could not identify this image with the offline models. Connect to the internet for a full scan of any plant, or retake a clear, close-up photo of the affected leaf in good daylight.",
     }
   );
 

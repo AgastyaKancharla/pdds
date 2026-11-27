@@ -3,7 +3,7 @@ import { validateAndNormalizeAiResponse, createFallbackDiagnosis } from '../vali
 
 describe('AI Response Validator & Normalizer', () => {
   const providerMeta = {
-    provider: 'openrouter',
+    provider: 'anthropic',
     model: 'dots-studio/dots-3-note-preview:free',
     latencyMs: 120,
   };
@@ -26,7 +26,7 @@ describe('AI Response Validator & Normalizer', () => {
     expect(result.conditionAssessment.conditionType).toBe('disease');
     expect(result.conditionAssessment.diseaseId).toBe('disease-rice-blast');
     expect(result.conditionAssessment.urgencyColor).toBe('red');
-    expect(result.metadata.provider).toBe('openrouter');
+    expect(result.metadata.provider).toBe('anthropic');
   });
 
   it('normalizes a healthy crop report without claiming a disease', () => {
@@ -109,7 +109,7 @@ describe('AI Response Validator & Normalizer', () => {
 
     expect(fallback.status).toBe('provider_unavailable');
     expect(fallback.userFacingMessageEn).toBeTruthy();
-    expect(fallback.metadata.provider).toBe('openrouter');
+    expect(fallback.metadata.provider).toBe('anthropic');
   });
 
   describe('Phase 5 Diagnostic Integrity Enhancements', () => {

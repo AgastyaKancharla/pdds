@@ -17,7 +17,8 @@
  *     anything outside the catalog only general, non-chemical care steps.
  *
  * Models: Claude Sonnet 5.5 first, Claude Haiku 5.5 as fallback (overload, timeout, bad output).
- * Output is forced through a tool call, so the response always matches REPORT_SCHEMA.
+ * Output uses structured outputs (output_config.format = json_schema), so the response always
+ * matches REPORT_SCHEMA. (Forced tool_choice is not supported on current Claude models.)
  *
  * Required secret: ANTHROPIC_API_KEY. Optional: ANTHROPIC_PRIMARY_MODEL, ANTHROPIC_FALLBACK_MODEL,
  * AI_DAILY_SCAN_LIMIT. SUPABASE_URL / SUPABASE_ANON_KEY are provided by the platform.
@@ -72,7 +73,6 @@ const REPORT_SCHEMA = {
     health_status: { type: 'string', enum: ['healthy', 'problem_found', 'uncertain'] },
     candidates: {
       type: 'array',
-      maxItems: 3,
       description: 'Possible problems, most likely first. Empty if healthy or no plant.',
       items: {
         type: 'object',
@@ -91,7 +91,6 @@ const REPORT_SCHEMA = {
     summary: { type: 'string', description: 'Two short plain-English sentences for a farmer: what the plant is and what you see.' },
     general_care: {
       type: 'array',
-      maxItems: 4,
       items: { type: 'string' },
       description: 'Up to 4 safe, non-chemical next steps (sanitation, watering, isolation, getting expert confirmation). Never pesticide names or doses.',
     },
@@ -117,7 +116,7 @@ How to analyse, in order:
 7. general_care: up to 4 safe, non-chemical steps that are sensible whatever the exact cause. Never name pesticides, fungicides or doses — the app shows verified treatment guidance separately.
 
 Write for a farmer: plain words, short sentences, no jargon without explanation.
-Always answer by calling the report_diagnosis tool.
+Answer only with the JSON object described by the schema.
 
 CATALOG CROPS (id | name):
 ${crops}
@@ -150,7 +149,9 @@ function str(value: unknown, max = 400): string {
 }
 
 function pick<T extends readonly string[]>(value: unknown, allowed: T, fallback: T[number]): T[number] {
-  return typeof value === 'string' && (allowed as readonly string[]).includes(value) ? (value as T[number]) : fallback;
+  if (typeof value !== 'string') return fallback;
+  const v = value.trim().toLowerCase();
+  return (allowed as readonly string[]).find((a) => a === v) ?? fallback;
 }
 
 /** Re-validates the model's report so the client never receives an id we can't back up. */
@@ -237,10 +238,8 @@ async function callClaude(apiKey: string, model: string, mediaType: string, base
       body: JSON.stringify({
         model,
         max_tokens: MAX_TOKENS,
-        temperature: 0,
         system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
-        tools: [{ name: 'report_diagnosis', description: 'Report the plant-health analysis of the photo.', input_schema: REPORT_SCHEMA }],
-        tool_choice: { type: 'tool', name: 'report_diagnosis' },
+        output_config: { format: { type: 'json_schema', schema: REPORT_SCHEMA } },
         messages: [
           {
             role: 'user',
@@ -256,8 +255,8 @@ async function callClaude(apiKey: string, model: string, mediaType: string, base
     const bodyText = await res.text();
     if (!res.ok) {
       console.error(`[diagnose-plant] model=${model} status=${res.status} body=${bodyText.slice(0, 500)}`);
-      // 401/403: bad key — not worth retrying on another model. 400: bad request (e.g. image) — same.
-      const retryable = res.status === 429 || res.status >= 500;
+      // 400 can be model-specific (unsupported parameter), so let the fallback model try it too.
+      const retryable = res.status === 429 || res.status >= 500 || res.status === 400;
       return {
         ok: false,
         status: res.status === 429 ? 429 : res.status === 400 ? 400 : 502,
@@ -267,14 +266,23 @@ async function callClaude(apiKey: string, model: string, mediaType: string, base
       };
     }
 
-    let data: { content?: { type: string; name?: string; input?: unknown }[]; usage?: unknown } | null = null;
+    let data: { content?: { type: string; text?: string }[]; usage?: unknown; stop_reason?: string } | null = null;
     try { data = JSON.parse(bodyText); } catch { data = null; }
-    const toolUse = data?.content?.find((b) => b.type === 'tool_use' && b.name === 'report_diagnosis');
-    if (!toolUse || typeof toolUse.input !== 'object' || toolUse.input === null) {
-      console.error(`[diagnose-plant] model=${model} no tool output: ${bodyText.slice(0, 500)}`);
+    const text = data?.content?.find((b) => b.type === 'text')?.text ?? '';
+    let report: unknown = null;
+    try {
+      const unfenced = text.replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+      const first = unfenced.indexOf('{');
+      const last = unfenced.lastIndexOf('}');
+      report = JSON.parse(first >= 0 && last > first ? unfenced.slice(first, last + 1) : unfenced);
+    } catch {
+      report = null;
+    }
+    if (!report || typeof report !== 'object') {
+      console.error(`[diagnose-plant] model=${model} unreadable output stop=${data?.stop_reason}: ${bodyText.slice(0, 500)}`);
       return { ok: false, status: 502, error: 'AiMalformedOutput', message: 'The AI returned an unreadable answer.', retryable: true };
     }
-    return { ok: true, report: toolUse.input as Record<string, unknown>, model, usage: data?.usage };
+    return { ok: true, report: report as Record<string, unknown>, model, usage: data?.usage };
   } catch (err) {
     const timeout = err instanceof Error && err.name === 'AbortError';
     console.error(`[diagnose-plant] model=${model} fetch failed timeout=${timeout} ${err instanceof Error ? err.message : String(err)}`);
