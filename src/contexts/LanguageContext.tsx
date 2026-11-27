@@ -1,44 +1,26 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import { translate, type Language, type TranslationKey } from '../lib/i18n';
 
-const STORAGE_KEY = 'herefornature_language';
-
+/**
+ * The app is English-only. This context is kept as the single place UI text is looked up
+ * (`t(key)`), so adding another language later only means extending `i18n.ts` and this file.
+ */
 interface LanguageContextValue {
   language: Language;
-  setLanguage: (lang: Language) => void;
   t: (key: TranslationKey) => string;
 }
+
+const LANGUAGE: Language = 'en';
+
+const value: LanguageContextValue = {
+  language: LANGUAGE,
+  t: (key: TranslationKey): string => translate(key, LANGUAGE),
+};
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>('en');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-      if (stored === 'en' || stored === 'te') {
-        setLanguageState(stored);
-      }
-    }
-  }, []);
-
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, lang);
-    }
-  };
-
-  const t = (key: TranslationKey): string => {
-    return translate(key, language);
-  };
-
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
 export function useLanguage() {

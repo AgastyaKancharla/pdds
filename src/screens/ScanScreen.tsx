@@ -16,9 +16,7 @@ export interface ScanResultData {
   diseaseId?: string;
   failureReason?: DetectionFailureReason | 'provider_unavailable';
   messageEn?: string;
-  messageTe?: string;
   cropNameEn?: string;
-  cropNameTe?: string;
   isDemoSample?: boolean;
   isCachedResult?: boolean;
   cachedAt?: string;
@@ -87,9 +85,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
     } catch (err) {
       console.warn('[HereForNature] Live camera access error:', err);
       setCameraError(
-        language === 'en'
-          ? 'Live camera access not granted or unavailable. You can use standard Camera or File Upload below.'
-          : 'లైవ్ కెమెరా అందుబాటులో లేదు. మీరు క్రింద ఉన్న కెమెరా లేదా ఫైల్ అప్‌లోడ్ ఉపయోగించవచ్చు.'
+        'Live camera access not granted or unavailable. You can use standard Camera or File Upload below.'
       );
     }
   };
@@ -110,9 +106,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
           detected: false,
           failureReason: result.reason as DetectionFailureReason,
           messageEn: result.messageEn,
-          messageTe: result.messageTe,
           cropNameEn: result.cropNameEn,
-          cropNameTe: result.cropNameTe,
           cropId: result.cropId,
           isDemoSample: result.isDemoSample,
           diagnosticTier: tier,
@@ -125,7 +119,6 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
           cropId: result.cropId,
           diseaseId: result.diseaseId,
           cropNameEn: result.cropNameEn,
-          cropNameTe: result.cropNameTe,
           isDemoSample: result.isDemoSample,
           diagnosticTier: tier,
           normalizedDiagnosis: result.normalizedDiagnosis,
@@ -168,7 +161,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
     // Validate file type and size
     const validation = validateImageFile(file);
     if (!validation.valid) {
-      setCameraError(language === 'en' ? validation.errorEn || 'Invalid file' : validation.errorTe || 'చెల్లని ఫైల్');
+      setCameraError(validation.errorEn || 'Invalid file');
       e.target.value = '';
       return;
     }
@@ -230,9 +223,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
           <div className="spinner" />
           <h3 className="analyzing-title">{t('analyzing')}</h3>
           <p className="analyzing-subtitle">
-            {language === 'en'
-              ? 'Inspecting leaf structure, colors, and disease symptoms…'
-              : 'ఆకు నిర్మాణం, రంగులు మరియు తెగులు లక్షణాలను విశ్లేషిస్తోంది…'}
+            {'Inspecting leaf structure, colors, and disease symptoms…'}
           </p>
         </div>
       ) : cameraActive ? (
@@ -241,7 +232,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
           <div className="viewfinder-frame">
             <div className="frame-target" />
             <p className="viewfinder-hint">
-              {language === 'en' ? 'Position leaf inside box' : 'ఆకును బాక్స్‌లో ఉంచండి'}
+              {'Position leaf inside box'}
             </p>
           </div>
           <div className="viewfinder-controls">
@@ -256,7 +247,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
               type="button"
               className="btn-cancel-camera"
               onClick={stopCameraStream}>
-              ✕ {language === 'en' ? 'Close' : 'మూసివేయి'}
+              ✕ {'Close'}
             </button>
           </div>
         </div>
@@ -264,12 +255,10 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
         <div className="scan-options-card">
           <div className="scan-icon-circle">🌾</div>
           <h3 className="scan-card-heading">
-            {language === 'en' ? 'Which crop is this?' : 'ఇది ఏ పంట?'}
+            {'Which crop is this?'}
           </h3>
           <p className="scan-card-desc">
-            {language === 'en'
-              ? 'Picking your crop lets the app use a free, offline AI model trained for it, when one is available.'
-              : 'మీ పంటను ఎంచుకుంటే, అందుబాటులో ఉంటే దాని కోసం శిక్షణ పొందిన ఉచిత, ఆఫ్‌లైన్ AI మోడల్‌ను యాప్ ఉపయోగిస్తుంది.'}
+            {'Picking your crop lets the app use a free, offline AI model trained for it, when one is available.'}
           </p>
           <div className="crop-switch-chips" style={{ marginTop: '12px', justifyContent: 'center' }}>
             {allCrops.map((c) => (
@@ -282,7 +271,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
                   setCropPicked(true);
                 }}>
                 {(CROP_ICONS[c.id] || '🌱') + ' '}
-                {language === 'en' ? c.name_en : c.name_te}
+                {c.name_en}
                 {hasOnDeviceModel(c.id) ? ' ⚡' : ''}
               </button>
             ))}
@@ -297,9 +286,9 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
             }}>
             <span className="btn-icon">❓</span>
             <div>
-              <strong>{language === 'en' ? 'Not Sure / Skip' : 'తెలియదు / దాటవేయి'}</strong>
+              <strong>{'Not Sure / Skip'}</strong>
               <span className="btn-subtext">
-                {language === 'en' ? 'Use general AI photo analysis instead' : 'బదులుగా సాధారణ AI ఫోటో విశ్లేషణ వాడండి'}
+                {'Use general AI photo analysis instead'}
               </span>
             </div>
           </button>
@@ -308,18 +297,14 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
         <div className="scan-options-card">
           <div className="scan-icon-circle">🌿</div>
           <h3 className="scan-card-heading">
-            {language === 'en' ? 'Choose Image Source' : 'చిత్ర ఎంపిక మార్గం'}
+            {'Choose Image Source'}
           </h3>
 
           <p style={{ fontSize: 12, color: '#557257', marginBottom: 8 }}>
             {selectedCropId
-              ? (language === 'en' ? 'Scanning: ' : 'స్కాన్ చేస్తున్నది: ') +
-                (language === 'en'
-                  ? allCrops.find((c) => c.id === selectedCropId)?.name_en
-                  : allCrops.find((c) => c.id === selectedCropId)?.name_te)
-              : language === 'en'
-              ? 'General scan (no crop selected)'
-              : 'సాధారణ స్కాన్ (పంట ఎంపిక చేయలేదు)'}{' '}
+              ? ('Scanning: ') +
+                (allCrops.find((c) => c.id === selectedCropId)?.name_en)
+              : 'General scan (no crop selected)'}{' '}
             <button
               type="button"
               onClick={() => setCropPicked(false)}
@@ -332,7 +317,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
                 fontSize: 12,
                 padding: 0,
               }}>
-              {language === 'en' ? 'Change' : 'మార్చు'}
+              {'Change'}
             </button>
           </p>
 
@@ -355,7 +340,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
               <div>
                 <strong>{t('takePhoto')}</strong>
                 <span className="btn-subtext">
-                  {language === 'en' ? 'Snap photo with camera' : 'కెమెరాతో ఫోటో తీయండి'}
+                  {'Snap photo with camera'}
                 </span>
               </div>
             </button>
@@ -370,7 +355,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
               <div>
                 <strong>{t('chooseFromGallery')}</strong>
                 <span className="btn-subtext">
-                  {language === 'en' ? 'Upload image file from device' : 'గ్యాలరీ నుండి చిత్రం అప్‌లోడ్ చేయండి'}
+                  {'Upload image file from device'}
                 </span>
               </div>
             </button>
@@ -383,9 +368,9 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
               disabled={busy}>
               <span className="btn-icon">🎥</span>
               <div>
-                <strong>{language === 'en' ? 'Open Live Viewfinder' : 'లైవ్ కెమెరా తెరవండి'}</strong>
+                <strong>{'Open Live Viewfinder'}</strong>
                 <span className="btn-subtext">
-                  {language === 'en' ? 'Stream video in browser' : 'బ్రౌజర్‌లో వీడియో చూడండి'}
+                  {'Stream video in browser'}
                 </span>
               </div>
             </button>
@@ -400,7 +385,7 @@ export const ScanScreen: React.FC<ScanScreenProps> = ({ onScanComplete, onBack, 
               <div>
                 <strong>{t('testSample')}</strong>
                 <span className="btn-subtext">
-                  {language === 'en' ? 'Test with real crop sample' : 'నమూనా పంటతో తక్షణ పరీక్ష'}
+                  {'Test with real crop sample'}
                 </span>
               </div>
             </button>

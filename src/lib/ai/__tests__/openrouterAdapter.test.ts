@@ -33,7 +33,6 @@ describe('OpenRouter AI Provider Adapter', () => {
               cropId: 'crop-rice',
               diseaseId: 'disease-rice-blast',
               cropNameEn: 'Paddy / Rice',
-              cropNameTe: 'వరి',
               visualSymptoms: ['Spindle lesions'],
             }),
           },

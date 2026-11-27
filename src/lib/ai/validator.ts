@@ -13,17 +13,14 @@ export interface RawAiOutput {
   status?: string;
   cropId?: string;
   cropNameEn?: string;
-  cropNameTe?: string;
   diseaseId?: string;
   diseaseNameEn?: string;
-  diseaseNameTe?: string;
   conditionType?: string;
   urgencyColor?: string;
   visualSymptoms?: string[];
   limitations?: string[];
   recommendedActions?: string[];
   userFacingMessageEn?: string;
-  userFacingMessageTe?: string;
   reason?: string;
   imageQuality?: {
     assessable?: boolean;
@@ -56,7 +53,6 @@ export function validateAndNormalizeAiResponse(
   if (!raw || typeof raw !== 'object') {
     return createFallbackDiagnosis('uncertain', providerMeta, {
       messageEn: 'Unable to parse diagnostic response from AI provider.',
-      messageTe: 'AI ప్రొవైడర్ నుండి రోగనిర్ధారణ ప్రతిస్పందనను అన్వయించలేకపోయాము.',
       limitations: ['Malformed response from upstream model.'],
     });
   }
@@ -158,11 +154,10 @@ export function validateAndNormalizeAiResponse(
     ? data.recommendedActions.map(String)
     : [
         'Inspect surrounding crop rows for similar foliar patterns.',
-        'Consult with your local Rythu Bharosa Kendra (RBK) or Agriculture Extension Officer prior to chemical application.',
+        'Consult with your local agriculture extension office prior to chemical application.',
       ];
 
   const userFacingMessageEn = data.userFacingMessageEn || getDefaultMessageEn(status, matchedCrop?.name_en);
-  const userFacingMessageTe = data.userFacingMessageTe || getDefaultMessageTe(status, matchedCrop?.name_te);
 
   // Strict Provenance Guardrails (Phase 5.2 Priority 1):
   // 1. If flagged demo sample, it is strictly 'demonstration_sample'.
@@ -197,7 +192,6 @@ export function validateAndNormalizeAiResponse(
       identified: !!matchedCrop || !!data.cropNameEn,
       cropId: matchedCrop?.id || data.cropId,
       cropNameEn: matchedCrop?.name_en || data.cropNameEn,
-      cropNameTe: matchedCrop?.name_te || data.cropNameTe,
     },
     conditionAssessment: {
       conditionType,
@@ -207,9 +201,6 @@ export function validateAndNormalizeAiResponse(
       diseaseNameEn: conditionType === 'healthy'
         ? 'Healthy Crop'
         : (status === 'supported_diagnosis' ? (matchedDisease?.name_en || data.diseaseNameEn) : undefined),
-      diseaseNameTe: conditionType === 'healthy'
-        ? 'ఆరోగ్యకరమైన పంట'
-        : (status === 'supported_diagnosis' ? (matchedDisease?.name_te || data.diseaseNameTe) : undefined),
       visualSymptoms: symptoms,
       urgencyColor,
       differentialHypotheses: data.differentialHypotheses,
@@ -237,14 +228,13 @@ export function validateAndNormalizeAiResponse(
       isDemoSample: providerMeta.isDemoSample ?? false,
     },
     userFacingMessageEn,
-    userFacingMessageTe,
   };
 }
 
 export function createFallbackDiagnosis(
   status: DiagnosticStatus,
   providerMeta: { provider?: string; model?: string; latencyMs?: number; isDemoSample?: boolean } = {},
-  custom?: { messageEn?: string; messageTe?: string; limitations?: string[] }
+  custom?: { messageEn?: string; limitations?: string[] }
 ): NormalizedDiagnosis {
   const diagnosticTier: DiagnosticTier = providerMeta.isDemoSample
     ? 'demonstration_sample'
@@ -281,7 +271,6 @@ export function createFallbackDiagnosis(
       isDemoSample: providerMeta.isDemoSample ?? false,
     },
     userFacingMessageEn: custom?.messageEn || getDefaultMessageEn(status),
-    userFacingMessageTe: custom?.messageTe || getDefaultMessageTe(status),
   };
 }
 
@@ -315,32 +304,3 @@ function getDefaultMessageEn(status: DiagnosticStatus, cropName?: string): strin
   }
 }
 
-function getDefaultMessageTe(status: DiagnosticStatus, cropNameTe?: string): string {
-  switch (status) {
-    case 'not_plant':
-      return 'అప్‌లోడ్ చేసిన చిత్రం పంట లేదా ఆకు కాదు. దయచేసి పంట ఆకు స్పష్టమైన ఫోటోను తీయండి.';
-    case 'unusable_image':
-      return 'చిత్రం అస్పష్టంగా ఉంది. దయచేసి మంచి వెలుతురులో ఆకు స్పష్టమైన ఫోటో తీయండి.';
-    case 'unsupported_crop':
-      return cropNameTe
-        ? `మేము దీనిని ${cropNameTe} గా గుర్తించాము, కానీ దీని నివారణలు ఇంకా డేటాబేస్ లో లేవు.`
-        : 'ఈ పంట ప్రస్తుతం మా డేటాబేస్ లో అందుబాటులో లేదు.';
-    case 'unsupported_disease':
-      return cropNameTe
-        ? `పంట ${cropNameTe} గా గుర్తించబడింది, కానీ ఈ వ్యాధి మా డేటాబేస్ లో లేదు. దయచేసి వ్యవసాయ అధికారిని సంప్రదించండి.`
-        : 'ఈ వ్యాధి మా డేటాబేస్ లో లేదు.';
-    case 'abiotic_stress':
-      return 'లక్షణాలు తెగులు కంటే వాతావరణం లేదా తేమ లోపం వల్ల వచ్చినట్లు ఉన్నాయి. నీటి పారుదల మరియు ఎండ తీవ్రతను పరిశీలించండి.';
-    case 'nutrient_deficiency':
-      return 'లక్షణాలు తెగులు కంటే పోషక లోపం వల్ల వచ్చినట్లు ఉన్నాయి. మందులు వాడే ముందు మట్టి లేదా ఆకు పరీక్ష చేయించుకోవడం మంచిది.';
-    case 'provider_unavailable':
-      return 'AI సేవ ప్రస్తుతం అందుబాటులో లేదు. దయచేసి ఇంటర్నెట్ సరిచూసి మళ్లీ ప్రయత్నించండి.';
-    case 'expert_assessment_required':
-      return 'లక్షణాలు అస్పష్టంగా ఉన్నాయి. వ్యవసాయ అధికారి (RBK) చేత ప్రత్యక్ష తనిఖీ సిఫార్సు చేయబడింది.';
-    case 'supported_diagnosis':
-      return 'ప్రాథమిక AI రోగనిర్ధారణ పరిశీలన పూర్తయింది.';
-    case 'uncertain':
-    default:
-      return 'పంట ఆరోగ్యాన్ని ఖచ్చితంగా గుర్తించలేకపోయాము. దయచేసి స్పష్టమైన ఫోటో తీయండి.';
-  }
-}

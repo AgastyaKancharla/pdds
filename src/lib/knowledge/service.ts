@@ -110,7 +110,6 @@ export function cropKnowledgeToCrop(entry: CropKnowledgeEntry): Crop {
   return {
     id: entry.id,
     name_en: entry.name_en,
-    name_te: entry.name_te,
     category: entry.category,
     tier: 2,
     ap_regions: entry.apMajorDistricts.length > 0 ? entry.apMajorDistricts : null,
@@ -126,15 +125,12 @@ export function diseaseKnowledgeToDisease(entry: DiseaseKnowledgeEntry): Disease
     id: entry.id,
     crop_id: entry.cropId,
     name_en: entry.name_en,
-    name_te: entry.name_te,
     type: entry.pathogenOrVector_en,
     symptoms_en: entry.observableSymptoms_en.join(' '),
-    symptoms_te: entry.observableSymptoms_te.join(' '),
     affected_parts: entry.affectedParts,
     urgency_level: entry.urgencyLevel,
     urgency_color: entry.urgencyColor,
     ap_specific_tip_en: null,
-    ap_specific_tip_te: null,
     created_at: new Date().toISOString(),
   };
 }
@@ -159,7 +155,7 @@ export interface CuratedTreatmentDisplay {
 export function getTreatmentsForCategory(
   diseaseId: string | null | undefined,
   category: TreatmentCategory,
-  language: 'en' | 'te' = 'en',
+  language: 'en' = 'en',
   options?: { isDemoSample?: boolean }
 ): {
   hasCuratedEntry: boolean;
@@ -175,10 +171,10 @@ export function getTreatmentsForCategory(
       treatments: matched.map((t) => ({
         id: t.id,
         step_number: t.stepNumber,
-        instruction: language === 'en' ? t.instruction_en : t.instruction_te,
-        active_ingredient: language === 'en' ? t.activeIngredient_en : t.activeIngredient_te,
-        safety_caution: language === 'en' ? t.safetyCaution_en : t.safetyCaution_te,
-        regulatory_notice: language === 'en' ? t.regulatoryNotice_en : t.regulatoryNotice_te,
+        instruction: t.instruction_en,
+        active_ingredient: t.activeIngredient_en,
+        safety_caution: t.safetyCaution_en,
+        regulatory_notice: t.regulatoryNotice_en,
       })),
       isEmptyCategory: matched.length === 0,
       isDemoSample: false,
@@ -238,18 +234,16 @@ export function isSourceDocumentVerified(source: Pick<KnowledgeSource, 'specific
 }
 
 /**
- * True when a disease defines a non-empty `chemicalTabDetail_en`/`_te` for the given
- * language. Extracted as a small pure predicate (Phase 5.4 test-coverage fix) so that
+ * True when a disease defines a non-empty `chemicalTabDetail_en`. Extracted as a small pure predicate (Phase 5.4 test-coverage fix) so that
  * ResultScreen.tsx's statutory-safety-box condition and its regression tests call the
  * exact same function, rather than the test re-implementing the check separately and
  * risking drift from the real branching logic.
  */
 export function hasChemicalTabDetail(
-  disease: Pick<DiseaseKnowledgeEntry, 'chemicalTabDetail_en' | 'chemicalTabDetail_te'> | null | undefined,
-  language: 'en' | 'te'
+  disease: Pick<DiseaseKnowledgeEntry, 'chemicalTabDetail_en'> | null | undefined
 ): boolean {
   if (!disease) return false;
-  const text = language === 'en' ? disease.chemicalTabDetail_en : disease.chemicalTabDetail_te;
+  const text = disease.chemicalTabDetail_en;
   return !!text;
 }
 

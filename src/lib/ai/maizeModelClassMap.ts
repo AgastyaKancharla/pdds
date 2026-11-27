@@ -31,7 +31,7 @@ export const MAIZE_MODEL_CLASS_MAP: MaizeModelClassMapping[] = [
   { modelLabel: 'spodoptera_frugiperda', diseaseId: 'disease-maize-armyworm' },
 
   // A grasshopper pest, not in the catalog yet -- show an honest "detected: X, no
-  // guide yet, consult RBK" response, never fabricate treatment steps.
+  // guide yet, consult your local agriculture extension office" response, never fabricate treatment steps.
   { modelLabel: 'zonocerus_variegatus', diseaseId: null },
 ];
 

@@ -25,7 +25,7 @@ export const BANANA_MODEL_CLASS_MAP: BananaModelClassMapping[] = [
   { modelLabel: 'fusarium_wilt', diseaseId: 'disease-banana-panamawilt' },
 
   // Real disease, no catalog entry yet -- show an honest "detected: X, no guide yet,
-  // consult RBK" response, never fabricate treatment steps.
+  // consult your local agriculture extension office" response, never fabricate treatment steps.
   { modelLabel: 'black_sigatoka', diseaseId: null },
 ];
 

@@ -813,7 +813,7 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       // the cloudProvenancePersisted branch: a cloud save against a legacy schema that
       // could not store diagnostic_tier/is_demo_sample must NEVER be reported as the
       // same full-provenance "saved_cloud" state.
-      function resolveUiState(saveResult: SaveScanResult, lang: 'en' | 'te') {
+      function resolveUiState(saveResult: SaveScanResult, lang: 'en') {
         let saveStatus: 'saved_cloud' | 'saved_cloud_no_provenance' | 'saved_local' | 'failed';
         if (!saveResult.success) {
           saveStatus = 'failed';
@@ -871,10 +871,6 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       expect(uiFailEn.subtext).toBe('⚠️ Could not save scan to storage. Tap to try again.');
       expect(uiFailEn.disabled).toBe(false); // User can retry
 
-      const uiFailTe = resolveUiState(failResult, 'te');
-      expect(uiFailTe.buttonText).toBe('⚠️ సేవ్ విఫలమైంది — మళ్లీ ప్రయత్నించండి');
-      expect(uiFailTe.subtext).toBe('⚠️ స్కాన్‌ను నిల్వలో సేవ్ చేయడం విఫలమైంది. మళ్లీ ప్రయత్నించడానికి నొక్కండి.');
-
       // 2. Successful Local Save (Guest or Cloud fallback)
       const localResult: SaveScanResult = {
         success: true,
@@ -891,12 +887,6 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       );
       expect(uiLocalEn.disabled).toBe(true);
 
-      const uiLocalTe = resolveUiState(localResult, 'te');
-      expect(uiLocalTe.buttonText).toBe('💾 స్థానికంగా సేవ్ చేయబడింది (అప్‌లోడ్ కాలేదు)');
-      expect(uiLocalTe.subtext).toBe(
-        '💾 ఈ పరికరంలో మాత్రమే స్థానికంగా సేవ్ చేయబడింది. ఈ స్కాన్ ఈ బ్రౌజర్‌లో మాత్రమే ఉంటుంది మరియు క్లౌడ్‌కి ఆటోమేటిక్‌గా అప్‌లోడ్ చేయబడదు.'
-      );
-
       // 3. Successful Cloud Save (Authenticated), full provenance persisted
       const cloudResult: SaveScanResult = {
         success: true,
@@ -911,10 +901,6 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       expect(uiCloudEn.buttonText).toBe('✓ Saved');
       expect(uiCloudEn.subtext).toBeNull();
       expect(uiCloudEn.disabled).toBe(true);
-
-      const uiCloudTe = resolveUiState(cloudResult, 'te');
-      expect(uiCloudTe.buttonText).toBe('✓ సేవ్ చేయబడింది');
-      expect(uiCloudTe.subtext).toBeNull();
 
       // 4. Cloud save succeeds even if local write failed (still full provenance)
       const cloudOnlyResult: SaveScanResult = {
@@ -952,10 +938,6 @@ describe('Phase 2: Private Storage & Scan History Service', () => {
       expect(uiCloudLegacyEn.buttonText).not.toBe(`✓ ${translate('saved', 'en')}`);
       expect(uiCloudLegacyEn.subtext).toContain('could not store its diagnostic provenance');
       expect(uiCloudLegacyEn.disabled).toBe(true);
-
-      const uiCloudLegacyTe = resolveUiState(cloudLegacyResult, 'te');
-      expect(uiCloudLegacyTe.buttonText).toBe('✓ క్లౌడ్‌కి సేవ్ చేయబడింది (మూల వివరాలు నమోదు కాలేదు)');
-      expect(uiCloudLegacyTe.buttonText).not.toBe(`✓ ${translate('saved', 'te')}`);
     });
   });
 

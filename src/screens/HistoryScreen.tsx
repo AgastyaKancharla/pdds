@@ -22,9 +22,9 @@ function resolveHistoryDetails(
   const cropKnowledge = cropId ? getCropKnowledge(cropId) : null;
   const mockCrop = cropId ? getMockCrop(cropId) : undefined;
   const crops = cropKnowledge
-    ? { id: cropKnowledge.id, name_en: cropKnowledge.name_en, name_te: cropKnowledge.name_te }
+    ? { id: cropKnowledge.id, name_en: cropKnowledge.name_en, }
     : mockCrop
-      ? { id: mockCrop.id, name_en: mockCrop.name_en, name_te: mockCrop.name_te }
+      ? { id: mockCrop.id, name_en: mockCrop.name_en, }
       : null;
 
   const diseaseKnowledge = diseaseId ? getDiseaseKnowledge(diseaseId) : null;
@@ -33,11 +33,10 @@ function resolveHistoryDetails(
     ? {
         id: diseaseKnowledge.id,
         name_en: diseaseKnowledge.name_en,
-        name_te: diseaseKnowledge.name_te,
         urgency_color: diseaseKnowledge.urgencyColor,
       }
     : mockDisease
-      ? { id: mockDisease.id, name_en: mockDisease.name_en, name_te: mockDisease.name_te, urgency_color: mockDisease.urgency_color }
+      ? { id: mockDisease.id, name_en: mockDisease.name_en, urgency_color: mockDisease.urgency_color }
       : null;
 
   return { crops, diseases };
@@ -306,8 +305,8 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ onSelectScan, onSt
       ) : (
         <div className="history-list">
           {rows.map((item) => {
-            const cropName = language === 'en' ? item.crops?.name_en : item.crops?.name_te;
-            const diseaseName = language === 'en' ? item.diseases?.name_en : item.diseases?.name_te;
+            const cropName = item.crops?.name_en;
+            const diseaseName = item.diseases?.name_en;
             const dotColor = item.urgency_color ? URGENCY_DOT[item.urgency_color] : '#9AA79B';
             const displayUrl = resolvedUrls[item.id];
             const hasImageError = imageErrors[item.id];
@@ -329,7 +328,6 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ onSelectScan, onSt
                     cropId: item.crop_detected_id,
                     diseaseId: item.disease_detected_id,
                     cropNameEn: item.crops?.name_en,
-                    cropNameTe: item.crops?.name_te,
                     isDemoSample: item.is_demo_sample ?? false,
                     isCachedResult: true,
                     cachedAt: item.created_at,

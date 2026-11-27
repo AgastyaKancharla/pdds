@@ -28,7 +28,7 @@ export const SUGARCANE_MODEL_CLASS_MAP: SugarcaneModelClassMapping[] = [
   { modelLabel: 'Redrot', diseaseId: 'disease-sugarcane-redrot' },
 
   // Real diseases, no catalog entry yet -- show an honest "detected: X, no guide
-  // yet, consult RBK" response, never fabricate treatment steps.
+  // yet, consult your local agriculture extension office" response, never fabricate treatment steps.
   { modelLabel: 'Mosaic', diseaseId: null },
   { modelLabel: 'Rust', diseaseId: null },
   { modelLabel: 'Yellow_disease', diseaseId: null },

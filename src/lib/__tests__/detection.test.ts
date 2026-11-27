@@ -194,7 +194,6 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       // complaint -- since by this point both the cloud gateway AND the on-device fallback
       // sweep (see below) have already been tried and failed.
       expect(result.messageEn.toLowerCase()).toContain('could not identify this image');
-      expect(result.messageTe).toBeTruthy();
     }
   });
 
@@ -209,13 +208,10 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       expect(isAiLiveDiagnosisEnabled()).toBe(true);
     });
 
-    it('has a real, non-empty bilingual banner string ready for the Scan screen to render if paused again', () => {
+    it('has a real, non-empty banner string ready for the Scan screen to render if paused again', () => {
       const en = translate('aiScanningPausedBanner', 'en');
-      const te = translate('aiScanningPausedBanner', 'te');
       expect(en.toLowerCase()).toContain('paused');
-      expect(en).toContain('Rythu Bharosa Kendra');
-      expect(te).toContain('రైతు భరోసా కేంద్రం');
-      expect(en).not.toBe(te);
+      expect(en).toContain('extension office');
     });
 
     it('does call the gateway for a real (non-demo) scan now that the cloud path is enabled', async () => {
@@ -242,8 +238,7 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
       if (!result.detected) {
         expect(result.reason).toBe('provider_unavailable');
         expect(result.messageEn.toLowerCase()).toContain('paused');
-        expect(result.messageEn).toContain('Rythu Bharosa Kendra');
-        expect(result.messageTe).toContain('రైతు భరోసా కేంద్రం');
+        expect(result.messageEn).toContain('extension office');
         expect(result.normalizedDiagnosis?.metadata.model).toBe('ai_scanning_paused');
       }
     });
@@ -422,7 +417,6 @@ describe('Detection Layer & Removal of Fabricated Outcomes', () => {
         expect(result.reason).toBe('provider_unavailable');
         expect(result.messageEn.toLowerCase()).toContain('could not identify this image');
         expect(result.messageEn.toLowerCase()).not.toContain('connectivity');
-        expect(result.messageTe).toBeTruthy();
       }
     });
   });

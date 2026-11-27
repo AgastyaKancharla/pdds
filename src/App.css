@@ -103,39 +103,6 @@ body {
   letter-spacing: -0.2px;
 }
 
-/* Lang Toggle */
-.lang-toggle-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 12px 0;
-}
-
-.lang-toggle {
-  display: inline-flex;
-  background-color: var(--primary-light);
-  border-radius: 999px;
-  padding: 3px;
-  gap: 2px;
-}
-
-.lang-btn {
-  border: none;
-  background: transparent;
-  color: var(--primary);
-  font-weight: 600;
-  font-size: 13px;
-  padding: 6px 16px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.lang-btn.active {
-  background-color: var(--primary);
-  color: var(--white);
-  box-shadow: 0 2px 6px rgba(45, 106, 79, 0.3);
-}
-
 /* Main Content Area */
 .app-main {
   flex: 1;

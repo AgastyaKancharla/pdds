@@ -15,27 +15,10 @@ interface HomeScreenProps {
  * logic is reused as-is (embedded, no own header) rather than duplicated.
  */
 export const HomeScreen: React.FC<HomeScreenProps> = ({ onScanComplete, onOpenLibrary, onOpenPrivacy }) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <div className="home-container">
-      <div className="lang-toggle-wrap">
-        <div className="lang-toggle">
-          <button
-            type="button"
-            className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-            onClick={() => setLanguage('en')}>
-            {t('english')}
-          </button>
-          <button
-            type="button"
-            className={`lang-btn ${language === 'te' ? 'active' : ''}`}
-            onClick={() => setLanguage('te')}>
-            {t('telugu')}
-          </button>
-        </div>
-      </div>
-
       <div className="hero-section">
         <div className="logo-badge">
           <img src="/assets/icon.png" alt="HereForNature Logo" className="hero-logo" />
@@ -49,11 +32,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onScanComplete, onOpenLi
       <button type="button" className="library-teaser-card" onClick={onOpenLibrary}>
         <span className="feature-icon">📖</span>
         <div>
-          <strong>{language === 'en' ? 'Browse the full Crop Library' : 'పూర్తి పంటల గ్రంథాలయం చూడండి'}</strong>
+          <strong>Browse the full Crop Library</strong>
           <p>
-            {language === 'en'
-              ? (isAiLiveDiagnosisEnabled() ? 'All 21 known conditions, with or without a photo' : 'All 21 known conditions — no photo needed')
-              : '21 తెలిసిన సమస్యలు — ఫోటో అవసరం లేదు'}
+            {(isAiLiveDiagnosisEnabled() ? 'All 21 known conditions, with or without a photo' : 'All 21 known conditions — no photo needed')}
           </p>
         </div>
         <span className="library-teaser-arrow">→</span>

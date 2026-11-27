@@ -6,7 +6,7 @@
  * Only 6 of the 21 classes have an existing curated catalog entry. The rest are real,
  * legitimate rice issues the model can recognize but this app has no written guidance for
  * yet -- when the model predicts one of those, the app must show an honest "detected: X,
- * no detailed guide yet, consult RBK" response, never fabricate treatment steps for an
+ * no detailed guide yet, consult your local agriculture extension office" response, never fabricate treatment steps for an
  * ID that resolves to nothing.
  *
  * `cropId` is always 'crop-rice' for every class here (this model only knows rice).
